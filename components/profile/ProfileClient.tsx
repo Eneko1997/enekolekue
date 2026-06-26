@@ -1110,10 +1110,10 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                         OPE 2026
                     </div>
                     {[
-                        ["Auxiliares Administrativos", "/?escala=auxiliares"],
-                        ["Administrativos", "/?escala=administrativos"],
-                        ["Técnicos de Gestión", "/?escala=gestion"],
-                        ["Técnicos Superiores", "/?escala=superiores"],
+                        ["Auxiliares Administrativos", "/oposiciones/auxiliar-administrativo"],
+                        ["Administrativos", "/oposiciones/administrativo"],
+                        ["Técnicos de Gestión", "/oposiciones/tecnico-gestion"],
+                        ["Técnicos Superiores", "/oposiciones/tecnico-superior"],
                         ["Exámenes Oficiales", "/payment"],
                     ].map(([l, h]) => (
                         <a

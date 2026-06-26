@@ -6,10 +6,10 @@ const COLS = [
     {
         title: "OPE 2026",
         links: [
-            { label: "Auxiliares Administrativos", href: "/" },
-            { label: "Administrativos", href: "/" },
-            { label: "Técnicos de Gestión", href: "/" },
-            { label: "Técnicos Superiores", href: "/" },
+            { label: "Auxiliares Administrativos", href: "/oposiciones/auxiliar-administrativo" },
+            { label: "Administrativos", href: "/oposiciones/administrativo" },
+            { label: "Técnicos de Gestión", href: "/oposiciones/tecnico-gestion" },
+            { label: "Técnicos Superiores", href: "/oposiciones/tecnico-superior" },
         ],
     },
     {

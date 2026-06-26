@@ -1186,19 +1186,19 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                     {[
                         {
                             label: "Auxiliares Administrativos",
-                            href: "/?escala=auxiliares",
+                            href: "/oposiciones/auxiliar-administrativo",
                         },
                         {
                             label: "Administrativos",
-                            href: "/?escala=administrativos",
+                            href: "/oposiciones/administrativo",
                         },
                         {
                             label: "Técnicos de Gestión",
-                            href: "/?escala=gestion",
+                            href: "/oposiciones/tecnico-gestion",
                         },
                         {
                             label: "Técnicos Superiores",
-                            href: "/?escala=superiores",
+                            href: "/oposiciones/tecnico-superior",
                         },
                         {
                             label: "Exámenes Oficiales",

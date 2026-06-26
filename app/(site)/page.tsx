@@ -11,10 +11,10 @@ export const metadata: Metadata = {
 }
 
 const ESCALAS = [
-    { label: "Auxiliar Administrativo", href: "/?escala=auxiliares" },
-    { label: "Administrativo", href: "/?escala=administrativos" },
-    { label: "Técnico de Gestión", href: "/?escala=gestion" },
-    { label: "Técnico Superior", href: "/?escala=superiores" },
+    { label: "Auxiliar Administrativo", href: "/oposiciones/auxiliar-administrativo" },
+    { label: "Administrativo", href: "/oposiciones/administrativo" },
+    { label: "Técnico de Gestión", href: "/oposiciones/tecnico-gestion" },
+    { label: "Técnico Superior", href: "/oposiciones/tecnico-superior" },
 ]
 
 const RECURSOS = [

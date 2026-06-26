@@ -2589,10 +2589,10 @@ function Footer({ dark, accent }: { dark: boolean; accent: string }) {
                         OPE 2026
                     </div>
                     {[
-                        { label: "Auxiliares Administrativos", href: "/?escala=auxiliares" },
-                        { label: "Administrativos", href: "/?escala=administrativos" },
-                        { label: "Técnicos de Gestión", href: "/?escala=gestion" },
-                        { label: "Técnicos Superiores", href: "/?escala=superiores" },
+                        { label: "Auxiliares Administrativos", href: "/oposiciones/auxiliar-administrativo" },
+                        { label: "Administrativos", href: "/oposiciones/administrativo" },
+                        { label: "Técnicos de Gestión", href: "/oposiciones/tecnico-gestion" },
+                        { label: "Técnicos Superiores", href: "/oposiciones/tecnico-superior" },
                         { label: "Exámenes Oficiales", href: "/payment" },
                     ].map((link) => (
                         <a
