@@ -25,12 +25,16 @@ if (typeof window !== "undefined") {
     })
 }
 
-async function fetchPreguntas(testId: string): Promise<any[]> {
-    const { data, error } = await supabase
-        .from("preguntas")
-        .select("*")
-        .eq("test_id", testId)
-        .order("orden", { ascending: true })
+async function fetchPreguntas(
+    testId: string,
+    limite: number | null = null
+): Promise<any[]> {
+    // El examen se monta en el servidor: la RPC filtra por test_id, baraja
+    // (order by random()) y opcionalmente limita. El cliente recibe el examen listo.
+    const { data, error } = await supabase.rpc("get_test_preguntas", {
+        p_test_id: testId,
+        p_limite: limite,
+    })
     if (error || !Array.isArray(data)) return []
     return data
 }
@@ -3759,9 +3763,9 @@ export default function TestScreen(props: {
                 correcta: r.correcta,
                 explicacion: r.explicacion,
             }))
-            const shuffled = shuffleArray(parsed)
-            setPreguntas(shuffled)
-            setRespuestas(Array(shuffled.length).fill(null))
+            // Ya viene barajado del servidor (RPC get_test_preguntas).
+            setPreguntas(parsed)
+            setRespuestas(Array(parsed.length).fill(null))
             setFase("inicio")
         })
     }, [testId])
