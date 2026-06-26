@@ -4,7 +4,7 @@ import { SCALE_COLORS, BRAND_ACCENT } from "@/lib/theme"
 import { SITE_URL } from "@/lib/site"
 
 export const metadata: Metadata = {
-    title: "Gainditu — Tests OPE Gobierno Vasco 2026 (IVAP)",
+    title: { absolute: "Gainditu — Tests OPE Gobierno Vasco 2026 (IVAP)" },
     description:
         "Practica para la OPE del Gobierno Vasco 2026 con tests por tema oficial del IVAP: Auxiliares, Administrativos, Técnicos de Gestión y Superiores. Más de 2.000 preguntas, simulacros con penalización real y seguimiento de tu progreso.",
     alternates: { canonical: "/" },

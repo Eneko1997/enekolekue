@@ -6,8 +6,8 @@ import { motion, AnimatePresence } from "framer-motion"
 
 import { createClient } from "@/lib/supabase/client"
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ougvtcmqmcutrexxrxvz.supabase.co")
+const SUPABASE_ANON_KEY = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_lfcfMDSYpIDWzy2CWufT_A_NfJbTimc")
 const supabase = createClient()
 
 // Caché de sesión síncrona poblada por supabase-js (que refresca el token solo).

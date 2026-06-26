@@ -55,7 +55,7 @@ function useIsMobile(containerRef: React.RefObject<HTMLElement | null>) {
 import { createClient } from "@/lib/supabase/client"
 import { translateAuthError } from "@/lib/auth-errors"
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ougvtcmqmcutrexxrxvz.supabase.co")
 const supabase = createClient()
 
 interface SessionShape {

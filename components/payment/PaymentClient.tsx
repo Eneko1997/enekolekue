@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client"
 import { useIsMobile } from "@/lib/use-is-mobile"
 import { SunIcon, MoonIcon, CheckIcon } from "@/components/icons"
 
-const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
+const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_live_51TjFCiJMIRLdIAQNCE42HQtsnlfvPkFsBNqovT0ayide74xAphiDiJOY2SlI8NrR6A6uL1yWK2nvjCMu7na7dENq00dizBLEaF"
 const CHECKOUT_FN = process.env.NEXT_PUBLIC_CHECKOUT_FN_NAME || "create-embedded-checkout"
 const STRIPE_FALLBACK_URL = "https://buy.stripe.com/fZu6oI8MYeuW1Fj88Y2Ji00"
 
