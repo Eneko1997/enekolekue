@@ -58,6 +58,7 @@ export default function RootLayout({
         <html lang="es" className={`${inter.variable} h-full antialiased`}>
             <body className="min-h-full flex flex-col">
                 <div className="aurora-bg" aria-hidden />
+                <div className="spotlight" aria-hidden />
                 <div className="aurora-veil" aria-hidden />
                 <div className="grain" aria-hidden />
                 {children}

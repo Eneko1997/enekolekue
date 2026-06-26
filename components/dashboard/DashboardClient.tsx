@@ -3803,9 +3803,28 @@ export default function DashboardOPE(props: {
                         marginBottom: "52px",
                         flexWrap: "wrap",
                         alignItems: "flex-start",
+                        position: "relative",
                     }}
                 >
-                    <div style={{ flex: "1 1 280px" }}>
+                    {/* Orbe flotante decorativo */}
+                    <div
+                        aria-hidden
+                        className="float-slow"
+                        style={{
+                            position: "absolute",
+                            top: "-40px",
+                            right: "8%",
+                            width: "260px",
+                            height: "260px",
+                            borderRadius: "50%",
+                            background: `radial-gradient(circle at 35% 30%, ${accent}55, ${accent}11 55%, transparent 72%)`,
+                            filter: "blur(8px)",
+                            pointerEvents: "none",
+                            zIndex: 0,
+                            transition: "background 0.4s",
+                        }}
+                    />
+                    <div style={{ flex: "1 1 280px", position: "relative", zIndex: 1 }}>
                         <div
                             style={{
                                 fontSize: "11px",
@@ -4191,9 +4210,10 @@ export default function DashboardOPE(props: {
                                                     whileHover={
                                                         !sinPreguntas
                                                             ? {
-                                                                  scale: 1.015,
-                                                                  backgroundColor:
-                                                                      t.surfaceHover,
+                                                                  scale: 1.02,
+                                                                  y: -3,
+                                                                  borderColor: `${accent}66`,
+                                                                  boxShadow: `0 16px 40px -16px ${accent}55, inset 0 1px 0 rgba(255,255,255,0.06)`,
                                                               }
                                                             : {}
                                                     }
@@ -4207,9 +4227,15 @@ export default function DashboardOPE(props: {
                                                         handleStartTest(test.id)
                                                     }
                                                     style={{
-                                                        background: t.surface,
-                                                        border: `1px solid ${sinPreguntas ? t.border : t.border}`,
-                                                        borderRadius: "14px",
+                                                        background: dark
+                                                            ? "rgba(22,23,32,0.55)"
+                                                            : t.surface,
+                                                        backdropFilter:
+                                                            "blur(14px) saturate(130%)",
+                                                        WebkitBackdropFilter:
+                                                            "blur(14px) saturate(130%)",
+                                                        border: `1px solid ${dark ? "rgba(255,255,255,0.07)" : t.border}`,
+                                                        borderRadius: "16px",
                                                         padding: "15px",
                                                         cursor: sinPreguntas
                                                             ? "default"
@@ -4220,8 +4246,11 @@ export default function DashboardOPE(props: {
                                                         position: "relative",
                                                         overflow: "hidden",
                                                         opacity: sinPreguntas
-                                                            ? 0.45
+                                                            ? 0.4
                                                             : 1,
+                                                        boxShadow: dark
+                                                            ? "inset 0 1px 0 rgba(255,255,255,0.05), 0 10px 30px -20px rgba(0,0,0,0.8)"
+                                                            : "0 6px 18px -14px rgba(0,0,0,0.4)",
                                                         transition:
                                                             "background 0.15s",
                                                     }}
