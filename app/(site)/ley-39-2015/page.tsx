@@ -4,14 +4,22 @@ import TemaTests, { type TemaTest } from "@/components/tests/TemaTests"
 import LeccionHero from "@/components/lecciones/LeccionHero"
 import PuntosExamen from "@/components/lecciones/PuntosExamen"
 import LeccionCTA from "@/components/lecciones/LeccionCTA"
+import FaqLeccion, { type Faq } from "@/components/lecciones/FaqLeccion"
 import { SITE_URL } from "@/lib/site"
 
 const ACCENT = "#E8543A"
 
 export const metadata: Metadata = {
-    title: "Ley 39/2015: tests del Procedimiento Administrativo Común (IVAP)",
+    title: "Test Ley 39/2015 — Procedimiento Administrativo Común (OPE Gobierno Vasco)",
     description:
-        "Practica la Ley 39/2015 (Procedimiento Administrativo Común) para tu oposición: actos, fases, recursos y responsabilidad. Cientos de preguntas del temario IVAP para la OPE del Gobierno Vasco 2026.",
+        "Tests de la Ley 39/2015 del Procedimiento Administrativo Común para la OPE del Gobierno Vasco 2026 (IVAP): actos, fases del procedimiento, recursos y responsabilidad. Más de 260 preguntas para practicar.",
+    keywords: [
+        "test ley 39/2015",
+        "test procedimiento administrativo común",
+        "ley 39/2015 oposiciones",
+        "LPACAP test",
+        "acto administrativo test",
+    ],
     alternates: { canonical: "/ley-39-2015" },
 }
 
@@ -29,6 +37,25 @@ const PUNTOS = [
     { t: "Fases del procedimiento", d: "Iniciación, ordenación, instrucción y finalización. Plazos y silencio." },
     { t: "Recursos y revisión", d: "Alzada, reposición, extraordinario de revisión y revisión de oficio." },
     { t: "Responsabilidad patrimonial", d: "Cuándo responde la Administración y su procedimiento." },
+]
+
+const FAQS: Faq[] = [
+    {
+        q: "¿Qué regula la Ley 39/2015?",
+        a: "Regula el Procedimiento Administrativo Común de las Administraciones Públicas (LPACAP): cómo se relacionan los ciudadanos con la Administración y cómo esta dicta, notifica y revisa sus actos.",
+    },
+    {
+        q: "¿Cuántos temas del examen cubre la Ley 39/2015?",
+        a: "Es transversal: aparece en varios temas (acto administrativo, fases, recursos y responsabilidad). En Gainditu la practicas con más de 260 preguntas repartidas en 6 tests.",
+    },
+    {
+        q: "¿Qué diferencia hay entre la Ley 39/2015 y la 40/2015?",
+        a: "La 39/2015 regula el procedimiento (relación con el ciudadano) y la 40/2015 el Régimen Jurídico del Sector Público (organización interna de las Administraciones).",
+    },
+    {
+        q: "¿Es la Ley 39/2015 importante para la oposición?",
+        a: "Mucho: el procedimiento administrativo común es de los temas que más caen en casi todas las oposiciones de la OPE del Gobierno Vasco.",
+    },
 ]
 
 export default function Ley39Page() {
@@ -65,10 +92,14 @@ export default function Ley39Page() {
                 </div>
             </section>
 
+            <FaqLeccion faqs={FAQS} accent={ACCENT} />
+
             <LeccionCTA
                 accent={ACCENT}
-                titulo="Ponte a prueba con la 39/2015"
-                texto="Haz un test de procedimiento y mide cuánto dominas el tema que más cae."
+                href="/payment"
+                titulo="Desbloquea todo el temario"
+                texto="Hazte Premium y accede a exámenes oficiales, simulacros con penalización real del IVAP y estadísticas avanzadas para todas las escalas."
+                cta="Ver acceso Premium →"
             />
 
             <div className="mx-auto mb-12 max-w-4xl px-5">
@@ -88,15 +119,34 @@ export default function Ley39Page() {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "LearningResource",
-                        name: "Tests de la Ley 39/2015 — OPE Gobierno Vasco 2026",
-                        educationalLevel: "Oposiciones",
-                        about: "Ley 39/2015 del Procedimiento Administrativo Común",
-                        provider: { "@type": "Organization", name: "Gainditu" },
-                        url: `${SITE_URL}/ley-39-2015`,
-                    }),
+                    __html: JSON.stringify([
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "LearningResource",
+                            name: "Tests de la Ley 39/2015 — OPE Gobierno Vasco 2026",
+                            educationalLevel: "Oposiciones",
+                            about: "Ley 39/2015 del Procedimiento Administrativo Común",
+                            provider: { "@type": "Organization", name: "Gainditu" },
+                            url: `${SITE_URL}/ley-39-2015`,
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "BreadcrumbList",
+                            itemListElement: [
+                                { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
+                                { "@type": "ListItem", position: 2, name: "Ley 39/2015", item: `${SITE_URL}/ley-39-2015` },
+                            ],
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "FAQPage",
+                            mainEntity: FAQS.map((f) => ({
+                                "@type": "Question",
+                                name: f.q,
+                                acceptedAnswer: { "@type": "Answer", text: f.a },
+                            })),
+                        },
+                    ]),
                 }}
             />
         </main>
