@@ -85,7 +85,7 @@ export default function FechasOpesPage() {
                     Empieza a practicar hoy con tests por tema del temario IVAP.
                 </p>
                 <Link
-                    href="/dashboard"
+                    href="/"
                     className="mt-4 inline-block rounded-xl px-6 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
                     style={{ backgroundColor: BRAND_ACCENT }}
                 >

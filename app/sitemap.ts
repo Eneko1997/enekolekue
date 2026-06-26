@@ -5,7 +5,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const now = new Date()
     const routes = [
         { path: "/", priority: 1, freq: "weekly" as const },
-        { path: "/dashboard", priority: 0.9, freq: "weekly" as const },
         { path: "/ley-39-2015", priority: 0.8, freq: "monthly" as const },
         { path: "/constitucion", priority: 0.8, freq: "monthly" as const },
         { path: "/fechas-opes", priority: 0.7, freq: "weekly" as const },

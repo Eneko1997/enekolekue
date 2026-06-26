@@ -68,7 +68,7 @@ export default function PaymentSuccessClient() {
                           : "Tu pago se ha registrado. Si el acceso Premium no aparece en unos minutos, escríbenos a hola@gainditu.com."}
                 </p>
                 <Link
-                    href="/dashboard"
+                    href="/"
                     className="inline-block rounded-[10px] px-6 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
                     style={{ backgroundColor: BRAND_ACCENT }}
                 >

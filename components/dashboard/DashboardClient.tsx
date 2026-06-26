@@ -3260,7 +3260,7 @@ export default function DashboardOPE(props: {
                 style={{
                     width: "100%",
                     minHeight: "100vh",
-                    backgroundColor: t.bg,
+                    backgroundColor: dark ? "transparent" : t.bg,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -3299,7 +3299,7 @@ export default function DashboardOPE(props: {
             style={{
                 width: "100%",
                 minHeight: "100vh",
-                backgroundColor: t.bg,
+                backgroundColor: dark ? "transparent" : t.bg,
                 color: t.textMain,
                 fontFamily: "Inter, system-ui, sans-serif",
                 boxSizing: "border-box",

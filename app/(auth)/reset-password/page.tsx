@@ -23,7 +23,7 @@ export default function ResetPasswordPage() {
         if (error) return setError(translateAuthError(error.message))
         setDone(true)
         setTimeout(() => {
-            router.push("/dashboard")
+            router.push("/")
             router.refresh()
         }, 1500)
     }

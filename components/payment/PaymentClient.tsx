@@ -192,7 +192,7 @@ export default function PaymentClient() {
                             {dark ? <SunIcon /> : <MoonIcon />}
                         </motion.button>
                         <Link
-                            href="/dashboard"
+                            href="/"
                             style={{
                                 padding: "6px 12px",
                                 borderRadius: "8px",

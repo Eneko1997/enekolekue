@@ -7,7 +7,7 @@ import { useSession } from "@/lib/supabase/use-session"
 import { BRAND_ACCENT } from "@/lib/theme"
 
 const NAV_LINKS = [
-    { label: "Tests", href: "/dashboard" },
+    { label: "Tests", href: "/" },
     { label: "Ley 39/2015", href: "/ley-39-2015" },
     { label: "Constitución", href: "/constitucion" },
     { label: "Fechas OPE", href: "/fechas-opes" },
@@ -45,7 +45,7 @@ export default function Navbar() {
                 <div className="hidden shrink-0 items-center gap-2 md:flex">
                     {!loading && user ? (
                         <Link
-                            href="/dashboard"
+                            href="/"
                             className="rounded-lg bg-white px-4 py-1.5 text-[13px] font-bold text-[#0A0A0C] transition-opacity hover:opacity-90"
                         >
                             Mi panel
@@ -107,7 +107,7 @@ export default function Navbar() {
                             <div className="mt-2 flex gap-2">
                                 {!loading && user ? (
                                     <Link
-                                        href="/dashboard"
+                                        href="/"
                                         onClick={() => setOpen(false)}
                                         className="flex-1 rounded-lg bg-white px-4 py-2 text-center text-sm font-bold text-[#0A0A0C]"
                                     >

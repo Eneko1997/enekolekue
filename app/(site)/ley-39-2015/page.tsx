@@ -103,7 +103,7 @@ export default function Ley39Page() {
                         </Link>
                     </li>
                     <li>
-                        <Link href="/dashboard" className="text-white/70 hover:text-white hover:underline">
+                        <Link href="/" className="text-white/70 hover:text-white hover:underline">
                             → Todos los tests por escala (Auxiliares, Administrativos…)
                         </Link>
                     </li>
