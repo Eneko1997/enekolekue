@@ -2,12 +2,13 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useSession } from "@/lib/supabase/use-session"
+import { createClient } from "@/lib/supabase/client"
 import { BRAND_ACCENT } from "@/lib/theme"
 
 const NAV_LINKS = [
-    { label: "Tests", href: "/" },
     { label: "Ley 39/2015", href: "/ley-39-2015" },
     { label: "Constitución", href: "/constitucion" },
     { label: "Fechas OPE", href: "/fechas-opes" },
@@ -15,7 +16,16 @@ const NAV_LINKS = [
 
 export default function Navbar() {
     const { user, loading } = useSession()
+    const router = useRouter()
     const [open, setOpen] = useState(false)
+
+    async function handleSignOut() {
+        const supabase = createClient()
+        await supabase.auth.signOut()
+        setOpen(false)
+        router.push("/")
+        router.refresh()
+    }
 
     return (
         <nav className="sticky top-0 z-50 border-b border-white/10 bg-[rgba(10,10,12,0.9)] backdrop-blur-xl">
@@ -44,12 +54,20 @@ export default function Navbar() {
                 {/* CTA escritorio */}
                 <div className="hidden shrink-0 items-center gap-2 md:flex">
                     {!loading && user ? (
-                        <Link
-                            href="/"
-                            className="rounded-lg bg-white px-4 py-1.5 text-[13px] font-bold text-[#0A0A0C] transition-opacity hover:opacity-90"
-                        >
-                            Mi panel
-                        </Link>
+                        <>
+                            <Link
+                                href="/perfil"
+                                className="rounded-lg px-3 py-1.5 text-[13px] font-semibold text-white/80 hover:text-white"
+                            >
+                                Mi perfil
+                            </Link>
+                            <button
+                                onClick={handleSignOut}
+                                className="rounded-lg border border-white/15 px-3 py-1.5 text-[13px] font-semibold text-white/80 transition-colors hover:bg-white/5 hover:text-white"
+                            >
+                                Salir
+                            </button>
+                        </>
                     ) : (
                         <>
                             <Link
@@ -106,13 +124,21 @@ export default function Navbar() {
                             ))}
                             <div className="mt-2 flex gap-2">
                                 {!loading && user ? (
-                                    <Link
-                                        href="/"
-                                        onClick={() => setOpen(false)}
-                                        className="flex-1 rounded-lg bg-white px-4 py-2 text-center text-sm font-bold text-[#0A0A0C]"
-                                    >
-                                        Mi panel
-                                    </Link>
+                                    <>
+                                        <Link
+                                            href="/perfil"
+                                            onClick={() => setOpen(false)}
+                                            className="flex-1 rounded-lg border border-white/15 px-4 py-2 text-center text-sm font-semibold text-white"
+                                        >
+                                            Mi perfil
+                                        </Link>
+                                        <button
+                                            onClick={handleSignOut}
+                                            className="flex-1 rounded-lg border border-white/15 px-4 py-2 text-center text-sm font-semibold text-white"
+                                        >
+                                            Salir
+                                        </button>
+                                    </>
                                 ) : (
                                     <>
                                         <Link
