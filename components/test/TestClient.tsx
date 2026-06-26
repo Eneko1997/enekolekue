@@ -630,8 +630,7 @@ function SharedNavbar({
     const links = [
         {
             label: "📅 Fechas OPE",
-            href: "https://www.euskadi.eus/oposiciones",
-            external: true,
+            href: "/fechas-opes",
         },
         { label: "Ley 39/2015", href: "/ley-39-2015" },
         { label: "Constitución", href: "/constitucion" },
@@ -694,7 +693,7 @@ function SharedNavbar({
                             <a
                                 key={link.label}
                                 href={link.href}
-                                target={link.external ? "_blank" : "_self"}
+                                target="_self"
                                 rel="noopener noreferrer"
                                 style={{
                                     fontSize: "13px",
@@ -951,7 +950,7 @@ function SharedNavbar({
                                 <a
                                     key={link.label}
                                     href={link.href}
-                                    target={link.external ? "_blank" : "_self"}
+                                    target="_self"
                                     rel="noopener noreferrer"
                                     onClick={() => setMobileOpen(false)}
                                     style={{
@@ -1183,23 +1182,23 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                     {[
                         {
                             label: "Auxiliares Administrativos",
-                            href: "/#auxiliares",
+                            href: "/?escala=auxiliares",
                         },
                         {
                             label: "Administrativos",
-                            href: "/#administrativos",
+                            href: "/?escala=administrativos",
                         },
                         {
                             label: "Técnicos de Gestión",
-                            href: "/#gestion",
+                            href: "/?escala=gestion",
                         },
                         {
                             label: "Técnicos Superiores",
-                            href: "/#superiores",
+                            href: "/?escala=superiores",
                         },
                         {
                             label: "Exámenes Oficiales",
-                            href: "/#examenes-oficiales",
+                            href: "/payment",
                         },
                     ].map((l) => (
                         <a

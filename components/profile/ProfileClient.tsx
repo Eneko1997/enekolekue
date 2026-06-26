@@ -685,8 +685,7 @@ function Navbar({
     const links = [
         {
             label: "📅 Fechas OPE",
-            href: "https://www.euskadi.eus/oposiciones",
-            external: true,
+            href: "/fechas-opes",
         },
         { label: "Ley 39/2015", href: "/ley-39-2015" },
         { label: "Constitución", href: "/constitucion" },
@@ -741,7 +740,7 @@ function Navbar({
                             <a
                                 key={link.label}
                                 href={link.href}
-                                target={link.external ? "_blank" : "_self"}
+                                target="_self"
                                 rel="noopener noreferrer"
                                 style={{
                                     fontSize: "13px",
@@ -948,7 +947,7 @@ function Navbar({
                                 <a
                                     key={link.label}
                                     href={link.href}
-                                    target={link.external ? "_blank" : "_self"}
+                                    target="_self"
                                     rel="noopener noreferrer"
                                     onClick={() => setMobileOpen(false)}
                                     style={{
@@ -1111,11 +1110,11 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                         OPE 2026
                     </div>
                     {[
-                        ["Auxiliares Administrativos", "/#auxiliares"],
-                        ["Administrativos", "/#administrativos"],
-                        ["Técnicos de Gestión", "/#gestion"],
-                        ["Técnicos Superiores", "/#superiores"],
-                        ["Exámenes Oficiales", "/#examenes-oficiales"],
+                        ["Auxiliares Administrativos", "/?escala=auxiliares"],
+                        ["Administrativos", "/?escala=administrativos"],
+                        ["Técnicos de Gestión", "/?escala=gestion"],
+                        ["Técnicos Superiores", "/?escala=superiores"],
+                        ["Exámenes Oficiales", "/payment"],
                     ].map(([l, h]) => (
                         <a
                             key={l}
@@ -2047,7 +2046,7 @@ export default function PerfilOPE({
                                             </div>
                                         </div>
                                         <a
-                                            href="/#examenes-oficiales"
+                                            href="/payment"
                                             style={{
                                                 padding: "7px 14px",
                                                 borderRadius: "8px",
@@ -2938,7 +2937,7 @@ export default function PerfilOPE({
                                             ✦ Mostrando los últimos 10
                                             resultados.{" "}
                                             <a
-                                                href="/#examenes-oficiales"
+                                                href="/payment"
                                                 style={{
                                                     color: "#8B5CF6",
                                                     fontWeight: 700,
@@ -3399,7 +3398,7 @@ export default function PerfilOPE({
                                             </div>
                                             {!isPremium && (
                                                 <a
-                                                    href="/#examenes-oficiales"
+                                                    href="/payment"
                                                     style={{
                                                         display: "inline-block",
                                                         marginTop: "10px",

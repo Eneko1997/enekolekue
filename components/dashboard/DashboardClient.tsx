@@ -2589,11 +2589,11 @@ function Footer({ dark, accent }: { dark: boolean; accent: string }) {
                         OPE 2026
                     </div>
                     {[
-                        { label: "Auxiliares Administrativos", href: "#" },
-                        { label: "Administrativos", href: "#" },
-                        { label: "Técnicos de Gestión", href: "#" },
-                        { label: "Técnicos Superiores", href: "#" },
-                        { label: "Exámenes Oficiales", href: "#" },
+                        { label: "Auxiliares Administrativos", href: "/?escala=auxiliares" },
+                        { label: "Administrativos", href: "/?escala=administrativos" },
+                        { label: "Técnicos de Gestión", href: "/?escala=gestion" },
+                        { label: "Técnicos Superiores", href: "/?escala=superiores" },
+                        { label: "Exámenes Oficiales", href: "/payment" },
                     ].map((link) => (
                         <a
                             key={link.label}
@@ -2650,7 +2650,7 @@ function Footer({ dark, accent }: { dark: boolean; accent: string }) {
                             label: "T.9 — Empleo público vasco",
                             href: "/test?id=c09",
                         },
-                        { label: "Ley 39/2015", href: "/test?id=ley39_albia" },
+                        { label: "Ley 39/2015", href: "/ley-39-2015" },
                     ].map((link) => (
                         <a
                             key={link.label}
@@ -3107,6 +3107,20 @@ export default function DashboardOPE(props: {
 
     const accent = SCALE_COLORS[activeTab]
 
+    // Seleccionar escala desde la URL (?escala=auxiliares|administrativos|gestion|superiores)
+    useEffect(() => {
+        try {
+            const e = new URLSearchParams(window.location.search).get("escala")
+            if (
+                e === "auxiliares" ||
+                e === "administrativos" ||
+                e === "gestion" ||
+                e === "superiores"
+            )
+                setActiveTab(e as Tab)
+        } catch {}
+    }, [])
+
     // Scroll-to-top: mostrar cuando >320px de scroll
     useEffect(() => {
         const handler = () => setShowScrollTop(window.scrollY > 320)
@@ -3367,19 +3381,18 @@ export default function DashboardOPE(props: {
                             {[
                                 {
                                     label: "📅 Fechas OPE",
-                                    href: "https://www.euskadi.eus/oposiciones",
-                                    external: true,
+                                    href: "/fechas-opes",
                                 },
                                 {
                                     label: "Ley 39/2015",
-                                    href: "/test?id=ley39_albia",
+                                    href: "/ley-39-2015",
                                 },
-                                { label: "Constitución", href: "/test?id=c01" },
+                                { label: "Constitución", href: "/constitucion" },
                             ].map((link) => (
                                 <a
                                     key={link.label}
                                     href={link.href}
-                                    target={link.external ? "_blank" : "_self"}
+                                    target="_self"
                                     rel="noopener noreferrer"
                                     style={{
                                         fontSize: "13px",
@@ -3599,24 +3612,21 @@ export default function DashboardOPE(props: {
                                 {[
                                     {
                                         label: "📅 Fechas OPE 2026",
-                                        href: "https://www.euskadi.eus/oposiciones",
-                                        external: true,
+                                        href: "/fechas-opes",
                                     },
                                     {
                                         label: "Ley 39/2015",
-                                        href: "/test?id=ley39_albia",
+                                        href: "/ley-39-2015",
                                     },
                                     {
                                         label: "Constitución Española",
-                                        href: "/test?id=c01",
+                                        href: "/constitucion",
                                     },
                                 ].map((link) => (
                                     <a
                                         key={link.label}
                                         href={link.href}
-                                        target={
-                                            link.external ? "_blank" : "_self"
-                                        }
+                                        target="_self"
                                         rel="noopener noreferrer"
                                         onClick={() => setMobileMenuOpen(false)}
                                         style={{
