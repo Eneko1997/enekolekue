@@ -1,127 +1,98 @@
 import Link from "next/link"
 import type { Metadata } from "next"
 import TemaTests, { type TemaTest } from "@/components/tests/TemaTests"
-import { BRAND_ACCENT } from "@/lib/theme"
+import LeccionHero from "@/components/lecciones/LeccionHero"
+import PuntosExamen from "@/components/lecciones/PuntosExamen"
+import LeccionCTA from "@/components/lecciones/LeccionCTA"
 import { SITE_URL } from "@/lib/site"
 
+const ACCENT = "#3B82F6"
+
 export const metadata: Metadata = {
-    title: "La Constitución Española: resumen y tests para oposiciones",
+    title: "La Constitución Española: tests para oposiciones (IVAP)",
     description:
-        "Resumen de la Constitución Española de 1978 para oposiciones: derechos y libertades, garantías, deberes y organización del Estado. Practica con cientos de preguntas del temario IVAP (OPE Gobierno Vasco 2026).",
+        "Practica el tema 1 de tu oposición: la Constitución Española. Cientos de preguntas sobre derechos, garantías y organización del Estado para la OPE del Gobierno Vasco 2026.",
     alternates: { canonical: "/constitucion" },
 }
 
-// Tests reales en Supabase relacionados con la Constitución y la organización del Estado.
 const TESTS: TemaTest[] = [
     { id: "c01", tema: "T.1", titulo: "La Constitución: derechos, libertades y garantías. Deberes. Principios constitucionales de la actuación administrativa", preguntas: 350 },
     { id: "c02", tema: "T.2", titulo: "Organización territorial del Estado. Comunidades Autónomas y Estatutos de Autonomía", preguntas: 30 },
     { id: "c04", tema: "T.4", titulo: "Organización política y administrativa de la CAE. Parlamento, Gobierno Vasco y Lehendakari", preguntas: 30 },
 ]
 
-const SECCIONES = [
-    {
-        h: "La Constitución Española de 1978",
-        p: "Es la norma suprema del ordenamiento jurídico español. Su Título Preliminar fija los valores superiores, la soberanía nacional, las lenguas y la organización territorial. En oposiciones es el tema 1 del bloque común y uno de los más preguntados.",
-    },
-    {
-        h: "Derechos y libertades (Título I)",
-        p: "Distingue los derechos fundamentales y libertades públicas (Sección 1ª, arts. 15–29), con la máxima protección, de los derechos y deberes de los ciudadanos. Conviene dominar las garantías: el recurso de amparo, la reserva de ley orgánica y la suspensión de derechos.",
-    },
-    {
-        h: "Garantías de los derechos",
-        p: "El artículo 53 establece los distintos niveles de protección según el grupo de derechos, incluido el procedimiento preferente y sumario y el recurso de amparo ante el Tribunal Constitucional. El Defensor del Pueblo y el Ministerio Fiscal completan el sistema.",
-    },
-    {
-        h: "Organización del Estado",
-        p: "La Corona, las Cortes Generales, el Gobierno y el poder judicial, junto a la organización territorial (CCAA, Estatutos de Autonomía) y, en Euskadi, el Parlamento Vasco, el Gobierno Vasco y el Lehendakari.",
-    },
+const PUNTOS = [
+    { t: "Derechos y libertades", d: "Título I: fundamentales (arts. 15–29), garantías y suspensión de derechos." },
+    { t: "Garantías (art. 53)", d: "Recurso de amparo, reserva de ley orgánica y niveles de protección." },
+    { t: "Organización del Estado", d: "Corona, Cortes Generales, Gobierno y poder judicial." },
+    { t: "Euskadi", d: "Parlamento Vasco, Gobierno Vasco y Lehendakari." },
 ]
 
 export default function ConstitucionPage() {
     return (
-        <main className="mx-auto max-w-3xl px-5 py-12">
-            <p className="mb-3 text-[12px] font-semibold uppercase tracking-wider" style={{ color: BRAND_ACCENT }}>
-                Temario IVAP · OPE 2026
-            </p>
-            <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                La Constitución Española
-            </h1>
-            <p className="mt-4 text-base leading-relaxed text-white/65">
-                Resumen para oposiciones de la Constitución de 1978 y tests para
-                practicar derechos, garantías y organización del Estado, con el
-                enfoque del temario oficial del IVAP.
-            </p>
+        <main className="flex flex-1 flex-col">
+            <LeccionHero
+                eyebrow="Temario IVAP · OPE 2026"
+                title="La Constitución Española"
+                subtitle="El tema 1 y de los más preguntados. Domínalo a base de tests reales, no de leer artículos."
+                accent={ACCENT}
+                stats={[
+                    { n: "410", label: "preguntas" },
+                    { n: "1978", label: "año" },
+                    { n: "T.1", label: "bloque común" },
+                    { n: "169", label: "artículos" },
+                ]}
+            />
 
-            <section className="mt-10 space-y-6">
-                {SECCIONES.map((s) => (
-                    <div key={s.h}>
-                        <h2 className="text-xl font-bold text-white">{s.h}</h2>
-                        <p className="mt-2 text-sm leading-relaxed text-white/65">
-                            {s.p}
-                        </p>
-                    </div>
-                ))}
+            <PuntosExamen puntos={PUNTOS} accent={ACCENT} />
+
+            <section id="tests" className="scroll-mt-20 px-5 py-8">
+                <div className="mx-auto max-w-4xl">
+                    <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-white">
+                        Tests de la Constitución
+                    </h2>
+                    <p className="mb-6 text-sm text-white/55">
+                        Más de 350 preguntas solo del tema 1.{" "}
+                        <Link href="/login" className="font-semibold text-white hover:underline">
+                            Inicia sesión
+                        </Link>{" "}
+                        para ver tu progreso.
+                    </p>
+                    <TemaTests tests={TESTS} accent={ACCENT} />
+                </div>
             </section>
 
-            <p className="mt-8 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-[13px] text-white/55">
-                ℹ️ Resumen divulgativo provisional para estudio. Consulta el
-                texto consolidado oficial en el{" "}
-                <a
-                    href="https://www.boe.es/eli/es/c/1978/12/27/(1)/con"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-semibold text-white hover:underline"
-                >
-                    BOE
-                </a>
-                .
-            </p>
+            <LeccionCTA
+                accent={ACCENT}
+                titulo="¿Te sabes la Constitución?"
+                texto="Compruébalo ahora con un test del tema 1 y descubre tus puntos débiles."
+            />
 
-            <section className="mt-12">
-                <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-white">
-                    Tests de la Constitución
-                </h2>
-                <p className="mb-6 text-sm text-white/55">
-                    Más de 350 preguntas solo del tema 1. {" "}
-                    <Link href="/login" className="font-semibold text-white hover:underline">
-                        Inicia sesión
-                    </Link>{" "}
-                    para ver tu progreso.
-                </p>
-                <TemaTests tests={TESTS} accent="#3B82F6" />
-            </section>
-
-            <section className="mt-12 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-                <h2 className="text-lg font-bold text-white">Sigue estudiando</h2>
-                <ul className="mt-3 space-y-2 text-sm">
-                    <li>
-                        <Link href="/ley-39-2015" className="text-white/70 hover:text-white hover:underline">
-                            → Ley 39/2015 del Procedimiento Administrativo Común
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/" className="text-white/70 hover:text-white hover:underline">
-                            → Todos los tests por escala
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/fechas-opes" className="text-white/70 hover:text-white hover:underline">
-                            → Fechas de las OPEs del Gobierno Vasco 2026
-                        </Link>
-                    </li>
-                </ul>
-            </section>
+            <div className="mx-auto mb-12 max-w-4xl px-5">
+                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/50">
+                    <Link href="/ley-39-2015" className="hover:text-white hover:underline">
+                        → Ley 39/2015
+                    </Link>
+                    <Link href="/" className="hover:text-white hover:underline">
+                        → Todos los tests por escala
+                    </Link>
+                    <Link href="/fechas-opes" className="hover:text-white hover:underline">
+                        → Fechas de las OPEs 2026
+                    </Link>
+                </div>
+            </div>
 
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         "@context": "https://schema.org",
-                        "@type": "Article",
-                        headline: "La Constitución Española: resumen y tests para oposiciones",
-                        author: { "@type": "Organization", name: "Gainditu" },
-                        publisher: { "@type": "Organization", name: "Gainditu" },
-                        mainEntityOfPage: `${SITE_URL}/constitucion`,
+                        "@type": "LearningResource",
+                        name: "Tests de la Constitución Española — OPE Gobierno Vasco 2026",
+                        educationalLevel: "Oposiciones",
+                        about: "Constitución Española de 1978",
+                        provider: { "@type": "Organization", name: "Gainditu" },
+                        url: `${SITE_URL}/constitucion`,
                     }),
                 }}
             />
