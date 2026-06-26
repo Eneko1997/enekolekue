@@ -102,7 +102,7 @@ export default function FechasOpesPage() {
                     </div>
 
                     <p className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-[13px] leading-relaxed text-white/55">
-                        ⚠️ <strong className="text-white/80">Calendario provisional</strong> a
+                        <strong className="text-white/80">Calendario provisional</strong> a
                         fecha 26 de marzo de 2026, sujeto a posibles ajustes en fechas y
                         escalas a convocar. Verifica siempre las fechas oficiales en{" "}
                         <a

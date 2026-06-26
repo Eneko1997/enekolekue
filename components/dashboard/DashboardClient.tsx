@@ -1728,7 +1728,7 @@ function PremiumPopup({
                     ×
                 </button>
 
-                <div style={{ fontSize: "36px", marginBottom: "12px" }}>🏆</div>
+                <div style={{ fontSize: "36px", marginBottom: "12px" }}></div>
                 <div
                     style={{
                         fontSize: "11px",
@@ -1783,7 +1783,7 @@ function PremiumPopup({
                             marginBottom: "6px",
                         }}
                     >
-                        ⏰ OFERTA — Próximas 48h
+                        OFERTA — Próximas 48h
                     </div>
                     <div
                         style={{
@@ -1826,11 +1826,11 @@ function PremiumPopup({
                 {/* Lo que incluye */}
                 <div style={{ textAlign: "left", marginBottom: "20px" }}>
                     {[
-                        "✓ Exámenes oficiales convocatorias anteriores",
-                        "✓ Simulacros cronometrados con penalización real",
-                        "✓ Técnicas de estudio y memorización",
-                        "✓ Actualizaciones gratuitas hasta el examen",
-                        "✓ Comunidad privada de opositores vascos",
+                        "Exámenes oficiales convocatorias anteriores",
+                        "Simulacros cronometrados con penalización real",
+                        "Técnicas de estudio y memorización",
+                        "Actualizaciones gratuitas hasta el examen",
+                        "Comunidad privada de opositores vascos",
                     ].map((item, i) => (
                         <div
                             key={i}
@@ -2185,7 +2185,7 @@ function SeccionPremium({
                                     marginBottom: "4px",
                                 }}
                             >
-                                ⏰ Oferta · Próximas 48h
+                                Oferta · Próximas 48h
                             </div>
                             <h3
                                 style={{
@@ -2286,7 +2286,7 @@ function SeccionPremium({
                                         marginBottom: "8px",
                                     }}
                                 >
-                                    ⏰ Oferta limitada · Próximas 48h
+                                    Oferta limitada · Próximas 48h
                                 </div>
                                 <h3
                                     style={{
@@ -2309,10 +2309,10 @@ function SeccionPremium({
                                     }}
                                 >
                                     {[
-                                        "📄 Exámenes oficiales",
-                                        "⏱ Simulacros reales",
-                                        "🧠 Técnicas de estudio",
-                                        "👥 Comunidad privada",
+                                        "Exámenes oficiales",
+                                        "Simulacros reales",
+                                        "Técnicas de estudio",
+                                        "Comunidad privada",
                                     ].map((item) => (
                                         <span
                                             key={item}
@@ -2471,7 +2471,7 @@ function TiraAcademias({ accent, dark }: { accent: string; dark: boolean }) {
                     minWidth: 0,
                 }}
             >
-                <div style={{ fontSize: "24px", flexShrink: 0 }}>🏫</div>
+                <div style={{ fontSize: "24px", flexShrink: 0 }}></div>
                 <div>
                     <div
                         style={{
@@ -2739,7 +2739,7 @@ function Footer({ dark, accent }: { dark: boolean; accent: string }) {
                                 marginBottom: "4px",
                             }}
                         >
-                            📅 OPE 2026
+                            OPE 2026
                         </div>
                         <div
                             style={{
@@ -2910,10 +2910,10 @@ function AvatarDropdown({
     const nombre =
         user.full_name?.split(" ")[0] || user.email?.split("@")[0] || "Perfil"
     const items = [
-        { label: "📊 Mi progreso", href: "/perfil?tab=stats" },
-        { label: "🏆 Mis exámenes", href: "/perfil?tab=examenes" },
-        { label: "📋 Mi historial", href: "/perfil?tab=historial" },
-        { label: "⚙️ Ajustes", href: "/perfil?tab=ajustes" },
+        { label: "Mi progreso", href: "/perfil?tab=stats" },
+        { label: "Mis exámenes", href: "/perfil?tab=examenes" },
+        { label: "Mi historial", href: "/perfil?tab=historial" },
+        { label: "Ajustes", href: "/perfil?tab=ajustes" },
     ]
     return (
         <div ref={dropdownRef} style={{ position: "relative" }}>
@@ -3540,7 +3540,7 @@ export default function DashboardOPE(props: {
                         }
                     >
                         <div style={{ fontSize: "22px", flexShrink: 0 }}>
-                            🎲
+                            
                         </div>
                         <div>
                             <div
@@ -3704,7 +3704,7 @@ export default function DashboardOPE(props: {
                                         marginBottom: "8px",
                                     }}
                                 >
-                                    🔍
+                                    
                                 </div>
                                 <div style={{ fontSize: "14px" }}>
                                     No hay tests que coincidan con "{search}"

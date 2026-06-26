@@ -292,8 +292,8 @@ export default function PaymentClient() {
 
                     {isMobile ? (
                         <div style={{ fontSize: "12px", color: textMuted, lineHeight: 1.7 }}>
-                            ✓ Exámenes oficiales y simulacros con penalización IVAP · ✓
-                            Estadísticas avanzadas · ✓ Acceso de por vida, sin suscripción
+                            Exámenes oficiales y simulacros con penalización IVAP · ✓
+                            Estadísticas avanzadas · Acceso de por vida, sin suscripción
                         </div>
                     ) : (
                         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -318,7 +318,7 @@ export default function PaymentClient() {
                                 borderRadius: "10px",
                             }}
                         >
-                            <span style={{ fontSize: "18px" }}>🛡️</span>
+                            <span style={{ fontSize: "18px" }}></span>
                             <span style={{ fontSize: "12px", color: textMuted }}>
                                 Garantía de <strong style={{ color: textMain }}>30 días</strong> o
                                 te devolvemos el dinero
@@ -326,7 +326,7 @@ export default function PaymentClient() {
                         </div>
                     ) : (
                         <div style={{ fontSize: "11px", color: textMuted }}>
-                            🛡️ Garantía de 30 días o te devolvemos el dinero
+                            Garantía de 30 días o te devolvemos el dinero
                         </div>
                     )}
                 </motion.div>
@@ -406,7 +406,7 @@ export default function PaymentClient() {
                                         borderRadius: "8px",
                                     }}
                                 >
-                                    ⚠️ {checkoutError}
+                                    {checkoutError}
                                 </div>
                             )}
 

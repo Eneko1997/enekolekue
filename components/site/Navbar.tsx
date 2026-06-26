@@ -7,11 +7,19 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useSession } from "@/lib/supabase/use-session"
 import { createClient } from "@/lib/supabase/client"
 import { BRAND_ACCENT } from "@/lib/theme"
+import AccountMenu from "@/components/site/AccountMenu"
 
 const NAV_LINKS = [
     { label: "Ley 39/2015", href: "/ley-39-2015" },
     { label: "Constitución", href: "/constitucion" },
     { label: "Fechas OPE", href: "/fechas-opes" },
+]
+
+const CUENTA_ITEMS = [
+    { label: "Mi progreso", href: "/perfil?tab=stats" },
+    { label: "Mis exámenes", href: "/perfil?tab=examenes" },
+    { label: "Mi historial", href: "/perfil?tab=historial" },
+    { label: "Ajustes", href: "/perfil?tab=ajustes" },
 ]
 
 export default function Navbar() {
@@ -54,20 +62,7 @@ export default function Navbar() {
                 {/* CTA escritorio */}
                 <div className="hidden shrink-0 items-center gap-2 md:flex">
                     {!loading && user ? (
-                        <>
-                            <Link
-                                href="/perfil"
-                                className="rounded-lg px-3 py-1.5 text-[13px] font-semibold text-white/80 hover:text-white"
-                            >
-                                Mi perfil
-                            </Link>
-                            <button
-                                onClick={handleSignOut}
-                                className="rounded-lg border border-white/15 px-3 py-1.5 text-[13px] font-semibold text-white/80 transition-colors hover:bg-white/5 hover:text-white"
-                            >
-                                Salir
-                            </button>
-                        </>
+                        <AccountMenu user={user} />
                     ) : (
                         <>
                             <Link
@@ -122,43 +117,47 @@ export default function Navbar() {
                                     {l.label}
                                 </Link>
                             ))}
-                            <div className="mt-2 flex gap-2">
-                                {!loading && user ? (
-                                    <>
+                            {!loading && user ? (
+                                <div className="mt-2 border-t border-white/10 pt-2">
+                                    <div className="truncate px-3 pb-1 text-[12px] text-white/45">
+                                        {user.email}
+                                    </div>
+                                    {CUENTA_ITEMS.map((it) => (
                                         <Link
-                                            href="/perfil"
+                                            key={it.href}
+                                            href={it.href}
                                             onClick={() => setOpen(false)}
-                                            className="flex-1 rounded-lg border border-white/15 px-4 py-2 text-center text-sm font-semibold text-white"
+                                            className="block rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white"
                                         >
-                                            Mi perfil
+                                            {it.label}
                                         </Link>
-                                        <button
-                                            onClick={handleSignOut}
-                                            className="flex-1 rounded-lg border border-white/15 px-4 py-2 text-center text-sm font-semibold text-white"
-                                        >
-                                            Salir
-                                        </button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Link
-                                            href="/login"
-                                            onClick={() => setOpen(false)}
-                                            className="flex-1 rounded-lg border border-white/15 px-4 py-2 text-center text-sm font-semibold text-white"
-                                        >
-                                            Entrar
-                                        </Link>
-                                        <Link
-                                            href="/signup"
-                                            onClick={() => setOpen(false)}
-                                            className="flex-1 rounded-lg px-4 py-2 text-center text-sm font-bold text-white"
-                                            style={{ backgroundColor: BRAND_ACCENT }}
-                                        >
-                                            Empezar gratis
-                                        </Link>
-                                    </>
-                                )}
-                            </div>
+                                    ))}
+                                    <button
+                                        onClick={handleSignOut}
+                                        className="block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-red-400 hover:bg-white/5"
+                                    >
+                                        Cerrar sesión
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="mt-2 flex gap-2">
+                                    <Link
+                                        href="/login"
+                                        onClick={() => setOpen(false)}
+                                        className="flex-1 rounded-lg border border-white/15 px-4 py-2 text-center text-sm font-semibold text-white"
+                                    >
+                                        Entrar
+                                    </Link>
+                                    <Link
+                                        href="/signup"
+                                        onClick={() => setOpen(false)}
+                                        className="flex-1 rounded-lg px-4 py-2 text-center text-sm font-bold text-white"
+                                        style={{ backgroundColor: BRAND_ACCENT }}
+                                    >
+                                        Empezar gratis
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </motion.div>
                 )}

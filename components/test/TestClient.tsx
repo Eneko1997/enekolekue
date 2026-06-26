@@ -412,10 +412,10 @@ function AvatarDropdown({
         user.full_name?.split(" ")[0] || user.email?.split("@")[0] || "Perfil"
 
     const items = [
-        { label: "📊 Mi progreso", href: "/perfil?tab=stats" },
-        { label: "🏆 Mis exámenes", href: "/perfil?tab=examenes" },
-        { label: "📋 Mi historial", href: "/perfil?tab=historial" },
-        { label: "⚙️ Ajustes", href: "/perfil?tab=ajustes" },
+        { label: "Mi progreso", href: "/perfil?tab=stats" },
+        { label: "Mis exámenes", href: "/perfil?tab=examenes" },
+        { label: "Mi historial", href: "/perfil?tab=historial" },
+        { label: "Ajustes", href: "/perfil?tab=ajustes" },
     ]
 
     return (
@@ -629,7 +629,7 @@ function SharedNavbar({
 
     const links = [
         {
-            label: "📅 Fechas OPE",
+            label: "Fechas OPE",
             href: "/fechas-opes",
         },
         { label: "Ley 39/2015", href: "/ley-39-2015" },
@@ -825,7 +825,7 @@ function SharedNavbar({
                             }}
                             aria-label="Volver al inicio"
                         >
-                            🏠
+                            Inicio
                         </a>
                     )}
 
@@ -1018,19 +1018,19 @@ function SharedNavbar({
                                 </div>
                                 {[
                                     {
-                                        label: "📊 Mi progreso",
+                                        label: "Mi progreso",
                                         href: "/perfil?tab=stats",
                                     },
                                     {
-                                        label: "🏆 Mis exámenes",
+                                        label: "Mis exámenes",
                                         href: "/perfil?tab=examenes",
                                     },
                                     {
-                                        label: "📋 Mi historial",
+                                        label: "Mi historial",
                                         href: "/perfil?tab=historial",
                                     },
                                     {
-                                        label: "⚙️ Ajustes",
+                                        label: "Ajustes",
                                         href: "/perfil?tab=ajustes",
                                     },
                                 ].map((item) => (
@@ -1313,7 +1313,7 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                                 t.textMuted)
                         }
                     >
-                        📷 @gainditu en Instagram
+                        @gainditu en Instagram
                     </a>
                     <div
                         style={{
@@ -1331,7 +1331,7 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                                 marginBottom: "4px",
                             }}
                         >
-                            📅 OPE 2026
+                            OPE 2026
                         </div>
                         <div
                             style={{
@@ -1511,7 +1511,7 @@ function PantallaInicio({
                                     marginBottom: "8px",
                                 }}
                             >
-                                {m === "repaso" ? "📖" : "🎓"}
+                                {m === "repaso" ? "" : ""}
                             </div>
                             <div
                                 style={{
@@ -1642,7 +1642,7 @@ function PantallaConfigExamen({
                         marginBottom: "8px",
                     }}
                 >
-                    🎓 Modo Examen
+                    Modo Examen
                 </div>
                 <h2
                     style={{
@@ -2079,7 +2079,7 @@ function PantallaPregunta({
                         marginBottom: "6px",
                     }}
                 >
-                    📖 Repaso
+                    Repaso
                 </div>
                 <div
                     style={{
@@ -2191,7 +2191,7 @@ function PantallaPregunta({
                                         color: c.warning,
                                     }}
                                 >
-                                    ✨ Explicación
+                                    Explicación
                                 </span>
                                 <button
                                     onClick={onToggleExp}
@@ -2322,7 +2322,7 @@ function PantallaExamen({
                     gap: "12px",
                 }}
             >
-                <span style={{ fontSize: "18px" }}>🎓</span>
+                <span style={{ fontSize: "18px" }}></span>
                 <div>
                     <div
                         style={{
@@ -2626,10 +2626,10 @@ function PantallaResultados({
                     <div>
                         <div style={{ fontSize: "40px", marginBottom: "12px" }}>
                             {correctas === total
-                                ? "🎉"
+                                ? ""
                                 : correctas >= total * 0.7
-                                  ? "💪"
-                                  : "📖"}
+                                  ? ""
+                                  : ""}
                         </div>
                         <h2
                             style={{
@@ -3130,7 +3130,7 @@ function RegisterPopup({
                 {/* Cabecera */}
                 <div style={{ textAlign: "center", marginBottom: "20px" }}>
                     <div style={{ fontSize: "28px", marginBottom: "8px" }}>
-                        🎯
+                        
                     </div>
                     <h3
                         style={{
@@ -3407,7 +3407,7 @@ function PremiumPopup({
                     textAlign: "center",
                 }}
             >
-                <div style={{ fontSize: "40px", marginBottom: "12px" }}>🏆</div>
+                <div style={{ fontSize: "40px", marginBottom: "12px" }}></div>
                 <div
                     style={{
                         fontSize: "11px",
@@ -3460,7 +3460,7 @@ function PremiumPopup({
                             marginBottom: "8px",
                         }}
                     >
-                        ⏰ OFERTA — Solo las próximas 48h
+                        OFERTA — Solo las próximas 48h
                     </div>
                     <div
                         style={{
@@ -3497,11 +3497,11 @@ function PremiumPopup({
                 </div>
                 <div style={{ textAlign: "left", marginBottom: "22px" }}>
                     {[
-                        "✓  Exámenes oficiales de convocatorias anteriores",
-                        "✓  Simulacros cronometrados con penalización real IVAP",
-                        "✓  Técnicas de estudio y memorización",
-                        "✓  Actualizaciones gratuitas hasta el examen",
-                        "✓  Comunidad privada de opositores vascos",
+                        " Exámenes oficiales de convocatorias anteriores",
+                        " Simulacros cronometrados con penalización real IVAP",
+                        " Técnicas de estudio y memorización",
+                        " Actualizaciones gratuitas hasta el examen",
+                        " Comunidad privada de opositores vascos",
                     ].map((item, i) => (
                         <div
                             key={i}
@@ -4064,7 +4064,7 @@ export default function TestScreen(props: {
                             textAlign: "center",
                         }}
                     >
-                        <div style={{ fontSize: "40px" }}>🚧</div>
+                        <div style={{ fontSize: "40px" }}></div>
                         <h2
                             style={{
                                 fontSize: "20px",

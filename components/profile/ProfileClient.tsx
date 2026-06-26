@@ -470,10 +470,10 @@ function AvatarDropdown({
         user.full_name?.split(" ")[0] || user.email?.split("@")[0] || "Perfil"
 
     const items = [
-        { label: "📊 Mi progreso", href: "/perfil?tab=stats" },
-        { label: "🏆 Mis exámenes", href: "/perfil?tab=examenes" },
-        { label: "📋 Mi historial", href: "/perfil?tab=historial" },
-        { label: "⚙️ Ajustes", href: "/perfil?tab=ajustes" },
+        { label: "Mi progreso", href: "/perfil?tab=stats" },
+        { label: "Mis exámenes", href: "/perfil?tab=examenes" },
+        { label: "Mi historial", href: "/perfil?tab=historial" },
+        { label: "Ajustes", href: "/perfil?tab=ajustes" },
     ]
 
     return (
@@ -684,7 +684,7 @@ function Navbar({
     const accent = HEADER_ACCENT // el acento del header SIEMPRE es fijo, ignora el prop dinámico de escala
     const links = [
         {
-            label: "📅 Fechas OPE",
+            label: "Fechas OPE",
             href: "/fechas-opes",
         },
         { label: "Ley 39/2015", href: "/ley-39-2015" },
@@ -833,7 +833,7 @@ function Navbar({
                                 fontSize: "16px",
                             }}
                         >
-                            🏠
+                            Inicio
                         </a>
                     )}
                     {isMobile && (
@@ -1214,7 +1214,7 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                                 t.textMuted)
                         }
                     >
-                        📷 @gainditu en Instagram
+                        @gainditu en Instagram
                     </a>
                     <div
                         style={{
@@ -1232,7 +1232,7 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                                 marginBottom: "4px",
                             }}
                         >
-                            📅 OPE 2026
+                            OPE 2026
                         </div>
                         <div
                             style={{
@@ -1299,7 +1299,7 @@ function PremiumBadge({ type }: { type: string }) {
     const bg = isAdmin
         ? "linear-gradient(135deg, #F59E0B, #EF4444)"
         : "linear-gradient(135deg, #8B5CF6, #3B82F6)"
-    const label = isAdmin ? "⚡ Admin" : "✦ Premium"
+    const label = isAdmin ? "Admin" : "Premium"
     return (
         <div
             style={{
@@ -1577,7 +1577,7 @@ export default function PerfilOPE({
                     border: `2px dashed ${t.borderStrong}`,
                 }}
             >
-                <div style={{ fontSize: "36px" }}>👤</div>
+                <div style={{ fontSize: "36px" }}></div>
                 <div
                     style={{
                         fontSize: "18px",
@@ -1717,10 +1717,10 @@ export default function PerfilOPE({
 
     // Tabs: premium tiene tab de exámenes
     const tabs = [
-        { id: "stats", label: "📊 Progreso" },
-        ...(isPremium ? [{ id: "examenes", label: "🏆 Mis Exámenes" }] : []),
-        { id: "historial", label: "📋 Historial" },
-        { id: "ajustes", label: "⚙️ Ajustes" },
+        { id: "stats", label: "Progreso" },
+        ...(isPremium ? [{ id: "examenes", label: "Mis Exámenes" }] : []),
+        { id: "historial", label: "Historial" },
+        { id: "ajustes", label: "Ajustes" },
     ] as const
 
     return (
@@ -1878,7 +1878,7 @@ export default function PerfilOPE({
                                             border: `2px solid ${t.bg}`,
                                         }}
                                     >
-                                        {premiumType === "admin" ? "⚡" : "✦"}
+                                        {premiumType === "admin" ? "" : ""}
                                     </div>
                                 )}
                             </div>
@@ -2033,7 +2033,7 @@ export default function PerfilOPE({
                                                     marginBottom: "2px",
                                                 }}
                                             >
-                                                ✦ Desbloquea el acceso completo
+                                                Desbloquea el acceso completo
                                             </div>
                                             <div
                                                 style={{
@@ -2162,7 +2162,7 @@ export default function PerfilOPE({
                                                 label: "Tests completados",
                                                 value: totalTests,
                                                 color: accentColor,
-                                                icon: "🏆",
+                                                icon: "",
                                             },
                                             {
                                                 label: "Media de acierto",
@@ -2173,7 +2173,7 @@ export default function PerfilOPE({
                                                         : mediaAcierto >= 50
                                                           ? t.warning
                                                           : t.error,
-                                                icon: "🎯",
+                                                icon: "",
                                             },
                                             {
                                                 label: "Racha actual",
@@ -2182,13 +2182,13 @@ export default function PerfilOPE({
                                                     racha >= 3
                                                         ? "#F59E0B"
                                                         : t.textMuted,
-                                                icon: "🔥",
+                                                icon: "",
                                             },
                                             {
                                                 label: "Preguntas hechas",
                                                 value: totalPreguntas,
                                                 color: t.textMain,
-                                                icon: "📝",
+                                                icon: "",
                                             },
                                         ].map((m, i) => (
                                             <div
@@ -2431,7 +2431,7 @@ export default function PerfilOPE({
                                                         gap: "6px",
                                                     }}
                                                 >
-                                                    ⚠️ Temas a reforzar
+                                                    Temas a reforzar
                                                 </h4>
                                                 {temasFlaqueza.length === 0 ? (
                                                     <div
@@ -2440,7 +2440,7 @@ export default function PerfilOPE({
                                                             color: t.textMuted,
                                                         }}
                                                     >
-                                                        ¡Ninguno por ahora! 💪
+                                                        ¡Ninguno por ahora! 
                                                     </div>
                                                 ) : (
                                                     temasFlaqueza.map(
@@ -2529,7 +2529,7 @@ export default function PerfilOPE({
                                                         gap: "6px",
                                                     }}
                                                 >
-                                                    ✅ Tus puntos fuertes
+                                                    Tus puntos fuertes
                                                 </h4>
                                                 {temasFuerza.length === 0 ? (
                                                     <div
@@ -2538,7 +2538,7 @@ export default function PerfilOPE({
                                                             color: t.textMuted,
                                                         }}
                                                     >
-                                                        Sigue practicando 📚
+                                                        Sigue practicando 
                                                     </div>
                                                 ) : (
                                                     temasFuerza.map(
@@ -2701,7 +2701,7 @@ export default function PerfilOPE({
                                                     marginBottom: "12px",
                                                 }}
                                             >
-                                                📚
+                                                
                                             </div>
                                             <div
                                                 style={{
@@ -2934,7 +2934,7 @@ export default function PerfilOPE({
                                                 color: t.textMuted,
                                             }}
                                         >
-                                            ✦ Mostrando los últimos 10
+                                            Mostrando los últimos 10
                                             resultados.{" "}
                                             <a
                                                 href="/payment"
@@ -2964,7 +2964,7 @@ export default function PerfilOPE({
                                                     marginBottom: "12px",
                                                 }}
                                             >
-                                                📋
+                                                
                                             </div>
                                             <div
                                                 style={{
@@ -3382,8 +3382,8 @@ export default function PerfilOPE({
                                             >
                                                 {isPremium
                                                     ? premiumType === "admin"
-                                                        ? "⚡ Cuenta Admin"
-                                                        : "✦ Cuenta Premium"
+                                                        ? "Cuenta Admin"
+                                                        : "Cuenta Premium"
                                                     : "Plan gratuito"}
                                             </div>
                                             <div

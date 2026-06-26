@@ -55,7 +55,7 @@ export default function PaymentSuccessClient() {
                     className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full text-3xl"
                     style={{ background: `${BRAND_ACCENT}20` }}
                 >
-                    ✅
+                    
                 </div>
                 <h1 className="mb-2 text-2xl font-extrabold tracking-tight text-white">
                     ¡Pago completado!
