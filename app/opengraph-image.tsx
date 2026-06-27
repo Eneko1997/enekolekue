@@ -22,7 +22,7 @@ export default function OpengraphImage() {
             >
                 <div style={{ display: "flex", fontSize: 40, fontWeight: 800, marginBottom: 24 }}>
                     <span>gain</span>
-                    <span style={{ color: "#E8543A" }}>ditu</span>
+                    <span style={{ color: "#10B981" }}>ditu</span>
                     <span>.</span>
                 </div>
                 <div

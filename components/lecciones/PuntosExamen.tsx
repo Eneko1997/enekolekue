@@ -10,7 +10,7 @@ export interface Punto {
 export default function PuntosExamen({
     titulo = "Lo que entra en el examen",
     puntos,
-    accent = "#E8543A",
+    accent = "#10B981",
 }: {
     titulo?: string
     puntos: Punto[]

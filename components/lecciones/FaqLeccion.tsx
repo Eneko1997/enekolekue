@@ -10,7 +10,7 @@ export interface Faq {
 
 export default function FaqLeccion({
     faqs,
-    accent = "#E8543A",
+    accent = "#10B981",
     titulo = "Preguntas frecuentes",
 }: {
     faqs: Faq[]

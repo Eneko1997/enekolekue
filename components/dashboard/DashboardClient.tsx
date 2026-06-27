@@ -175,8 +175,8 @@ interface UserProfile {
 // ─── PALETA POR ESCALA ────────────────────────────────────────────────────────
 const SCALE_COLORS: Record<Tab, string> = {
     auxiliares: "#3B82F6", // azul
-    administrativos: "#E8543A", // naranja
-    gestion: "#10B981", // verde esmeralda
+    administrativos: "#F43F5E", // naranja
+    gestion: "#14B8A6", // verde esmeralda
     superiores: "#8B5CF6", // violeta
 }
 
@@ -3105,7 +3105,9 @@ export default function DashboardOPE(props: {
     const [avatarOpen, setAvatarOpen] = useState(false)
     const avatarRef = useRef<HTMLDivElement>(null)
 
-    const accent = SCALE_COLORS[activeTab]
+    // Acento de marca fijo (esmeralda) en todo el dashboard. El color de escala
+    // se usa solo en la pestaña activa (SCALE_COLORS) como distintivo de escala.
+    const accent = "#10B981"
 
     // Seleccionar escala desde la URL (?escala=auxiliares|administrativos|gestion|superiores)
     useEffect(() => {

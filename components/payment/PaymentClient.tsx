@@ -13,7 +13,7 @@ const STRIPE_FALLBACK_URL = "https://buy.stripe.com/fZu6oI8MYeuW1Fj88Y2Ji00"
 
 const PRICE = "24,99"
 const ORIGINAL_PRICE = "40"
-const ACCENT = "#E8543A"
+const ACCENT = "#10B981"
 
 const FEATURES = [
     "Exámenes oficiales convocatorias anteriores",

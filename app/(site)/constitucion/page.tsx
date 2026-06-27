@@ -7,7 +7,7 @@ import LeccionCTA from "@/components/lecciones/LeccionCTA"
 import FaqLeccion, { type Faq } from "@/components/lecciones/FaqLeccion"
 import { SITE_URL } from "@/lib/site"
 
-const ACCENT = "#3B82F6"
+const ACCENT = "#10B981"
 
 export const metadata: Metadata = {
     title: "Test Constitución Española — Oposiciones OPE Gobierno Vasco 2026",

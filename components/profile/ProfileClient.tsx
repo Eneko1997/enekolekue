@@ -111,8 +111,8 @@ function getTheme(dark: boolean) {
 
 const SCALE_COLORS: Record<string, string> = {
     auxiliares: "#3B82F6",
-    administrativos: "#E8543A",
-    gestion: "#10B981",
+    administrativos: "#F43F5E",
+    gestion: "#14B8A6",
     superiores: "#8B5CF6",
 }
 const ESCALAS = [
@@ -1327,7 +1327,7 @@ function PremiumBadge({ type }: { type: string }) {
 
 // ─── COMPONENTE PRINCIPAL ─────────────────────────────────────────────────────
 export default function PerfilOPE({
-    accent = "#E8543A",
+    accent = "#10B981",
     darkMode = true,
     homeUrl = "/",
     testPageUrl = "/test",

@@ -2,16 +2,18 @@
 
 export type Escala = "auxiliares" | "administrativos" | "gestion" | "superiores"
 
-// Color de acento por escala (idéntico al original)
+// Color de etiqueta por escala — SOLO se usa como pequeño distintivo (puntos,
+// indicadores) para diferenciar escalas en el dashboard. El acento real de la
+// web es siempre BRAND_ACCENT.
 export const SCALE_COLORS: Record<Escala, string> = {
     auxiliares: "#3B82F6", // azul
-    administrativos: "#E8543A", // naranja (acento principal de marca)
-    gestion: "#10B981", // verde esmeralda
+    administrativos: "#F43F5E", // rosa
+    gestion: "#14B8A6", // teal
     superiores: "#8B5CF6", // violeta
 }
 
-// Acento principal de marca
-export const BRAND_ACCENT = "#E8543A"
+// Acento principal de marca (único color de la web)
+export const BRAND_ACCENT = "#10B981" // esmeralda
 // Acento del header (fijo, no cambia con la escala)
 export const HEADER_ACCENT = "#E8E6E1"
 

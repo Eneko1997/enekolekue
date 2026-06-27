@@ -270,7 +270,7 @@ const c = {
     surfaceHover: "rgba(255,255,255,0.04)",
     border: "rgba(255,255,255,0.08)",
     borderStrong: "rgba(255,255,255,0.15)",
-    accent: "#E8543A", // color único de marca opobask
+    accent: "#10B981", // color único de marca opobask
     text: "#FFFFFF",
     muted: "#8B8D98",
     success: "#22C55E",
@@ -302,8 +302,8 @@ type Fase =
 // o se infiere del test_id según la escala
 const SCALE_COLORS_TEST: Record<string, string> = {
     auxiliares: "#3B82F6",
-    administrativos: "#E8543A",
-    gestion: "#10B981",
+    administrativos: "#F43F5E",
+    gestion: "#14B8A6",
     superiores: "#8B5CF6",
 }
 

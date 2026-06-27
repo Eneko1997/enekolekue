@@ -6,7 +6,7 @@ import LeccionCTA from "@/components/lecciones/LeccionCTA"
 import FaqLeccion, { type Faq } from "@/components/lecciones/FaqLeccion"
 import { SITE_URL } from "@/lib/site"
 
-const ACCENT = "#E8543A"
+const ACCENT = "#10B981"
 
 export const metadata: Metadata = {
     title: "Fechas OPE Gobierno Vasco 2026 — Convocatorias y exámenes (IVAP)",

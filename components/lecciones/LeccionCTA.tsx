@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 export default function LeccionCTA({
     titulo,
     texto,
-    accent = "#E8543A",
+    accent = "#10B981",
     href = "#tests",
     cta = "Empezar a practicar →",
 }: {

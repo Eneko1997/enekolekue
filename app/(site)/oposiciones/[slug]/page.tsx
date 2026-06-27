@@ -140,6 +140,7 @@ const ESCALAS: Record<string, EscalaData> = {
     },
 }
 
+const ACCENT = "#10B981"
 const SLUGS = Object.keys(ESCALAS)
 
 export function generateStaticParams() {
@@ -179,7 +180,7 @@ export default async function OposicionPage({
                 eyebrow="OPE Gobierno Vasco 2026"
                 title={`Oposiciones ${d.nombre}`}
                 subtitle={d.intro}
-                accent={d.color}
+                accent={ACCENT}
                 ctaHref={dashHref}
                 ctaLabel={`Ver tests de ${d.nombre} →`}
                 stats={[
@@ -193,7 +194,7 @@ export default async function OposicionPage({
             <PuntosExamen
                 titulo="Qué entra en el temario"
                 puntos={d.puntos}
-                accent={d.color}
+                accent={ACCENT}
             />
 
             <section className="px-5 py-8">
@@ -210,8 +211,8 @@ export default async function OposicionPage({
                         href={dashHref}
                         className="mt-5 inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold text-white transition-transform hover:scale-[1.03]"
                         style={{
-                            backgroundColor: d.color,
-                            boxShadow: `0 14px 40px -12px ${d.color}88`,
+                            backgroundColor: ACCENT,
+                            boxShadow: `0 14px 40px -12px ${ACCENT}88`,
                         }}
                     >
                         Ver todos los tests →
@@ -219,10 +220,10 @@ export default async function OposicionPage({
                 </div>
             </section>
 
-            <FaqLeccion faqs={d.faqs} accent={d.color} />
+            <FaqLeccion faqs={d.faqs} accent={ACCENT} />
 
             <LeccionCTA
-                accent={d.color}
+                accent={ACCENT}
                 href="/payment"
                 titulo="Desbloquea todo el temario"
                 texto="Hazte Premium y accede a exámenes oficiales, simulacros con penalización real del IVAP y estadísticas avanzadas."

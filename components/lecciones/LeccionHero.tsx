@@ -13,7 +13,7 @@ export default function LeccionHero({
     title,
     subtitle,
     stats,
-    accent = "#E8543A",
+    accent = "#10B981",
     ctaHref = "#tests",
     ctaLabel = "Empezar a practicar →",
 }: {
