@@ -857,7 +857,7 @@ const dbSuperiores: Bloque[] = [
                 id: "supe07",
                 tema: "E.T.7",
                 titulo: "E.T.7 — Capacidad de obrar e interesados. Representación. Derechos en las relaciones con la Administración",
-                preguntas: 25,
+                preguntas: 30,
             },
             {
                 id: "supe08",
@@ -881,7 +881,7 @@ const dbSuperiores: Bloque[] = [
                 id: "supe11",
                 tema: "E.T.11",
                 titulo: "E.T.11 — Obligación de resolver. Silencio administrativo. Términos y plazos",
-                preguntas: 25,
+                preguntas: 30,
             },
             {
                 id: "supe12",
