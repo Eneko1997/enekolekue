@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useId, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 export interface Faq {
@@ -18,6 +18,7 @@ export default function FaqLeccion({
     titulo?: string
 }) {
     const [open, setOpen] = useState<number | null>(0)
+    const baseId = useId()
 
     return (
         <section className="px-5 py-8">
@@ -28,6 +29,8 @@ export default function FaqLeccion({
                 <div className="space-y-3">
                     {faqs.map((f, i) => {
                         const isOpen = open === i
+                        const btnId = `${baseId}-btn-${i}`
+                        const panelId = `${baseId}-panel-${i}`
                         return (
                             <motion.div
                                 key={f.q}
@@ -37,16 +40,21 @@ export default function FaqLeccion({
                                 transition={{ duration: 0.35, delay: i * 0.04 }}
                                 className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur"
                             >
+                                {/* El botón ocupa toda la barra: el hitbox es la fila completa, no solo el icono */}
                                 <button
+                                    type="button"
+                                    id={btnId}
                                     onClick={() => setOpen(isOpen ? null : i)}
-                                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                                    className="flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left"
                                     aria-expanded={isOpen}
+                                    aria-controls={panelId}
                                 >
                                     <span className="text-sm font-semibold text-white">
                                         {f.q}
                                     </span>
                                     <span
-                                        className="text-lg leading-none transition-transform"
+                                        aria-hidden="true"
+                                        className="shrink-0 text-lg leading-none transition-transform duration-200"
                                         style={{
                                             color: accent,
                                             transform: isOpen
@@ -60,6 +68,9 @@ export default function FaqLeccion({
                                 <AnimatePresence initial={false}>
                                     {isOpen && (
                                         <motion.div
+                                            id={panelId}
+                                            role="region"
+                                            aria-labelledby={btnId}
                                             initial={{ height: 0, opacity: 0 }}
                                             animate={{ height: "auto", opacity: 1 }}
                                             exit={{ height: 0, opacity: 0 }}
