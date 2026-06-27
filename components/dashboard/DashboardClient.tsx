@@ -3269,7 +3269,11 @@ export default function DashboardOPE(props: {
         typeof window !== "undefined" &&
         window.location.hash.includes("access_token")
 
-    if (authLoading) {
+    // Solo mostramos el spinner durante la redirección OAuth (transitoria, no
+    // indexable). En la carga normal renderizamos el catálogo completo desde el
+    // servidor (SSR/SSG) para SEO y LCP: el progreso del usuario se superpone
+    // después cuando la sesión resuelve.
+    if (hasOAuthHash) {
         return (
             <div
                 ref={rootRef}
