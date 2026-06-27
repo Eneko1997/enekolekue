@@ -3641,7 +3641,6 @@ export default function DashboardOPE(props: {
                     }}
                 >
                     {tabs.map((tab) => {
-                        const tabColor = SCALE_COLORS[tab.id]
                         const active = activeTab === tab.id
                         return (
                             <motion.button
@@ -3655,7 +3654,7 @@ export default function DashboardOPE(props: {
                                     padding: "8px 16px",
                                     borderRadius: "100px",
                                     background: active
-                                        ? tabColor
+                                        ? accent
                                         : "transparent",
                                     color: active ? "#fff" : t.textMuted,
                                     border: active
