@@ -563,7 +563,7 @@ const dbAdministrativos: Bloque[] = [
                 id: "adm29",
                 tema: "T.29",
                 titulo: "T.29 — La organización administrativa. Órganos administrativos y colegiados",
-                preguntas: 20,
+                preguntas: 10,
             },
             {
                 id: "adm30",
@@ -845,13 +845,13 @@ const dbSuperiores: Bloque[] = [
                 id: "supe05",
                 tema: "E.T.5",
                 titulo: "E.T.5 — Órganos administrativos. Competencia. Delegación. Avocación",
-                preguntas: 25,
+                preguntas: 10,
             },
             {
                 id: "supe06",
                 tema: "E.T.6",
                 titulo: "E.T.6 — Encomienda de gestión. Convenios interadministrativos",
-                preguntas: 20,
+                preguntas: 8,
             },
             {
                 id: "supe07",
