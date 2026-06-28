@@ -47,7 +47,7 @@ const FAQS: Faq[] = [
     },
     {
         q: "¿La Constitución es el tema 1 en todas las escalas?",
-        a: "Sí, forma parte del bloque común (temas 1 al 14), por lo que entra en Auxiliares, Administrativos, Técnicos de Gestión y Superiores.",
+        a: "Sí, forma parte del bloque común (temas 1 al 14), por lo que entra en Personal de Apoyo, Administrativos, Técnicos de Gestión y Superiores.",
     },
     {
         q: "¿Puedo practicar los tests de la Constitución gratis?",

@@ -11,7 +11,7 @@ const ACCENT = "#10B981"
 export const metadata: Metadata = {
     title: "Fechas OPE Gobierno Vasco 2026 — Convocatorias y exámenes (IVAP)",
     description:
-        "Calendario de la OPE 2026 del Gobierno Vasco: fechas de convocatoria y primera prueba para Auxiliar Administrativo, Administrativo, Técnico de Gestión y Superior. Calendario provisional del IVAP.",
+        "Calendario de la OPE 2026 del Gobierno Vasco: fechas de convocatoria y primera prueba para Personal de Apoyo, Administrativo, Técnico de Gestión y Superior. Calendario provisional del IVAP.",
     keywords: [
         "fechas OPE Gobierno Vasco 2026",
         "convocatoria OPE Euskadi 2026",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 // Fuente: Calendario de procesos selectivos OPE 2026 (Gobierno Vasco), provisional a 26-03-2026.
 const FILAS = [
-    { escala: "Auxiliar Administrativa", grupo: "C2", convocatoria: "Septiembre 2026", prueba: "Enero 2027", color: SCALE_COLORS.auxiliares },
+    { escala: "Personal de Apoyo", grupo: "E", convocatoria: "Septiembre 2026", prueba: "Enero 2027", color: SCALE_COLORS.auxiliares },
     { escala: "Administrativa", grupo: "C1", convocatoria: "Septiembre 2026", prueba: "Enero 2027", color: SCALE_COLORS.administrativos },
     { escala: "Gestión Administrativa", grupo: "B", convocatoria: "Octubre 2026", prueba: "Abril 2027", color: SCALE_COLORS.gestion },
     { escala: "Superior de Administración", grupo: "A", convocatoria: "Octubre 2026", prueba: "Abril 2027", color: SCALE_COLORS.superiores },
@@ -36,8 +36,8 @@ const FAQS: Faq[] = [
         a: "Según el calendario provisional del IVAP, las convocatorias de las escalas administrativas se publican entre septiembre y octubre de 2026, con las primeras pruebas entre enero y abril de 2027.",
     },
     {
-        q: "¿Cuándo es el examen de Auxiliar Administrativo del Gobierno Vasco?",
-        a: "La primera prueba de la escala Auxiliar Administrativa está prevista para enero de 2027 (convocatoria en septiembre de 2026). Son fechas provisionales sujetas a cambios.",
+        q: "¿Cuándo es el examen de Personal de Apoyo del Gobierno Vasco?",
+        a: "La primera prueba de la Agrupación de Personal de Apoyo está prevista para enero de 2027 (convocatoria en septiembre de 2026). Son fechas provisionales sujetas a cambios.",
     },
     {
         q: "¿Dónde se publican las convocatorias oficiales?",

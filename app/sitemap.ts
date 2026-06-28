@@ -5,7 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const now = new Date()
     const routes = [
         { path: "/", priority: 1, freq: "weekly" as const },
-        { path: "/oposiciones/auxiliar-administrativo", priority: 0.9, freq: "monthly" as const },
+        { path: "/oposiciones/personal-de-apoyo", priority: 0.9, freq: "monthly" as const },
         { path: "/oposiciones/administrativo", priority: 0.9, freq: "monthly" as const },
         { path: "/oposiciones/tecnico-gestion", priority: 0.9, freq: "monthly" as const },
         { path: "/oposiciones/tecnico-superior", priority: 0.9, freq: "monthly" as const },

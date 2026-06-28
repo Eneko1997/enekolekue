@@ -172,6 +172,149 @@ interface UserProfile {
     avatar_url: string | null
 }
 
+// ─── ÁREAS TEMÁTICAS TRANSVERSALES (Vista por Bloques) ────────────────────────
+// Agrupan los temas por materia real, independientemente de su número oficial.
+const AREA_ORDER = [
+    "Constitución y derechos fundamentales",
+    "Organización territorial y de Euskadi",
+    "Unión Europea",
+    "Igualdad y euskera",
+    "Empleo público y función pública",
+    "Protección de datos",
+    "Prevención de riesgos y salud laboral",
+    "Transparencia y gobierno abierto",
+    "Procedimiento y acto administrativo (Ley 39/2015)",
+    "Organización y sector público (Ley 3/2022)",
+    "Administración electrónica y documentación",
+    "Atención a la ciudadanía y comunicación",
+    "Contratación pública y servicios",
+    "Hacienda, presupuestos y subvenciones",
+    "Gestión pública y organización",
+    "Vigilancia y labores de apoyo",
+    "Correspondencia y paquetería",
+    "Almacenamiento y materiales",
+    "Mantenimiento e instalaciones",
+    "Simulacros",
+    "Otros temas",
+]
+
+function areaDeTest(test: Test): string {
+    const s = `${test.tema ?? ""} ${test.titulo}`.toLowerCase()
+    const has = (...w: string[]) => w.some((x) => s.includes(x))
+    if (has("simulacro")) return "Simulacros"
+    if (has("constituci", "derechos y libertades", "derechos fundamentales"))
+        return "Constitución y derechos fundamentales"
+    if (has("unión europea", "union europea")) return "Unión Europea"
+    if (
+        has(
+            "organización territorial",
+            "comunidades autónomas",
+            "estatuto",
+            "cae",
+            "concierto",
+            "territorios históricos",
+            "gobierno vasco",
+            "lehendakari",
+            "instituciones locales"
+        )
+    )
+        return "Organización territorial y de Euskadi"
+    if (has("igualdad", "euskera", "normalización lingüística", "perfil lingüístico"))
+        return "Igualdad y euskera"
+    if (has("protección de datos", "datos personales")) return "Protección de datos"
+    if (has("riesgos laborales", "primeros auxilios", "pantallas", "posturas"))
+        return "Prevención de riesgos y salud laboral"
+    if (has("gobierno abierto", "transparencia", "información pública"))
+        return "Transparencia y gobierno abierto"
+    if (
+        has(
+            "encomienda",
+            "convenios",
+            "órganos administrativos",
+            "organización administrativa",
+            "delegación",
+            "avocación",
+            "competencia",
+            "sector público"
+        )
+    )
+        return "Organización y sector público (Ley 3/2022)"
+    if (
+        has(
+            "acto administrativo",
+            "silencio",
+            "nulidad",
+            "anulabilidad",
+            "procedimiento administrativo",
+            "fases del procedimiento",
+            "recursos",
+            "revisión de",
+            "responsabilidad de las administraciones",
+            "responsabilidad patrimonial",
+            "fuentes del derecho",
+            "interesad",
+            "obligación de resolver",
+            "plazos"
+        )
+    )
+        return "Procedimiento y acto administrativo (Ley 39/2015)"
+    if (
+        has(
+            "expediente",
+            "documento administrativo",
+            "firma electrónica",
+            "administración electrónica",
+            "certificado electrónico",
+            "registros electrónicos",
+            "archivo",
+            "copias",
+            "certificaciones"
+        )
+    )
+        return "Administración electrónica y documentación"
+    if (
+        has(
+            "atención",
+            "ciudadanía",
+            "comunicación",
+            "quejas",
+            "lenguaje administrativo"
+        )
+    )
+        return "Atención a la ciudadanía y comunicación"
+    if (has("contrat", "servicio público", "concesión", "autorizaciones", "licencias", "sancionadora"))
+        return "Contratación pública y servicios"
+    if (has("empleo público", "personal", "función pública", "retribuciones", "disciplinario", "provisión", "selección", "laboral", "seguridad social"))
+        return "Empleo público y función pública"
+    if (has("hacienda", "presupuesto", "contabilidad", "subvenci", "ayudas"))
+        return "Hacienda, presupuestos y subvenciones"
+    if (has("gestión pública", "procesos", "proyectos", "organización", "cultura", "gobernanza", "calidad", "satisfacción"))
+        return "Gestión pública y organización"
+    if (has("control de acceso", "vigilancia", "apoyo a", "trabajos auxiliares de oficina", "reuniones"))
+        return "Vigilancia y labores de apoyo"
+    if (has("correspondencia", "paquetería")) return "Correspondencia y paquetería"
+    if (has("almacen", "existencias", "materiales", "residuos"))
+        return "Almacenamiento y materiales"
+    if (has("mantenimiento", "cerrajería", "fontanería", "vehículos", "instalaciones"))
+        return "Mantenimiento e instalaciones"
+    if (has("administración educativa", "educativa")) return "Gestión pública y organización"
+    return "Otros temas"
+}
+
+function agruparPorArea(bloques: Bloque[]): Bloque[] {
+    const map = new Map<string, Test[]>()
+    bloques.forEach((b) =>
+        b.tests.forEach((tt) => {
+            const a = areaDeTest(tt)
+            if (!map.has(a)) map.set(a, [])
+            map.get(a)!.push(tt)
+        })
+    )
+    const ordenadas = AREA_ORDER.filter((a) => map.has(a))
+    const extra = [...map.keys()].filter((a) => !AREA_ORDER.includes(a))
+    return [...ordenadas, ...extra].map((a) => ({ bloque: a, tests: map.get(a)! }))
+}
+
 // ─── PALETA POR ESCALA ────────────────────────────────────────────────────────
 const SCALE_COLORS: Record<Tab, string> = {
     auxiliares: "#3B82F6", // azul
@@ -307,144 +450,52 @@ const BLOQUE_COMUN: Bloque[] = [
 const dbAuxiliares: Bloque[] = [
     ...BLOQUE_COMUN,
     {
-        bloque: "Organización y Gestión Administrativa — Temas 15 al 19",
+        bloque: "Administración educativa — Tema 15",
         tests: [
-            {
-                id: "aux15",
-                tema: "T.15",
-                titulo: "T.15 — Gestión de la documentación en archivos de oficina. Sistema de Archivo de la CAE",
-                preguntas: 25,
-            },
-            {
-                id: "aux16",
-                tema: "T.16",
-                titulo: "T.16 — Registros electrónicos de entrada y salida en la CAE. Interoperabilidad",
-                preguntas: 25,
-            },
-            {
-                id: "aux17",
-                tema: "T.17",
-                titulo: "T.17 — El documento y el expediente administrativo. Copias, certificaciones y acceso",
-                preguntas: 25,
-            },
-            {
-                id: "aux18",
-                tema: "T.18",
-                titulo: "T.18 — Legalizaciones de firmas. Validación en la administración electrónica. Certificado electrónico",
-                preguntas: 20,
-            },
-            {
-                id: "aux19",
-                tema: "T.19",
-                titulo: "T.19 — Administración educativa no universitaria. Principios generales y organización de centros docentes",
-                preguntas: 20,
-            },
+            { id: "apoyo15", tema: "T.15", titulo: "T.15 — Administración educativa no universitaria. Principios generales y organización de los centros docentes", preguntas: 0 },
         ],
     },
     {
-        bloque: "Atención a la Ciudadanía — Temas 20 al 23",
+        bloque: "Atención a la Ciudadanía — Temas 16 al 19",
         tests: [
-            {
-                id: "aux20",
-                tema: "T.20",
-                titulo: "T.20 — Derechos de la ciudadanía en sus relaciones con las AAPP. Acceso a archivos y registros",
-                preguntas: 25,
-            },
-            {
-                id: "aux21",
-                tema: "T.21",
-                titulo: "T.21 — La ciudadanía como destinataria de servicios. Atención al público, quejas, discapacidad e interculturalidad",
-                preguntas: 25,
-            },
-            {
-                id: "aux22",
-                tema: "T.22",
-                titulo: "T.22 — Comunicación escrita en la Administración. Lenguaje administrativo no sexista",
-                preguntas: 25,
-            },
-            {
-                id: "aux23",
-                tema: "T.23",
-                titulo: "T.23 — Comunicación oral. Atención en persona y por teléfono. Comunicación no verbal",
-                preguntas: 20,
-            },
+            { id: "apoyo16", tema: "T.16", titulo: "T.16 — Derechos de la ciudadanía en sus relaciones con las AAPP. Acceso a archivos y registros", preguntas: 0 },
+            { id: "apoyo17", tema: "T.17", titulo: "T.17 — La ciudadanía como destinataria de los servicios. Atención al público, quejas, discapacidad e interculturalidad", preguntas: 0 },
+            { id: "apoyo18", tema: "T.18", titulo: "T.18 — Comunicación escrita en la Administración. Lenguaje administrativo no sexista. Documentos", preguntas: 0 },
+            { id: "apoyo19", tema: "T.19", titulo: "T.19 — Comunicación oral. Atención en persona y por teléfono. Comunicación no verbal", preguntas: 0 },
         ],
     },
     {
-        bloque: "Procedimiento Administrativo — Temas 24 al 30",
+        bloque: "Vigilancia, control y labores de apoyo — Temas 20 al 22",
         tests: [
-            {
-                id: "aux24",
-                tema: "T.24",
-                titulo: "T.24 — Fuentes del derecho administrativo. Jerarquía normativa. Principio de legalidad",
-                preguntas: 25,
-            },
-            {
-                id: "aux25",
-                tema: "T.25",
-                titulo: "T.25 — La organización administrativa. Órganos administrativos y colegiados",
-                preguntas: 20,
-            },
-            {
-                id: "aux26",
-                tema: "T.26",
-                titulo: "T.26 — El acto administrativo: concepto, eficacia. Silencio. Nulidad y anulabilidad",
-                preguntas: 30,
-            },
-            {
-                id: "aux27",
-                tema: "T.27",
-                titulo: "T.27 — Procedimiento administrativo: principios. Personas interesadas. Abstención y recusación",
-                preguntas: 25,
-            },
-            {
-                id: "aux28",
-                tema: "T.28",
-                titulo: "T.28 — Fases del procedimiento administrativo",
-                preguntas: 25,
-            },
-            {
-                id: "aux29",
-                tema: "T.29",
-                titulo: "T.29 — Revisión de los actos: recursos, revisión de oficio y rectificación de errores",
-                preguntas: 25,
-            },
-            {
-                id: "aux30",
-                tema: "T.30",
-                titulo: "T.30 — La responsabilidad de las Administraciones Públicas, sus autoridades y personal",
-                preguntas: 20,
-            },
+            { id: "apoyo20", tema: "T.20", titulo: "T.20 — Control de acceso, identificación, recepción, información y atención en dependencias administrativas", preguntas: 0 },
+            { id: "apoyo21", tema: "T.21", titulo: "T.21 — Apoyo a reuniones y comunicación: preparación de salas, mobiliario y medios audiovisuales", preguntas: 0 },
+            { id: "apoyo22", tema: "T.22", titulo: "T.22 — Trabajos auxiliares de oficina: fotocopiado, escaneo, encuadernación, plastificado y grapado", preguntas: 0 },
         ],
     },
     {
-        bloque: "Correspondencia y Paquetería — Tema 31",
+        bloque: "Correspondencia y paquetería — Tema 23",
         tests: [
-            {
-                id: "aux31",
-                tema: "T.31",
-                titulo: "T.31 — Correspondencia y paquetería. Certificados, acuses de recibo, telegramas, notificaciones",
-                preguntas: 20,
-            },
+            { id: "apoyo23", tema: "T.23", titulo: "T.23 — Correspondencia y paquetería. Certificados, acuses de recibo, telegramas, reembolsos y notificaciones", preguntas: 0 },
         ],
     },
     {
-        bloque: "Simulacros Auxiliares Administrativos",
+        bloque: "Almacenamiento y movimiento de materiales — Temas 24 al 27",
         tests: [
-            {
-                id: "sim_aux1",
-                titulo: "Simulacro completo — 60 preguntas",
-                preguntas: 60,
-            },
-            {
-                id: "sim_aux2",
-                titulo: "Simulacro Parte General + Procedimiento — 50 preguntas",
-                preguntas: 50,
-            },
+            { id: "apoyo24", tema: "T.24", titulo: "T.24 — Almacenamiento de materiales: estanterías, espacios y materiales peligrosos", preguntas: 0 },
+            { id: "apoyo25", tema: "T.25", titulo: "T.25 — Control de existencias de material: registros, fichas y albaranes", preguntas: 0 },
+            { id: "apoyo26", tema: "T.26", titulo: "T.26 — Movimiento de material y equipos. Manejo y transporte de materiales combustibles e inflamables", preguntas: 0 },
+            { id: "apoyo27", tema: "T.27", titulo: "T.27 — Retirada y reciclaje de residuos: clasificación, recogida y retirada selectiva", preguntas: 0 },
+        ],
+    },
+    {
+        bloque: "Mantenimiento y reparación de equipos e instalaciones — Temas 28 al 30",
+        tests: [
+            { id: "apoyo28", tema: "T.28", titulo: "T.28 — Nociones básicas de cerrajería, fontanería, electricidad, carpintería, albañilería y climatización", preguntas: 0 },
+            { id: "apoyo29", tema: "T.29", titulo: "T.29 — Mantenimiento y revisión de elementos de seguridad: extintores y puertas cortafuegos", preguntas: 0 },
+            { id: "apoyo30", tema: "T.30", titulo: "T.30 — Mantenimiento básico de vehículos", preguntas: 0 },
         ],
     },
 ]
-
 const dbAdministrativos: Bloque[] = [
     ...BLOQUE_COMUN,
     {
@@ -2589,7 +2640,7 @@ function Footer({ dark, accent }: { dark: boolean; accent: string }) {
                         OPE 2026
                     </div>
                     {[
-                        { label: "Auxiliares Administrativos", href: "/oposiciones/auxiliar-administrativo" },
+                        { label: "Personal de Apoyo", href: "/oposiciones/personal-de-apoyo" },
                         { label: "Administrativos", href: "/oposiciones/administrativo" },
                         { label: "Técnicos de Gestión", href: "/oposiciones/tecnico-gestion" },
                         { label: "Técnicos Superiores", href: "/oposiciones/tecnico-superior" },
@@ -3094,6 +3145,7 @@ export default function DashboardOPE(props: {
     const [progress, setProgress] = useState<Record<string, any>>({})
     const [dark, setDark] = useState(true)
     const [search, setSearch] = useState("")
+    const [vista, setVista] = useState<"bloques" | "oficial">("bloques")
     const [showPremium, setShowPremium] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const rootRef = useRef<HTMLDivElement>(null)
@@ -3166,7 +3218,7 @@ export default function DashboardOPE(props: {
 
     const tabs: { id: Tab; label: string }[] = [
         { id: "administrativos", label: "Administrativos" },
-        { id: "auxiliares", label: "Auxiliares" },
+        { id: "auxiliares", label: "Personal de Apoyo" },
         { id: "superiores", label: "Técnicos Superiores" },
         { id: "gestion", label: "Técnicos de Gestión" },
     ]
@@ -3229,6 +3281,12 @@ export default function DashboardOPE(props: {
                       ),
                   }))
                   .filter((b) => b.tests.length > 0)
+
+    // Vista por Bloques: reagrupado transversal por área temática.
+    // Vista por Temario Oficial: lista lineal en el orden del boletín.
+    const bloquesVista =
+        vista === "bloques" ? agruparPorArea(filteredData) : filteredData
+    const oficialTests = filteredData.flatMap((b) => b.tests)
 
     function handleStartTest(testId: string) {
         const color = encodeURIComponent(accent)
@@ -3685,11 +3743,73 @@ export default function DashboardOPE(props: {
                     isMobile={isMobile}
                 />
 
+                {/* TOGGLE DE VISTA: Bloques (transversal) vs Temario oficial (lista) */}
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        marginBottom: "18px",
+                        flexWrap: "wrap",
+                    }}
+                >
+                    {(
+                        [
+                            { id: "bloques", label: "Vista por bloques", hint: "Recomendada" },
+                            { id: "oficial", label: "Temario oficial", hint: "" },
+                        ] as const
+                    ).map((v) => {
+                        const activo = vista === v.id
+                        return (
+                            <button
+                                key={v.id}
+                                type="button"
+                                onClick={() => setVista(v.id)}
+                                aria-pressed={activo}
+                                style={{
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    gap: "7px",
+                                    padding: "8px 14px",
+                                    borderRadius: "100px",
+                                    fontSize: "13px",
+                                    fontWeight: 600,
+                                    cursor: "pointer",
+                                    border: `1px solid ${activo ? accent : t.border}`,
+                                    background: activo ? accent : t.surface,
+                                    color: activo ? "#fff" : t.textMuted,
+                                    transition: "all 0.2s",
+                                }}
+                            >
+                                {v.label}
+                                {v.hint && (
+                                    <span
+                                        style={{
+                                            fontSize: "10px",
+                                            fontWeight: 700,
+                                            textTransform: "uppercase",
+                                            letterSpacing: "0.04em",
+                                            padding: "1px 6px",
+                                            borderRadius: "100px",
+                                            background: activo
+                                                ? "rgba(255,255,255,0.22)"
+                                                : `${accent}22`,
+                                            color: activo ? "#fff" : accent,
+                                        }}
+                                    >
+                                        {v.hint}
+                                    </span>
+                                )}
+                            </button>
+                        )
+                    })}
+                </div>
+
                 {/* TESTS */}
                 <AnimatePresence mode="wait">
                     <motion.div
                         id="tests-section"
-                        key={activeTab + search}
+                        key={activeTab + search + vista}
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -6 }}
@@ -3715,8 +3835,119 @@ export default function DashboardOPE(props: {
                                     No hay tests que coincidan con "{search}"
                                 </div>
                             </div>
+                        ) : vista === "oficial" ? (
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "6px",
+                                }}
+                            >
+                                {oficialTests.map((test) => {
+                                    const prog = progress[test.id]
+                                    const sinPreguntas = test.preguntas === 0
+                                    const hecho =
+                                        !!prog && prog.mejor_porcentaje >= 50
+                                    return (
+                                        <button
+                                            key={test.id}
+                                            type="button"
+                                            onClick={() =>
+                                                !sinPreguntas &&
+                                                handleStartTest(test.id)
+                                            }
+                                            disabled={sinPreguntas}
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: "12px",
+                                                width: "100%",
+                                                textAlign: "left",
+                                                padding: "11px 14px",
+                                                borderRadius: "12px",
+                                                border: `1px solid ${t.border}`,
+                                                background: t.surface,
+                                                cursor: sinPreguntas
+                                                    ? "default"
+                                                    : "pointer",
+                                                opacity: sinPreguntas ? 0.55 : 1,
+                                                transition:
+                                                    "background 0.2s, border-color 0.2s",
+                                            }}
+                                        >
+                                            <span
+                                                style={{
+                                                    flexShrink: 0,
+                                                    width: "26px",
+                                                    height: "26px",
+                                                    borderRadius: "50%",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    fontSize: "13px",
+                                                    fontWeight: 700,
+                                                    border: `2px solid ${hecho ? accent : t.border}`,
+                                                    background: hecho
+                                                        ? accent
+                                                        : "transparent",
+                                                    color: hecho
+                                                        ? "#fff"
+                                                        : t.textMuted,
+                                                }}
+                                            >
+                                                {hecho ? "✓" : ""}
+                                            </span>
+                                            <span
+                                                style={{
+                                                    flexShrink: 0,
+                                                    fontSize: "12px",
+                                                    fontWeight: 700,
+                                                    color: accent,
+                                                    minWidth: "42px",
+                                                }}
+                                            >
+                                                {test.tema ?? "—"}
+                                            </span>
+                                            <span
+                                                style={{
+                                                    flex: 1,
+                                                    fontSize: "13px",
+                                                    fontWeight: 600,
+                                                    color: t.textMain,
+                                                    lineHeight: 1.3,
+                                                }}
+                                            >
+                                                {test.titulo.replace(
+                                                    /^T\.\d+\s*—\s*/,
+                                                    ""
+                                                )}
+                                            </span>
+                                            {prog && (
+                                                <ProgressBadge
+                                                    pct={Math.round(
+                                                        prog.mejor_porcentaje
+                                                    )}
+                                                    accent={accent}
+                                                />
+                                            )}
+                                            <span
+                                                style={{
+                                                    flexShrink: 0,
+                                                    fontSize: "11px",
+                                                    color: t.textMuted,
+                                                    whiteSpace: "nowrap",
+                                                }}
+                                            >
+                                                {sinPreguntas
+                                                    ? "Próximamente"
+                                                    : `${test.preguntas} preg.`}
+                                            </span>
+                                        </button>
+                                    )
+                                })}
+                            </div>
                         ) : (
-                            filteredData.map((bloque, idx) => (
+                            bloquesVista.map((bloque, idx) => (
                                 <div key={idx} style={{ marginBottom: "36px" }}>
                                     <h4
                                         style={{

@@ -43,7 +43,7 @@ export default function OpengraphImage() {
                         maxWidth: 900,
                     }}
                 >
-                    Temario oficial IVAP · Auxiliares, Administrativos, Gestión y
+                    Temario oficial IVAP · Personal de Apoyo, Administrativos, Gestión y
                     Superiores
                 </div>
             </div>

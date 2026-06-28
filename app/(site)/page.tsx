@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 const ESCALAS = [
-    { label: "Auxiliar Administrativo", href: "/oposiciones/auxiliar-administrativo" },
+    { label: "Personal de Apoyo", href: "/oposiciones/personal-de-apoyo" },
     { label: "Administrativo", href: "/oposiciones/administrativo" },
     { label: "Técnico de Gestión", href: "/oposiciones/tecnico-gestion" },
     { label: "Técnico Superior", href: "/oposiciones/tecnico-superior" },
@@ -34,7 +34,7 @@ const FAQS: Faq[] = [
     },
     {
         q: "¿Qué escalas y cuerpos cubrís?",
-        a: "Auxiliares Administrativos, Administrativos, Técnicos de Gestión y Técnicos Superiores del Gobierno Vasco, con el bloque común (temas 1–14) y los específicos de cada escala.",
+        a: "Personal de Apoyo, Administrativos, Técnicos de Gestión y Técnicos Superiores del Gobierno Vasco, con el bloque común (temas 1–14) y los específicos de cada escala.",
     },
     {
         q: "¿Incluye la Constitución y la Ley 39/2015?",

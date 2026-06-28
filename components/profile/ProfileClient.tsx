@@ -116,7 +116,7 @@ const SCALE_COLORS: Record<string, string> = {
     superiores: "#8B5CF6",
 }
 const ESCALAS = [
-    { id: "auxiliares", label: "Auxiliar Administrativo" },
+    { id: "auxiliares", label: "Personal de Apoyo" },
     { id: "administrativos", label: "Administrativo" },
     { id: "gestion", label: "Técnico de Gestión" },
     { id: "superiores", label: "Técnico Superior" },
@@ -1110,7 +1110,7 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                         OPE 2026
                     </div>
                     {[
-                        ["Auxiliares Administrativos", "/oposiciones/auxiliar-administrativo"],
+                        ["Personal de Apoyo", "/oposiciones/personal-de-apoyo"],
                         ["Administrativos", "/oposiciones/administrativo"],
                         ["Técnicos de Gestión", "/oposiciones/tecnico-gestion"],
                         ["Técnicos Superiores", "/oposiciones/tecnico-superior"],

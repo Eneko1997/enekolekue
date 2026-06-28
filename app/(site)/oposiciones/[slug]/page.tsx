@@ -24,33 +24,33 @@ interface EscalaData {
 }
 
 const ESCALAS: Record<string, EscalaData> = {
-    "auxiliar-administrativo": {
+    "personal-de-apoyo": {
         escala: "auxiliares",
-        nombre: "Auxiliar Administrativo",
-        grupo: "C2",
+        nombre: "Personal de Apoyo",
+        grupo: "E",
         color: SCALE_COLORS.auxiliares,
         convocatoria: "Septiembre 2026",
         prueba: "Enero 2027",
-        title: "Oposiciones Auxiliar Administrativo Gobierno Vasco 2026 — Tests IVAP",
+        title: "Oposiciones Personal de Apoyo Gobierno Vasco 2026 — Tests IVAP",
         description:
-            "Prepara la oposición de Auxiliar Administrativo del Gobierno Vasco 2026 con tests por tema del temario oficial del IVAP. Parte general (temas 1–14) y específicos de la escala auxiliar.",
+            "Prepara la oposición de la Agrupación Profesional de Personal de Apoyo del Gobierno Vasco 2026 con tests por tema del temario oficial del IVAP. Parte general (temas 1–14) y específicos de la agrupación.",
         keywords: [
-            "oposiciones auxiliar administrativo Gobierno Vasco",
-            "auxiliar administrativo Euskadi 2026",
-            "test auxiliar administrativo IVAP",
-            "OPE auxiliar administrativo Eusko Jaurlaritza",
+            "oposiciones personal de apoyo Gobierno Vasco",
+            "agrupación profesional personal de apoyo Euskadi 2026",
+            "test personal de apoyo IVAP",
+            "OPE personal de apoyo Eusko Jaurlaritza",
         ],
-        intro: "La escala Auxiliar Administrativa (subgrupo C2) es la puerta de entrada al empleo público vasco. Practica el temario oficial del IVAP tema a tema.",
+        intro: "La Agrupación Profesional de Personal de Apoyo (grupo E) es la puerta de entrada al empleo público vasco. Practica el temario oficial del IVAP tema a tema.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización del Estado y de Euskadi, empleo público, protección de datos y prevención de riesgos." },
-            { t: "Específicos de la escala", d: "Gestión documental, archivo, registros electrónicos y atención a la ciudadanía." },
-            { t: "Procedimiento administrativo", d: "Nociones de la Ley 39/2015 aplicadas al trabajo auxiliar." },
-            { t: "Euskera e igualdad", d: "Normalización lingüística e igualdad de mujeres y hombres en la CAE." },
+            { t: "Atención a la ciudadanía", d: "Derechos de la ciudadanía, comunicación escrita y oral, y atención al público." },
+            { t: "Labores de apoyo", d: "Vigilancia y control de acceso, correspondencia y paquetería, almacenamiento y materiales." },
+            { t: "Mantenimiento", d: "Nociones básicas de instalaciones, elementos de seguridad y mantenimiento de equipos." },
         ],
         faqs: [
-            { q: "¿Qué se necesita para ser Auxiliar Administrativo del Gobierno Vasco?", a: "El título de Graduado en ESO (o equivalente). Es la titulación exigida para el subgrupo C2." },
-            { q: "¿Cuándo es el examen de Auxiliar Administrativo?", a: "Según el calendario provisional del IVAP, la convocatoria se prevé en septiembre de 2026 y la primera prueba en enero de 2027." },
-            { q: "¿Qué temas entran en la oposición de Auxiliar Administrativo?", a: "El bloque común (temas 1–14) más los temas específicos de gestión documental, registros y atención a la ciudadanía." },
+            { q: "¿Qué se necesita para ser Personal de Apoyo del Gobierno Vasco?", a: "No se exige titulación académica para la Agrupación Profesional de Personal de Apoyo (grupo E); basta con los requisitos generales de acceso al empleo público." },
+            { q: "¿Cuándo es el examen de Personal de Apoyo?", a: "Según el calendario provisional del IVAP, la convocatoria se prevé en septiembre de 2026 y la primera prueba en enero de 2027." },
+            { q: "¿Qué temas entran en la oposición de Personal de Apoyo?", a: "El bloque común (temas 1–14) más los temas específicos de atención a la ciudadanía, vigilancia y labores de apoyo, correspondencia, almacenamiento y mantenimiento." },
         ],
     },
     administrativo: {

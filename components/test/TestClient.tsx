@@ -1185,8 +1185,8 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                     </div>
                     {[
                         {
-                            label: "Auxiliares Administrativos",
-                            href: "/oposiciones/auxiliar-administrativo",
+                            label: "Personal de Apoyo",
+                            href: "/oposiciones/personal-de-apoyo",
                         },
                         {
                             label: "Administrativos",
