@@ -9,6 +9,13 @@ import { createClient } from "@/lib/supabase/client"
 import { BRAND_ACCENT } from "@/lib/theme"
 import AccountMenu from "@/components/site/AccountMenu"
 
+const TESTS_LINKS = [
+    { label: "Personal de Apoyo", href: "/oposiciones/personal-de-apoyo" },
+    { label: "Administrativo", href: "/oposiciones/administrativo" },
+    { label: "Técnico de Gestión", href: "/oposiciones/tecnico-gestion" },
+    { label: "Técnico Superior", href: "/oposiciones/tecnico-superior" },
+]
+
 const NAV_LINKS = [
     { label: "Ley 39/2015", href: "/ley-39-2015" },
     { label: "Constitución", href: "/constitucion" },
@@ -26,6 +33,8 @@ export default function Navbar() {
     const { user, loading } = useSession()
     const router = useRouter()
     const [open, setOpen] = useState(false)
+    const [testsOpen, setTestsOpen] = useState(false)
+    const [mobileTestsOpen, setMobileTestsOpen] = useState(false)
 
     async function handleSignOut() {
         const supabase = createClient()
@@ -48,6 +57,65 @@ export default function Navbar() {
 
                 {/* Links escritorio */}
                 <div className="hidden flex-1 items-center justify-center gap-1 md:flex">
+                    {/* Desplegable Tests */}
+                    <div
+                        className="relative"
+                        onMouseEnter={() => setTestsOpen(true)}
+                        onMouseLeave={() => setTestsOpen(false)}
+                    >
+                        <button
+                            type="button"
+                            aria-expanded={testsOpen}
+                            aria-haspopup="true"
+                            onClick={() => setTestsOpen((v) => !v)}
+                            className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-[13px] font-medium text-white/60 transition-colors hover:bg-white/5 hover:text-white"
+                        >
+                            Tests
+                            <svg
+                                width="11"
+                                height="11"
+                                viewBox="0 0 12 12"
+                                fill="none"
+                                aria-hidden="true"
+                                style={{
+                                    transform: testsOpen
+                                        ? "rotate(180deg)"
+                                        : "none",
+                                    transition: "transform 0.2s",
+                                }}
+                            >
+                                <path
+                                    d="M2.5 4.5 6 8l3.5-3.5"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        </button>
+                        <AnimatePresence>
+                            {testsOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -6 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -6 }}
+                                    transition={{ duration: 0.15 }}
+                                    className="absolute left-1/2 top-full z-50 mt-1 w-64 -translate-x-1/2 rounded-xl border border-white/10 bg-[rgba(15,15,18,0.98)] p-1.5 shadow-2xl backdrop-blur-xl"
+                                >
+                                    {TESTS_LINKS.map((l) => (
+                                        <Link
+                                            key={l.href}
+                                            href={l.href}
+                                            onClick={() => setTestsOpen(false)}
+                                            className="block rounded-lg px-3 py-2 text-[13px] font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+                                        >
+                                            Tests de {l.label}
+                                        </Link>
+                                    ))}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
                     {NAV_LINKS.map((l) => (
                         <Link
                             key={l.href}
@@ -107,6 +175,47 @@ export default function Navbar() {
                         className="overflow-hidden border-t border-white/10 md:hidden"
                     >
                         <div className="flex flex-col gap-1 px-5 py-3">
+                            {/* Tests (desplegable) */}
+                            <button
+                                type="button"
+                                aria-expanded={mobileTestsOpen}
+                                onClick={() => setMobileTestsOpen((v) => !v)}
+                                className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white"
+                            >
+                                Tests
+                                <svg
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 12 12"
+                                    fill="none"
+                                    aria-hidden="true"
+                                    style={{
+                                        transform: mobileTestsOpen
+                                            ? "rotate(180deg)"
+                                            : "none",
+                                        transition: "transform 0.2s",
+                                    }}
+                                >
+                                    <path
+                                        d="M2.5 4.5 6 8l3.5-3.5"
+                                        stroke="currentColor"
+                                        strokeWidth="1.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                            </button>
+                            {mobileTestsOpen &&
+                                TESTS_LINKS.map((l) => (
+                                    <Link
+                                        key={l.href}
+                                        href={l.href}
+                                        onClick={() => setOpen(false)}
+                                        className="rounded-lg py-2 pl-6 pr-3 text-sm font-medium text-white/60 hover:bg-white/5 hover:text-white"
+                                    >
+                                        Tests de {l.label}
+                                    </Link>
+                                ))}
                             {NAV_LINKS.map((l) => (
                                 <Link
                                     key={l.href}

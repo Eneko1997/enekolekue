@@ -5,6 +5,7 @@ import LeccionHero from "@/components/lecciones/LeccionHero"
 import PuntosExamen, { type Punto } from "@/components/lecciones/PuntosExamen"
 import LeccionCTA from "@/components/lecciones/LeccionCTA"
 import FaqLeccion, { type Faq } from "@/components/lecciones/FaqLeccion"
+import EscalaTests from "@/components/escala/EscalaTests"
 import { SCALE_COLORS } from "@/lib/theme"
 import { SITE_URL } from "@/lib/site"
 
@@ -172,8 +173,6 @@ export default async function OposicionPage({
     const d = ESCALAS[slug]
     if (!d) notFound()
 
-    const dashHref = `/?escala=${d.escala}`
-
     return (
         <main className="flex flex-1 flex-col">
             <LeccionHero
@@ -181,7 +180,7 @@ export default async function OposicionPage({
                 title={`Oposiciones ${d.nombre}`}
                 subtitle={d.intro}
                 accent={ACCENT}
-                ctaHref={dashHref}
+                ctaHref="#tests-escala"
                 ctaLabel={`Ver tests de ${d.nombre} →`}
                 stats={[
                     { n: d.grupo, label: "grupo" },
@@ -197,28 +196,7 @@ export default async function OposicionPage({
                 accent={ACCENT}
             />
 
-            <section className="px-5 py-8">
-                <div className="mx-auto max-w-4xl rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur sm:p-8">
-                    <h2 className="text-xl font-bold text-white">
-                        Practica los tests de {d.nombre}
-                    </h2>
-                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/65">
-                        Accede al catálogo completo de tests por tema de la escala{" "}
-                        {d.nombre} del Gobierno Vasco, con el bloque común y los
-                        específicos, y mide tu progreso.
-                    </p>
-                    <Link
-                        href={dashHref}
-                        className="mt-5 inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold text-white transition-transform hover:scale-[1.03]"
-                        style={{
-                            backgroundColor: ACCENT,
-                            boxShadow: `0 14px 40px -12px ${ACCENT}88`,
-                        }}
-                    >
-                        Ver todos los tests →
-                    </Link>
-                </div>
-            </section>
+            <EscalaTests escala={d.escala} nombre={d.nombre} />
 
             <FaqLeccion faqs={d.faqs} accent={ACCENT} />
 
