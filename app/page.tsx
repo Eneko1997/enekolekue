@@ -36,7 +36,7 @@ function Floaty({
                 aria-hidden
                 width={size}
                 height={size}
-                className="float-slow select-none"
+                className="float-slow select-none drop-shadow-[0_12px_22px_rgba(15,23,42,0.22)]"
                 style={{ animationDelay: `${delay}ms` }}
             />
         </MagneticIcon>
@@ -138,10 +138,10 @@ export default function HomePage() {
             <LightNavbar />
 
             {/* ───────────── HERO ───────────── */}
-            <section className="relative overflow-hidden px-5 pb-20 pt-16 sm:pt-24">
+            <section className="relative isolate overflow-hidden px-5 pb-20 pt-16 sm:pt-24">
                 <div className="hero-emerald" aria-hidden />
 
-                <div className="relative mx-auto max-w-5xl">
+                <div className="relative z-10 mx-auto max-w-5xl">
                     {/* Iconos 3D flotantes alrededor del titular (desktop) */}
                     <div className="pointer-events-none absolute inset-0 hidden md:block">
                         <div className="pointer-events-auto">
@@ -234,7 +234,9 @@ export default function HomePage() {
                         {FEATURES.map((f, i) => (
                             <Reveal key={f.t} delay={(i % 3) * 80}>
                                 <div className="h-full rounded-3xl border border-zinc-200 bg-white p-6">
-                                    <img src={f.icon} alt="" aria-hidden width={56} height={56} className="mb-4 h-14 w-14 object-contain" loading="lazy" />
+                                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: "linear-gradient(145deg, rgba(16,185,129,0.20), rgba(16,185,129,0.06))" }}>
+                                        <img src={f.icon} alt="" aria-hidden width={44} height={44} className="h-11 w-11 object-contain" loading="lazy" />
+                                    </div>
                                     <h3 className="text-base font-bold text-zinc-950">{f.t}</h3>
                                     <p className="mt-2 text-[14px] leading-relaxed text-zinc-500">{f.d}</p>
                                 </div>
