@@ -132,12 +132,97 @@ body {
   animation: float-slow 7s ease-in-out infinite;
 }
 
+/* ── Hero claro: gradiente esmeralda animado (movimiento + profundidad) ── */
+.hero-emerald {
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 720px;
+  z-index: -10;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 50% at 22% 18%, rgba(16, 185, 129, 0.30), transparent 70%),
+    radial-gradient(34% 46% at 80% 14%, rgba(20, 184, 166, 0.24), transparent 72%),
+    radial-gradient(40% 50% at 60% 70%, rgba(52, 211, 153, 0.18), transparent 74%);
+  filter: blur(60px) saturate(120%);
+  animation: hero-drift 18s ease-in-out infinite alternate;
+}
+@keyframes hero-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-3%, 2%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(4%, -2%, 0) scale(1.06);
+  }
+}
+
+/* ── Animaciones de entrada ── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(10px);
+  }
+  70% {
+    transform: scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.anim-fade-up {
+  opacity: 0;
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.anim-pop {
+  opacity: 0;
+  animation: pop-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Reveal al hacer scroll (IntersectionObserver añade .in) */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
   .aurora-bg,
-  .float-slow {
+  .hero-emerald,
+  .float-slow,
+  .anim-fade-up,
+  .anim-pop {
     animation: none;
+  }
+  .anim-fade-up,
+  .anim-pop {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
