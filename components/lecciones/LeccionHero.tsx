@@ -26,42 +26,33 @@ export default function LeccionHero({
     ctaLabel?: string
 }) {
     return (
-        <section className="relative overflow-hidden px-5 pb-10 pt-14">
-            {/* Glow + orbe flotante */}
+        <section className="relative isolate overflow-hidden px-5 pb-12 pt-16 sm:pt-20">
+            {/* Baño esmeralda animado de fondo */}
             <div
                 aria-hidden
-                className="pointer-events-none absolute -top-24 right-[4%] h-80 w-80 rounded-full blur-2xl"
-                style={{
-                    background: `radial-gradient(circle at 35% 30%, ${accent}66, ${accent}11 55%, transparent 72%)`,
-                }}
-            />
-            <motion.div
-                aria-hidden
-                className="pointer-events-none absolute right-[10%] top-10 h-24 w-24 rounded-3xl border border-white/10"
+                className="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[420px]"
                 style={{
                     background:
-                        "linear-gradient(135deg, rgba(255,255,255,0.06), transparent)",
-                    backdropFilter: "blur(6px)",
+                        `radial-gradient(38% 60% at 20% 10%, ${accent}40, transparent 70%), radial-gradient(34% 50% at 85% 0%, rgba(20,184,166,0.30), transparent 72%)`,
+                    filter: "blur(50px)",
                 }}
-                animate={{ y: [0, -16, 0], rotate: [0, 6, 0] }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
             />
 
-            <div className="relative mx-auto max-w-4xl">
-                <motion.p
+            <div className="relative z-10 mx-auto max-w-4xl">
+                <motion.span
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="mb-3 text-[12px] font-bold uppercase tracking-[0.18em]"
-                    style={{ color: accent }}
+                    className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-wide text-zinc-500"
                 >
+                    <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accent }} />
                     {eyebrow}
-                </motion.p>
+                </motion.span>
                 <motion.h1
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.05 }}
-                    className="text-4xl font-extrabold leading-[1.04] tracking-tight text-white sm:text-6xl"
+                    className="mt-5 text-4xl font-extrabold leading-[1.03] tracking-tight text-zinc-950 sm:text-6xl"
                 >
                     {title}
                 </motion.h1>
@@ -69,7 +60,7 @@ export default function LeccionHero({
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.12 }}
-                    className="mt-4 max-w-xl text-lg leading-relaxed text-white/70"
+                    className="mt-5 max-w-xl text-lg leading-relaxed text-zinc-500"
                 >
                     {subtitle}
                 </motion.p>
@@ -83,15 +74,12 @@ export default function LeccionHero({
                     {stats.map((s) => (
                         <div
                             key={s.label + s.n}
-                            className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5 backdrop-blur"
+                            className="rounded-2xl border border-zinc-200 bg-white px-4 py-2.5 shadow-sm shadow-zinc-900/5"
                         >
-                            <div
-                                className="text-xl font-extrabold leading-none text-white"
-                                style={{ textShadow: `0 0 24px ${accent}40` }}
-                            >
+                            <div className="text-xl font-extrabold leading-none text-zinc-950">
                                 {s.n}
                             </div>
-                            <div className="mt-1 text-[11px] uppercase tracking-wide text-white/45">
+                            <div className="mt-1 text-[11px] uppercase tracking-wide text-zinc-400">
                                 {s.label}
                             </div>
                         </div>
@@ -105,11 +93,7 @@ export default function LeccionHero({
                 >
                     <Link
                         href={ctaHref}
-                        className="mt-7 inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold text-white transition-transform hover:scale-[1.03]"
-                        style={{
-                            backgroundColor: accent,
-                            boxShadow: `0 14px 40px -12px ${accent}88`,
-                        }}
+                        className="mt-7 inline-flex items-center rounded-full bg-zinc-950 px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.03]"
                     >
                         {ctaLabel}
                     </Link>

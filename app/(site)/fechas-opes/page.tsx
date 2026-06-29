@@ -57,7 +57,7 @@ export default function FechasOpesPage() {
                 title="Fechas de las OPEs"
                 subtitle="Convocatorias y primera prueba de la OPE 2026 del Gobierno Vasco. Organízate y llega con el temario dominado."
                 accent={ACCENT}
-                ctaHref="/"
+                ctaHref="/dashboard"
                 ctaLabel="Ver los tests →"
                 stats={[
                     { n: "2026", label: "convocatoria" },
@@ -69,13 +69,13 @@ export default function FechasOpesPage() {
 
             <section className="px-5 py-8">
                 <div className="mx-auto max-w-4xl">
-                    <h2 className="mb-5 text-2xl font-extrabold tracking-tight text-white">
+                    <h2 className="mb-5 text-2xl font-extrabold tracking-tight text-zinc-950">
                         Calendario por escala
                     </h2>
-                    <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur">
+                    <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 backdrop-blur">
                         <table className="w-full border-collapse text-left text-sm">
                             <thead>
-                                <tr className="bg-white/[0.05] text-white/60">
+                                <tr className="bg-zinc-50 text-zinc-600">
                                     <th className="px-4 py-3 font-semibold">Escala</th>
                                     <th className="px-4 py-3 font-semibold">Grupo</th>
                                     <th className="px-4 py-3 font-semibold">Convocatoria</th>
@@ -84,32 +84,32 @@ export default function FechasOpesPage() {
                             </thead>
                             <tbody>
                                 {FILAS.map((f) => (
-                                    <tr key={f.escala} className="border-t border-white/10">
-                                        <td className="px-4 py-3 font-semibold text-white">
+                                    <tr key={f.escala} className="border-t border-zinc-200">
+                                        <td className="px-4 py-3 font-semibold text-zinc-950">
                                             <span
                                                 className="mr-2 inline-block h-2 w-2 rounded-full align-middle"
                                                 style={{ background: f.color }}
                                             />
                                             {f.escala}
                                         </td>
-                                        <td className="px-4 py-3 text-white/70">{f.grupo}</td>
-                                        <td className="px-4 py-3 text-white/70">{f.convocatoria}</td>
-                                        <td className="px-4 py-3 text-white/70">{f.prueba}</td>
+                                        <td className="px-4 py-3 text-zinc-500">{f.grupo}</td>
+                                        <td className="px-4 py-3 text-zinc-500">{f.convocatoria}</td>
+                                        <td className="px-4 py-3 text-zinc-500">{f.prueba}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
 
-                    <p className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-[13px] leading-relaxed text-white/55">
-                        <strong className="text-white/80">Calendario provisional</strong> a
+                    <p className="mt-6 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-[13px] leading-relaxed text-zinc-500">
+                        <strong className="text-zinc-500">Calendario provisional</strong> a
                         fecha 26 de marzo de 2026, sujeto a posibles ajustes en fechas y
                         escalas a convocar. Verifica siempre las fechas oficiales en{" "}
                         <a
                             href="https://www.euskadi.eus/oposiciones"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-semibold text-white hover:underline"
+                            className="font-semibold text-zinc-950 hover:underline"
                         >
                             euskadi.eus/oposiciones
                         </a>{" "}
@@ -129,14 +129,14 @@ export default function FechasOpesPage() {
             />
 
             <div className="mx-auto mb-12 max-w-4xl px-5">
-                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/50">
-                    <Link href="/" className="hover:text-white hover:underline">
+                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-500">
+                    <Link href="/dashboard" className="hover:text-zinc-950 hover:underline">
                         → Todos los tests por escala
                     </Link>
-                    <Link href="/constitucion" className="hover:text-white hover:underline">
+                    <Link href="/constitucion" className="hover:text-zinc-950 hover:underline">
                         → La Constitución Española
                     </Link>
-                    <Link href="/ley-39-2015" className="hover:text-white hover:underline">
+                    <Link href="/ley-39-2015" className="hover:text-zinc-950 hover:underline">
                         → Ley 39/2015
                     </Link>
                 </div>

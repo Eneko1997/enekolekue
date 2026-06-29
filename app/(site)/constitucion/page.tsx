@@ -75,12 +75,12 @@ export default function ConstitucionPage() {
 
             <section id="tests" className="scroll-mt-20 px-5 py-8">
                 <div className="mx-auto max-w-4xl">
-                    <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-white">
+                    <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-zinc-950">
                         Tests de la Constitución
                     </h2>
-                    <p className="mb-6 text-sm text-white/55">
+                    <p className="mb-6 text-sm text-zinc-500">
                         Más de 350 preguntas solo del tema 1.{" "}
-                        <Link href="/login" className="font-semibold text-white hover:underline">
+                        <Link href="/login" className="font-semibold text-zinc-950 hover:underline">
                             Inicia sesión
                         </Link>{" "}
                         para ver tu progreso.
@@ -100,14 +100,14 @@ export default function ConstitucionPage() {
             />
 
             <div className="mx-auto mb-12 max-w-4xl px-5">
-                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/50">
-                    <Link href="/ley-39-2015" className="hover:text-white hover:underline">
+                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-500">
+                    <Link href="/ley-39-2015" className="hover:text-zinc-950 hover:underline">
                         → Ley 39/2015
                     </Link>
-                    <Link href="/" className="hover:text-white hover:underline">
+                    <Link href="/dashboard" className="hover:text-zinc-950 hover:underline">
                         → Todos los tests por escala
                     </Link>
-                    <Link href="/fechas-opes" className="hover:text-white hover:underline">
+                    <Link href="/fechas-opes" className="hover:text-zinc-950 hover:underline">
                         → Fechas de las OPEs 2026
                     </Link>
                 </div>

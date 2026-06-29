@@ -209,17 +209,17 @@ export default async function OposicionPage({
             />
 
             <div className="mx-auto mb-12 max-w-4xl px-5">
-                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/50">
+                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-500">
                     {SLUGS.filter((s) => s !== slug).map((s) => (
                         <Link
                             key={s}
                             href={`/oposiciones/${s}`}
-                            className="hover:text-white hover:underline"
+                            className="hover:text-zinc-950 hover:underline"
                         >
                             → Oposiciones {ESCALAS[s].nombre}
                         </Link>
                     ))}
-                    <Link href="/fechas-opes" className="hover:text-white hover:underline">
+                    <Link href="/fechas-opes" className="hover:text-zinc-950 hover:underline">
                         → Fechas de las OPEs 2026
                     </Link>
                 </div>

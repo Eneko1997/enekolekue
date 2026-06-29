@@ -1,19 +1,19 @@
-import Navbar from "@/components/site/Navbar"
-import Footer from "@/components/site/Footer"
+import LightNavbar from "@/components/site/LightNavbar"
+import SiteFooter from "@/components/site/SiteFooter"
 
-// Layout de las páginas públicas / de contenido (landing, ley, constitución,
-// fechas, legales). Las páginas de la app (dashboard, test, perfil, payment)
-// usan su propio navbar embebido.
+// Layout de las páginas públicas / de contenido (ley, constitución, fechas,
+// oposiciones, legales) — tema claro. Las páginas de la app (dashboard, test,
+// perfil, payment) usan su propio navbar embebido (tema oscuro).
 export default function SiteLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
     return (
-        <>
-            <Navbar />
+        <div className="flex min-h-dvh flex-col bg-white text-zinc-950">
+            <LightNavbar />
             <div className="flex-1">{children}</div>
-            <Footer />
-        </>
+            <SiteFooter />
+        </div>
     )
 }

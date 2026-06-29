@@ -10,11 +10,11 @@ import { createClient } from "@/lib/supabase/client"
 
 const ACCENT = "#10B981"
 const t = {
-    border: "rgba(255,255,255,0.10)",
-    surface: "rgba(255,255,255,0.03)",
-    surfaceHover: "rgba(255,255,255,0.06)",
-    textMain: "#FFFFFF",
-    textMuted: "rgba(255,255,255,0.60)",
+    border: "#E4E4E7",
+    surface: "#FFFFFF",
+    surfaceHover: "#FAFAFA",
+    textMain: "#09090B",
+    textMuted: "#71717A",
 }
 
 type Progreso = Record<string, { mejor_porcentaje: number }>
@@ -82,10 +82,10 @@ export default function EscalaTests({
     return (
         <section id="tests-escala" className="px-5 py-10">
             <div className="mx-auto max-w-4xl">
-                <h2 className="text-xl font-bold text-white sm:text-2xl">
+                <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
                     Tests de {nombre}
                 </h2>
-                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/60">
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-500">
                     Practica el temario oficial del IVAP tema a tema. Cámbialo entre
                     vista por bloques temáticos o el temario oficial completo.
                 </p>

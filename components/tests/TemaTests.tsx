@@ -81,10 +81,11 @@ export default function TemaTests({
                         whileHover={{ scale: 1.015 }}
                         whileTap={{ scale: 0.98 }}
                         style={{
-                            background: "rgba(25,26,35,0.6)",
-                            border: "1px solid rgba(255,255,255,0.08)",
-                            borderRadius: "14px",
-                            padding: "15px",
+                            background: "#FFFFFF",
+                            border: "1px solid #E4E4E7",
+                            borderRadius: "16px",
+                            padding: "16px",
+                            boxShadow: "0 1px 2px rgba(9,9,11,0.04)",
                             cursor: "pointer",
                             display: "flex",
                             flexDirection: "column",
@@ -127,7 +128,7 @@ export default function TemaTests({
                                 fontSize: "13px",
                                 fontWeight: 600,
                                 lineHeight: 1.4,
-                                color: "#FFFFFF",
+                                color: "#09090B",
                             }}
                         >
                             {test.titulo}
@@ -142,8 +143,8 @@ export default function TemaTests({
                             <span
                                 style={{
                                     fontSize: "11px",
-                                    color: "#8B8D98",
-                                    background: "rgba(0,0,0,0.4)",
+                                    color: "#71717A",
+                                    background: "#F4F4F5",
                                     padding: "2px 8px",
                                     borderRadius: "100px",
                                 }}
