@@ -186,23 +186,23 @@ const HEADER_ACCENT = "#E8E6E1"
 // ─── TEMA OSCURO / CLARO ─────────────────────────────────────────────────────
 function getTheme(dark: boolean) {
     return {
-        bg: dark ? "#0B0C10" : "#F5F5F7",
-        surface: dark ? "rgba(25,26,35,0.7)" : "rgba(255,255,255,0.85)",
+        bg: dark ? "#0B0C10" : "#FFFFFF",
+        surface: dark ? "rgba(25,26,35,0.7)" : "#FFFFFF",
         surfaceHover: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
-        border: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.10)",
-        borderStrong: dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.18)",
-        textMain: dark ? "#FFFFFF" : "#111111",
-        textMuted: dark ? "#8B8D98" : "#666870",
+        border: dark ? "rgba(255,255,255,0.08)" : "#E4E4E7",
+        borderStrong: dark ? "rgba(255,255,255,0.15)" : "#D4D4D8",
+        textMain: dark ? "#FFFFFF" : "#09090B",
+        textMuted: dark ? "#8B8D98" : "#71717A",
         overlay: "rgba(0,0,0,0.6)",
         modalBg: dark ? "#141520" : "#FFFFFF",
         success: "#22C55E",
         // Navbar: negro neutro fijo, independiente del modo claro/oscuro
-        navBg: "rgba(10,10,12,0.96)",
-        navText: "#FFFFFF",
-        navTextMuted: "rgba(255,255,255,0.62)",
-        navBorder: "rgba(255,255,255,0.10)",
-        navSurface: "rgba(255,255,255,0.07)",
-        navSurfaceHover: "rgba(255,255,255,0.12)",
+        navBg: dark ? "rgba(10,10,12,0.96)" : "rgba(255,255,255,0.9)",
+        navText: dark ? "#FFFFFF" : "#09090B",
+        navTextMuted: dark ? "rgba(255,255,255,0.62)" : "#71717A",
+        navBorder: dark ? "rgba(255,255,255,0.10)" : "#E4E4E7",
+        navSurface: dark ? "rgba(255,255,255,0.07)" : "#F4F4F5",
+        navSurfaceHover: dark ? "rgba(255,255,255,0.12)" : "#E4E4E7",
     }
 }
 
@@ -2146,7 +2146,7 @@ export default function DashboardOPE(props: {
     const [authLoading, setAuthLoading] = useState(true)
     const [showAuth, setShowAuth] = useState(false)
     const [progress, setProgress] = useState<Record<string, any>>({})
-    const [dark, setDark] = useState(true)
+    const [dark, setDark] = useState(false)
     const [search, setSearch] = useState("")
     const [vista, setVista] = useState<"bloques" | "oficial">("bloques")
     const [showPremium, setShowPremium] = useState(false)

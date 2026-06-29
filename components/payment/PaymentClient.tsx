@@ -26,7 +26,7 @@ const FEATURES = [
 export default function PaymentClient() {
     const rootRef = React.useRef<HTMLDivElement>(null)
     const isMobile = useIsMobile(rootRef)
-    const [dark, setDark] = React.useState(true)
+    const [dark, setDark] = React.useState(false)
 
     const [isCreatingCheckout, setIsCreatingCheckout] = React.useState(false)
     const [checkoutMounted, setCheckoutMounted] = React.useState(false)
@@ -36,11 +36,11 @@ export default function PaymentClient() {
     const checkoutInstanceRef = React.useRef<any>(null)
     const stripeScriptLoadedRef = React.useRef(false)
 
-    const bg = dark ? "#0B0C10" : "#F5F5F7"
+    const bg = dark ? "#0B0C10" : "#FFFFFF"
     const surface = dark ? "rgba(25,26,35,0.8)" : "rgba(255,255,255,0.9)"
-    const border = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.10)"
-    const textMain = dark ? "#FFFFFF" : "#111111"
-    const textMuted = dark ? "#8B8D98" : "#666870"
+    const border = dark ? "rgba(255,255,255,0.08)" : "#E4E4E7"
+    const textMain = dark ? "#FFFFFF" : "#09090B"
+    const textMuted = dark ? "#8B8D98" : "#71717A"
     const navBg = "rgba(10,10,12,0.96)"
 
     const ensureStripeScript = React.useCallback(async () => {

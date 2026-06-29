@@ -90,22 +90,22 @@ const HEADER_ACCENT = "#E8E6E1"
 
 function getTheme(dark: boolean) {
     return {
-        bg: dark ? "#0B0C10" : "#F5F5F7",
+        bg: dark ? "#0B0C10" : "#FFFFFF",
         surface: dark ? "rgba(25,26,35,0.7)" : "rgba(255,255,255,0.9)",
-        border: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.10)",
+        border: dark ? "rgba(255,255,255,0.08)" : "#E4E4E7",
         borderStrong: dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.20)",
-        textMain: dark ? "#FFFFFF" : "#111111",
-        textMuted: dark ? "#8B8D98" : "#666870",
+        textMain: dark ? "#FFFFFF" : "#09090B",
+        textMuted: dark ? "#8B8D98" : "#71717A",
         success: "#22C55E",
         warning: "#F59E0B",
         error: "#EF4444",
         glass: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.03)",
         // Navbar: negro neutro fijo, independiente del modo claro/oscuro
-        navBg: "rgba(10,10,12,0.96)",
-        navText: "#FFFFFF",
-        navTextMuted: "rgba(255,255,255,0.62)",
-        navBorder: "rgba(255,255,255,0.10)",
-        navSurface: "rgba(255,255,255,0.07)",
+        navBg: dark ? "rgba(10,10,12,0.96)" : "rgba(255,255,255,0.9)",
+        navText: dark ? "#FFFFFF" : "#09090B",
+        navTextMuted: dark ? "rgba(255,255,255,0.62)" : "#71717A",
+        navBorder: dark ? "rgba(255,255,255,0.10)" : "#E4E4E7",
+        navSurface: dark ? "rgba(255,255,255,0.07)" : "#F4F4F5",
     }
 }
 
@@ -1328,7 +1328,7 @@ function PremiumBadge({ type }: { type: string }) {
 // ─── COMPONENTE PRINCIPAL ─────────────────────────────────────────────────────
 export default function PerfilOPE({
     accent = "#10B981",
-    darkMode = true,
+    darkMode = false,
     homeUrl = "/",
     testPageUrl = "/test",
 }: {

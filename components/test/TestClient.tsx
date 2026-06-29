@@ -375,18 +375,18 @@ const HEADER_ACCENT = "#E8E6E1"
 
 function getTheme(dark: boolean) {
     return {
-        bg: dark ? "#0B0C10" : "#F5F5F7",
-        surface: dark ? "rgba(25,26,35,0.7)" : "rgba(255,255,255,0.85)",
-        border: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.10)",
-        borderStrong: dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.18)",
-        textMain: dark ? "#FFFFFF" : "#111111",
-        textMuted: dark ? "#8B8D98" : "#666870",
+        bg: dark ? "#0B0C10" : "#FFFFFF",
+        surface: dark ? "rgba(25,26,35,0.7)" : "#FFFFFF",
+        border: dark ? "rgba(255,255,255,0.08)" : "#E4E4E7",
+        borderStrong: dark ? "rgba(255,255,255,0.15)" : "#D4D4D8",
+        textMain: dark ? "#FFFFFF" : "#09090B",
+        textMuted: dark ? "#8B8D98" : "#71717A",
         // Navbar: negro neutro fijo, independiente del modo claro/oscuro
-        navBg: "rgba(10,10,12,0.96)",
-        navText: "#FFFFFF",
-        navTextMuted: "rgba(255,255,255,0.62)",
-        navBorder: "rgba(255,255,255,0.10)",
-        navSurface: "rgba(255,255,255,0.07)",
+        navBg: dark ? "rgba(10,10,12,0.96)" : "rgba(255,255,255,0.9)",
+        navText: dark ? "#FFFFFF" : "#09090B",
+        navTextMuted: dark ? "rgba(255,255,255,0.62)" : "#71717A",
+        navBorder: dark ? "rgba(255,255,255,0.10)" : "#E4E4E7",
+        navSurface: dark ? "rgba(255,255,255,0.07)" : "#F4F4F5",
     }
 }
 
@@ -3666,7 +3666,7 @@ export default function TestScreen(props: {
     const accentColor = getAccent(testId)
     const limiteFree = PREMIUM_TESTS[testId] ?? null // null = sin límite
 
-    const [dark, setDark] = useState(true)
+    const [dark, setDark] = useState(false)
     const [sessionUser, setSessionUser] = useState<any>(null)
     const [sessionToken, setSessionToken] = useState<string | null>(null)
     const [numPreguntas, setNumPreguntas] = useState<number>(0)
