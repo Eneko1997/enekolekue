@@ -43,29 +43,6 @@ function Floaty({
     )
 }
 
-/* ───────────────────────── Chips de UI flotantes ───────────────────────── */
-function Chip({
-    children,
-    className = "",
-    dot = ACCENT,
-    delay = 0,
-}: {
-    children: React.ReactNode
-    className?: string
-    dot?: string
-    delay?: number
-}) {
-    return (
-        <div
-            className={`anim-pop absolute inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3.5 py-2 text-[13px] font-semibold text-zinc-700 shadow-lg shadow-zinc-900/5 ${className}`}
-            style={{ animationDelay: `${delay}ms` }}
-            aria-hidden
-        >
-            <span className="float-slow h-2 w-2 rounded-full" style={{ backgroundColor: dot }} />
-            {children}
-        </div>
-    )
-}
 
 /* ───────────────────────── Datos ───────────────────────── */
 const ESCALAS = [
