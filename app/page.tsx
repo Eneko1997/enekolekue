@@ -122,7 +122,7 @@ export default function HomePage() {
                     {/* Iconos 3D flotantes alrededor del titular (desktop) */}
                     <div className="pointer-events-none absolute inset-0 hidden md:block">
                         <div className="pointer-events-auto">
-                            <Floaty src="/icons3d/notebook-dyn.png" size={104} className="left-[-2%] top-[2%]" delay={120} />
+                            <Floaty src="/icons3d/notebook-clay.png" size={104} className="left-[-2%] top-[2%]" delay={120} />
                             <Floaty src="/icons3d/calender-dyn.png" size={78} className="left-[7%] top-[40%]" delay={300} />
                             <Floaty src="/icons3d/pencil-dyn.png" size={84} className="left-[-3%] top-[74%]" delay={480} />
                             <Floaty src="/icons3d/tick-dyn.png" size={104} className="right-[-2%] top-[4%]" delay={200} />
