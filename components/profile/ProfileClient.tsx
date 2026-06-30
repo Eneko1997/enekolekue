@@ -1660,7 +1660,9 @@ export default function PerfilOPE({
               )
             : 0
     const racha = calcularRacha(resultados)
-    const accentColor = SCALE_COLORS[escala] || accent
+    // Acento único de marca (esmeralda) en todo el perfil; el color de escala
+    // queda solo como etiqueta pequeña donde aplique.
+    const accentColor = "#10B981"
     const iniciales = (nombre || session?.user?.email || "OP")
         .substring(0, 2)
         .toUpperCase()

@@ -13,7 +13,7 @@ type Mode = "login" | "register" | "forgot"
 export default function AuthForm({ mode }: { mode: Mode }) {
     const router = useRouter()
     const params = useSearchParams()
-    const redirect = params.get("redirect") || "/"
+    const redirect = params.get("redirect") || "/dashboard"
 
     const [nombre, setNombre] = useState("")
     const [email, setEmail] = useState("")
@@ -96,12 +96,12 @@ export default function AuthForm({ mode }: { mode: Mode }) {
               : "Recuperar contraseña"
 
     return (
-        <div className="w-full max-w-[400px] rounded-2xl border border-white/15 bg-[#141520] p-8 sm:p-9">
+        <div className="w-full max-w-[400px] rounded-3xl border border-zinc-200 bg-white p-8 shadow-xl shadow-zinc-900/5 sm:p-9">
             <div className="mb-6 text-center">
-                <div className="mb-1 text-[22px] font-extrabold tracking-tight text-white">
+                <div className="mb-1 text-[22px] font-extrabold tracking-tight text-zinc-950">
                     gain<span style={{ color: BRAND_ACCENT }}>ditu</span>.
                 </div>
-                <div className="text-sm text-white/60">{title}</div>
+                <div className="text-sm text-zinc-500">{title}</div>
             </div>
 
             {mode !== "forgot" && (
@@ -110,15 +110,15 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                         type="button"
                         onClick={handleGoogle}
                         disabled={loading}
-                        className="mb-4 flex w-full items-center justify-center gap-2.5 rounded-[10px] border-[1.5px] border-white/10 bg-white/5 px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10 disabled:opacity-60"
+                        className="mb-4 flex w-full items-center justify-center gap-2.5 rounded-full border border-zinc-300 bg-white px-3 py-3 text-sm font-semibold text-zinc-800 transition-colors hover:bg-zinc-50 disabled:opacity-60"
                     >
                         <GoogleIcon />
                         {loading ? "Redirigiendo…" : "Continuar con Google"}
                     </button>
                     <div className="mb-4 flex items-center gap-3">
-                        <div className="h-px flex-1 bg-white/10" />
-                        <span className="text-xs text-white/50">o con email</span>
-                        <div className="h-px flex-1 bg-white/10" />
+                        <div className="h-px flex-1 bg-zinc-200" />
+                        <span className="text-xs text-zinc-400">o con email</span>
+                        <div className="h-px flex-1 bg-zinc-200" />
                     </div>
                 </>
             )}
@@ -131,7 +131,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                         value={nombre}
                         onChange={(e) => setNombre(e.target.value)}
                         required
-                        className="rounded-[10px] border border-white/10 bg-white/5 px-3.5 py-3 text-sm text-white placeholder:text-white/40 focus:border-white/30 focus:outline-none"
+                        className="rounded-xl border border-zinc-300 bg-white px-3.5 py-3 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none"
                     />
                 )}
                 <input
@@ -156,12 +156,12 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                                 ? "new-password"
                                 : "current-password"
                         }
-                        className="rounded-[10px] border border-white/10 bg-white/5 px-3.5 py-3 text-sm text-white placeholder:text-white/40 focus:border-white/30 focus:outline-none"
+                        className="rounded-xl border border-zinc-300 bg-white px-3.5 py-3 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none"
                     />
                 )}
 
                 {error && (
-                    <p className="text-[13px] text-red-400">{error}</p>
+                    <p className="text-[13px] text-red-500">{error}</p>
                 )}
                 {info && (
                     <p className="text-[13px]" style={{ color: "#22C55E" }}>
@@ -172,8 +172,8 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="mt-1 rounded-[10px] px-4 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
-                    style={{ backgroundColor: BRAND_ACCENT }}
+                    className="mt-1 rounded-full px-4 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.02] disabled:opacity-60"
+                    style={{ backgroundColor: "#18181B" }}
                 >
                     {loading
                         ? "Un momento…"
@@ -185,14 +185,14 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                 </button>
             </form>
 
-            <div className="mt-5 space-y-1.5 text-center text-[13px] text-white/55">
+            <div className="mt-5 space-y-1.5 text-center text-[13px] text-zinc-500">
                 {mode === "login" && (
                     <>
                         <p>
                             ¿No tienes cuenta?{" "}
                             <Link
                                 href="/signup"
-                                className="font-semibold text-white hover:underline"
+                                className="font-semibold text-zinc-950 hover:underline"
                             >
                                 Regístrate gratis
                             </Link>
@@ -200,7 +200,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                         <p>
                             <Link
                                 href="/recuperar"
-                                className="text-white/55 hover:text-white hover:underline"
+                                className="text-zinc-500 hover:text-zinc-950 hover:underline"
                             >
                                 ¿Olvidaste tu contraseña?
                             </Link>
@@ -212,7 +212,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                         ¿Ya tienes cuenta?{" "}
                         <Link
                             href="/login"
-                            className="font-semibold text-white hover:underline"
+                            className="font-semibold text-zinc-950 hover:underline"
                         >
                             Inicia sesión
                         </Link>
@@ -222,7 +222,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                     <p>
                         <Link
                             href="/login"
-                            className="font-semibold text-white hover:underline"
+                            className="font-semibold text-zinc-950 hover:underline"
                         >
                             ← Volver a iniciar sesión
                         </Link>

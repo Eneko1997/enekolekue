@@ -23,7 +23,6 @@ const NAV_LINKS = [
 ]
 
 const CUENTA_ITEMS = [
-    { label: "Mis tests", href: "/dashboard" },
     { label: "Mi progreso", href: "/perfil?tab=stats" },
     { label: "Mis exámenes", href: "/perfil?tab=examenes" },
     { label: "Ajustes", href: "/perfil?tab=ajustes" },
