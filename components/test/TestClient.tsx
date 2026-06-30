@@ -5,6 +5,8 @@ import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 import { createClient } from "@/lib/supabase/client"
+import LightNavbar from "@/components/site/LightNavbar"
+import SiteFooter from "@/components/site/SiteFooter"
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ougvtcmqmcutrexxrxvz.supabase.co")
 const SUPABASE_ANON_KEY = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_lfcfMDSYpIDWzy2CWufT_A_NfJbTimc")
@@ -265,17 +267,17 @@ const TITULOS: Record<string, string> = {
 // TEMA
 // ─────────────────────────────────────────────────────────────────────────────
 const c = {
-    bg: "#0B0C10",
-    surface: "rgba(25,26,35,0.7)",
-    surfaceHover: "rgba(255,255,255,0.04)",
-    border: "rgba(255,255,255,0.08)",
-    borderStrong: "rgba(255,255,255,0.15)",
-    accent: "#10B981", // color único de marca opobask
-    text: "#FFFFFF",
-    muted: "#8B8D98",
-    success: "#22C55E",
-    error: "#EF4444",
-    warning: "#F59E0B",
+    bg: "#FFFFFF",
+    surface: "#FFFFFF",
+    surfaceHover: "#FAFAFA",
+    border: "#E4E4E7",
+    borderStrong: "#D4D4D8",
+    accent: "#10B981", // color único de marca
+    text: "#09090B",
+    muted: "#71717A",
+    success: "#16A34A",
+    error: "#DC2626",
+    warning: "#D97706",
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -3999,21 +4001,7 @@ export default function TestScreen(props: {
                 transition: "background 0.2s",
             }}
         >
-            <SharedNavbar
-                accent={accentColor}
-                dark={dark}
-                onToggleDark={() => setDark((d) => !d)}
-                user={sessionUser}
-                onSignOut={handleSignOut}
-                onShowAuth={() => setShowRegister(true)}
-                mobileOpen={mobileMenuOpen}
-                setMobileOpen={setMobileMenuOpen}
-                isMobile={isMobile}
-                avatarOpen={avatarOpen}
-                setAvatarOpen={setAvatarOpen}
-                avatarRef={avatarRef}
-                homeUrl="/"
-            />
+            <LightNavbar />
 
             <AnimatePresence mode="wait">
                 {fase === "cargando" && (
@@ -4250,7 +4238,7 @@ export default function TestScreen(props: {
                 )}
             </AnimatePresence>
 
-            <SharedFooter dark={dark} accent={accentColor} />
+            <SiteFooter />
         </div>
     )
 }

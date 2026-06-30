@@ -5,6 +5,8 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 import { createClient } from "@/lib/supabase/client"
+import LightNavbar from "@/components/site/LightNavbar"
+import SiteFooter from "@/components/site/SiteFooter"
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ougvtcmqmcutrexxrxvz.supabase.co")
 const SUPABASE_ANON_KEY = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_lfcfMDSYpIDWzy2CWufT_A_NfJbTimc")
@@ -1614,18 +1616,7 @@ export default function PerfilOPE({
                     fontFamily: "Inter, system-ui, sans-serif",
                 }}
             >
-                <Navbar
-                    accent={accent}
-                    dark={dark}
-                    onToggleDark={() => setDark((d) => !d)}
-                    homeUrl={homeUrl}
-                    mobileOpen={mobileOpen}
-                    setMobileOpen={setMobileOpen}
-                    isMobile={isMobile}
-                    avatarOpen={avatarOpen}
-                    setAvatarOpen={setAvatarOpen}
-                    avatarRef={avatarRef}
-                />
+                <LightNavbar />
                 <div style={{ padding: "60px 20px", textAlign: "center" }}>
                     <div
                         style={{
@@ -1640,7 +1631,7 @@ export default function PerfilOPE({
                         Inicia sesión para ver tu progreso
                     </div>
                 </div>
-                <FooterHome dark={dark} accent={accent} />
+                <SiteFooter />
             </div>
         )
     }
@@ -1737,20 +1728,7 @@ export default function PerfilOPE({
                 boxSizing: "border-box",
             }}
         >
-            <Navbar
-                accent={accentColor}
-                dark={dark}
-                onToggleDark={() => setDark((d) => !d)}
-                homeUrl={homeUrl}
-                user={session?.user}
-                onSignOut={handleSignOut}
-                mobileOpen={mobileOpen}
-                setMobileOpen={setMobileOpen}
-                isMobile={isMobile}
-                avatarOpen={avatarOpen}
-                setAvatarOpen={setAvatarOpen}
-                avatarRef={avatarRef}
-            />
+            <LightNavbar />
 
             <div
                 style={{
@@ -3463,7 +3441,7 @@ export default function PerfilOPE({
                 )}
             </div>
 
-            <FooterHome dark={dark} accent={accentColor} />
+            <SiteFooter />
             <style
                 dangerouslySetInnerHTML={{
                     __html: `@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }`,

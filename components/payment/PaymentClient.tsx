@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { createClient } from "@/lib/supabase/client"
 import { useIsMobile } from "@/lib/use-is-mobile"
 import { SunIcon, MoonIcon, CheckIcon } from "@/components/icons"
+import LightNavbar from "@/components/site/LightNavbar"
+import SiteFooter from "@/components/site/SiteFooter"
 
 const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_live_51TjFCiJMIRLdIAQNCE42HQtsnlfvPkFsBNqovT0ayide74xAphiDiJOY2SlI8NrR6A6uL1yWK2nvjCMu7na7dENq00dizBLEaF"
 const CHECKOUT_FN = process.env.NEXT_PUBLIC_CHECKOUT_FN_NAME || "create-embedded-checkout"
@@ -140,74 +142,7 @@ export default function PaymentClient() {
                 boxSizing: "border-box",
             }}
         >
-            {/* NAVBAR */}
-            <nav
-                style={{
-                    position: "sticky",
-                    top: 0,
-                    zIndex: 100,
-                    backdropFilter: "blur(16px)",
-                    backgroundColor: navBg,
-                    borderBottom: "1px solid rgba(255,255,255,0.10)",
-                }}
-            >
-                <div
-                    style={{
-                        maxWidth: "900px",
-                        margin: "0 auto",
-                        padding: "0 24px",
-                        height: "56px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <Link
-                        href="/"
-                        style={{
-                            fontSize: "20px",
-                            fontWeight: 800,
-                            letterSpacing: "-0.5px",
-                            textDecoration: "none",
-                            color: "#FFFFFF",
-                        }}
-                    >
-                        gain<span style={{ color: "#E8E6E1" }}>ditu</span>.
-                    </Link>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <motion.button
-                            whileTap={{ scale: 0.92 }}
-                            onClick={() => setDark((d) => !d)}
-                            style={{
-                                background: "rgba(255,255,255,0.07)",
-                                border: "1px solid rgba(255,255,255,0.10)",
-                                borderRadius: "8px",
-                                padding: "6px 7px",
-                                cursor: "pointer",
-                                color: "rgba(255,255,255,0.62)",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            {dark ? <SunIcon /> : <MoonIcon />}
-                        </motion.button>
-                        <Link
-                            href="/"
-                            style={{
-                                padding: "6px 12px",
-                                borderRadius: "8px",
-                                border: "1px solid rgba(255,255,255,0.10)",
-                                color: "rgba(255,255,255,0.62)",
-                                fontSize: "12px",
-                                fontWeight: 600,
-                                textDecoration: "none",
-                            }}
-                        >
-                            ← Volver
-                        </Link>
-                    </div>
-                </div>
-            </nav>
+            <LightNavbar />
 
             {/* CONTENIDO */}
             <div
@@ -446,19 +381,7 @@ export default function PaymentClient() {
                 </motion.div>
             </div>
 
-            {/* FOOTER */}
-            <div style={{ borderTop: `1px solid ${border}`, padding: "18px 24px", textAlign: "center" }}>
-                <span style={{ fontSize: "12px", color: textMuted }}>
-                    © {new Date().getFullYear()} Gainditu ·{" "}
-                    <Link href="/privacidad" style={{ color: textMuted, textDecoration: "none" }}>
-                        Privacidad
-                    </Link>
-                    {" · "}
-                    <Link href="/aviso-legal" style={{ color: textMuted, textDecoration: "none" }}>
-                        Aviso legal
-                    </Link>
-                </span>
-            </div>
+            <SiteFooter />
         </div>
     )
 }
