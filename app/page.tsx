@@ -152,10 +152,7 @@ export default function HomePage() {
                             <Floaty src="/icons3d/folder-new-dyn.png" size={78} className="right-[9%] top-[42%]" delay={380} />
                             <Floaty src="/icons3d/copy-dyn.png" size={84} className="right-[-3%] top-[76%]" delay={560} />
                         </div>
-                        <Chip className="left-[13%] top-[24%]" delay={640}>Tema 7 · 92%</Chip>
-                        <Chip className="right-[12%] top-[26%]" delay={700}>30 preguntas</Chip>
-                        <Chip className="left-[6%] top-[92%]" dot="#18181B" delay={760}>Racha 12 días</Chip>
-                        <Chip className="right-[5%] top-[94%]" dot="#18181B" delay={820}>Simulacro IVAP</Chip>
+                        {/* Las líneas de los <Chip /> han sido eliminadas */}
                     </div>
 
                     {/* Núcleo del hero */}
