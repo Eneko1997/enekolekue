@@ -150,7 +150,7 @@ export default function HomePage() {
                             <Link href="/signup" className="inline-flex w-full items-center justify-center rounded-full bg-zinc-950 px-7 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03] sm:w-auto">Ver los test</Link>
                             <Link href="/dashboard" className="inline-flex w-full items-center justify-center rounded-full border border-zinc-300 bg-white px-7 py-3.5 text-[15px] font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 sm:w-auto">Examenes Oficiales</Link>
                         </div>
-                        <p className="anim-fade-up mt-4 text-[13px] text-zinc-400" style={{ animationDelay: "360ms" }}>Gratis para empezar · Sin tarjeta · Temario oficial </p>
+                        <p className="anim-fade-up mt-4 text-[13px] text-zinc-400" style={{ animationDelay: "360ms" }}>Empieza gratis · Temario oficial </p>
                     </div>
                 </div>
 
