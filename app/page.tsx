@@ -136,7 +136,7 @@ export default function HomePage() {
                     <div className="relative z-10 mx-auto max-w-3xl text-center">
                         <span className="anim-fade-up inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-wide text-zinc-500" style={{ animationDelay: "0ms" }}>
                             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: ACCENT }} />
-                            OPE Gobierno Vasco 2026 · IVAP
+                            Más de 500 opositores ya preparan su examen aquí
                         </span>
                         <h1 className="anim-fade-up mt-6 text-5xl font-extrabold leading-[1.02] tracking-tight text-zinc-950 sm:text-6xl md:text-7xl" style={{ animationDelay: "80ms" }}>
                             Aprueba tu plaza
@@ -147,10 +147,10 @@ export default function HomePage() {
                             La plataforma técnica para preparar tu oposición: tests por el temario oficial del IVAP, simulacros reales y tu progreso medido al detalle.
                         </p>
                         <div className="anim-fade-up mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row" style={{ animationDelay: "280ms" }}>
-                            <Link href="/signup" className="inline-flex w-full items-center justify-center rounded-full bg-zinc-950 px-7 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03] sm:w-auto">Empieza gratis</Link>
-                            <Link href="/dashboard" className="inline-flex w-full items-center justify-center rounded-full border border-zinc-300 bg-white px-7 py-3.5 text-[15px] font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 sm:w-auto">Ver los tests</Link>
+                            <Link href="/signup" className="inline-flex w-full items-center justify-center rounded-full bg-zinc-950 px-7 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03] sm:w-auto">Ver los test</Link>
+                            <Link href="/dashboard" className="inline-flex w-full items-center justify-center rounded-full border border-zinc-300 bg-white px-7 py-3.5 text-[15px] font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 sm:w-auto">Examenes Oficiales</Link>
                         </div>
-                        <p className="anim-fade-up mt-4 text-[13px] text-zinc-400" style={{ animationDelay: "360ms" }}>Gratis para empezar · Sin tarjeta · Temario oficial IVAP</p>
+                        <p className="anim-fade-up mt-4 text-[13px] text-zinc-400" style={{ animationDelay: "360ms" }}>Gratis para empezar · Sin tarjeta · Temario oficial </p>
                     </div>
                 </div>
 
