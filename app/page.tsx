@@ -136,7 +136,7 @@ export default function HomePage() {
                     <div className="relative z-10 mx-auto max-w-3xl text-center">
                         <span className="anim-fade-up inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-wide text-zinc-500" style={{ animationDelay: "0ms" }}>
                             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: ACCENT }} />
-                            Más de 500 opositores ya preparan su examen aquí
+                            +500 opositores ya preparan su examen aquí
                         </span>
                         <h1 className="anim-fade-up mt-6 text-5xl font-extrabold leading-[1.02] tracking-tight text-zinc-950 sm:text-6xl md:text-7xl" style={{ animationDelay: "80ms" }}>
                             Aprueba tu plaza
