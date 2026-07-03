@@ -88,6 +88,16 @@ const TESTIMONIOS = [
     { n: "María G.", e: "Administrativo C1", t: "Por fin un sitio que sigue el temario del IVAP de verdad. Las explicaciones de cada pregunta valen oro." },
     { n: "Iker A.", e: "Técnico Superior", t: "Los simulacros con penalización real me prepararon para el examen mucho mejor que cualquier PDF." },
     { n: "Nerea L.", e: "Personal de Apoyo", t: "Estudio desde el móvil en cualquier rato. Ver mi progreso por tema me mantiene enganchada." },
+    { n: "Jon E.", e: "Técnico de Gestión", t: "La vista por bloques me ayudó a ordenar el temario y saber exactamente qué me fallaba." },
+    { n: "Ainhoa R.", e: "Administrativo C1", t: "Las estadísticas por tema son adictivas. Repasar lo que llevo flojo es mucho más eficiente." },
+    { n: "Unai B.", e: "Personal de Apoyo", t: "Empecé gratis para probar y me quedé. Es justo lo que necesitaba para la OPE del Gobierno Vasco." },
+]
+
+// Profesores de ejemplo (MVP: fichas ilustrativas hasta tener altas reales)
+const PROFES = [
+    { n: "Ane M.", mat: "Derecho administrativo · Ley 39/2015", zona: "Bilbao · online", ini: "A" },
+    { n: "Gorka L.", mat: "Constitución y organización del Estado", zona: "Vitoria-Gasteiz", ini: "G" },
+    { n: "Leire S.", mat: "Euskera para oposiciones (perfil lingüístico)", zona: "Donostia · online", ini: "L" },
 ]
 
 const FAQS = [
@@ -132,10 +142,64 @@ function ProductPreview() {
     )
 }
 
+/* ── Tira marquee de academias: sticky abajo, acompaña dentro de su contenedor ── */
+const MARQUEE_ITEMS = [
+    "¿Tienes una academia de oposiciones?",
+    "Publicítala en Gainditu y llega a miles de opositores del Gobierno Vasco",
+    "Espacios destacados · Campañas a medida",
+    "Escríbenos a hola@gainditu.com",
+]
+function MarqueeGroup() {
+    return (
+        <div className="flex shrink-0 items-center">
+            {MARQUEE_ITEMS.map((t, i) => (
+                <span key={i} className="flex items-center whitespace-nowrap text-[13px] font-semibold">
+                    {t}
+                    <span className="mx-6" style={{ color: ACCENT }}>
+                        ●
+                    </span>
+                </span>
+            ))}
+        </div>
+    )
+}
+function AcademiaMarquee() {
+    return (
+        <div className="marquee-group sticky bottom-0 z-40">
+            <a
+                href="mailto:hola@gainditu.com?subject=Publicidad%20para%20academias"
+                className="flex items-center gap-4 border-t border-zinc-800 bg-zinc-950 px-4 py-3 text-white"
+            >
+                <span
+                    className="hidden shrink-0 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide sm:inline"
+                    style={{ background: ACCENT, color: "#052e21" }}
+                >
+                    Academias
+                </span>
+                <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
+                    <div className="animate-marquee flex w-max items-center">
+                        <MarqueeGroup />
+                        <MarqueeGroup />
+                    </div>
+                </div>
+                <span
+                    className="shrink-0 rounded-full px-3.5 py-1.5 text-[12px] font-semibold"
+                    style={{ background: ACCENT, color: "#052e21" }}
+                >
+                    Contactar →
+                </span>
+            </a>
+        </div>
+    )
+}
+
 export default function HomePage() {
     return (
         <div className="min-h-dvh bg-white text-zinc-950">
             <LightNavbar />
+
+            {/* CONTENEDOR STICKY: hero + premium + tests. El marquee acompaña abajo hasta el final de esta zona */}
+            <div className="relative">
 
             {/* ───────────── HERO ───────────── */}
             <section className="relative isolate overflow-hidden px-5 pb-20 pt-16 sm:pt-24">
@@ -203,75 +267,8 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* ───────────── POR ESCALA ───────────── */}
+            {/* ───────────── PREMIUM / COMUNIDAD (debajo del banner) ───────────── */}
             <section className="px-5 py-20">
-                <div className="mx-auto max-w-5xl">
-                    <Reveal>
-                        <h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Elige tu escala</h2>
-                        <p className="mt-3 max-w-2xl text-zinc-500">Cada escala con su temario completo: bloque común y específicos, en vista por bloques o temario oficial.</p>
-                    </Reveal>
-                    <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        {ESCALAS.map((e, i) => (
-                            <Reveal key={e.href} delay={i * 70}>
-                                <Link href={e.href} className="group flex items-center justify-between rounded-3xl border border-zinc-200 bg-white p-6 transition-all hover:border-zinc-300 hover:shadow-xl hover:shadow-zinc-900/5">
-                                    <div>
-                                        <div className="text-lg font-bold text-zinc-950">{e.label}</div>
-                                        <div className="mt-1 text-[13px] text-zinc-500">OPE Gobierno Vasco · Grupo {e.grupo}</div>
-                                    </div>
-                                    <span className="flex h-10 w-10 items-center justify-center rounded-full text-lg transition-all group-hover:translate-x-1" style={{ color: ACCENT }}>→</span>
-                                </Link>
-                            </Reveal>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ───────────── FEATURES ───────────── */}
-            <section className="border-t border-zinc-100 bg-zinc-50/60 px-5 py-20">
-                <div className="mx-auto max-w-5xl">
-                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Todo lo que necesitas para aprobar</h2></Reveal>
-                    <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {FEATURES.map((f, i) => (
-                            <Reveal key={f.t} delay={(i % 3) * 80}>
-                                <div className="h-full rounded-3xl border border-zinc-200 bg-white p-6">
-                                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: "linear-gradient(145deg, rgba(16,185,129,0.20), rgba(16,185,129,0.06))" }}>
-                                        <img src={f.icon} alt="" aria-hidden width={44} height={44} className="h-11 w-11 object-contain" loading="lazy" />
-                                    </div>
-                                    <h3 className="text-base font-bold text-zinc-950">{f.t}</h3>
-                                    <p className="mt-2 text-[14px] leading-relaxed text-zinc-500">{f.d}</p>
-                                </div>
-                            </Reveal>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ───────────── OPINIONES ───────────── */}
-            <section className="px-5 py-20">
-                <div className="mx-auto max-w-5xl">
-                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Lo que dicen los opositores</h2></Reveal>
-                    <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        {TESTIMONIOS.map((t, i) => (
-                            <Reveal key={t.n} delay={i * 80}>
-                                <figure className="flex h-full flex-col rounded-3xl border border-zinc-200 bg-white p-6">
-                                    <div className="mb-3 flex gap-0.5" style={{ color: ACCENT }} aria-hidden>{"★★★★★".split("").map((s, k) => (<span key={k}>{s}</span>))}</div>
-                                    <blockquote className="flex-1 text-[14px] leading-relaxed text-zinc-700">“{t.t}”</blockquote>
-                                    <figcaption className="mt-5 flex items-center gap-3">
-                                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-950 text-[13px] font-bold text-white">{t.n[0]}</span>
-                                        <span>
-                                            <span className="block text-[13px] font-bold text-zinc-950">{t.n}</span>
-                                            <span className="block text-[12px] text-zinc-400">{t.e}</span>
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </Reveal>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ───────────── PREMIUM / COMUNIDAD ───────────── */}
-            <section className="border-t border-zinc-100 bg-zinc-50/60 px-5 py-20">
                 <div className="mx-auto max-w-5xl">
                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                         <Reveal>
@@ -303,6 +300,109 @@ export default function HomePage() {
                 </div>
             </section>
 
+            {/* ───────────── POR ESCALA ───────────── */}
+            <section className="px-5 py-20">
+                <div className="mx-auto max-w-5xl">
+                    <Reveal>
+                        <h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Elige tu escala</h2>
+                        <p className="mt-3 max-w-2xl text-zinc-500">Cada escala con su temario completo: bloque común y específicos, en vista por bloques o temario oficial.</p>
+                    </Reveal>
+                    <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        {ESCALAS.map((e, i) => (
+                            <Reveal key={e.href} delay={i * 70}>
+                                <Link href={e.href} className="group flex items-center justify-between rounded-3xl border border-zinc-200 bg-white p-6 transition-all hover:border-zinc-300 hover:shadow-xl hover:shadow-zinc-900/5">
+                                    <div>
+                                        <div className="text-lg font-bold text-zinc-950">{e.label}</div>
+                                        <div className="mt-1 text-[13px] text-zinc-500">OPE Gobierno Vasco · Grupo {e.grupo}</div>
+                                    </div>
+                                    <span className="flex h-10 w-10 items-center justify-center rounded-full text-lg transition-all group-hover:translate-x-1" style={{ color: ACCENT }}>→</span>
+                                </Link>
+                            </Reveal>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+                {/* Tira de academias: pegada abajo, acompaña hasta aquí y se aparca */}
+                <AcademiaMarquee />
+            </div>
+            {/* fin contenedor sticky */}
+
+            {/* ───────────── FEATURES ───────────── */}
+            <section className="border-t border-zinc-100 bg-zinc-50/60 px-5 py-20">
+                <div className="mx-auto max-w-5xl">
+                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Todo lo que necesitas para aprobar</h2></Reveal>
+                    <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {FEATURES.map((f, i) => (
+                            <Reveal key={f.t} delay={(i % 3) * 80}>
+                                <div className="h-full rounded-3xl border border-zinc-200 bg-white p-6">
+                                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: "linear-gradient(145deg, rgba(16,185,129,0.20), rgba(16,185,129,0.06))" }}>
+                                        <img src={f.icon} alt="" aria-hidden width={44} height={44} className="h-11 w-11 object-contain" loading="lazy" />
+                                    </div>
+                                    <h3 className="text-base font-bold text-zinc-950">{f.t}</h3>
+                                    <p className="mt-2 text-[14px] leading-relaxed text-zinc-500">{f.d}</p>
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ───────────── OPINIONES (carrusel automático) ───────────── */}
+            <section className="overflow-hidden py-20">
+                <div className="px-5">
+                    <Reveal className="mx-auto max-w-5xl"><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Lo que dicen los opositores</h2></Reveal>
+                </div>
+                <div className="marquee-group relative mt-10 [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]">
+                    <div className="animate-marquee-slow flex w-max gap-4">
+                        {[...TESTIMONIOS, ...TESTIMONIOS].map((t, i) => (
+                            <figure key={i} className="flex w-[300px] shrink-0 flex-col rounded-3xl border border-zinc-200 bg-white p-6 sm:w-[360px]">
+                                <div className="mb-3 flex gap-0.5" style={{ color: ACCENT }} aria-hidden>{"★★★★★".split("").map((s, k) => (<span key={k}>{s}</span>))}</div>
+                                <blockquote className="flex-1 text-[14px] leading-relaxed text-zinc-700">“{t.t}”</blockquote>
+                                <figcaption className="mt-5 flex items-center gap-3">
+                                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-950 text-[13px] font-bold text-white">{t.n[0]}</span>
+                                    <span>
+                                        <span className="block text-[13px] font-bold text-zinc-950">{t.n}</span>
+                                        <span className="block text-[12px] text-zinc-400">{t.e}</span>
+                                    </span>
+                                </figcaption>
+                            </figure>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ───────────── PROFESORES ───────────── */}
+            <section className="border-t border-zinc-100 bg-zinc-50/60 px-5 py-20">
+                <div className="mx-auto max-w-5xl">
+                    <Reveal>
+                        <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-zinc-500">Clases particulares</span>
+                        <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Profesores para tu oposición</h2>
+                        <p className="mt-3 max-w-2xl text-zinc-500">¿Necesitas un empujón con algún bloque? Profesores particulares especializados en la OPE del Gobierno Vasco. Y si eres profe, anúnciate y llega a nuevos alumnos.</p>
+                    </Reveal>
+                    <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        {PROFES.map((p, i) => (
+                            <Reveal key={p.n} delay={i * 70}>
+                                <div className="flex h-full flex-col rounded-3xl border border-zinc-200 bg-white p-6">
+                                    <div className="flex items-center gap-3">
+                                        <span className="flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-bold text-white" style={{ background: `linear-gradient(145deg, #34D399, ${ACCENT})` }}>{p.ini}</span>
+                                        <div>
+                                            <div className="text-[15px] font-bold text-zinc-950">{p.n}</div>
+                                            <div className="text-[12px] text-zinc-400">{p.zona}</div>
+                                        </div>
+                                    </div>
+                                    <p className="mt-4 text-[14px] leading-relaxed text-zinc-600">{p.mat}</p>
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
+                    <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                        <Link href="/profesores" className="inline-flex items-center justify-center rounded-full bg-zinc-950 px-6 py-3 text-[14px] font-semibold text-white transition-transform hover:scale-[1.03]">Ver profesores →</Link>
+                        <a href="mailto:hola@gainditu.com?subject=Quiero%20anunciarme%20como%20profesor" className="inline-flex items-center justify-center rounded-full border border-zinc-300 bg-white px-6 py-3 text-[14px] font-semibold text-zinc-900 transition-colors hover:bg-zinc-50">Anúnciate como profesor</a>
+                    </div>
+                </div>
+            </section>
+
             {/* ───────────── RECURSOS ───────────── */}
             <section className="px-5 py-20">
                 <div className="mx-auto max-w-5xl">
@@ -322,19 +422,6 @@ export default function HomePage() {
                         ))}
                     </div>
                 </div>
-            </section>
-
-            {/* ───────────── ACADEMIAS ───────────── */}
-            <section className="px-5 pb-20">
-                <Reveal className="mx-auto max-w-5xl">
-                    <div className="flex flex-col items-start justify-between gap-6 rounded-3xl border border-zinc-200 bg-white p-8 sm:flex-row sm:items-center">
-                        <div>
-                            <h2 className="text-xl font-bold text-zinc-950">¿Tienes una academia de oposiciones?</h2>
-                            <p className="mt-2 max-w-xl text-[14px] text-zinc-500">Llega a miles de opositores del Gobierno Vasco anunciándote en Gainditu. Espacios destacados y campañas a medida.</p>
-                        </div>
-                        <a href="mailto:hola@gainditu.com?subject=Publicidad%20para%20academias" className="inline-flex shrink-0 items-center justify-center rounded-full border border-zinc-300 bg-white px-6 py-3 text-[14px] font-semibold text-zinc-900 transition-colors hover:bg-zinc-50">Contactar →</a>
-                    </div>
-                </Reveal>
             </section>
 
             {/* ───────────── FAQ ───────────── */}

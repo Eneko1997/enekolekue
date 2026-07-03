@@ -20,6 +20,7 @@ const NAV_LINKS = [
     { label: "Ley 39/2015", href: "/ley-39-2015" },
     { label: "Constitución", href: "/constitucion" },
     { label: "Fechas OPE", href: "/fechas-opes" },
+    { label: "Profesores", href: "/profesores" },
 ]
 
 const CUENTA_ITEMS = [

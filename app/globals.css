@@ -204,6 +204,26 @@ body {
   transform: translateY(0);
 }
 
+/* ── Marquee (texto/tarjetas en desplazamiento continuo) ── */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee-x 26s linear infinite;
+}
+.animate-marquee-slow {
+  animation: marquee-x 60s linear infinite;
+}
+.marquee-group:hover .animate-marquee,
+.marquee-group:hover .animate-marquee-slow {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -212,7 +232,9 @@ body {
   .hero-emerald,
   .float-slow,
   .anim-fade-up,
-  .anim-pop {
+  .anim-pop,
+  .animate-marquee,
+  .animate-marquee-slow {
     animation: none;
   }
   .anim-fade-up,

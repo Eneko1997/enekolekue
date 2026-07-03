@@ -11,6 +11,7 @@ const LINKS: [string, string][] = [
     ["Constitución", "/constitucion"],
     ["Ley 39/2015", "/ley-39-2015"],
     ["Fechas OPE", "/fechas-opes"],
+    ["Profesores", "/profesores"],
     ["Aviso legal", "/aviso-legal"],
     ["Privacidad", "/privacidad"],
 ]
