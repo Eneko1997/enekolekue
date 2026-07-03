@@ -19,15 +19,17 @@ function Floaty({
     size,
     className = "",
     delay = 0,
+    from = "left",
 }: {
     src: string
     size: number
     className?: string
     delay?: number
+    from?: "left" | "right"
 }) {
     return (
         <MagneticIcon
-            className={`anim-pop absolute ${className}`}
+            className={`${from === "left" ? "enter-left" : "enter-right"} absolute ${className}`}
             style={{ animationDelay: `${delay}ms` }}
         >
             <img
@@ -49,15 +51,17 @@ function Chip({
     className = "",
     dot = ACCENT,
     delay = 0,
+    from = "left",
 }: {
     children: React.ReactNode
     className?: string
     dot?: string
     delay?: number
+    from?: "left" | "right"
 }) {
     return (
         <div
-            className={`anim-pop absolute inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3.5 py-2 text-[13px] font-semibold text-zinc-700 shadow-lg shadow-zinc-900/5 ${className}`}
+            className={`${from === "left" ? "enter-left" : "enter-right"} absolute inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3.5 py-2 text-[13px] font-semibold text-zinc-700 shadow-lg shadow-zinc-900/5 ${className}`}
             style={{ animationDelay: `${delay}ms` }}
             aria-hidden
         >
@@ -206,20 +210,24 @@ export default function HomePage() {
                 <div className="hero-emerald" aria-hidden />
 
                 <div className="relative z-10 mx-auto max-w-5xl">
-                    {/* Iconos 3D flotantes alrededor del titular (desktop) */}
+                    {/* Constelación de iconos 3D + chips que caen desde los laterales (desktop) */}
                     <div className="pointer-events-none absolute inset-0 hidden md:block">
                         <div className="pointer-events-auto">
-                            <Floaty src="/icons3d/notebook-dyn.png" size={104} className="left-[-2%] top-[2%]" delay={120} />
-                            <Floaty src="/icons3d/calender-dyn.png" size={78} className="left-[9%] top-[40%]" delay={300} />
-                            <Floaty src="/icons3d/pencil-dyn.png" size={84} className="left-[-3%] top-[74%]" delay={480} />
-                            <Floaty src="/icons3d/tick-dyn.png" size={104} className="right-[-2%] top-[4%]" delay={200} />
-                            <Floaty src="/icons3d/folder-new-dyn.png" size={78} className="right-[9%] top-[42%]" delay={380} />
-                            <Floaty src="/icons3d/copy-dyn.png" size={84} className="right-[-3%] top-[76%]" delay={560} />
+                            <Floaty src="/icons3d/notebook-dyn.png" size={104} from="left" className="left-[-2%] top-[2%]" delay={500} />
+                            <Floaty src="/icons3d/calender-dyn.png" size={76} from="left" className="left-[8%] top-[40%]" delay={560} />
+                            <Floaty src="/icons3d/pencil-dyn.png" size={84} from="left" className="left-[-3%] top-[74%]" delay={620} />
+                            <Floaty src="/icons3d/tick-dyn.png" size={104} from="right" className="right-[-2%] top-[4%]" delay={530} />
+                            <Floaty src="/icons3d/folder-new-dyn.png" size={76} from="right" className="right-[8%] top-[42%]" delay={590} />
+                            <Floaty src="/icons3d/copy-dyn.png" size={84} from="right" className="right-[-3%] top-[76%]" delay={650} />
                         </div>
-                        <Chip className="left-[13%] top-[24%]" delay={640}>Tema 7 · 92%</Chip>
-                        <Chip className="right-[12%] top-[26%]" delay={700}>30 preguntas</Chip>
-                        <Chip className="left-[6%] top-[92%]" dot="#18181B" delay={760}>Racha 12 días</Chip>
-                        <Chip className="right-[5%] top-[94%]" dot="#18181B" delay={820}>Simulacro IVAP</Chip>
+                        <Chip from="left" className="left-[12%] top-[22%]" delay={640}>Tema 7 · 92%</Chip>
+                        <Chip from="left" className="left-[18%] top-[9%]" delay={880}>Ley 39/2015</Chip>
+                        <Chip from="left" className="left-[-1%] top-[57%]" delay={740}>Constitución ✓</Chip>
+                        <Chip from="left" className="left-[9%] top-[90%]" dot="#18181B" delay={800}>Racha 12 días</Chip>
+                        <Chip from="right" className="right-[11%] top-[24%]" delay={670}>30 preguntas</Chip>
+                        <Chip from="right" className="right-[17%] top-[11%]" delay={900}>Aprobado ✓</Chip>
+                        <Chip from="right" className="right-[-1%] top-[59%]" delay={770}>Nuevo récord 88%</Chip>
+                        <Chip from="right" className="right-[8%] top-[92%]" dot="#18181B" delay={830}>Simulacro IVAP</Chip>
                     </div>
 
                     {/* Núcleo del hero */}

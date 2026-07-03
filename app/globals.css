@@ -191,6 +191,42 @@ body {
   animation: pop-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* Entrada de los chips/iconos del hero: caen desde los laterales y asientan */
+@keyframes enter-from-left {
+  0% {
+    opacity: 0;
+    transform: translate(-160px, -34px) rotate(-9deg) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0) scale(1);
+  }
+}
+@keyframes enter-from-right {
+  0% {
+    opacity: 0;
+    transform: translate(160px, -34px) rotate(9deg) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0) scale(1);
+  }
+}
+.enter-left {
+  opacity: 0;
+  animation: enter-from-left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.enter-right {
+  opacity: 0;
+  animation: enter-from-right 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
 /* Reveal al hacer scroll (IntersectionObserver añade .in) */
 .reveal {
   opacity: 0;
@@ -233,9 +269,16 @@ body {
   .float-slow,
   .anim-fade-up,
   .anim-pop,
+  .enter-left,
+  .enter-right,
   .animate-marquee,
   .animate-marquee-slow {
     animation: none;
+  }
+  .enter-left,
+  .enter-right {
+    opacity: 1;
+    transform: none;
   }
   .anim-fade-up,
   .anim-pop {
