@@ -141,7 +141,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     autoComplete="email"
-                    className="rounded-[10px] border border-white/10 bg-white/5 px-3.5 py-3 text-sm text-white placeholder:text-white/40 focus:border-white/30 focus:outline-none"
+                    className="rounded-xl border border-zinc-300 bg-white px-3.5 py-3 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none"
                 />
                 {mode !== "forgot" && (
                     <input
