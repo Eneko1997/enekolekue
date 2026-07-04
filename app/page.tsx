@@ -169,26 +169,26 @@ function MarqueeGroup() {
 }
 function AcademiaMarquee() {
     return (
-        <div className="marquee-group sticky bottom-0 z-40">
+        <div className="sticky bottom-0 z-40 px-4 pb-4 sm:px-5">
             <a
                 href="mailto:hola@gainditu.com?subject=Publicidad%20para%20academias"
-                className="flex items-center gap-4 border-t border-zinc-800 bg-zinc-950 px-4 py-3 text-white"
+                className="marquee-group mx-auto flex max-w-5xl items-center gap-3 rounded-2xl border border-zinc-200/90 bg-white/85 px-3 py-2 text-zinc-600 shadow-lg shadow-zinc-900/5 backdrop-blur-md transition-colors hover:border-zinc-300"
             >
                 <span
-                    className="hidden shrink-0 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide sm:inline"
-                    style={{ background: ACCENT, color: "#052e21" }}
+                    className="hidden shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide sm:inline"
+                    style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}
                 >
                     Academias
                 </span>
-                <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
+                <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)]">
                     <div className="animate-marquee flex w-max items-center">
                         <MarqueeGroup />
                         <MarqueeGroup />
                     </div>
                 </div>
                 <span
-                    className="shrink-0 rounded-full px-3.5 py-1.5 text-[12px] font-semibold"
-                    style={{ background: ACCENT, color: "#052e21" }}
+                    className="shrink-0 rounded-full px-3.5 py-1.5 text-[12px] font-semibold text-white"
+                    style={{ background: ACCENT }}
                 >
                     Contactar →
                 </span>
@@ -357,12 +357,11 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── OPINIONES (carrusel automático) ───────────── */}
-            <section className="overflow-hidden py-20">
-                <div className="px-5">
-                    <Reveal className="mx-auto max-w-5xl"><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Lo que dicen los opositores</h2></Reveal>
-                </div>
-                <div className="marquee-group relative mt-10 [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]">
-                    <div className="animate-marquee-slow flex w-max gap-4">
+            <section className="py-20">
+                <div className="mx-auto max-w-5xl px-5">
+                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Lo que dicen los opositores</h2></Reveal>
+                    <div className="marquee-group relative mt-10 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]">
+                        <div className="animate-marquee-slow flex w-max gap-4">
                         {[...TESTIMONIOS, ...TESTIMONIOS].map((t, i) => (
                             <figure key={i} className="flex w-[300px] shrink-0 flex-col rounded-3xl border border-zinc-200 bg-white p-6 sm:w-[360px]">
                                 <div className="mb-3 flex gap-0.5" style={{ color: ACCENT }} aria-hidden>{"★★★★★".split("").map((s, k) => (<span key={k}>{s}</span>))}</div>
@@ -376,6 +375,7 @@ export default function HomePage() {
                                 </figcaption>
                             </figure>
                         ))}
+                        </div>
                     </div>
                 </div>
             </section>
