@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useSession } from "@/lib/supabase/use-session"
 import { createClient } from "@/lib/supabase/client"
@@ -53,9 +53,21 @@ function Chevron({ open }: { open: boolean }) {
     )
 }
 
+// Estilo de cada segmento de la píldora central
+function segCls(active: boolean) {
+    return `cursor-pointer rounded-full px-3.5 py-1.5 text-[13.5px] font-medium transition-colors ${
+        active
+            ? "bg-white text-zinc-950 shadow-sm shadow-zinc-900/5"
+            : "text-zinc-600 hover:text-zinc-900"
+    }`
+}
+
 export default function LightNavbar() {
     const { user, loading } = useSession()
     const router = useRouter()
+    const pathname = usePathname() || "/"
+    const testsActive =
+        pathname.startsWith("/oposiciones") || pathname === "/dashboard"
     const [open, setOpen] = useState(false)
     const [testsOpen, setTestsOpen] = useState(false)
     const [mobileTestsOpen, setMobileTestsOpen] = useState(false)
@@ -83,55 +95,57 @@ export default function LightNavbar() {
                     gain<span style={{ color: ACCENT }}>ditu</span>.
                 </Link>
 
-                {/* Links escritorio */}
-                <div className="hidden flex-1 items-center justify-center gap-1 md:flex">
-                    <div
-                        className="relative"
-                        onMouseEnter={() => setTestsOpen(true)}
-                        onMouseLeave={() => setTestsOpen(false)}
-                    >
-                        <button
-                            type="button"
-                            aria-expanded={testsOpen}
-                            aria-haspopup="true"
-                            onClick={() => setTestsOpen((v) => !v)}
-                            className="flex cursor-pointer items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-950"
+                {/* Píldora segmentada de navegación (escritorio) */}
+                <div className="hidden flex-1 items-center justify-center md:flex">
+                    <div className="flex items-center gap-0.5 rounded-full border border-zinc-200 bg-zinc-100/70 p-1">
+                        <div
+                            className="relative"
+                            onMouseEnter={() => setTestsOpen(true)}
+                            onMouseLeave={() => setTestsOpen(false)}
                         >
-                            Tests
-                            <Chevron open={testsOpen} />
-                        </button>
-                        <AnimatePresence>
-                            {testsOpen && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: -6 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -6 }}
-                                    transition={{ duration: 0.15 }}
-                                    className="absolute left-1/2 top-full z-50 mt-1 w-64 -translate-x-1/2 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-xl shadow-zinc-900/5"
-                                >
-                                    {TESTS_LINKS.map((l) => (
-                                        <Link
-                                            key={l.href}
-                                            href={l.href}
-                                            onClick={() => setTestsOpen(false)}
-                                            className="block rounded-xl px-3 py-2 text-[14px] font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-950"
-                                        >
-                                            Tests de {l.label}
-                                        </Link>
-                                    ))}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                            <button
+                                type="button"
+                                aria-expanded={testsOpen}
+                                aria-haspopup="true"
+                                onClick={() => setTestsOpen((v) => !v)}
+                                className={`flex items-center gap-1 ${segCls(testsActive)}`}
+                            >
+                                Tests
+                                <Chevron open={testsOpen} />
+                            </button>
+                            <AnimatePresence>
+                                {testsOpen && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -6 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -6 }}
+                                        transition={{ duration: 0.15 }}
+                                        className="absolute left-1/2 top-full z-50 mt-2 w-64 -translate-x-1/2 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-xl shadow-zinc-900/5"
+                                    >
+                                        {TESTS_LINKS.map((l) => (
+                                            <Link
+                                                key={l.href}
+                                                href={l.href}
+                                                onClick={() => setTestsOpen(false)}
+                                                className="block rounded-xl px-3 py-2 text-[14px] font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-950"
+                                            >
+                                                Tests de {l.label}
+                                            </Link>
+                                        ))}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                        {NAV_LINKS.map((l) => (
+                            <Link
+                                key={l.href}
+                                href={l.href}
+                                className={segCls(pathname === l.href)}
+                            >
+                                {l.label}
+                            </Link>
+                        ))}
                     </div>
-                    {NAV_LINKS.map((l) => (
-                        <Link
-                            key={l.href}
-                            href={l.href}
-                            className="rounded-full px-3.5 py-2 text-[14px] font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-950"
-                        >
-                            {l.label}
-                        </Link>
-                    ))}
                 </div>
 
                 {/* CTA escritorio */}
