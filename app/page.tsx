@@ -1,7 +1,7 @@
 import Link from "next/link"
 import type { Metadata } from "next"
 import LightNavbar from "@/components/site/LightNavbar"
-import MagneticIcon from "@/components/home/MagneticIcon"
+import VideoHero from "@/components/home/VideoHero"
 import Reveal from "@/components/home/Reveal"
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site"
 
@@ -12,64 +12,6 @@ export const metadata: Metadata = {
 }
 
 const ACCENT = "#10B981"
-
-/* ─────────── Icono 3D flotante (PNG 3dicons) con magnético + flotación ─────────── */
-function Floaty({
-    src,
-    size,
-    className = "",
-    delay = 0,
-    from = "left",
-}: {
-    src: string
-    size: number
-    className?: string
-    delay?: number
-    from?: "left" | "right"
-}) {
-    return (
-        <MagneticIcon
-            className={`${from === "left" ? "enter-left" : "enter-right"} absolute ${className}`}
-            style={{ animationDelay: `${delay}ms` }}
-        >
-            <img
-                src={src}
-                alt=""
-                aria-hidden
-                width={size}
-                height={size}
-                className="float-slow select-none drop-shadow-[0_12px_22px_rgba(15,23,42,0.22)]"
-                style={{ animationDelay: `${delay}ms` }}
-            />
-        </MagneticIcon>
-    )
-}
-
-/* ───────────────────────── Chips de UI flotantes ───────────────────────── */
-function Chip({
-    children,
-    className = "",
-    dot = ACCENT,
-    delay = 0,
-    from = "left",
-}: {
-    children: React.ReactNode
-    className?: string
-    dot?: string
-    delay?: number
-    from?: "left" | "right"
-}) {
-    return (
-        <div
-            className={`${from === "left" ? "enter-left" : "enter-right"} absolute inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 text-[13px] font-semibold text-zinc-700 dark:text-zinc-300 shadow-lg shadow-zinc-900/5 ${className}`}
-            style={{ animationDelay: `${delay}ms` }}
-            aria-hidden
-        >
-            <span className="float-slow h-2 w-2 rounded-full" style={{ backgroundColor: dot }} />
-            {children}
-        </div>
-    )
-}
 
 /* ───────────────────────── Datos ───────────────────────── */
 const ESCALAS = [
@@ -110,57 +52,6 @@ const FAQS = [
     { q: "¿Qué escalas y cuerpos cubrís?", a: "Personal de Apoyo, Administrativos, Técnicos de Gestión y Técnicos Superiores del Gobierno Vasco, con el bloque común (temas 1–14) y los específicos de cada escala." },
     { q: "¿Incluye la Constitución y la Ley 39/2015?", a: "Sí, además de tests específicos tienes páginas dedicadas a la Constitución Española y a la Ley 39/2015 del Procedimiento Administrativo Común." },
 ]
-
-function ProductPreview() {
-    return (
-        <div className="mx-auto max-w-2xl overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl shadow-zinc-900/10">
-            <div className="flex items-center gap-1.5 border-b border-zinc-100 dark:border-zinc-800/70 bg-zinc-50 dark:bg-zinc-900 px-4 py-3">
-                <span className="h-3 w-3 rounded-full bg-zinc-300 dark:bg-zinc-600" />
-                <span className="h-3 w-3 rounded-full bg-zinc-300 dark:bg-zinc-600" />
-                <span className="h-3 w-3 rounded-full bg-zinc-300 dark:bg-zinc-600" />
-                <span className="ml-3 text-[12px] font-medium text-zinc-400 dark:text-zinc-500">gainditu · Tema 7 — Capacidad de obrar e interesados</span>
-            </div>
-            <div className="p-6 text-left">
-                <div className="flex items-center justify-between text-[12px] font-semibold text-zinc-400 dark:text-zinc-500">
-                    <span>Pregunta 12 / 30</span>
-                    <span style={{ color: ACCENT }}>92% acierto</span>
-                </div>
-                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-                    <div className="h-full w-2/5 rounded-full" style={{ backgroundColor: ACCENT }} />
-                </div>
-                <p className="mt-5 text-[15px] font-semibold text-zinc-950 dark:text-zinc-50">¿Quién tiene capacidad de obrar ante las Administraciones Públicas según la Ley 39/2015?</p>
-                <div className="mt-4 space-y-2.5">
-                    {[
-                        { o: "A", t: "Solo las personas mayores de edad", ok: false },
-                        { o: "B", t: "Los menores para el ejercicio de derechos que les permita el ordenamiento", ok: true },
-                        { o: "C", t: "Únicamente las personas jurídicas", ok: false },
-                    ].map((op) => (
-                        <div
-                            key={op.o}
-                            className={`flex items-center gap-3 rounded-2xl border px-4 py-3 text-[14px] ${
-                                op.ok
-                                    ? "font-semibold text-emerald-800 dark:text-emerald-300"
-                                    : "border-zinc-200 text-zinc-600 dark:border-zinc-700 dark:text-zinc-300"
-                            }`}
-                            style={op.ok ? { borderColor: ACCENT, background: "rgba(16,185,129,0.10)" } : undefined}
-                        >
-                            <span
-                                className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[12px] font-bold ${
-                                    op.ok ? "text-white" : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
-                                }`}
-                                style={op.ok ? { background: ACCENT } : undefined}
-                            >
-                                {op.ok ? "✓" : op.o}
-                            </span>
-                            {op.t}
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    )
-}
-
 /* ── Tira marquee de academias: sticky abajo, acompaña dentro de su contenedor ── */
 const MARQUEE_ITEMS = [
     "¿Tienes una academia de oposiciones?",
@@ -220,58 +111,8 @@ export default function HomePage() {
             {/* CONTENEDOR STICKY: hero + premium + tests. El marquee acompaña abajo hasta el final de esta zona */}
             <div className="relative">
 
-            {/* ───────────── HERO ───────────── */}
-            <section className="relative isolate overflow-hidden px-5 pb-20 pt-16 sm:pt-24">
-                <div className="hero-emerald" aria-hidden />
-
-                <div className="relative z-10 mx-auto max-w-5xl">
-                    {/* Constelación de iconos 3D + chips que caen desde los laterales (desktop) */}
-                    <div className="pointer-events-none absolute inset-0 hidden md:block">
-                        <div className="pointer-events-auto">
-                            <Floaty src="/icons3d/notebook-dyn.png" size={104} from="left" className="left-[-2%] top-[2%]" delay={500} />
-                            <Floaty src="/icons3d/calender-dyn.png" size={76} from="left" className="left-[8%] top-[40%]" delay={560} />
-                            <Floaty src="/icons3d/pencil-dyn.png" size={84} from="left" className="left-[-3%] top-[74%]" delay={620} />
-                            <Floaty src="/icons3d/tick-dyn.png" size={104} from="right" className="right-[-2%] top-[4%]" delay={530} />
-                            <Floaty src="/icons3d/folder-new-dyn.png" size={76} from="right" className="right-[8%] top-[42%]" delay={590} />
-                            <Floaty src="/icons3d/copy-dyn.png" size={84} from="right" className="right-[-3%] top-[76%]" delay={650} />
-                        </div>
-                        <Chip from="left" className="left-[12%] top-[22%]" delay={640}>Tema 7 · 92%</Chip>
-                        <Chip from="left" className="left-[18%] top-[9%]" delay={880}>Ley 39/2015</Chip>
-                        <Chip from="left" className="left-[-1%] top-[57%]" delay={740}>Constitución ✓</Chip>
-                        <Chip from="left" className="left-[9%] top-[90%]" dot="#18181B" delay={800}>Racha 12 días</Chip>
-                        <Chip from="right" className="right-[11%] top-[24%]" delay={670}>30 preguntas</Chip>
-                        <Chip from="right" className="right-[17%] top-[11%]" delay={900}>Aprobado ✓</Chip>
-                        <Chip from="right" className="right-[-1%] top-[59%]" delay={770}>Nuevo récord 88%</Chip>
-                        <Chip from="right" className="right-[8%] top-[92%]" dot="#18181B" delay={830}>Simulacro IVAP</Chip>
-                    </div>
-
-                    {/* Núcleo del hero */}
-                    <div className="relative z-10 mx-auto max-w-3xl text-center">
-                        <span className="anim-fade-up inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400" style={{ animationDelay: "0ms" }}>
-                            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: ACCENT }} />
-                            OPE Gobierno Vasco 2026 · IVAP
-                        </span>
-                        <h1 className="anim-fade-up mt-6 text-5xl font-extrabold leading-[1.02] tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-6xl md:text-7xl" style={{ animationDelay: "80ms" }}>
-                            Aprueba tu plaza
-                            <br />
-                            en el Gobierno Vasco.
-                        </h1>
-                        <p className="anim-fade-up mx-auto mt-6 max-w-xl text-lg leading-relaxed text-zinc-500 dark:text-zinc-400" style={{ animationDelay: "180ms" }}>
-                            La plataforma técnica para preparar tu oposición: tests por el temario oficial del IVAP, simulacros reales y tu progreso medido al detalle.
-                        </p>
-                        <div className="anim-fade-up mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row" style={{ animationDelay: "280ms" }}>
-                            <Link href="/signup" className="inline-flex w-full items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 px-7 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03] sm:w-auto">Empieza gratis</Link>
-                            <Link href="/dashboard" className="inline-flex w-full items-center justify-center rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-7 py-3.5 text-[15px] font-semibold text-zinc-900 dark:text-zinc-100 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60 sm:w-auto">Ver los tests</Link>
-                        </div>
-                        <p className="anim-fade-up mt-4 text-[13px] text-zinc-400 dark:text-zinc-500" style={{ animationDelay: "360ms" }}>Gratis para empezar · Sin tarjeta · Temario oficial IVAP</p>
-                    </div>
-                </div>
-
-                {/* Preview del producto */}
-                <Reveal className="relative z-10 mt-16 px-1" delay={120}>
-                    <ProductPreview />
-                </Reveal>
-            </section>
+            {/* ───────────── HERO (vídeo full-screen + liquid glass) ───────────── */}
+            <VideoHero />
 
             {/* ───────────── STAT STRIP ───────────── */}
             <section className="border-y border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40">
