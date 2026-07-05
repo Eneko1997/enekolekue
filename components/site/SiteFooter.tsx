@@ -18,13 +18,13 @@ const LINKS: [string, string][] = [
 
 export default function SiteFooter() {
     return (
-        <footer className="border-t border-zinc-200 bg-white px-5 py-12">
+        <footer className="border-t border-zinc-200 bg-white px-5 py-12 dark:border-zinc-800 dark:bg-zinc-950">
             <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-8 sm:flex-row">
                 <div>
-                    <div className="text-xl font-extrabold tracking-tight text-zinc-950">
+                    <div className="text-xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
                         gain<span style={{ color: ACCENT }}>ditu</span>.
                     </div>
-                    <p className="mt-2 max-w-xs text-[13px] text-zinc-500">
+                    <p className="mt-2 max-w-xs text-[13px] text-zinc-500 dark:text-zinc-400">
                         Tests por temario oficial del IVAP para la OPE del Gobierno
                         Vasco 2026.
                     </p>
@@ -34,14 +34,14 @@ export default function SiteFooter() {
                         <Link
                             key={h}
                             href={h}
-                            className="text-zinc-500 transition-colors hover:text-zinc-950"
+                            className="text-zinc-500 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
                         >
                             {l}
                         </Link>
                     ))}
                 </div>
             </div>
-            <div className="mx-auto mt-10 max-w-5xl border-t border-zinc-100 pt-6 text-[12px] text-zinc-400">
+            <div className="mx-auto mt-10 max-w-5xl border-t border-zinc-100 pt-6 text-[12px] text-zinc-400 dark:border-zinc-800/70 dark:text-zinc-500">
                 © {new Date().getFullYear()} {SITE_NAME}. No oficial; sin relación con
                 el IVAP ni el Gobierno Vasco.
             </div>

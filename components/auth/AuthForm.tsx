@@ -96,12 +96,12 @@ export default function AuthForm({ mode }: { mode: Mode }) {
               : "Recuperar contraseña"
 
     return (
-        <div className="w-full max-w-[400px] rounded-3xl border border-zinc-200 bg-white p-8 shadow-xl shadow-zinc-900/5 sm:p-9">
+        <div className="w-full max-w-[400px] rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8 shadow-xl shadow-zinc-900/5 sm:p-9">
             <div className="mb-6 text-center">
-                <div className="mb-1 text-[22px] font-extrabold tracking-tight text-zinc-950">
+                <div className="mb-1 text-[22px] font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">
                     gain<span style={{ color: BRAND_ACCENT }}>ditu</span>.
                 </div>
-                <div className="text-sm text-zinc-500">{title}</div>
+                <div className="text-sm text-zinc-500 dark:text-zinc-400">{title}</div>
             </div>
 
             {mode !== "forgot" && (
@@ -110,15 +110,15 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                         type="button"
                         onClick={handleGoogle}
                         disabled={loading}
-                        className="mb-4 flex w-full items-center justify-center gap-2.5 rounded-full border border-zinc-300 bg-white px-3 py-3 text-sm font-semibold text-zinc-800 transition-colors hover:bg-zinc-50 disabled:opacity-60"
+                        className="mb-4 flex w-full items-center justify-center gap-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-3 text-sm font-semibold text-zinc-800 dark:text-zinc-200 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60 disabled:opacity-60"
                     >
                         <GoogleIcon />
                         {loading ? "Redirigiendo…" : "Continuar con Google"}
                     </button>
                     <div className="mb-4 flex items-center gap-3">
-                        <div className="h-px flex-1 bg-zinc-200" />
-                        <span className="text-xs text-zinc-400">o con email</span>
-                        <div className="h-px flex-1 bg-zinc-200" />
+                        <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
+                        <span className="text-xs text-zinc-400 dark:text-zinc-500">o con email</span>
+                        <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
                     </div>
                 </>
             )}
@@ -131,7 +131,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                         value={nombre}
                         onChange={(e) => setNombre(e.target.value)}
                         required
-                        className="rounded-xl border border-zinc-300 bg-white px-3.5 py-3 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none"
+                        className="rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3.5 py-3 text-sm text-zinc-950 dark:text-zinc-50 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-zinc-900 dark:focus:border-zinc-300 focus:outline-none"
                     />
                 )}
                 <input
@@ -141,7 +141,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     autoComplete="email"
-                    className="rounded-xl border border-zinc-300 bg-white px-3.5 py-3 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none"
+                    className="rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3.5 py-3 text-sm text-zinc-950 dark:text-zinc-50 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-zinc-900 dark:focus:border-zinc-300 focus:outline-none"
                 />
                 {mode !== "forgot" && (
                     <input
@@ -156,7 +156,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                                 ? "new-password"
                                 : "current-password"
                         }
-                        className="rounded-xl border border-zinc-300 bg-white px-3.5 py-3 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none"
+                        className="rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3.5 py-3 text-sm text-zinc-950 dark:text-zinc-50 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-zinc-900 dark:focus:border-zinc-300 focus:outline-none"
                     />
                 )}
 
@@ -172,8 +172,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="mt-1 rounded-full px-4 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.02] disabled:opacity-60"
-                    style={{ backgroundColor: "#18181B" }}
+                    className="mt-1 rounded-full bg-zinc-950 px-4 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.02] disabled:opacity-60 dark:bg-white dark:text-zinc-950"
                 >
                     {loading
                         ? "Un momento…"
@@ -185,14 +184,14 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                 </button>
             </form>
 
-            <div className="mt-5 space-y-1.5 text-center text-[13px] text-zinc-500">
+            <div className="mt-5 space-y-1.5 text-center text-[13px] text-zinc-500 dark:text-zinc-400">
                 {mode === "login" && (
                     <>
                         <p>
                             ¿No tienes cuenta?{" "}
                             <Link
                                 href="/signup"
-                                className="font-semibold text-zinc-950 hover:underline"
+                                className="font-semibold text-zinc-950 dark:text-zinc-50 hover:underline"
                             >
                                 Regístrate gratis
                             </Link>
@@ -200,7 +199,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                         <p>
                             <Link
                                 href="/recuperar"
-                                className="text-zinc-500 hover:text-zinc-950 hover:underline"
+                                className="text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:underline"
                             >
                                 ¿Olvidaste tu contraseña?
                             </Link>
@@ -212,7 +211,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                         ¿Ya tienes cuenta?{" "}
                         <Link
                             href="/login"
-                            className="font-semibold text-zinc-950 hover:underline"
+                            className="font-semibold text-zinc-950 dark:text-zinc-50 hover:underline"
                         >
                             Inicia sesión
                         </Link>
@@ -222,7 +221,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                     <p>
                         <Link
                             href="/login"
-                            className="font-semibold text-zinc-950 hover:underline"
+                            className="font-semibold text-zinc-950 dark:text-zinc-50 hover:underline"
                         >
                             ← Volver a iniciar sesión
                         </Link>

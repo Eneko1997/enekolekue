@@ -55,14 +55,20 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     return (
-        <html lang="es" className={`${inter.variable} h-full antialiased`}>
-            <body className="min-h-full flex flex-col">
-                <div className="aurora-bg" aria-hidden />
-                <div className="spotlight" aria-hidden />
-                <div className="aurora-veil" aria-hidden />
-                <div className="grain" aria-hidden />
-                {children}
-            </body>
+        <html
+            lang="es"
+            className={`${inter.variable} h-full antialiased`}
+            suppressHydrationWarning
+        >
+            <head>
+                {/* Aplica el tema guardado antes de pintar (evita parpadeo) */}
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}`,
+                    }}
+                />
+            </head>
+            <body className="min-h-full flex flex-col">{children}</body>
         </html>
     )
 }

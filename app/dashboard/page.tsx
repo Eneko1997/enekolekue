@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 // El catálogo de tests (antes en la home). La home pasa a ser una landing de marketing.
 export default function DashboardPage() {
     return (
-        <div className="flex min-h-dvh flex-col bg-white text-zinc-950">
+        <div className="flex min-h-dvh flex-col bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50">
             <LightNavbar />
             <div className="flex-1">
                 <DashboardClient />

@@ -62,6 +62,7 @@ function useIsMobile(containerRef: React.RefObject<HTMLElement | null>) {
 }
 
 import { createClient } from "@/lib/supabase/client"
+import { useTheme } from "@/lib/use-theme"
 import { translateAuthError } from "@/lib/auth-errors"
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ougvtcmqmcutrexxrxvz.supabase.co")
@@ -2146,7 +2147,7 @@ export default function DashboardOPE(props: {
     const [authLoading, setAuthLoading] = useState(true)
     const [showAuth, setShowAuth] = useState(false)
     const [progress, setProgress] = useState<Record<string, any>>({})
-    const [dark, setDark] = useState(false)
+    const { dark } = useTheme()
     const [search, setSearch] = useState("")
     const [vista, setVista] = useState<"bloques" | "oficial">("bloques")
     const [showPremium, setShowPremium] = useState(false)

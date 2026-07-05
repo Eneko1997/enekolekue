@@ -10,7 +10,7 @@ export default function SiteLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="flex min-h-dvh flex-col bg-white text-zinc-950">
+        <div className="flex min-h-dvh flex-col bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50">
             <LightNavbar />
             <div className="flex-1">{children}</div>
             <SiteFooter />

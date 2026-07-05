@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { createClient } from "@/lib/supabase/client"
+import { useTheme } from "@/lib/use-theme"
 import { BRAND_ACCENT } from "@/lib/theme"
 
 export interface TemaTest {
@@ -43,6 +44,7 @@ export default function TemaTests({
     accent?: string
 }) {
     const [progress, setProgress] = useState<Record<string, any>>({})
+    const { dark } = useTheme()
 
     useEffect(() => {
         const supabase = createClient()
@@ -81,8 +83,8 @@ export default function TemaTests({
                         whileHover={{ scale: 1.015 }}
                         whileTap={{ scale: 0.98 }}
                         style={{
-                            background: "#FFFFFF",
-                            border: "1px solid #E4E4E7",
+                            background: dark ? "#18181B" : "#FFFFFF",
+                            border: `1px solid ${dark ? "#27272A" : "#E4E4E7"}`,
                             borderRadius: "16px",
                             padding: "16px",
                             boxShadow: "0 1px 2px rgba(9,9,11,0.04)",
@@ -128,7 +130,7 @@ export default function TemaTests({
                                 fontSize: "13px",
                                 fontWeight: 600,
                                 lineHeight: 1.4,
-                                color: "#09090B",
+                                color: dark ? "#FAFAFA" : "#09090B",
                             }}
                         >
                             {test.titulo}
@@ -143,8 +145,8 @@ export default function TemaTests({
                             <span
                                 style={{
                                     fontSize: "11px",
-                                    color: "#71717A",
-                                    background: "#F4F4F5",
+                                    color: dark ? "#A1A1AA" : "#71717A",
+                                    background: dark ? "#27272A" : "#F4F4F5",
                                     padding: "2px 8px",
                                     borderRadius: "100px",
                                 }}

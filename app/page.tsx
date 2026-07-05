@@ -61,7 +61,7 @@ function Chip({
 }) {
     return (
         <div
-            className={`${from === "left" ? "enter-left" : "enter-right"} absolute inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3.5 py-2 text-[13px] font-semibold text-zinc-700 shadow-lg shadow-zinc-900/5 ${className}`}
+            className={`${from === "left" ? "enter-left" : "enter-right"} absolute inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2 text-[13px] font-semibold text-zinc-700 dark:text-zinc-300 shadow-lg shadow-zinc-900/5 ${className}`}
             style={{ animationDelay: `${delay}ms` }}
             aria-hidden
         >
@@ -113,30 +113,45 @@ const FAQS = [
 
 function ProductPreview() {
     return (
-        <div className="mx-auto max-w-2xl overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-2xl shadow-zinc-900/10">
-            <div className="flex items-center gap-1.5 border-b border-zinc-100 bg-zinc-50 px-4 py-3">
-                <span className="h-3 w-3 rounded-full bg-zinc-300" />
-                <span className="h-3 w-3 rounded-full bg-zinc-300" />
-                <span className="h-3 w-3 rounded-full bg-zinc-300" />
-                <span className="ml-3 text-[12px] font-medium text-zinc-400">gainditu · Tema 7 — Capacidad de obrar e interesados</span>
+        <div className="mx-auto max-w-2xl overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl shadow-zinc-900/10">
+            <div className="flex items-center gap-1.5 border-b border-zinc-100 dark:border-zinc-800/70 bg-zinc-50 dark:bg-zinc-900 px-4 py-3">
+                <span className="h-3 w-3 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+                <span className="h-3 w-3 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+                <span className="h-3 w-3 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+                <span className="ml-3 text-[12px] font-medium text-zinc-400 dark:text-zinc-500">gainditu · Tema 7 — Capacidad de obrar e interesados</span>
             </div>
             <div className="p-6 text-left">
-                <div className="flex items-center justify-between text-[12px] font-semibold text-zinc-400">
+                <div className="flex items-center justify-between text-[12px] font-semibold text-zinc-400 dark:text-zinc-500">
                     <span>Pregunta 12 / 30</span>
                     <span style={{ color: ACCENT }}>92% acierto</span>
                 </div>
-                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
+                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
                     <div className="h-full w-2/5 rounded-full" style={{ backgroundColor: ACCENT }} />
                 </div>
-                <p className="mt-5 text-[15px] font-semibold text-zinc-950">¿Quién tiene capacidad de obrar ante las Administraciones Públicas según la Ley 39/2015?</p>
+                <p className="mt-5 text-[15px] font-semibold text-zinc-950 dark:text-zinc-50">¿Quién tiene capacidad de obrar ante las Administraciones Públicas según la Ley 39/2015?</p>
                 <div className="mt-4 space-y-2.5">
                     {[
                         { o: "A", t: "Solo las personas mayores de edad", ok: false },
                         { o: "B", t: "Los menores para el ejercicio de derechos que les permita el ordenamiento", ok: true },
                         { o: "C", t: "Únicamente las personas jurídicas", ok: false },
                     ].map((op) => (
-                        <div key={op.o} className="flex items-center gap-3 rounded-2xl border px-4 py-3 text-[14px]" style={op.ok ? { borderColor: ACCENT, background: "rgba(16,185,129,0.08)", color: "#065F46", fontWeight: 600 } : { borderColor: "#E4E4E7", color: "#52525B" }}>
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[12px] font-bold" style={op.ok ? { background: ACCENT, color: "#fff" } : { background: "#F4F4F5", color: "#71717A" }}>{op.ok ? "✓" : op.o}</span>
+                        <div
+                            key={op.o}
+                            className={`flex items-center gap-3 rounded-2xl border px-4 py-3 text-[14px] ${
+                                op.ok
+                                    ? "font-semibold text-emerald-800 dark:text-emerald-300"
+                                    : "border-zinc-200 text-zinc-600 dark:border-zinc-700 dark:text-zinc-300"
+                            }`}
+                            style={op.ok ? { borderColor: ACCENT, background: "rgba(16,185,129,0.10)" } : undefined}
+                        >
+                            <span
+                                className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[12px] font-bold ${
+                                    op.ok ? "text-white" : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
+                                }`}
+                                style={op.ok ? { background: ACCENT } : undefined}
+                            >
+                                {op.ok ? "✓" : op.o}
+                            </span>
                             {op.t}
                         </div>
                     ))}
@@ -172,7 +187,7 @@ function AcademiaMarquee() {
         <div className="sticky bottom-0 z-40 px-4 pb-4 sm:px-5">
             <a
                 href="mailto:hola@gainditu.com?subject=Publicidad%20para%20academias"
-                className="marquee-group mx-auto flex max-w-5xl items-center gap-3 rounded-2xl border border-zinc-200/90 bg-white/85 px-3 py-2 text-zinc-600 shadow-lg shadow-zinc-900/5 backdrop-blur-md transition-colors hover:border-zinc-300"
+                className="marquee-group mx-auto flex max-w-5xl items-center gap-3 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white/85 dark:bg-zinc-900/85 px-3 py-2 text-zinc-600 dark:text-zinc-300 shadow-lg shadow-zinc-900/5 backdrop-blur-md transition-colors hover:border-zinc-300 dark:hover:border-zinc-700"
             >
                 <span
                     className="hidden shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide sm:inline"
@@ -199,7 +214,7 @@ function AcademiaMarquee() {
 
 export default function HomePage() {
     return (
-        <div className="min-h-dvh bg-white text-zinc-950">
+        <div className="min-h-dvh bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50">
             <LightNavbar />
 
             {/* CONTENEDOR STICKY: hero + premium + tests. El marquee acompaña abajo hasta el final de esta zona */}
@@ -232,23 +247,23 @@ export default function HomePage() {
 
                     {/* Núcleo del hero */}
                     <div className="relative z-10 mx-auto max-w-3xl text-center">
-                        <span className="anim-fade-up inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-wide text-zinc-500" style={{ animationDelay: "0ms" }}>
+                        <span className="anim-fade-up inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400" style={{ animationDelay: "0ms" }}>
                             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: ACCENT }} />
                             OPE Gobierno Vasco 2026 · IVAP
                         </span>
-                        <h1 className="anim-fade-up mt-6 text-5xl font-extrabold leading-[1.02] tracking-tight text-zinc-950 sm:text-6xl md:text-7xl" style={{ animationDelay: "80ms" }}>
+                        <h1 className="anim-fade-up mt-6 text-5xl font-extrabold leading-[1.02] tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-6xl md:text-7xl" style={{ animationDelay: "80ms" }}>
                             Aprueba tu plaza
                             <br />
                             en el Gobierno Vasco.
                         </h1>
-                        <p className="anim-fade-up mx-auto mt-6 max-w-xl text-lg leading-relaxed text-zinc-500" style={{ animationDelay: "180ms" }}>
+                        <p className="anim-fade-up mx-auto mt-6 max-w-xl text-lg leading-relaxed text-zinc-500 dark:text-zinc-400" style={{ animationDelay: "180ms" }}>
                             La plataforma técnica para preparar tu oposición: tests por el temario oficial del IVAP, simulacros reales y tu progreso medido al detalle.
                         </p>
                         <div className="anim-fade-up mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row" style={{ animationDelay: "280ms" }}>
-                            <Link href="/signup" className="inline-flex w-full items-center justify-center rounded-full bg-zinc-950 px-7 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03] sm:w-auto">Empieza gratis</Link>
-                            <Link href="/dashboard" className="inline-flex w-full items-center justify-center rounded-full border border-zinc-300 bg-white px-7 py-3.5 text-[15px] font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 sm:w-auto">Ver los tests</Link>
+                            <Link href="/signup" className="inline-flex w-full items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 px-7 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03] sm:w-auto">Empieza gratis</Link>
+                            <Link href="/dashboard" className="inline-flex w-full items-center justify-center rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-7 py-3.5 text-[15px] font-semibold text-zinc-900 dark:text-zinc-100 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60 sm:w-auto">Ver los tests</Link>
                         </div>
-                        <p className="anim-fade-up mt-4 text-[13px] text-zinc-400" style={{ animationDelay: "360ms" }}>Gratis para empezar · Sin tarjeta · Temario oficial IVAP</p>
+                        <p className="anim-fade-up mt-4 text-[13px] text-zinc-400 dark:text-zinc-500" style={{ animationDelay: "360ms" }}>Gratis para empezar · Sin tarjeta · Temario oficial IVAP</p>
                     </div>
                 </div>
 
@@ -259,7 +274,7 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── STAT STRIP ───────────── */}
-            <section className="border-y border-zinc-100 bg-zinc-50/60">
+            <section className="border-y border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40">
                 <div className="mx-auto grid max-w-5xl grid-cols-2 gap-px sm:grid-cols-4">
                     {[
                         { n: "4", l: "escalas" },
@@ -268,8 +283,8 @@ export default function HomePage() {
                         { n: "2026", l: "convocatoria" },
                     ].map((s, i) => (
                         <Reveal key={s.l} className="px-5 py-7 text-center" delay={i * 80}>
-                            <div className="text-3xl font-extrabold tracking-tight text-zinc-950">{s.n}</div>
-                            <div className="mt-1 text-[13px] font-medium text-zinc-500">{s.l}</div>
+                            <div className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">{s.n}</div>
+                            <div className="mt-1 text-[13px] font-medium text-zinc-500 dark:text-zinc-400">{s.l}</div>
                         </Reveal>
                     ))}
                 </div>
@@ -280,12 +295,12 @@ export default function HomePage() {
                 <div className="mx-auto max-w-5xl">
                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                         <Reveal>
-                            <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-zinc-500">Premium</span>
-                            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Desbloquea todo y entra en la comunidad</h2>
-                            <p className="mt-3 text-zinc-500">Empieza gratis y, cuando quieras dar el salto, accede a todo el material avanzado con un único pago. Sin suscripción.</p>
+                            <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Premium</span>
+                            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Desbloquea todo y entra en la comunidad</h2>
+                            <p className="mt-3 text-zinc-500 dark:text-zinc-400">Empieza gratis y, cuando quieras dar el salto, accede a todo el material avanzado con un único pago. Sin suscripción.</p>
                             <ul className="mt-6 space-y-3">
                                 {["Exámenes oficiales de convocatorias anteriores", "Simulacros con penalización real del IVAP", "Estadísticas avanzadas y seguimiento por tema", "Comunidad de opositores y novedades de la OPE"].map((b) => (
-                                    <li key={b} className="flex items-start gap-3 text-[15px] text-zinc-700">
+                                    <li key={b} className="flex items-start gap-3 text-[15px] text-zinc-700 dark:text-zinc-300">
                                         <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[12px] font-bold text-white" style={{ backgroundColor: ACCENT }}>✓</span>
                                         {b}
                                     </li>
@@ -293,15 +308,15 @@ export default function HomePage() {
                             </ul>
                         </Reveal>
                         <Reveal delay={120}>
-                            <div className="flex flex-col justify-center rounded-3xl border border-zinc-200 bg-white p-8">
-                                <div className="text-[13px] font-semibold uppercase tracking-wide text-zinc-400">Acceso completo</div>
+                            <div className="flex flex-col justify-center rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8">
+                                <div className="text-[13px] font-semibold uppercase tracking-wide text-zinc-400 dark:text-zinc-500">Acceso completo</div>
                                 <div className="mt-2 flex items-end gap-2">
-                                    <span className="text-5xl font-extrabold tracking-tight text-zinc-950">24,99€</span>
-                                    <span className="mb-1.5 text-[14px] text-zinc-400 line-through">40€</span>
+                                    <span className="text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">24,99€</span>
+                                    <span className="mb-1.5 text-[14px] text-zinc-400 dark:text-zinc-500 line-through">40€</span>
                                 </div>
-                                <div className="mt-1 text-[14px] text-zinc-500">Pago único · Acceso de por vida</div>
-                                <Link href="/payment" className="mt-6 inline-flex items-center justify-center rounded-full bg-zinc-950 px-6 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03]">Conseguir acceso</Link>
-                                <Link href="/signup" className="mt-3 text-center text-[13px] font-medium text-zinc-500 hover:text-zinc-900">o empieza gratis →</Link>
+                                <div className="mt-1 text-[14px] text-zinc-500 dark:text-zinc-400">Pago único · Acceso de por vida</div>
+                                <Link href="/payment" className="mt-6 inline-flex items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 px-6 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03]">Conseguir acceso</Link>
+                                <Link href="/signup" className="mt-3 text-center text-[13px] font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900">o empieza gratis →</Link>
                             </div>
                         </Reveal>
                     </div>
@@ -312,16 +327,16 @@ export default function HomePage() {
             <section className="px-5 py-20">
                 <div className="mx-auto max-w-5xl">
                     <Reveal>
-                        <h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Elige tu escala</h2>
-                        <p className="mt-3 max-w-2xl text-zinc-500">Cada escala con su temario completo: bloque común y específicos, en vista por bloques o temario oficial.</p>
+                        <h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Elige tu escala</h2>
+                        <p className="mt-3 max-w-2xl text-zinc-500 dark:text-zinc-400">Cada escala con su temario completo: bloque común y específicos, en vista por bloques o temario oficial.</p>
                     </Reveal>
                     <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
                         {ESCALAS.map((e, i) => (
                             <Reveal key={e.href} delay={i * 70}>
-                                <Link href={e.href} className="group flex items-center justify-between rounded-3xl border border-zinc-200 bg-white p-6 transition-all hover:border-zinc-300 hover:shadow-xl hover:shadow-zinc-900/5">
+                                <Link href={e.href} className="group flex items-center justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 transition-all hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-xl hover:shadow-zinc-900/5">
                                     <div>
-                                        <div className="text-lg font-bold text-zinc-950">{e.label}</div>
-                                        <div className="mt-1 text-[13px] text-zinc-500">OPE Gobierno Vasco · Grupo {e.grupo}</div>
+                                        <div className="text-lg font-bold text-zinc-950 dark:text-zinc-50">{e.label}</div>
+                                        <div className="mt-1 text-[13px] text-zinc-500 dark:text-zinc-400">OPE Gobierno Vasco · Grupo {e.grupo}</div>
                                     </div>
                                     <span className="flex h-10 w-10 items-center justify-center rounded-full text-lg transition-all group-hover:translate-x-1" style={{ color: ACCENT }}>→</span>
                                 </Link>
@@ -337,18 +352,18 @@ export default function HomePage() {
             {/* fin contenedor sticky */}
 
             {/* ───────────── FEATURES ───────────── */}
-            <section className="border-t border-zinc-100 bg-zinc-50/60 px-5 py-20">
+            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-20">
                 <div className="mx-auto max-w-5xl">
-                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Todo lo que necesitas para aprobar</h2></Reveal>
+                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Todo lo que necesitas para aprobar</h2></Reveal>
                     <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {FEATURES.map((f, i) => (
                             <Reveal key={f.t} delay={(i % 3) * 80}>
-                                <div className="h-full rounded-3xl border border-zinc-200 bg-white p-6">
+                                <div className="h-full rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6">
                                     <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: "linear-gradient(145deg, rgba(16,185,129,0.20), rgba(16,185,129,0.06))" }}>
                                         <img src={f.icon} alt="" aria-hidden width={44} height={44} className="h-11 w-11 object-contain" loading="lazy" />
                                     </div>
-                                    <h3 className="text-base font-bold text-zinc-950">{f.t}</h3>
-                                    <p className="mt-2 text-[14px] leading-relaxed text-zinc-500">{f.d}</p>
+                                    <h3 className="text-base font-bold text-zinc-950 dark:text-zinc-50">{f.t}</h3>
+                                    <p className="mt-2 text-[14px] leading-relaxed text-zinc-500 dark:text-zinc-400">{f.d}</p>
                                 </div>
                             </Reveal>
                         ))}
@@ -359,18 +374,18 @@ export default function HomePage() {
             {/* ───────────── OPINIONES (carrusel automático) ───────────── */}
             <section className="py-20">
                 <div className="mx-auto max-w-5xl px-5">
-                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Lo que dicen los opositores</h2></Reveal>
+                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Lo que dicen los opositores</h2></Reveal>
                     <div className="marquee-group relative mt-10 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]">
                         <div className="animate-marquee-slow flex w-max gap-4">
                         {[...TESTIMONIOS, ...TESTIMONIOS].map((t, i) => (
-                            <figure key={i} className="flex w-[300px] shrink-0 flex-col rounded-3xl border border-zinc-200 bg-white p-6 sm:w-[360px]">
+                            <figure key={i} className="flex w-[300px] shrink-0 flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 sm:w-[360px]">
                                 <div className="mb-3 flex gap-0.5" style={{ color: ACCENT }} aria-hidden>{"★★★★★".split("").map((s, k) => (<span key={k}>{s}</span>))}</div>
-                                <blockquote className="flex-1 text-[14px] leading-relaxed text-zinc-700">“{t.t}”</blockquote>
+                                <blockquote className="flex-1 text-[14px] leading-relaxed text-zinc-700 dark:text-zinc-300">“{t.t}”</blockquote>
                                 <figcaption className="mt-5 flex items-center gap-3">
-                                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-950 text-[13px] font-bold text-white">{t.n[0]}</span>
+                                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 text-[13px] font-bold text-white">{t.n[0]}</span>
                                     <span>
-                                        <span className="block text-[13px] font-bold text-zinc-950">{t.n}</span>
-                                        <span className="block text-[12px] text-zinc-400">{t.e}</span>
+                                        <span className="block text-[13px] font-bold text-zinc-950 dark:text-zinc-50">{t.n}</span>
+                                        <span className="block text-[12px] text-zinc-400 dark:text-zinc-500">{t.e}</span>
                                     </span>
                                 </figcaption>
                             </figure>
@@ -381,32 +396,32 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── PROFESORES ───────────── */}
-            <section className="border-t border-zinc-100 bg-zinc-50/60 px-5 py-20">
+            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-20">
                 <div className="mx-auto max-w-5xl">
                     <Reveal>
-                        <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-zinc-500">Clases particulares</span>
-                        <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Profesores para tu oposición</h2>
-                        <p className="mt-3 max-w-2xl text-zinc-500">¿Necesitas un empujón con algún bloque? Profesores particulares especializados en la OPE del Gobierno Vasco. Y si eres profe, anúnciate y llega a nuevos alumnos.</p>
+                        <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Clases particulares</span>
+                        <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Profesores para tu oposición</h2>
+                        <p className="mt-3 max-w-2xl text-zinc-500 dark:text-zinc-400">¿Necesitas un empujón con algún bloque? Profesores particulares especializados en la OPE del Gobierno Vasco. Y si eres profe, anúnciate y llega a nuevos alumnos.</p>
                     </Reveal>
                     <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
                         {PROFES.map((p, i) => (
                             <Reveal key={p.n} delay={i * 70}>
-                                <div className="flex h-full flex-col rounded-3xl border border-zinc-200 bg-white p-6">
+                                <div className="flex h-full flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6">
                                     <div className="flex items-center gap-3">
                                         <span className="flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-bold text-white" style={{ background: `linear-gradient(145deg, #34D399, ${ACCENT})` }}>{p.ini}</span>
                                         <div>
-                                            <div className="text-[15px] font-bold text-zinc-950">{p.n}</div>
-                                            <div className="text-[12px] text-zinc-400">{p.zona}</div>
+                                            <div className="text-[15px] font-bold text-zinc-950 dark:text-zinc-50">{p.n}</div>
+                                            <div className="text-[12px] text-zinc-400 dark:text-zinc-500">{p.zona}</div>
                                         </div>
                                     </div>
-                                    <p className="mt-4 text-[14px] leading-relaxed text-zinc-600">{p.mat}</p>
+                                    <p className="mt-4 text-[14px] leading-relaxed text-zinc-600 dark:text-zinc-300">{p.mat}</p>
                                 </div>
                             </Reveal>
                         ))}
                     </div>
                     <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                        <Link href="/profesores" className="inline-flex items-center justify-center rounded-full bg-zinc-950 px-6 py-3 text-[14px] font-semibold text-white transition-transform hover:scale-[1.03]">Ver profesores →</Link>
-                        <a href="mailto:hola@gainditu.com?subject=Quiero%20anunciarme%20como%20profesor" className="inline-flex items-center justify-center rounded-full border border-zinc-300 bg-white px-6 py-3 text-[14px] font-semibold text-zinc-900 transition-colors hover:bg-zinc-50">Anúnciate como profesor</a>
+                        <Link href="/profesores" className="inline-flex items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 px-6 py-3 text-[14px] font-semibold text-white transition-transform hover:scale-[1.03]">Ver profesores →</Link>
+                        <a href="mailto:hola@gainditu.com?subject=Quiero%20anunciarme%20como%20profesor" className="inline-flex items-center justify-center rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-3 text-[14px] font-semibold text-zinc-900 dark:text-zinc-100 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60">Anúnciate como profesor</a>
                     </div>
                 </div>
             </section>
@@ -414,7 +429,7 @@ export default function HomePage() {
             {/* ───────────── RECURSOS ───────────── */}
             <section className="px-5 py-20">
                 <div className="mx-auto max-w-5xl">
-                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Recursos destacados</h2></Reveal>
+                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Recursos destacados</h2></Reveal>
                     <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
                         {[
                             { t: "Constitución Española", d: "Test y teoría del bloque común.", href: "/constitucion" },
@@ -422,9 +437,9 @@ export default function HomePage() {
                             { t: "Fechas de las OPEs 2026", d: "Calendario provisional del IVAP.", href: "/fechas-opes" },
                         ].map((r, i) => (
                             <Reveal key={r.href} delay={i * 70}>
-                                <Link href={r.href} className="group block h-full rounded-3xl border border-zinc-200 bg-white p-6 transition-all hover:border-zinc-300 hover:shadow-xl hover:shadow-zinc-900/5">
-                                    <h3 className="text-base font-bold text-zinc-950 group-hover:underline">{r.t}</h3>
-                                    <p className="mt-2 text-[14px] text-zinc-500">{r.d}</p>
+                                <Link href={r.href} className="group block h-full rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 transition-all hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-xl hover:shadow-zinc-900/5">
+                                    <h3 className="text-base font-bold text-zinc-950 dark:text-zinc-50 group-hover:underline">{r.t}</h3>
+                                    <p className="mt-2 text-[14px] text-zinc-500 dark:text-zinc-400">{r.d}</p>
                                 </Link>
                             </Reveal>
                         ))}
@@ -433,17 +448,17 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── FAQ ───────────── */}
-            <section className="border-t border-zinc-100 bg-zinc-50/60 px-5 py-20">
+            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-20">
                 <div className="mx-auto max-w-3xl">
-                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">Preguntas frecuentes</h2></Reveal>
-                    <Reveal delay={80} className="mt-8 divide-y divide-zinc-200 overflow-hidden rounded-3xl border border-zinc-200 bg-white">
+                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Preguntas frecuentes</h2></Reveal>
+                    <Reveal delay={80} className="mt-8 divide-y divide-zinc-200 dark:divide-zinc-800 overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
                         {FAQS.map((f) => (
                             <details key={f.q} className="group px-6">
-                                <summary className="flex cursor-pointer list-none items-center justify-between py-5 text-[15px] font-semibold text-zinc-950">
+                                <summary className="flex cursor-pointer list-none items-center justify-between py-5 text-[15px] font-semibold text-zinc-950 dark:text-zinc-50">
                                     {f.q}
-                                    <span className="ml-4 text-zinc-400 transition-transform group-open:rotate-45">+</span>
+                                    <span className="ml-4 text-zinc-400 dark:text-zinc-500 transition-transform group-open:rotate-45">+</span>
                                 </summary>
-                                <p className="pb-5 text-[14px] leading-relaxed text-zinc-500">{f.a}</p>
+                                <p className="pb-5 text-[14px] leading-relaxed text-zinc-500 dark:text-zinc-400">{f.a}</p>
                             </details>
                         ))}
                     </Reveal>
@@ -453,20 +468,20 @@ export default function HomePage() {
             {/* ───────────── CTA ───────────── */}
             <section className="px-5 py-20">
                 <Reveal className="mx-auto max-w-5xl">
-                    <div className="overflow-hidden rounded-[2rem] bg-zinc-950 px-8 py-16 text-center">
+                    <div className="overflow-hidden rounded-[2rem] bg-zinc-950 dark:border dark:border-zinc-800 dark:bg-zinc-900 px-8 py-16 text-center">
                         <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Empieza a preparar tu plaza hoy</h2>
-                        <p className="mx-auto mt-4 max-w-xl text-zinc-400">Crea tu cuenta gratis y practica el temario oficial del IVAP desde el primer minuto.</p>
-                        <Link href="/signup" className="mt-8 inline-flex items-center justify-center rounded-full px-7 py-3.5 text-[15px] font-semibold text-zinc-950 transition-transform hover:scale-[1.03]" style={{ backgroundColor: ACCENT }}>Empieza gratis</Link>
+                        <p className="mx-auto mt-4 max-w-xl text-zinc-400 dark:text-zinc-500">Crea tu cuenta gratis y practica el temario oficial del IVAP desde el primer minuto.</p>
+                        <Link href="/signup" className="mt-8 inline-flex items-center justify-center rounded-full px-7 py-3.5 text-[15px] font-semibold text-zinc-950 dark:text-zinc-50 transition-transform hover:scale-[1.03]" style={{ backgroundColor: ACCENT }}>Empieza gratis</Link>
                     </div>
                 </Reveal>
             </section>
 
             {/* ───────────── FOOTER ───────────── */}
-            <footer className="border-t border-zinc-200 px-5 py-12">
+            <footer className="border-t border-zinc-200 dark:border-zinc-800 px-5 py-12">
                 <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-8 sm:flex-row">
                     <div>
-                        <div className="text-xl font-extrabold tracking-tight text-zinc-950">gain<span style={{ color: ACCENT }}>ditu</span>.</div>
-                        <p className="mt-2 max-w-xs text-[13px] text-zinc-500">Tests por temario oficial del IVAP para la OPE del Gobierno Vasco 2026.</p>
+                        <div className="text-xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">gain<span style={{ color: ACCENT }}>ditu</span>.</div>
+                        <p className="mt-2 max-w-xs text-[13px] text-zinc-500 dark:text-zinc-400">Tests por temario oficial del IVAP para la OPE del Gobierno Vasco 2026.</p>
                     </div>
                     <div className="grid grid-cols-2 gap-x-12 gap-y-2 text-[14px] sm:grid-cols-3">
                         {[
@@ -480,11 +495,11 @@ export default function HomePage() {
                             ["Aviso legal", "/aviso-legal"],
                             ["Privacidad", "/privacidad"],
                         ].map(([l, h]) => (
-                            <Link key={h} href={h} className="text-zinc-500 transition-colors hover:text-zinc-950">{l}</Link>
+                            <Link key={h} href={h} className="text-zinc-500 dark:text-zinc-400 transition-colors hover:text-zinc-950 dark:hover:text-white">{l}</Link>
                         ))}
                     </div>
                 </div>
-                <div className="mx-auto mt-10 max-w-5xl border-t border-zinc-100 pt-6 text-[12px] text-zinc-400">© {new Date().getFullYear()} {SITE_NAME}. No oficial; sin relación con el IVAP ni el Gobierno Vasco.</div>
+                <div className="mx-auto mt-10 max-w-5xl border-t border-zinc-100 dark:border-zinc-800/70 pt-6 text-[12px] text-zinc-400 dark:text-zinc-500">© {new Date().getFullYear()} {SITE_NAME}. No oficial; sin relación con el IVAP ni el Gobierno Vasco.</div>
             </footer>
 
             <script

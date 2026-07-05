@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client"
 import { useIsMobile } from "@/lib/use-is-mobile"
 import { SunIcon, MoonIcon, CheckIcon } from "@/components/icons"
 import LightNavbar from "@/components/site/LightNavbar"
+import { useTheme } from "@/lib/use-theme"
 import SiteFooter from "@/components/site/SiteFooter"
 
 const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_live_51TjFCiJMIRLdIAQNCE42HQtsnlfvPkFsBNqovT0ayide74xAphiDiJOY2SlI8NrR6A6uL1yWK2nvjCMu7na7dENq00dizBLEaF"
@@ -28,7 +29,7 @@ const FEATURES = [
 export default function PaymentClient() {
     const rootRef = React.useRef<HTMLDivElement>(null)
     const isMobile = useIsMobile(rootRef)
-    const [dark, setDark] = React.useState(false)
+    const { dark } = useTheme()
 
     const [isCreatingCheckout, setIsCreatingCheckout] = React.useState(false)
     const [checkoutMounted, setCheckoutMounted] = React.useState(false)

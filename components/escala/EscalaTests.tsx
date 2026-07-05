@@ -7,14 +7,22 @@ import {
     type EscalaKey,
 } from "@/components/dashboard/catalogo"
 import { createClient } from "@/lib/supabase/client"
+import { useTheme } from "@/lib/use-theme"
 
 const ACCENT = "#10B981"
-const t = {
+const LIGHT_T = {
     border: "#E4E4E7",
     surface: "#FFFFFF",
     surfaceHover: "#FAFAFA",
     textMain: "#09090B",
     textMuted: "#71717A",
+}
+const DARK_T = {
+    border: "#27272A",
+    surface: "#18181B",
+    surfaceHover: "#27272A",
+    textMain: "#FAFAFA",
+    textMuted: "#A1A1AA",
 }
 
 type Progreso = Record<string, { mejor_porcentaje: number }>
@@ -33,6 +41,8 @@ export default function EscalaTests({
     const [search, setSearch] = useState("")
     const [vista, setVista] = useState<"bloques" | "oficial">("bloques")
     const [progress, setProgress] = useState<Progreso>({})
+    const { dark } = useTheme()
+    const t = dark ? DARK_T : LIGHT_T
 
     // Progreso solo si hay sesión (páginas públicas)
     useEffect(() => {
@@ -82,10 +92,10 @@ export default function EscalaTests({
     return (
         <section id="tests-escala" className="px-5 py-10">
             <div className="mx-auto max-w-4xl">
-                <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
+                <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-3xl">
                     Tests de {nombre}
                 </h2>
-                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-500">
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
                     Practica el temario oficial del IVAP tema a tema. Cámbialo entre
                     vista por bloques temáticos o el temario oficial completo.
                 </p>

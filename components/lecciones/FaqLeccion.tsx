@@ -23,10 +23,10 @@ export default function FaqLeccion({
     return (
         <section className="px-5 py-14">
             <div className="mx-auto max-w-3xl">
-                <h2 className="mb-6 text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
+                <h2 className="mb-6 text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-3xl">
                     {titulo}
                 </h2>
-                <div className="divide-y divide-zinc-200 overflow-hidden rounded-3xl border border-zinc-200 bg-white">
+                <div className="divide-y divide-zinc-200 dark:divide-zinc-800 overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
                     {faqs.map((f, i) => {
                         const isOpen = open === i
                         const btnId = `${baseId}-btn-${i}`
@@ -41,7 +41,7 @@ export default function FaqLeccion({
                                     aria-expanded={isOpen}
                                     aria-controls={panelId}
                                 >
-                                    <span className="text-[15px] font-semibold text-zinc-950">
+                                    <span className="text-[15px] font-semibold text-zinc-950 dark:text-zinc-50">
                                         {f.q}
                                     </span>
                                     <span
@@ -66,7 +66,7 @@ export default function FaqLeccion({
                                             exit={{ height: 0, opacity: 0 }}
                                             transition={{ duration: 0.25 }}
                                         >
-                                            <p className="px-6 pb-5 text-[14px] leading-relaxed text-zinc-500">
+                                            <p className="px-6 pb-5 text-[14px] leading-relaxed text-zinc-500 dark:text-zinc-400">
                                                 {f.a}
                                             </p>
                                         </motion.div>

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 
 import { createClient } from "@/lib/supabase/client"
 import LightNavbar from "@/components/site/LightNavbar"
+import { useTheme } from "@/lib/use-theme"
 import SiteFooter from "@/components/site/SiteFooter"
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ougvtcmqmcutrexxrxvz.supabase.co")
@@ -1340,7 +1341,7 @@ export default function PerfilOPE({
     testPageUrl?: string
 }) {
     const isCanvas = false
-    const [dark, setDark] = useState(darkMode)
+    const { dark } = useTheme()
     const t = getTheme(dark)
 
     // Estados del navbar (en el principal — Framer no acepta useState en subcomponentes)

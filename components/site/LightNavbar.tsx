@@ -6,6 +6,7 @@ import { useRouter, usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useSession } from "@/lib/supabase/use-session"
 import { createClient } from "@/lib/supabase/client"
+import { useTheme } from "@/lib/use-theme"
 
 const ACCENT = "#10B981"
 
@@ -28,6 +29,23 @@ const CUENTA_ITEMS = [
     { label: "Mis exámenes", href: "/perfil?tab=examenes" },
     { label: "Ajustes", href: "/perfil?tab=ajustes" },
 ]
+
+function SunIcon() {
+    return (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+    )
+}
+
+function MoonIcon() {
+    return (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+        </svg>
+    )
+}
 
 function Chevron({ open }: { open: boolean }) {
     return (
@@ -57,13 +75,14 @@ function Chevron({ open }: { open: boolean }) {
 function segCls(active: boolean) {
     return `cursor-pointer rounded-full px-3.5 py-1.5 text-[13.5px] font-medium transition-colors ${
         active
-            ? "bg-white text-zinc-950 shadow-sm shadow-zinc-900/5"
-            : "text-zinc-600 hover:text-zinc-900"
+            ? "bg-white text-zinc-950 shadow-sm shadow-zinc-900/5 dark:bg-zinc-700 dark:text-white"
+            : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
     }`
 }
 
 export default function LightNavbar() {
     const { user, loading } = useSession()
+    const { dark, toggle } = useTheme()
     const router = useRouter()
     const pathname = usePathname() || "/"
     const testsActive =
@@ -85,11 +104,11 @@ export default function LightNavbar() {
     const initial = (user?.email?.[0] || "U").toUpperCase()
 
     return (
-        <nav className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/80 backdrop-blur-xl">
+        <nav className="sticky top-0 z-50 bg-white/55 backdrop-blur-md dark:bg-zinc-950/55">
             <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-5">
                 <Link
                     href="/"
-                    className="shrink-0 text-xl font-extrabold tracking-tight text-zinc-950"
+                    className="shrink-0 text-xl font-extrabold tracking-tight text-zinc-950 dark:text-white"
                     onClick={() => setOpen(false)}
                 >
                     gain<span style={{ color: ACCENT }}>ditu</span>.
@@ -97,7 +116,7 @@ export default function LightNavbar() {
 
                 {/* Píldora segmentada de navegación (escritorio) */}
                 <div className="hidden flex-1 items-center justify-center md:flex">
-                    <div className="flex items-center gap-0.5 rounded-full border border-zinc-200 bg-zinc-100/70 p-1">
+                    <div className="flex items-center gap-0.5 rounded-full border border-zinc-200 bg-zinc-100/70 p-1 shadow-sm shadow-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900/70">
                         <div
                             className="relative"
                             onMouseEnter={() => setTestsOpen(true)}
@@ -120,14 +139,14 @@ export default function LightNavbar() {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -6 }}
                                         transition={{ duration: 0.15 }}
-                                        className="absolute left-1/2 top-full z-50 mt-2 w-64 -translate-x-1/2 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-xl shadow-zinc-900/5"
+                                        className="absolute left-1/2 top-full z-50 mt-2 w-64 -translate-x-1/2 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-xl shadow-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900"
                                     >
                                         {TESTS_LINKS.map((l) => (
                                             <Link
                                                 key={l.href}
                                                 href={l.href}
                                                 onClick={() => setTestsOpen(false)}
-                                                className="block rounded-xl px-3 py-2 text-[14px] font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-950"
+                                                className="block rounded-xl px-3 py-2 text-[14px] font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white"
                                             >
                                                 Tests de {l.label}
                                             </Link>
@@ -150,6 +169,14 @@ export default function LightNavbar() {
 
                 {/* CTA escritorio */}
                 <div className="hidden shrink-0 items-center gap-2 md:flex">
+                    <button
+                        type="button"
+                        onClick={toggle}
+                        aria-label={dark ? "Cambiar a tema claro" : "Cambiar a tema oscuro"}
+                        className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-600 transition-colors hover:text-zinc-950 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                    >
+                        {dark ? <MoonIcon /> : <SunIcon />}
+                    </button>
                     {!loading && user ? (
                         <div
                             className="relative"
@@ -160,8 +187,7 @@ export default function LightNavbar() {
                                 type="button"
                                 aria-expanded={acctOpen}
                                 onClick={() => setAcctOpen((v) => !v)}
-                                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-[14px] font-bold text-white"
-                                style={{ backgroundColor: "#18181B" }}
+                                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-zinc-900 text-[14px] font-bold text-white dark:bg-zinc-100 dark:text-zinc-900"
                             >
                                 {initial}
                             </button>
@@ -172,9 +198,9 @@ export default function LightNavbar() {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -6 }}
                                         transition={{ duration: 0.15 }}
-                                        className="absolute right-0 top-full z-50 mt-1 w-60 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-xl shadow-zinc-900/5"
+                                        className="absolute right-0 top-full z-50 mt-1 w-60 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-xl shadow-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900"
                                     >
-                                        <div className="truncate px-3 py-2 text-[12px] text-zinc-400">
+                                        <div className="truncate px-3 py-2 text-[12px] text-zinc-400 dark:text-zinc-500">
                                             {user.email}
                                         </div>
                                         {CUENTA_ITEMS.map((it) => (
@@ -182,14 +208,14 @@ export default function LightNavbar() {
                                                 key={it.href}
                                                 href={it.href}
                                                 onClick={() => setAcctOpen(false)}
-                                                className="block rounded-xl px-3 py-2 text-[14px] font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-950"
+                                                className="block rounded-xl px-3 py-2 text-[14px] font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white"
                                             >
                                                 {it.label}
                                             </Link>
                                         ))}
                                         <button
                                             onClick={handleSignOut}
-                                            className="mt-1 block w-full cursor-pointer rounded-xl border-t border-zinc-100 px-3 py-2 text-left text-[14px] font-semibold text-red-500 hover:bg-zinc-50"
+                                            className="mt-1 block w-full cursor-pointer rounded-xl border-t border-zinc-100 px-3 py-2 text-left text-[14px] font-semibold text-red-500 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/60"
                                         >
                                             Cerrar sesión
                                         </button>
@@ -201,13 +227,13 @@ export default function LightNavbar() {
                         <>
                             <Link
                                 href="/login"
-                                className="rounded-full px-3.5 py-2 text-[14px] font-semibold text-zinc-700 transition-colors hover:text-zinc-950"
+                                className="rounded-full px-3.5 py-2 text-[14px] font-semibold text-zinc-700 transition-colors hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
                             >
                                 Entrar
                             </Link>
                             <Link
                                 href="/signup"
-                                className="rounded-full bg-zinc-950 px-5 py-2 text-[14px] font-semibold text-white transition-transform hover:scale-[1.03]"
+                                className="rounded-full bg-zinc-950 px-5 py-2 text-[14px] font-semibold text-white transition-transform hover:scale-[1.03] dark:bg-white dark:text-zinc-950"
                             >
                                 Empezar gratis
                             </Link>
@@ -215,18 +241,28 @@ export default function LightNavbar() {
                     )}
                 </div>
 
-                {/* Botón móvil */}
-                <button
-                    aria-label="Abrir menú"
-                    onClick={() => setOpen((v) => !v)}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-900 md:hidden"
-                >
-                    <div className="flex flex-col gap-[5px]">
-                        <span className="block h-0.5 w-4 rounded bg-current" />
-                        <span className="block h-0.5 w-4 rounded bg-current" />
-                        <span className="block h-0.5 w-4 rounded bg-current" />
-                    </div>
-                </button>
+                {/* Toggle + botón móvil */}
+                <div className="flex items-center gap-2 md:hidden">
+                    <button
+                        type="button"
+                        onClick={toggle}
+                        aria-label={dark ? "Cambiar a tema claro" : "Cambiar a tema oscuro"}
+                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
+                    >
+                        {dark ? <MoonIcon /> : <SunIcon />}
+                    </button>
+                    <button
+                        aria-label="Abrir menú"
+                        onClick={() => setOpen((v) => !v)}
+                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                    >
+                        <div className="flex flex-col gap-[5px]">
+                            <span className="block h-0.5 w-4 rounded bg-current" />
+                            <span className="block h-0.5 w-4 rounded bg-current" />
+                            <span className="block h-0.5 w-4 rounded bg-current" />
+                        </div>
+                    </button>
+                </div>
             </div>
 
             {/* Menú móvil */}
@@ -237,14 +273,14 @@ export default function LightNavbar() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="overflow-hidden border-t border-zinc-200 bg-white md:hidden"
+                        className="overflow-hidden border-t border-zinc-200 bg-white md:hidden dark:border-zinc-800 dark:bg-zinc-950"
                     >
                         <div className="flex flex-col gap-1 px-5 py-3">
                             <button
                                 type="button"
                                 aria-expanded={mobileTestsOpen}
                                 onClick={() => setMobileTestsOpen((v) => !v)}
-                                className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100"
+                                className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
                             >
                                 Tests
                                 <Chevron open={mobileTestsOpen} />
@@ -255,7 +291,7 @@ export default function LightNavbar() {
                                         key={l.href}
                                         href={l.href}
                                         onClick={() => setOpen(false)}
-                                        className="rounded-lg py-2 pl-6 pr-3 text-sm font-medium text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950"
+                                        className="rounded-lg py-2 pl-6 pr-3 text-sm font-medium text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
                                     >
                                         Tests de {l.label}
                                     </Link>
@@ -265,14 +301,14 @@ export default function LightNavbar() {
                                     key={l.href}
                                     href={l.href}
                                     onClick={() => setOpen(false)}
-                                    className="rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950"
+                                    className="rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white"
                                 >
                                     {l.label}
                                 </Link>
                             ))}
                             {!loading && user ? (
-                                <div className="mt-2 border-t border-zinc-200 pt-2">
-                                    <div className="truncate px-3 pb-1 text-[12px] text-zinc-400">
+                                <div className="mt-2 border-t border-zinc-200 pt-2 dark:border-zinc-800">
+                                    <div className="truncate px-3 pb-1 text-[12px] text-zinc-400 dark:text-zinc-500">
                                         {user.email}
                                     </div>
                                     {CUENTA_ITEMS.map((it) => (
@@ -280,14 +316,14 @@ export default function LightNavbar() {
                                             key={it.href}
                                             href={it.href}
                                             onClick={() => setOpen(false)}
-                                            className="block rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950"
+                                            className="block rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white"
                                         >
                                             {it.label}
                                         </Link>
                                     ))}
                                     <button
                                         onClick={handleSignOut}
-                                        className="block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-red-500 hover:bg-zinc-50"
+                                        className="block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-red-500 hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
                                     >
                                         Cerrar sesión
                                     </button>
@@ -297,14 +333,14 @@ export default function LightNavbar() {
                                     <Link
                                         href="/login"
                                         onClick={() => setOpen(false)}
-                                        className="flex-1 rounded-full border border-zinc-300 px-4 py-2 text-center text-sm font-semibold text-zinc-900"
+                                        className="flex-1 rounded-full border border-zinc-300 px-4 py-2 text-center text-sm font-semibold text-zinc-900 dark:border-zinc-700 dark:text-zinc-100"
                                     >
                                         Entrar
                                     </Link>
                                     <Link
                                         href="/signup"
                                         onClick={() => setOpen(false)}
-                                        className="flex-1 rounded-full bg-zinc-950 px-4 py-2 text-center text-sm font-semibold text-white"
+                                        className="flex-1 rounded-full bg-zinc-950 px-4 py-2 text-center text-sm font-semibold text-white dark:bg-white dark:text-zinc-950"
                                     >
                                         Empezar gratis
                                     </Link>

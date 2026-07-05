@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 
 import { createClient } from "@/lib/supabase/client"
 import LightNavbar from "@/components/site/LightNavbar"
+import { useTheme } from "@/lib/use-theme"
 import SiteFooter from "@/components/site/SiteFooter"
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ougvtcmqmcutrexxrxvz.supabase.co")
@@ -3668,7 +3669,7 @@ export default function TestScreen(props: {
     const accentColor = getAccent(testId)
     const limiteFree = PREMIUM_TESTS[testId] ?? null // null = sin límite
 
-    const [dark, setDark] = useState(false)
+    const { dark } = useTheme()
     const [sessionUser, setSessionUser] = useState<any>(null)
     const [sessionToken, setSessionToken] = useState<string | null>(null)
     const [numPreguntas, setNumPreguntas] = useState<number>(0)

@@ -78,12 +78,12 @@ export default function Ley39Page() {
 
             <section id="tests" className="scroll-mt-20 px-5 py-8">
                 <div className="mx-auto max-w-4xl">
-                    <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-zinc-950">
+                    <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">
                         Tests de la Ley 39/2015
                     </h2>
-                    <p className="mb-6 text-sm text-zinc-500">
+                    <p className="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
                         Practica tema a tema.{" "}
-                        <Link href="/login" className="font-semibold text-zinc-950 hover:underline">
+                        <Link href="/login" className="font-semibold text-zinc-950 dark:text-zinc-50 hover:underline">
                             Inicia sesión
                         </Link>{" "}
                         para ver tu mejor nota en cada test.
@@ -103,14 +103,14 @@ export default function Ley39Page() {
             />
 
             <div className="mx-auto mb-12 max-w-4xl px-5">
-                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-500">
-                    <Link href="/constitucion" className="hover:text-zinc-950 hover:underline">
+                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
+                    <Link href="/constitucion" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
                         → La Constitución Española
                     </Link>
-                    <Link href="/dashboard" className="hover:text-zinc-950 hover:underline">
+                    <Link href="/dashboard" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
                         → Todos los tests por escala
                     </Link>
-                    <Link href="/fechas-opes" className="hover:text-zinc-950 hover:underline">
+                    <Link href="/fechas-opes" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
                         → Fechas de las OPEs 2026
                     </Link>
                 </div>

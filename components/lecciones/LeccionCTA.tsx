@@ -23,17 +23,17 @@ export default function LeccionCTA({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.5 }}
-                className="mx-auto max-w-4xl overflow-hidden rounded-[2rem] bg-zinc-950 px-8 py-14 text-center sm:py-16"
+                className="mx-auto max-w-4xl overflow-hidden rounded-[2rem] bg-zinc-950 dark:border dark:border-zinc-800 dark:bg-zinc-900 px-8 py-14 text-center sm:py-16"
             >
                 <h2 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
                     {titulo}
                 </h2>
-                <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-400">
+                <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-400 dark:text-zinc-500">
                     {texto}
                 </p>
                 <Link
                     href={href}
-                    className="mt-7 inline-flex items-center rounded-full px-7 py-3.5 text-sm font-semibold text-zinc-950 transition-transform hover:scale-[1.03]"
+                    className="mt-7 inline-flex items-center rounded-full px-7 py-3.5 text-sm font-semibold text-zinc-950 dark:text-zinc-50 transition-transform hover:scale-[1.03]"
                     style={{ backgroundColor: accent }}
                 >
                     {cta}
