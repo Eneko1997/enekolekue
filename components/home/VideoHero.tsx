@@ -11,15 +11,32 @@ import { ArrowRight } from "lucide-react"
 // actual (nunca salta).
 const FADE_MS = 500
 const FADE_OUT_BEFORE_END_S = 0.55
+const PLAYBACK_RATE = 0.7 // cámara lenta sutil
 
 export default function VideoHero() {
     const videoRef = useRef<HTMLVideoElement>(null)
+    const posterRef = useRef<HTMLVideoElement>(null)
     const rafRef = useRef<number | null>(null)
     const fadingOutRef = useRef(false)
 
     useEffect(() => {
         const video = videoRef.current
         if (!video) return
+        video.playbackRate = PLAYBACK_RATE
+
+        // Capa "póster": el mismo vídeo congelado en el primer fotograma, detrás.
+        // Al fundirse el principal se revela este fotograma (no la pantalla en
+        // blanco) y, como el principal reinicia justo en ese fotograma, el bucle
+        // se percibe continuo.
+        const poster = posterRef.current
+        if (poster) {
+            poster.pause()
+            try {
+                poster.currentTime = 0.001
+            } catch {
+                /* aún sin metadata; el frame llega al cargar */
+            }
+        }
 
         const fadeTo = (target: number, duration = FADE_MS) => {
             if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
@@ -53,6 +70,7 @@ export default function VideoHero() {
             video.style.opacity = "0"
             setTimeout(() => {
                 video.currentTime = 0
+                video.playbackRate = PLAYBACK_RATE
                 void video.play()
                 fadingOutRef.current = false
                 fadeTo(1)
@@ -65,11 +83,13 @@ export default function VideoHero() {
         video.addEventListener("ended", onEnded)
         void video.play().catch(() => {})
 
-        // Red de seguridad: si el autoplay queda bloqueado, mostramos el primer
-        // fotograma en lugar de dejar el hero vacío.
+        // Red de seguridad: cubre tanto el autoplay bloqueado como el caso en que
+        // "playing" disparó antes de registrar el listener (el vídeo quedaría
+        // reproduciéndose con opacity 0).
         const fallback = window.setTimeout(() => {
-            if (video.paused && !fadingOutRef.current) fadeTo(1)
-        }, 1200)
+            const op = parseFloat(video.style.opacity || "0")
+            if (!fadingOutRef.current && op < 1) fadeTo(1)
+        }, 600)
 
         return () => {
             window.clearTimeout(fallback)
@@ -82,7 +102,19 @@ export default function VideoHero() {
 
     return (
         <section className="relative flex min-h-screen flex-col overflow-hidden bg-white">
-            {/* Vídeo de fondo: desplazado un 17% hacia abajo (la parte alta queda recortada) */}
+            {/* Capa póster: primer fotograma congelado, detrás del vídeo principal */}
+            <video
+                ref={posterRef}
+                className="absolute inset-0 h-full w-full translate-y-[17%] object-cover"
+                src="/hero.mp4"
+                muted
+                playsInline
+                preload="auto"
+                aria-hidden
+                tabIndex={-1}
+            />
+
+            {/* Vídeo principal: desplazado un 17% hacia abajo (la parte alta queda recortada) */}
             <video
                 ref={videoRef}
                 className="absolute inset-0 h-full w-full translate-y-[17%] object-cover"
@@ -94,10 +126,20 @@ export default function VideoHero() {
                 aria-hidden
             />
 
+            {/* Scrim: claro tras el bloque de texto para garantizar legibilidad */}
+            <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                    background:
+                        "radial-gradient(60% 58% at 50% 34%, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.55) 48%, rgba(255,255,255,0.12) 72%, transparent 88%)",
+                }}
+                aria-hidden
+            />
+
             {/* Contenido */}
-            <div className="relative z-10 flex flex-1 -translate-y-[20%] flex-col items-center justify-center px-6 py-12 text-center">
+            <div className="relative z-10 flex flex-1 -translate-y-[8%] flex-col items-center justify-center px-6 py-12 text-center">
                 <h1
-                    className="mb-8 text-5xl tracking-tight text-black md:text-6xl lg:text-7xl"
+                    className="mb-6 text-[2.6rem] leading-[1.04] tracking-tight text-black sm:text-6xl lg:text-7xl"
                     style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 800 }}
                 >
                     Aprueba tu plaza
@@ -105,8 +147,8 @@ export default function VideoHero() {
                     en el Gobierno Vasco.
                 </h1>
 
-                <div className="w-full max-w-xl space-y-4">
-                    <p className="px-4 text-sm leading-relaxed text-black">
+                <div className="w-full max-w-xl space-y-5">
+                    <p className="mx-auto max-w-lg px-2 text-base font-medium leading-relaxed text-black/80 sm:text-lg">
                         La plataforma técnica para preparar tu oposición: tests por
                         el temario oficial del IVAP, simulacros reales y tu progreso
                         medido al detalle.
@@ -116,21 +158,21 @@ export default function VideoHero() {
                         <Link
                             href="/signup"
                             aria-label="Crear cuenta gratis en Gainditu"
-                            className="liquid-glass inline-flex items-center gap-2 rounded-full px-8 py-3 text-sm font-medium text-black transition-colors hover:bg-white/40"
+                            className="liquid-glass inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-[15px] font-semibold text-black shadow-sm transition-colors hover:bg-white/50"
                         >
                             Empieza gratis
-                            <ArrowRight size={16} aria-hidden />
+                            <ArrowRight size={17} aria-hidden />
                         </Link>
                         <Link
                             href="/dashboard"
                             aria-label="Ver el catálogo de tests"
-                            className="liquid-glass inline-flex items-center rounded-full px-8 py-3 text-sm font-medium text-black transition-colors hover:bg-white/40"
+                            className="liquid-glass inline-flex items-center rounded-full px-8 py-3.5 text-[15px] font-semibold text-black shadow-sm transition-colors hover:bg-white/50"
                         >
                             Ver los tests
                         </Link>
                     </div>
 
-                    <p className="px-4 text-[13px] text-black/60">
+                    <p className="px-4 text-[13px] font-medium text-black/70">
                         Gratis para empezar · Sin tarjeta · Temario oficial IVAP
                     </p>
                 </div>
