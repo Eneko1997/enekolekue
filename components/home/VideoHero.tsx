@@ -102,29 +102,38 @@ export default function VideoHero() {
 
     return (
         <section className="relative flex min-h-screen flex-col overflow-hidden bg-white">
-            {/* Capa póster: primer fotograma congelado, detrás del vídeo principal */}
-            <video
-                ref={posterRef}
-                className="absolute inset-0 h-full w-full translate-y-[17%] object-cover"
-                src="/hero.mp4"
-                muted
-                playsInline
-                preload="auto"
+            {/* Capa de vídeo con mezcla "multiply": el fondo blanco/roto se funde con
+                el blanco de la sección y deja solo el sujeto (sin transparencia real,
+                pero mismo efecto sobre fondo blanco). Un ligero realce empuja el
+                blanco-roto hacia blanco puro para que desaparezca del todo. */}
+            <div
+                className="absolute inset-0"
+                style={{ mixBlendMode: "multiply", filter: "brightness(1.04) contrast(1.03)" }}
                 aria-hidden
-                tabIndex={-1}
-            />
-
-            {/* Vídeo principal: desplazado un 17% hacia abajo (la parte alta queda recortada) */}
-            <video
-                ref={videoRef}
-                className="absolute inset-0 h-full w-full translate-y-[17%] object-cover"
-                src="/hero.mp4"
-                muted
-                playsInline
-                autoPlay
-                preload="auto"
-                aria-hidden
-            />
+            >
+                {/* Póster: primer fotograma congelado, detrás del vídeo principal */}
+                <video
+                    ref={posterRef}
+                    className="absolute inset-0 h-full w-full translate-y-[17%] object-cover"
+                    src="/hero.mp4"
+                    muted
+                    playsInline
+                    preload="auto"
+                    aria-hidden
+                    tabIndex={-1}
+                />
+                {/* Vídeo principal: desplazado un 17% hacia abajo (recorta la parte alta) */}
+                <video
+                    ref={videoRef}
+                    className="absolute inset-0 h-full w-full translate-y-[17%] object-cover"
+                    src="/hero.mp4"
+                    muted
+                    playsInline
+                    autoPlay
+                    preload="auto"
+                    aria-hidden
+                />
+            </div>
 
             {/* Scrim: claro tras el bloque de texto para garantizar legibilidad */}
             <div
