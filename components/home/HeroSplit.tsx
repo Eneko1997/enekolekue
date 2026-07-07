@@ -33,18 +33,18 @@ export default function HeroSplit() {
                 <div className="relative z-10 order-2 lg:order-1">
                     <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[13px] font-semibold text-zinc-600 shadow-sm ring-1 ring-black/[0.04]">
                         <GraduationCap size={15} className="text-emerald-500" aria-hidden />
-                        Preparación OPE · IVAP
+                        Oposiciones · País Vasco
                     </span>
 
                     <h1 className="mt-6 text-[2.9rem] font-extrabold leading-[0.98] tracking-tight text-zinc-950 sm:text-6xl lg:text-[4.1rem]">
-                        Aprueba tu plaza
+                        Aprueba tu oposición
                         <br />
-                        en el Gobierno Vasco.
+                        en el País Vasco.
                     </h1>
 
                     <p className="mt-6 max-w-md text-base leading-relaxed text-zinc-500 sm:text-lg">
-                        Tests por el temario oficial del IVAP, simulacros y tu
-                        progreso, todo en un mismo sitio.
+                        Tests, simulacros y seguimiento de tu progreso para
+                        preparar tu oposición en Euskadi, todo en un mismo sitio.
                     </p>
 
                     <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-5">
@@ -88,7 +88,7 @@ export default function HeroSplit() {
                     <div className="relative mx-auto aspect-[3/4] w-full max-w-sm lg:max-w-md">
                         <Image
                             src="/hero-chica.avif"
-                            alt="Opositora preparando la OPE del Gobierno Vasco con Gainditu"
+                            alt="Opositora preparando su oposición en el País Vasco con Gainditu"
                             fill
                             priority
                             sizes="(max-width: 1024px) 90vw, 45vw"
