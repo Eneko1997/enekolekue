@@ -1,7 +1,7 @@
 import Link from "next/link"
 import type { Metadata } from "next"
 import LightNavbar from "@/components/site/LightNavbar"
-import VideoHero from "@/components/home/VideoHero"
+import HeroSplit from "@/components/home/HeroSplit"
 import Reveal from "@/components/home/Reveal"
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site"
 
@@ -111,8 +111,8 @@ export default function HomePage() {
             {/* CONTENEDOR STICKY: hero + premium + tests. El marquee acompaña abajo hasta el final de esta zona */}
             <div className="relative">
 
-            {/* ───────────── HERO (vídeo full-screen + liquid glass) ───────────── */}
-            <VideoHero />
+            {/* ───────────── HERO (split: texto + foto con stats) ───────────── */}
+            <HeroSplit />
 
             {/* ───────────── STAT STRIP ───────────── */}
             <section className="border-y border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40">
