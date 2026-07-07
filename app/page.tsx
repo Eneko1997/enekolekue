@@ -55,7 +55,7 @@ const FAQS = [
 /* ── Tira marquee de academias: sticky abajo, acompaña dentro de su contenedor ── */
 const MARQUEE_ITEMS = [
     "¿Tienes una academia de oposiciones?",
-    "Publicítala en Gainditu y llega a miles de opositores del Gobierno Vasco",
+    "Publicítala en Gainditu y llega a miles de opositores del País Vasco",
     "Espacios destacados · Campañas a medida",
     "Escríbenos a hola@gainditu.com",
 ]
@@ -242,7 +242,7 @@ export default function HomePage() {
                     <Reveal>
                         <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Clases particulares</span>
                         <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Profesores para tu oposición</h2>
-                        <p className="mt-3 max-w-2xl text-zinc-500 dark:text-zinc-400">¿Necesitas un empujón con algún bloque? Profesores particulares especializados en la OPE del Gobierno Vasco. Y si eres profe, anúnciate y llega a nuevos alumnos.</p>
+                        <p className="mt-3 max-w-2xl text-zinc-500 dark:text-zinc-400">¿Necesitas un empujón con algún bloque? Profesores particulares especializados en oposiciones del País Vasco. Y si eres profe, anúnciate y llega a nuevos alumnos.</p>
                     </Reveal>
                     <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
                         {PROFES.map((p, i) => (
