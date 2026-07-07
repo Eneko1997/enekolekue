@@ -35,7 +35,7 @@ export default function ProfesoresPage() {
                 <div className="relative z-10 mx-auto max-w-4xl text-center">
                     <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
                         <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: ACCENT }} />
-                        Clases particulares · OPE Gobierno Vasco
+                        Clases particulares · País Vasco
                     </span>
                     <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-6xl">
                         Profesores particulares
@@ -92,7 +92,7 @@ export default function ProfesoresPage() {
                     <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-7">
                         <h3 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Si eres profesor</h3>
                         <p className="mt-2 text-[14px] leading-relaxed text-zinc-500 dark:text-zinc-400">
-                            Date a conocer entre opositores del Gobierno Vasco. Nos cuentas tu perfil (materias, zona, modalidad) y te incluimos. Escríbenos y te explicamos cómo funciona.
+                            Date a conocer entre opositores del País Vasco. Nos cuentas tu perfil (materias, zona, modalidad) y te incluimos. Escríbenos y te explicamos cómo funciona.
                         </p>
                         <a href={CONTACTO} className="mt-4 inline-flex items-center justify-center rounded-full px-5 py-2.5 text-[14px] font-semibold text-zinc-950 dark:text-zinc-50 transition-transform hover:scale-[1.03]" style={{ backgroundColor: ACCENT }}>
                             Quiero anunciarme →
