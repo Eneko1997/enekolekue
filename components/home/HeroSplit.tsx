@@ -75,9 +75,9 @@ export default function HeroSplit() {
                                 ))}
                             </div>
                             <span className="text-[13px] font-medium leading-tight text-zinc-500">
-                                Con la confianza de
+                                +500 opositores ya
                                 <br />
-                                opositores de Euskadi
+                                preparan su examen aquí
                             </span>
                         </div>
                     </div>
