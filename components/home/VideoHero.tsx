@@ -108,7 +108,7 @@ export default function VideoHero() {
                 blanco-roto hacia blanco puro para que desaparezca del todo. */}
             <div
                 className="absolute inset-0"
-                style={{ mixBlendMode: "multiply", filter: "brightness(1.04) contrast(1.03)" }}
+                style={{ mixBlendMode: "multiply", filter: "contrast(1.04)" }}
                 aria-hidden
             >
                 {/* Póster: primer fotograma congelado, detrás del vídeo principal */}
@@ -135,18 +135,20 @@ export default function VideoHero() {
                 />
             </div>
 
-            {/* Scrim: claro tras el bloque de texto para garantizar legibilidad */}
+            {/* Scrim: degradado blanco SOLO en la parte superior, tras el bloque de
+                texto. Se desvanece antes de la mitad para dejar la cara/el sujeto
+                (que van más abajo) totalmente visibles. */}
             <div
-                className="pointer-events-none absolute inset-0"
+                className="pointer-events-none absolute inset-x-0 top-0 h-[62%]"
                 style={{
                     background:
-                        "radial-gradient(60% 58% at 50% 34%, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.55) 48%, rgba(255,255,255,0.12) 72%, transparent 88%)",
+                        "linear-gradient(to bottom, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.82) 28%, rgba(255,255,255,0.45) 55%, rgba(255,255,255,0) 100%)",
                 }}
                 aria-hidden
             />
 
-            {/* Contenido */}
-            <div className="relative z-10 flex flex-1 -translate-y-[8%] flex-col items-center justify-center px-6 py-12 text-center">
+            {/* Contenido: anclado arriba (como la referencia) para no tapar al sujeto */}
+            <div className="relative z-10 flex flex-1 flex-col items-center px-6 pt-28 text-center sm:pt-32">
                 <h1
                     className="mb-6 text-[2.6rem] leading-[1.04] tracking-tight text-black sm:text-6xl lg:text-7xl"
                     style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 800 }}
