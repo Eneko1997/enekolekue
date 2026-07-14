@@ -3668,6 +3668,7 @@ export default function TestScreen(props: {
     const titulo = TITULOS[testId] || `Test ${testId}`
     const accentColor = getAccent(testId)
     const limiteFree = PREMIUM_TESTS[testId] ?? null // null = sin límite
+    const esSimulacro = testId.startsWith("sim_") // simulacros = solo premium
 
     const { dark } = useTheme()
     const [sessionUser, setSessionUser] = useState<any>(null)
@@ -3730,6 +3731,7 @@ export default function TestScreen(props: {
     const [verExp, setVerExp] = useState(false)
     const [showPremium, setShowPremium] = useState(false)
     const [showRegister, setShowRegister] = useState(false)
+    const [isPremium, setIsPremium] = useState(false)
     // Estados subidos de AvatarDropdown (Framer no acepta useState en subcomponentes)
     const [avatarOpen, setAvatarOpen] = useState(false)
     const avatarRef = useRef<HTMLDivElement>(null)
@@ -3774,6 +3776,11 @@ export default function TestScreen(props: {
     }, [testId])
 
     function handleStart(m: Modo) {
+        // Los simulacros son solo para usuarios premium
+        if (esSimulacro && !isPremium) {
+            setShowPremium(true)
+            return
+        }
         setModo(m)
         setModoPantalla(m)
         if (m === "repaso") {
@@ -3859,7 +3866,7 @@ export default function TestScreen(props: {
     function handleSiguiente() {
         setVerExp(false)
         const siguiente = idx + 1
-        if (limiteFree !== null && siguiente >= limiteFree) {
+        if (limiteFree !== null && !isPremium && siguiente >= limiteFree) {
             setShowPremium(true)
             return
         }
@@ -3922,6 +3929,27 @@ export default function TestScreen(props: {
             setSessionUser(user)
         }
     }, [])
+
+    // Cargar estado premium del perfil (para no mostrar el popup a quien ya es premium)
+    useEffect(() => {
+        const uid = sessionUser?.id
+        if (!uid) {
+            setIsPremium(false)
+            return
+        }
+        let cancelled = false
+        supabase
+            .from("profiles")
+            .select("is_premium")
+            .eq("id", uid)
+            .single()
+            .then(({ data }: { data: { is_premium?: boolean } | null }) => {
+                if (!cancelled) setIsPremium(!!data?.is_premium)
+            })
+        return () => {
+            cancelled = true
+        }
+    }, [sessionUser?.id])
 
     // Guardar resultado cuando se llega a la pantalla de resultados
     useEffect(() => {

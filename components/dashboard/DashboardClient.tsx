@@ -2147,6 +2147,7 @@ export default function DashboardOPE(props: {
     const [authLoading, setAuthLoading] = useState(true)
     const [showAuth, setShowAuth] = useState(false)
     const [progress, setProgress] = useState<Record<string, any>>({})
+    const [isPremium, setIsPremium] = useState(false)
     const { dark } = useTheme()
     const [search, setSearch] = useState("")
     const [vista, setVista] = useState<"bloques" | "oficial">("bloques")
@@ -2265,6 +2266,27 @@ export default function DashboardOPE(props: {
         if (!user || !token) return
         getProgress(user.id, token).then(setProgress)
     }, [user, token])
+
+    // Cargar estado premium del perfil
+    useEffect(() => {
+        const uid = user?.id
+        if (!uid) {
+            setIsPremium(false)
+            return
+        }
+        let cancelled = false
+        supabase
+            .from("profiles")
+            .select("is_premium")
+            .eq("id", uid)
+            .single()
+            .then(({ data }: { data: { is_premium?: boolean } | null }) => {
+                if (!cancelled) setIsPremium(!!data?.is_premium)
+            })
+        return () => {
+            cancelled = true
+        }
+    }, [user?.id])
 
     // Filtrar tests por búsqueda
     const filteredData =
@@ -2509,13 +2531,15 @@ export default function DashboardOPE(props: {
                             >
                                 Empieza gratis →
                             </motion.button>
-                            <LedButton
-                                accent={accent}
-                                dark={dark}
-                                onClick={() => setShowPremium(true)}
-                                label="Ver acceso completo"
-                                ledAngle={ledAngle}
-                            />
+                            {!isPremium && (
+                                <LedButton
+                                    accent={accent}
+                                    dark={dark}
+                                    onClick={() => setShowPremium(true)}
+                                    label="Ver acceso completo"
+                                    ledAngle={ledAngle}
+                                />
+                            )}
                         </div>
                         {user && completedCount > 0 && (
                             <div
@@ -2738,14 +2762,39 @@ export default function DashboardOPE(props: {
                 {/* TIRA ACADEMIAS */}
                 <TiraAcademias accent={accent} dark={dark} />
 
-                {/* SECCIÓN PREMIUM */}
-                <SeccionPremium
-                    accent={accent}
-                    dark={dark}
-                    onUnlock={() => setShowPremium(true)}
-                    onStartTest={handleStartTest}
-                    isMobile={isMobile}
-                />
+                {/* SECCIÓN PREMIUM (solo para quien aún no es premium) */}
+                {isPremium ? (
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 10,
+                            margin: "0 auto 8px",
+                            maxWidth: 480,
+                            padding: "12px 20px",
+                            borderRadius: 14,
+                            border: `1px solid ${accent}55`,
+                            background: `${accent}14`,
+                            color: t.textMain,
+                            fontWeight: 700,
+                            fontSize: 15,
+                        }}
+                    >
+                        <span aria-hidden style={{ fontSize: 18 }}>
+                            ✓
+                        </span>
+                        Premium activo — tienes acceso completo
+                    </div>
+                ) : (
+                    <SeccionPremium
+                        accent={accent}
+                        dark={dark}
+                        onUnlock={() => setShowPremium(true)}
+                        onStartTest={handleStartTest}
+                        isMobile={isMobile}
+                    />
+                )}
 
                 {/* TOGGLE DE VISTA: Bloques (transversal) vs Temario oficial (lista) */}
                 <div
