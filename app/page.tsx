@@ -114,8 +114,8 @@ export default function HomePage() {
             {/* ───────────── HERO (split: texto + foto con stats) ───────────── */}
             <HeroSplit />
 
-            {/* ───────────── STAT STRIP ───────────── */}
-            <section className="border-y border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40">
+            {/* ───────────── STAT STRIP (oculto en móvil) ───────────── */}
+            <section className="hidden sm:block border-y border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40">
                 <div className="mx-auto grid max-w-5xl grid-cols-2 gap-px sm:grid-cols-4">
                     {[
                         { n: "4", l: "escalas" },
@@ -132,7 +132,7 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── PREMIUM / COMUNIDAD (debajo del banner) ───────────── */}
-            <section className="px-5 py-20">
+            <section className="px-5 py-12 sm:py-20">
                 <div className="mx-auto max-w-5xl">
                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                         <Reveal>
@@ -165,7 +165,7 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── POR ESCALA ───────────── */}
-            <section className="px-5 py-20">
+            <section className="px-5 py-12 sm:py-20">
                 <div className="mx-auto max-w-5xl">
                     <Reveal>
                         <h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Elige tu escala</h2>
@@ -193,12 +193,12 @@ export default function HomePage() {
             {/* fin contenedor sticky */}
 
             {/* ───────────── FEATURES ───────────── */}
-            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-20">
+            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-12 sm:py-20">
                 <div className="mx-auto max-w-5xl">
                     <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Todo lo que necesitas para aprobar</h2></Reveal>
                     <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {FEATURES.map((f, i) => (
-                            <Reveal key={f.t} delay={(i % 3) * 80}>
+                            <Reveal key={f.t} delay={(i % 3) * 80} className={i >= 3 ? "hidden sm:block" : undefined}>
                                 <div className="h-full rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6">
                                     <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: "linear-gradient(145deg, rgba(16,185,129,0.20), rgba(16,185,129,0.06))" }}>
                                         <img src={f.icon} alt="" aria-hidden width={44} height={44} className="h-11 w-11 object-contain" loading="lazy" />
@@ -213,7 +213,7 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── OPINIONES (carrusel automático) ───────────── */}
-            <section className="py-20">
+            <section className="py-12 sm:py-20">
                 <div className="mx-auto max-w-5xl px-5">
                     <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Lo que dicen los opositores</h2></Reveal>
                     <div className="marquee-group relative mt-10 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]">
@@ -237,7 +237,7 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── PROFESORES ───────────── */}
-            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-20">
+            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-12 sm:py-20">
                 <div className="mx-auto max-w-5xl">
                     <Reveal>
                         <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Clases particulares</span>
@@ -268,7 +268,7 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── RECURSOS ───────────── */}
-            <section className="px-5 py-20">
+            <section className="px-5 py-12 sm:py-20">
                 <div className="mx-auto max-w-5xl">
                     <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Recursos destacados</h2></Reveal>
                     <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -289,7 +289,7 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── FAQ ───────────── */}
-            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-20">
+            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-12 sm:py-20">
                 <div className="mx-auto max-w-3xl">
                     <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Preguntas frecuentes</h2></Reveal>
                     <Reveal delay={80} className="mt-8 divide-y divide-zinc-200 dark:divide-zinc-800 overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
@@ -307,7 +307,7 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── CTA ───────────── */}
-            <section className="px-5 py-20">
+            <section className="px-5 py-12 sm:py-20">
                 <Reveal className="mx-auto max-w-5xl">
                     <div className="overflow-hidden rounded-[2rem] bg-zinc-950 dark:border dark:border-zinc-800 dark:bg-zinc-900 px-8 py-16 text-center">
                         <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Empieza a preparar tu plaza hoy</h2>

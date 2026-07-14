@@ -10,11 +10,12 @@ import { ArrowRight, GraduationCap } from "lucide-react"
 
 const ACCENT = "#10B981"
 
+// Retratos de stock (Pexels, licencia libre: uso comercial, sin atribución).
 const AVATARS = [
-    { i: "M", from: "#34D399", to: "#059669" },
-    { i: "I", from: "#60A5FA", to: "#2563EB" },
-    { i: "N", from: "#FBBF24", to: "#F59E0B" },
-    { i: "J", from: "#F472B6", to: "#DB2777" },
+    "/avatars/1.jpg",
+    "/avatars/2.jpg",
+    "/avatars/3.jpg",
+    "/avatars/4.jpg",
 ]
 
 function UpArrow() {
@@ -28,9 +29,9 @@ function UpArrow() {
 export default function HeroSplit() {
     return (
         <section className="relative overflow-hidden bg-[#EAEFF5]">
-            <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-6 py-14 lg:grid-cols-2 lg:gap-6 lg:py-20">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-6 pb-14 pt-8 sm:gap-10 sm:py-14 lg:grid-cols-2 lg:gap-6 lg:py-20">
                 {/* ── Columna izquierda ── */}
-                <div className="relative z-10 order-2 lg:order-1">
+                <div className="relative z-10 order-1 lg:order-1">
                     <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[13px] font-semibold text-zinc-600 shadow-sm ring-1 ring-black/[0.04]">
                         <GraduationCap size={15} className="text-emerald-500" aria-hidden />
                         Oposiciones · País Vasco
@@ -64,14 +65,16 @@ export default function HeroSplit() {
 
                         <div className="flex items-center gap-3">
                             <div className="flex -space-x-2.5">
-                                {AVATARS.map((a) => (
-                                    <span
-                                        key={a.i}
-                                        className="flex h-9 w-9 items-center justify-center rounded-full text-[12px] font-bold text-white ring-2 ring-[#EAEFF5]"
-                                        style={{ background: `linear-gradient(145deg, ${a.from}, ${a.to})` }}
-                                    >
-                                        {a.i}
-                                    </span>
+                                {AVATARS.map((src) => (
+                                    <img
+                                        key={src}
+                                        src={src}
+                                        alt=""
+                                        aria-hidden
+                                        width={36}
+                                        height={36}
+                                        className="h-9 w-9 rounded-full object-cover ring-2 ring-[#EAEFF5]"
+                                    />
                                 ))}
                             </div>
                             <span className="text-[13px] font-medium leading-tight text-zinc-500">
@@ -84,8 +87,8 @@ export default function HeroSplit() {
                 </div>
 
                 {/* ── Columna derecha: foto + tarjetas ── */}
-                <div className="relative order-1 lg:order-2">
-                    <div className="relative mx-auto aspect-[3/4] w-full max-w-sm lg:max-w-md">
+                <div className="relative order-2 lg:order-2">
+                    <div className="relative mx-auto aspect-[3/4] w-full max-w-[15rem] sm:max-w-sm lg:max-w-md">
                         <Image
                             src="/hero-chica.avif"
                             alt="Opositora preparando su oposición en el País Vasco con Gainditu"
@@ -96,7 +99,7 @@ export default function HeroSplit() {
                         />
 
                         {/* Tarjeta stat 1 (arriba-dcha) */}
-                        <div className="absolute -right-3 top-6 w-[188px] rotate-[3deg] rounded-2xl bg-white p-4 shadow-xl shadow-zinc-900/10 ring-1 ring-black/[0.04] sm:-right-6">
+                        <div className="absolute -right-2 top-3 w-[150px] rotate-[3deg] rounded-2xl bg-white p-3 shadow-xl shadow-zinc-900/10 ring-1 ring-black/[0.04] sm:-right-6 sm:top-6 sm:w-[188px] sm:p-4">
                             <div className="flex items-center justify-between">
                                 <span className="text-[13px] font-bold text-zinc-800">Aciertos</span>
                                 <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-600">+6%</span>
@@ -117,23 +120,23 @@ export default function HeroSplit() {
                                 ))}
                             </div>
                             <div className="mt-3 flex items-end justify-between">
-                                <div className="text-[26px] font-extrabold leading-none tracking-tight text-zinc-950">
-                                    96<span className="ml-0.5 text-[15px] font-bold text-zinc-400">%</span>
+                                <div className="text-[22px] font-extrabold leading-none tracking-tight text-zinc-950 sm:text-[26px]">
+                                    96<span className="ml-0.5 text-[13px] font-bold text-zinc-400 sm:text-[15px]">%</span>
                                 </div>
                                 <UpArrow />
                             </div>
                         </div>
 
                         {/* Tarjeta stat 2 (abajo-izda) */}
-                        <div className="absolute -left-3 bottom-8 w-[176px] -rotate-[4deg] rounded-2xl bg-white p-4 shadow-xl shadow-zinc-900/10 ring-1 ring-black/[0.04] sm:-left-6">
+                        <div className="absolute -left-2 bottom-5 w-[140px] -rotate-[4deg] rounded-2xl bg-white p-3 shadow-xl shadow-zinc-900/10 ring-1 ring-black/[0.04] sm:-left-6 sm:bottom-8 sm:w-[176px] sm:p-4">
                             <div className="flex items-center justify-between">
                                 <span className="text-[13px] font-bold text-zinc-800">Progreso</span>
                                 <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-600">+12%</span>
                             </div>
                             <div className="mt-0.5 text-[11px] font-medium text-zinc-400">Bloque común</div>
                             <div className="mt-3 flex items-end justify-between">
-                                <div className="text-[26px] font-extrabold leading-none tracking-tight text-zinc-950">
-                                    82<span className="ml-0.5 text-[15px] font-bold text-zinc-400">%</span>
+                                <div className="text-[22px] font-extrabold leading-none tracking-tight text-zinc-950 sm:text-[26px]">
+                                    82<span className="ml-0.5 text-[13px] font-bold text-zinc-400 sm:text-[15px]">%</span>
                                 </div>
                                 <UpArrow />
                             </div>
