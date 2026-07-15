@@ -86,8 +86,8 @@ export default function HeroSplit() {
                     </div>
                 </div>
 
-                {/* ── Columna derecha: foto + tarjetas ── */}
-                <div className="relative order-2 lg:order-2">
+                {/* ── Columna derecha: foto + tarjetas (oculta en móvil) ── */}
+                <div className="relative order-2 hidden lg:order-2 lg:block">
                     <div className="relative mx-auto aspect-[3/4] w-full max-w-[15rem] sm:max-w-sm lg:max-w-md">
                         <Image
                             src="/hero-chica.avif"
