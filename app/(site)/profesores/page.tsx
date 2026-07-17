@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 const ACCENT = "#10B981"
-const CONTACTO = "mailto:hola@gainditu.com?subject=Quiero%20anunciarme%20como%20profesor"
+const CONTACTO = "mailto:gaindituoposiciones@gmail.com?subject=Quiero%20anunciarme%20como%20profesor"
 
 const PROFES = [
     { n: "Ane M.", mat: "Derecho administrativo · Ley 39/2015 y 40/2015", zona: "Bilbao · online", ini: "A" },

@@ -57,7 +57,7 @@ const MARQUEE_ITEMS = [
     "¿Tienes una academia de oposiciones?",
     "Publicítala en Gainditu y llega a miles de opositores del País Vasco",
     "Espacios destacados · Campañas a medida",
-    "Escríbenos a hola@gainditu.com",
+    "Escríbenos a gaindituoposiciones@gmail.com",
 ]
 function MarqueeGroup() {
     return (
@@ -77,7 +77,7 @@ function AcademiaMarquee() {
     return (
         <div className="sticky bottom-0 z-40 px-4 pb-4 sm:px-5">
             <a
-                href="mailto:hola@gainditu.com?subject=Publicidad%20para%20academias"
+                href="mailto:gaindituoposiciones@gmail.com?subject=Publicidad%20para%20academias"
                 className="marquee-group mx-auto flex max-w-5xl items-center gap-3 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white/85 dark:bg-zinc-900/85 px-3 py-2 text-zinc-600 dark:text-zinc-300 shadow-lg shadow-zinc-900/5 backdrop-blur-md transition-colors hover:border-zinc-300 dark:hover:border-zinc-700"
             >
                 <span
@@ -262,7 +262,7 @@ export default function HomePage() {
                     </div>
                     <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                         <Link href="/profesores" className="inline-flex items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 px-6 py-3 text-[14px] font-semibold text-white transition-transform hover:scale-[1.03]">Ver profesores →</Link>
-                        <a href="mailto:hola@gainditu.com?subject=Quiero%20anunciarme%20como%20profesor" className="inline-flex items-center justify-center rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-3 text-[14px] font-semibold text-zinc-900 dark:text-zinc-100 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60">Anúnciate como profesor</a>
+                        <a href="mailto:gaindituoposiciones@gmail.com?subject=Quiero%20anunciarme%20como%20profesor" className="inline-flex items-center justify-center rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-3 text-[14px] font-semibold text-zinc-900 dark:text-zinc-100 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60">Anúnciate como profesor</a>
                     </div>
                 </div>
             </section>

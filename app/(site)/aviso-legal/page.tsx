@@ -11,17 +11,11 @@ export const metadata: Metadata = {
 export default function AvisoLegalPage() {
     return (
         <LegalShell title="Aviso legal" updated="junio de 2026">
-            <p>
-                <strong>[PENDIENTE DE COMPLETAR]</strong> Este texto es una
-                plantilla base; complétala con los datos reales del titular
-                (nombre/razón social, NIF y domicilio) antes de publicar.
-            </p>
-
             <h2>1. Titular del sitio web</h2>
             <p>
                 El presente sitio web <strong>gainditu.com</strong> (en adelante,
-                «Gainditu») es titularidad de [NOMBRE / RAZÓN SOCIAL], con NIF
-                [NIF] y domicilio en [DIRECCIÓN]. Puedes contactar en{" "}
+                «Gainditu») es titularidad de <strong>Gainditu Oposiciones</strong>.
+                Para cualquier consulta puedes contactar en{" "}
                 <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
             </p>
 

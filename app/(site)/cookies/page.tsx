@@ -11,11 +11,6 @@ export const metadata: Metadata = {
 export default function CookiesPage() {
     return (
         <LegalShell title="Política de cookies" updated="junio de 2026">
-            <p>
-                <strong>[PENDIENTE DE COMPLETAR]</strong> Plantilla base; ajusta
-                el listado según las cookies reales que utilices.
-            </p>
-
             <h2>1. ¿Qué son las cookies?</h2>
             <p>
                 Las cookies son pequeños archivos que se almacenan en tu

@@ -9,7 +9,7 @@ export const SITE_NAME = "Gainditu"
 export const SITE_DESCRIPTION =
     "Tests por tema oficial del IVAP para la OPE del Gobierno Vasco 2026. Auxiliares, Administrativos, Técnicos de Gestión y Superiores. Practica con miles de preguntas y mide tu progreso."
 
-export const CONTACT_EMAIL = "hola@gainditu.com"
+export const CONTACT_EMAIL = "gaindituoposiciones@gmail.com"
 
 export const SOCIAL = {
     instagram: "https://instagram.com/gainditu",

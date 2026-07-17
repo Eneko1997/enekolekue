@@ -11,15 +11,11 @@ export const metadata: Metadata = {
 export default function PrivacidadPage() {
     return (
         <LegalShell title="Política de privacidad" updated="junio de 2026">
-            <p>
-                <strong>[PENDIENTE DE COMPLETAR]</strong> Plantilla base conforme
-                al RGPD y la LOPDGDD; revisa y completa los datos del responsable
-                antes de publicar.
-            </p>
-
             <h2>1. Responsable del tratamiento</h2>
             <p>
-                [NOMBRE / RAZÓN SOCIAL], NIF [NIF], domicilio [DIRECCIÓN]. Contacto:{" "}
+                El responsable del tratamiento de tus datos es{" "}
+                <strong>Gainditu Oposiciones</strong>. Puedes contactar para
+                cualquier cuestión relacionada con tus datos en{" "}
                 <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
             </p>
 
