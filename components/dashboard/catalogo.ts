@@ -1115,3 +1115,23 @@ export const ESCALA_LABELS: Record<EscalaKey, string> = {
     gestion: "Técnico de Gestión",
     superiores: "Técnico Superior",
 }
+
+// Mapa plano id → título construido a partir de todos los catálogos.
+// Fuente única de la verdad para el nombre visible de cada test (dashboard,
+// pantalla de test, resultados…). Al añadir tests al catálogo, su título
+// queda disponible aquí automáticamente.
+export const TITULOS_CATALOGO: Record<string, string> = (() => {
+    const map: Record<string, string> = {}
+    const todos = [
+        ...dbAuxiliares,
+        ...dbAdministrativos,
+        ...dbGestion,
+        ...dbSuperiores,
+    ]
+    for (const bloque of todos) {
+        for (const t of bloque.tests) {
+            if (!map[t.id]) map[t.id] = t.titulo
+        }
+    }
+    return map
+})()

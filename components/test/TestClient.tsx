@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 import { createClient } from "@/lib/supabase/client"
+import { TITULOS_CATALOGO } from "@/components/dashboard/catalogo"
 import LightNavbar from "@/components/site/LightNavbar"
 import { useTheme } from "@/lib/use-theme"
 import SiteFooter from "@/components/site/SiteFooter"
@@ -3679,7 +3680,7 @@ export default function TestScreen(props: {
     onBack?: () => void
 }) {
     const testId = props.testId || getUrlParam("id") || "c01"
-    const titulo = TITULOS[testId] || `Test ${testId}`
+    const titulo = TITULOS[testId] || TITULOS_CATALOGO[testId] || `Test ${testId}`
     const accentColor = getAccent(testId)
     const limiteFree = PREMIUM_TESTS[testId] ?? null // null = sin límite
     const esSimulacro = testId.startsWith("sim_") // simulacros = solo premium
@@ -3987,7 +3988,7 @@ export default function TestScreen(props: {
         const pct = Math.round(
             (Math.max(0, correctas - incorrectas * penalizacion) / total) * 100
         )
-        const titulo = TITULOS[testId] || testId
+        const titulo = TITULOS[testId] || TITULOS_CATALOGO[testId] || testId
         saveResult(
             {
                 user_id: user.id,
