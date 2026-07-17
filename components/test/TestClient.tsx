@@ -95,6 +95,20 @@ function shuffleArray<T>(arr: T[]): T[] {
     return a
 }
 
+// Baraja las opciones de una pregunta y recalcula el índice de la correcta,
+// para que la posición de la respuesta no revele el acierto (todo el banco
+// tiende a colocar la correcta en la 2ª opción).
+function shuffleOpciones(
+    opciones: string[],
+    correcta: number
+): { opciones: string[]; correcta: number } {
+    if (!Array.isArray(opciones) || opciones.length < 2)
+        return { opciones, correcta }
+    const textoCorrecto = opciones[correcta]
+    const barajadas = shuffleArray(opciones)
+    return { opciones: barajadas, correcta: barajadas.indexOf(textoCorrecto) }
+}
+
 function getUrlParam(name: string): string | null {
     try {
         return new URLSearchParams(window.location.search).get(name)
@@ -3717,7 +3731,7 @@ export default function TestScreen(props: {
                 `EXPLICACIÓN ACTUAL:\n${p.explicacion}\n\n` +
                 `MOTIVO DE LA IMPUGNACIÓN:\n[El usuario no ha especificado — contactar si es necesario]\n`
         )
-        window.location.href = `mailto:hola@gainditu.com?subject=${asunto}&body=${cuerpo}`
+        window.location.href = `mailto:gaindituoposiciones@gmail.com?subject=${asunto}&body=${cuerpo}`
         setImpugnarEnviado(true)
         setImpugnarPregunta(null)
     }
@@ -3759,15 +3773,19 @@ export default function TestScreen(props: {
                 setFase("sin_preguntas")
                 return
             }
-            const parsed: Pregunta[] = rows.map((r: any) => ({
-                id: r.id,
-                enunciado: r.enunciado,
-                opciones: Array.isArray(r.opciones)
+            const parsed: Pregunta[] = rows.map((r: any) => {
+                const opcionesRaw: string[] = Array.isArray(r.opciones)
                     ? r.opciones
-                    : JSON.parse(r.opciones),
-                correcta: r.correcta,
-                explicacion: r.explicacion,
-            }))
+                    : JSON.parse(r.opciones)
+                const mezclada = shuffleOpciones(opcionesRaw, r.correcta)
+                return {
+                    id: r.id,
+                    enunciado: r.enunciado,
+                    opciones: mezclada.opciones,
+                    correcta: mezclada.correcta,
+                    explicacion: r.explicacion,
+                }
+            })
             // Ya viene barajado del servidor (RPC get_test_preguntas).
             setPreguntas(parsed)
             setRespuestas(Array(parsed.length).fill(null))
