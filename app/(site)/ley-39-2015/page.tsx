@@ -12,7 +12,7 @@ const ACCENT = "#10B981"
 export const metadata: Metadata = {
     title: "Test Ley 39/2015 — Procedimiento Administrativo Común (OPE Gobierno Vasco)",
     description:
-        "Tests de la Ley 39/2015 del Procedimiento Administrativo Común para la OPE del Gobierno Vasco 2026 (IVAP): actos, fases del procedimiento, recursos y responsabilidad. Más de 260 preguntas para practicar.",
+        "Tests de la Ley 39/2015 del Procedimiento Administrativo Común para la OPE del Gobierno Vasco 2026 (IVAP): actos, fases del procedimiento, recursos y responsabilidad. Más de 280 preguntas para practicar.",
     keywords: [
         "test ley 39/2015",
         "test procedimiento administrativo común",
@@ -25,10 +25,10 @@ export const metadata: Metadata = {
 
 const TESTS: TemaTest[] = [
     { id: "adm30", tema: "Acto administrativo", titulo: "El acto administrativo: producción, contenido, motivación, eficacia, nulidad y anulabilidad", preguntas: 40 },
-    { id: "adm31", tema: "Procedimiento", titulo: "Procedimiento administrativo: principios, personas interesadas, abstención y recusación", preguntas: 25 },
+    { id: "adm31", tema: "Procedimiento", titulo: "Procedimiento administrativo: principios, personas interesadas, abstención y recusación", preguntas: 30 },
     { id: "adm32", tema: "Fases", titulo: "Fases del procedimiento administrativo: iniciación, ordenación, instrucción y finalización", preguntas: 115 },
     { id: "adm33", tema: "Recursos", titulo: "Revisión de los actos: recursos administrativos, revisión de oficio y rectificación de errores", preguntas: 39 },
-    { id: "adm34", tema: "Responsabilidad", titulo: "Responsabilidad patrimonial de las Administraciones Públicas", preguntas: 17 },
+    { id: "adm34", tema: "Responsabilidad", titulo: "Responsabilidad patrimonial de las Administraciones Públicas", preguntas: 30 },
     { id: "c07", tema: "Admin. electrónica", titulo: "Administración electrónica: sede, identificación y firma, expediente y archivo electrónico", preguntas: 30 },
 ]
 
@@ -46,7 +46,7 @@ const FAQS: Faq[] = [
     },
     {
         q: "¿Cuántos temas del examen cubre la Ley 39/2015?",
-        a: "Es transversal: aparece en varios temas (acto administrativo, fases, recursos y responsabilidad). En Gainditu la practicas con más de 260 preguntas repartidas en 6 tests.",
+        a: "Es transversal: aparece en varios temas (acto administrativo, fases, recursos y responsabilidad). En Gainditu la practicas con más de 280 preguntas repartidas en 6 tests.",
     },
     {
         q: "¿Qué diferencia hay entre la Ley 39/2015 y la 40/2015?",
@@ -67,7 +67,7 @@ export default function Ley39Page() {
                 subtitle="El Procedimiento Administrativo Común: el tema estrella de casi toda oposición. A base de tests, no de empollar el BOE."
                 accent={ACCENT}
                 stats={[
-                    { n: "266", label: "preguntas" },
+                    { n: "284", label: "preguntas" },
                     { n: "6", label: "tests" },
                     { n: "2015", label: "en vigor" },
                     { n: "LPACAP", label: "ley" },
