@@ -385,6 +385,13 @@ export const dbAuxiliares: Bloque[] = [
             { id: "apoyo30", tema: "T.30", titulo: "T.30 — Mantenimiento básico de vehículos", preguntas: 30 },
         ],
     },
+    {
+        bloque: "Simulacros Personal de Apoyo",
+        tests: [
+            { id: "sim_aux1", titulo: "Simulacro completo Personal de Apoyo — 60 preguntas", preguntas: 60 },
+            { id: "sim_aux2", titulo: "Simulacro Parte General (Temas 1–14) — 50 preguntas", preguntas: 50 },
+        ],
+    },
 ]
 export const dbAdministrativos: Bloque[] = [
     ...BLOQUE_COMUN,
@@ -661,6 +668,11 @@ export const dbGestion: Bloque[] = [
                 id: "sim_ges1",
                 titulo: "Simulacro Parte General — 60 preguntas",
                 preguntas: 60,
+            },
+            {
+                id: "sim_ges2",
+                titulo: "Simulacro Procedimiento Administrativo — 40 preguntas",
+                preguntas: 40,
             },
         ],
     },

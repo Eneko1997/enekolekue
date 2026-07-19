@@ -157,8 +157,8 @@ const TITULOS: Record<string, string> = {
     aux29: "T.29 — Revisión de los actos: recursos, revisión de oficio, revocación y rectificación de errores",
     aux30: "T.30 — La responsabilidad de las Administraciones Públicas, sus autoridades y personal",
     aux31: "T.31 — Correspondencia y paquetería. Certificados, acuses de recibo, telegramas, notificaciones y envíos oficiales",
-    sim_aux1: "Simulacro completo Auxiliares Administrativos — 60 preguntas",
-    sim_aux2: "Simulacro Parte General + Procedimiento — 50 preguntas",
+    sim_aux1: "Simulacro completo Personal de Apoyo — 60 preguntas",
+    sim_aux2: "Simulacro Parte General (Temas 1–14) — 50 preguntas",
     sim_aux3: "Test rápido Atención Ciudadanía + Documentos — 30 preguntas",
 
     // ── ADMINISTRATIVOS ───────────────────────────────────────────────────────
