@@ -526,6 +526,65 @@ function buildHeatmap(
     return { cols, activos, meses }
 }
 
+// Iconos minimalistas de línea para las insignias (glyphs, no medallas)
+const INSIGNIA_ICONS: Record<string, React.ReactNode> = {
+    inicio: (
+        <path d="M4 10.5l3.5 3.5L16 6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    ),
+    cien: (
+        <text x="10" y="13.5" textAnchor="middle" fontSize="8" fontWeight="800" fill="currentColor" fontFamily="Inter, sans-serif">100</text>
+    ),
+    mil: (
+        <text x="10" y="13.5" textAnchor="middle" fontSize="9" fontWeight="800" fill="currentColor" fontFamily="Inter, sans-serif">1K</text>
+    ),
+    veterano: (
+        <text x="10" y="13.5" textAnchor="middle" fontSize="8.5" fontWeight="800" fill="currentColor" fontFamily="Inter, sans-serif">50</text>
+    ),
+    r7: (
+        <path d="M10 2.5c.5 2.5 3 3.5 3 6a3 3 0 11-6 0c0-1.3.8-2.3 1.4-2.8.3.9.8 1.3 1.2 1.3C10.6 6 10 4 10 2.5z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    ),
+    r30: (
+        <path d="M10 2.2l6 2.1v4.7c0 3.9-2.9 5.9-6 7-3.1-1.1-6-3.1-6-7V4.3l6-2.1z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    ),
+    diana: (
+        <g fill="none" stroke="currentColor" strokeWidth="1.4">
+            <circle cx="10" cy="10" r="6.8" />
+            <circle cx="10" cy="10" r="3.4" />
+            <circle cx="10" cy="10" r="0.9" fill="currentColor" stroke="none" />
+        </g>
+    ),
+    punteria: (
+        <g fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
+            <circle cx="10" cy="10" r="5.6" />
+            <path d="M10 1.6v3M10 15.4v3M1.6 10h3M15.4 10h3" />
+            <circle cx="10" cy="10" r="0.8" fill="currentColor" stroke="none" />
+        </g>
+    ),
+    madrugador: (
+        <g fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
+            <path d="M6 14.5a4 4 0 018 0" />
+            <path d="M2.5 14.5h15" />
+            <path d="M10 3.5V6M4.6 6.6l1.4 1.4M15.4 6.6l-1.4 1.4" />
+        </g>
+    ),
+    nocturno: (
+        <path d="M15.5 12A6.2 6.2 0 018.4 4.6 6.2 6.2 0 1015.5 12z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    ),
+    explorador: (
+        <g fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round">
+            <circle cx="10" cy="10" r="7" />
+            <path d="M10 5.5l2 4.5-2 4.5-2-4.5z" />
+        </g>
+    ),
+    simulacro: (
+        <g fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="5" y="4.2" width="10" height="12.6" rx="1.6" />
+            <path d="M7.8 4.2V3.2h4.4v1" />
+            <path d="M7.6 10.2l1.8 1.8 3.2-3.6" />
+        </g>
+    ),
+}
+
 // ─── NAVBAR ───────────────────────────────────────────────────────────────────
 function AvatarDropdown({
     user,
@@ -1733,6 +1792,35 @@ export default function PerfilOPE({
     const racha = calcularRacha(resultados)
     const rachaRecord = mejorRacha(resultados)
     const heatmap = buildHeatmap(resultados)
+    // Insignias (gamificación sutil): se ganan por comportamientos de opositor
+    const insigMadrugador = resultados.some(
+        (r) => new Date(r.completado_at).getHours() < 7
+    )
+    const insigNocturno = resultados.some((r) => {
+        const h = new Date(r.completado_at).getHours()
+        return h >= 23 || h < 5
+    })
+    const insigCien = resultados.some((r) => Number(r.porcentaje) >= 100)
+    const temasDistintos = new Set(resultados.map((r) => r.test_id)).size
+    const insigSimulacro = resultados.some((r) => {
+        const id = String(r.test_id || "")
+        return id.startsWith("sim_") || id === "c00"
+    })
+    const insignias = [
+        { id: "inicio", nombre: "Primer paso", desc: "Completa tu primer test", earned: totalTests >= 1 },
+        { id: "cien", nombre: "Centurión", desc: "100 preguntas respondidas", earned: totalPreguntas >= 100 },
+        { id: "mil", nombre: "Maratoniano", desc: "1.000 preguntas respondidas", earned: totalPreguntas >= 1000 },
+        { id: "r7", nombre: "Constancia", desc: "Racha de 7 días seguidos", earned: rachaRecord >= 7 },
+        { id: "r30", nombre: "De hierro", desc: "Racha de 30 días seguidos", earned: rachaRecord >= 30 },
+        { id: "diana", nombre: "Diana", desc: "Un test con el 100% de acierto", earned: insigCien },
+        { id: "punteria", nombre: "Puntería", desc: "Media ≥ 85% (mín. 5 tests)", earned: totalTests >= 5 && mediaAcierto >= 85 },
+        { id: "madrugador", nombre: "Madrugador", desc: "Un test antes de las 7:00", earned: insigMadrugador },
+        { id: "nocturno", nombre: "Ave nocturna", desc: "Un test de madrugada", earned: insigNocturno },
+        { id: "explorador", nombre: "Explorador", desc: "15 temas distintos practicados", earned: temasDistintos >= 15 },
+        { id: "veterano", nombre: "Veterano", desc: "50 tests completados", earned: totalTests >= 50 },
+        { id: "simulacro", nombre: "Simulacrista", desc: "Completa un simulacro", earned: insigSimulacro },
+    ]
+    const insigniasGanadas = insignias.filter((i) => i.earned).length
     // Acento único de marca (esmeralda) en todo el perfil; el color de escala
     // queda solo como etiqueta pequeña donde aplique.
     const accentColor = "#10B981"
@@ -2510,6 +2598,122 @@ export default function PerfilOPE({
                                                 />
                                             ))}
                                             <span>Más</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Insignias (gamificación sutil) */}
+                                    <div
+                                        style={{
+                                            background: t.surface,
+                                            border: `1px solid ${t.border}`,
+                                            borderRadius: "16px",
+                                            padding: "24px",
+                                            marginBottom: "20px",
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                                marginBottom: "18px",
+                                            }}
+                                        >
+                                            <h3
+                                                style={{
+                                                    fontSize: "15px",
+                                                    fontWeight: 700,
+                                                    color: t.textMain,
+                                                    margin: 0,
+                                                    borderLeft: `3px solid ${accentColor}`,
+                                                    paddingLeft: "12px",
+                                                }}
+                                            >
+                                                Insignias
+                                            </h3>
+                                            <div
+                                                style={{
+                                                    fontSize: "13px",
+                                                    color: t.textMuted,
+                                                    fontWeight: 600,
+                                                }}
+                                            >
+                                                {insigniasGanadas}/
+                                                {insignias.length}
+                                            </div>
+                                        </div>
+                                        <div
+                                            style={{
+                                                display: "grid",
+                                                gridTemplateColumns:
+                                                    "repeat(auto-fill, minmax(84px, 1fr))",
+                                                gap: "16px",
+                                            }}
+                                        >
+                                            {insignias.map((b) => (
+                                                <div
+                                                    key={b.id}
+                                                    title={b.desc}
+                                                    style={{
+                                                        display: "flex",
+                                                        flexDirection: "column",
+                                                        alignItems: "center",
+                                                        gap: "8px",
+                                                        textAlign: "center",
+                                                        opacity: b.earned
+                                                            ? 1
+                                                            : 0.42,
+                                                    }}
+                                                >
+                                                    <div
+                                                        style={{
+                                                            width: "48px",
+                                                            height: "48px",
+                                                            borderRadius: "14px",
+                                                            display: "flex",
+                                                            alignItems:
+                                                                "center",
+                                                            justifyContent:
+                                                                "center",
+                                                            color: b.earned
+                                                                ? accentColor
+                                                                : t.textMuted,
+                                                            background: b.earned
+                                                                ? "rgba(16,185,129,0.12)"
+                                                                : t.glass,
+                                                            border: `1px solid ${
+                                                                b.earned
+                                                                    ? "rgba(16,185,129,0.35)"
+                                                                    : t.border
+                                                            }`,
+                                                        }}
+                                                    >
+                                                        <svg
+                                                            viewBox="0 0 20 20"
+                                                            width="24"
+                                                            height="24"
+                                                        >
+                                                            {
+                                                                INSIGNIA_ICONS[
+                                                                    b.id
+                                                                ]
+                                                            }
+                                                        </svg>
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            fontSize: "11px",
+                                                            fontWeight: 700,
+                                                            color: b.earned
+                                                                ? t.textMain
+                                                                : t.textMuted,
+                                                            lineHeight: 1.2,
+                                                        }}
+                                                    >
+                                                        {b.nombre}
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
 
