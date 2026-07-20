@@ -1821,6 +1821,44 @@ export default function PerfilOPE({
         { id: "simulacro", nombre: "Simulacrista", desc: "Completa un simulacro", earned: insigSimulacro },
     ]
     const insigniasGanadas = insignias.filter((i) => i.earned).length
+    // Reto de la semana (rota cada semana; igual para todos; se mide en la semana en curso)
+    const RETOS_SEMANA: {
+        titulo: string
+        unidad: string
+        meta: number
+        calc: (rs: any[]) => number
+    }[] = [
+        { titulo: "Maratón semanal", unidad: "preguntas", meta: 150, calc: (rs) => rs.reduce((a, r) => a + (r.total_preguntas || 0), 0) },
+        { titulo: "Constancia total", unidad: "días activos", meta: 5, calc: (rs) => new Set(rs.map((r) => new Date(r.completado_at).toDateString())).size },
+        { titulo: "Ritmo de examen", unidad: "tests", meta: 8, calc: (rs) => rs.length },
+        { titulo: "Puntería fina", unidad: "tests ≥ 80%", meta: 5, calc: (rs) => rs.filter((r) => Number(r.porcentaje) >= 80).length },
+        { titulo: "Todoterreno", unidad: "temas distintos", meta: 6, calc: (rs) => new Set(rs.map((r) => r.test_id)).size },
+    ]
+    const inicioSemana = (() => {
+        const d = new Date()
+        d.setHours(0, 0, 0, 0)
+        d.setDate(d.getDate() - ((d.getDay() + 6) % 7)) // lunes de esta semana
+        return d
+    })()
+    const finSemana = new Date(inicioSemana)
+    finSemana.setDate(finSemana.getDate() + 7)
+    const resSemana = resultados.filter((r) => {
+        const f = new Date(r.completado_at)
+        return f >= inicioSemana && f < finSemana
+    })
+    const semanaIndex = Math.floor(inicioSemana.getTime() / (7 * 86400000))
+    const reto =
+        RETOS_SEMANA[
+            ((semanaIndex % RETOS_SEMANA.length) + RETOS_SEMANA.length) %
+                RETOS_SEMANA.length
+        ]
+    const retoProgreso = Math.min(reto.calc(resSemana), reto.meta)
+    const retoHecho = retoProgreso >= reto.meta
+    const retoPct = Math.round((retoProgreso / reto.meta) * 100)
+    const diasRestantes = Math.max(
+        1,
+        Math.ceil((finSemana.getTime() - Date.now()) / 86400000)
+    )
     // Acento único de marca (esmeralda) en todo el perfil; el color de escala
     // queda solo como etiqueta pequeña donde aplique.
     const accentColor = "#10B981"
@@ -2297,6 +2335,115 @@ export default function PerfilOPE({
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0 }}
                                 >
+                                    {/* Reto de la semana */}
+                                    <div
+                                        style={{
+                                            background: retoHecho
+                                                ? "rgba(16,185,129,0.12)"
+                                                : t.surface,
+                                            border: `1px solid ${
+                                                retoHecho
+                                                    ? "rgba(16,185,129,0.45)"
+                                                    : t.border
+                                            }`,
+                                            borderRadius: "16px",
+                                            padding: "20px",
+                                            marginBottom: "24px",
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "flex-start",
+                                                gap: "12px",
+                                            }}
+                                        >
+                                            <div>
+                                                <div
+                                                    style={{
+                                                        fontSize: "11px",
+                                                        fontWeight: 800,
+                                                        letterSpacing: "0.6px",
+                                                        textTransform:
+                                                            "uppercase",
+                                                        color: accentColor,
+                                                    }}
+                                                >
+                                                    🎯 Reto de la semana
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        fontSize: "18px",
+                                                        fontWeight: 800,
+                                                        color: t.textMain,
+                                                        margin: "4px 0 2px",
+                                                        letterSpacing: "-0.3px",
+                                                    }}
+                                                >
+                                                    {reto.titulo}
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        fontSize: "12px",
+                                                        color: t.textMuted,
+                                                    }}
+                                                >
+                                                    Objetivo: {reto.meta}{" "}
+                                                    {reto.unidad} · quedan{" "}
+                                                    {diasRestantes}{" "}
+                                                    {diasRestantes === 1
+                                                        ? "día"
+                                                        : "días"}
+                                                </div>
+                                            </div>
+                                            <div
+                                                style={{
+                                                    fontSize: "22px",
+                                                    fontWeight: 800,
+                                                    color: retoHecho
+                                                        ? accentColor
+                                                        : t.textMain,
+                                                    whiteSpace: "nowrap",
+                                                }}
+                                            >
+                                                {retoProgreso}/{reto.meta}
+                                            </div>
+                                        </div>
+                                        <div
+                                            style={{
+                                                marginTop: "14px",
+                                                height: "8px",
+                                                background: t.glass,
+                                                borderRadius: "99px",
+                                                overflow: "hidden",
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    width: `${retoPct}%`,
+                                                    height: "100%",
+                                                    background: accentColor,
+                                                    borderRadius: "99px",
+                                                    transition: "width 0.4s",
+                                                }}
+                                            />
+                                        </div>
+                                        {retoHecho && (
+                                            <div
+                                                style={{
+                                                    marginTop: "10px",
+                                                    fontSize: "13px",
+                                                    fontWeight: 700,
+                                                    color: accentColor,
+                                                }}
+                                            >
+                                                ✓ ¡Reto completado! Vuelve el
+                                                lunes para el siguiente.
+                                            </div>
+                                        )}
+                                    </div>
+
                                     {/* Stats cards */}
                                     <div
                                         style={{
