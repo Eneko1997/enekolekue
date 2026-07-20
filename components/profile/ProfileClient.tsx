@@ -447,6 +447,85 @@ function calcularRacha(resultados: any[]): number {
     return racha
 }
 
+// Racha más larga histórica (récord)
+function mejorRacha(resultados: any[]): number {
+    if (!resultados.length) return 0
+    const dias = [
+        ...new Set(
+            resultados.map((r) => new Date(r.completado_at).toDateString())
+        ),
+    ]
+        .map((d) => new Date(d).getTime())
+        .sort((a, b) => a - b)
+    let best = 1,
+        cur = 1
+    for (let i = 1; i < dias.length; i++) {
+        const diff = Math.round((dias[i] - dias[i - 1]) / 86400000)
+        if (diff === 1) cur++
+        else if (diff > 1) cur = 1
+        if (cur > best) best = cur
+    }
+    return best
+}
+
+// Heatmap de actividad estilo GitHub: rejilla de días con nº de tests por día
+interface HeatCell {
+    key: string
+    count: number
+    future: boolean
+    date: Date
+}
+function buildHeatmap(
+    resultados: any[],
+    semanas = 26
+): {
+    cols: HeatCell[][]
+    activos: number
+    meses: { label: string; col: number }[]
+} {
+    const cuenta = new Map<string, number>()
+    for (const r of resultados) {
+        const d = new Date(r.completado_at)
+        d.setHours(0, 0, 0, 0)
+        const k = d.toDateString()
+        cuenta.set(k, (cuenta.get(k) || 0) + 1)
+    }
+    const hoy = new Date()
+    hoy.setHours(0, 0, 0, 0)
+    const dow = (hoy.getDay() + 6) % 7 // lunes=0 … domingo=6
+    const fin = new Date(hoy)
+    fin.setDate(fin.getDate() + (6 - dow)) // domingo de la semana actual
+    const inicio = new Date(fin)
+    inicio.setDate(inicio.getDate() - (semanas * 7 - 1)) // lunes de hace N semanas
+    const cols: HeatCell[][] = []
+    const meses: { label: string; col: number }[] = []
+    const nombresMes = [
+        "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+        "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
+    ]
+    let activos = 0,
+        ultimoMes = -1
+    const cur = new Date(inicio)
+    for (let c = 0; c < semanas; c++) {
+        const semana: HeatCell[] = []
+        for (let d = 0; d < 7; d++) {
+            const fecha = new Date(cur)
+            const k = fecha.toDateString()
+            const future = fecha.getTime() > hoy.getTime()
+            const count = future ? 0 : cuenta.get(k) || 0
+            if (count > 0) activos++
+            semana.push({ key: k, count, future, date: fecha })
+            if (d === 0 && fecha.getMonth() !== ultimoMes) {
+                ultimoMes = fecha.getMonth()
+                meses.push({ label: nombresMes[fecha.getMonth()], col: c })
+            }
+            cur.setDate(cur.getDate() + 1)
+        }
+        cols.push(semana)
+    }
+    return { cols, activos, meses }
+}
+
 // ─── NAVBAR ───────────────────────────────────────────────────────────────────
 function AvatarDropdown({
     user,
@@ -1652,6 +1731,8 @@ export default function PerfilOPE({
               )
             : 0
     const racha = calcularRacha(resultados)
+    const rachaRecord = mejorRacha(resultados)
+    const heatmap = buildHeatmap(resultados)
     // Acento único de marca (esmeralda) en todo el perfil; el color de escala
     // queda solo como etiqueta pequeña donde aplique.
     const accentColor = "#10B981"
@@ -2219,6 +2300,217 @@ export default function PerfilOPE({
                                                 </div>
                                             </div>
                                         ))}
+                                    </div>
+
+                                    {/* Heatmap de actividad (racha visual, estilo GitHub) */}
+                                    <div
+                                        style={{
+                                            background: t.surface,
+                                            border: `1px solid ${t.border}`,
+                                            borderRadius: "16px",
+                                            padding: "24px",
+                                            marginBottom: "20px",
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                                flexWrap: "wrap",
+                                                gap: "8px",
+                                                marginBottom: "18px",
+                                            }}
+                                        >
+                                            <h3
+                                                style={{
+                                                    fontSize: "15px",
+                                                    fontWeight: 700,
+                                                    color: t.textMain,
+                                                    margin: 0,
+                                                    borderLeft: `3px solid ${accentColor}`,
+                                                    paddingLeft: "12px",
+                                                }}
+                                            >
+                                                Tu actividad
+                                            </h3>
+                                            <div
+                                                style={{
+                                                    fontSize: "13px",
+                                                    color: t.textMuted,
+                                                    fontWeight: 600,
+                                                }}
+                                            >
+                                                <span
+                                                    style={{
+                                                        color:
+                                                            racha >= 3
+                                                                ? "#F59E0B"
+                                                                : t.textMuted,
+                                                    }}
+                                                >
+                                                    🔥 {racha}{" "}
+                                                    {racha === 1
+                                                        ? "día"
+                                                        : "días"}{" "}
+                                                    de racha
+                                                </span>
+                                                {rachaRecord > 1 && (
+                                                    <span>
+                                                        {" "}
+                                                        · récord {rachaRecord}
+                                                    </span>
+                                                )}{" "}
+                                                · {heatmap.activos} días activos
+                                            </div>
+                                        </div>
+                                        <div
+                                            style={{
+                                                overflowX: "auto",
+                                                paddingBottom: "4px",
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    display: "inline-flex",
+                                                    flexDirection: "column",
+                                                    gap: "3px",
+                                                    minWidth: "min-content",
+                                                }}
+                                            >
+                                                {/* etiquetas de mes */}
+                                                <div
+                                                    style={{
+                                                        display: "flex",
+                                                        gap: "3px",
+                                                        height: "12px",
+                                                    }}
+                                                >
+                                                    {heatmap.cols.map((_, c) => {
+                                                        const mes =
+                                                            heatmap.meses.find(
+                                                                (m) =>
+                                                                    m.col === c
+                                                            )
+                                                        return (
+                                                            <div
+                                                                key={c}
+                                                                style={{
+                                                                    width: "12px",
+                                                                    fontSize:
+                                                                        "9px",
+                                                                    color: t.textMuted,
+                                                                    whiteSpace:
+                                                                        "nowrap",
+                                                                }}
+                                                            >
+                                                                {mes
+                                                                    ? mes.label
+                                                                    : ""}
+                                                            </div>
+                                                        )
+                                                    })}
+                                                </div>
+                                                {/* rejilla: 7 filas (lun→dom) × semanas */}
+                                                {[0, 1, 2, 3, 4, 5, 6].map(
+                                                    (row) => (
+                                                        <div
+                                                            key={row}
+                                                            style={{
+                                                                display: "flex",
+                                                                gap: "3px",
+                                                            }}
+                                                        >
+                                                            {heatmap.cols.map(
+                                                                (sem, c) => {
+                                                                    const cell =
+                                                                        sem[row]
+                                                                    const n =
+                                                                        cell.count
+                                                                    const bg =
+                                                                        cell.future
+                                                                            ? "transparent"
+                                                                            : n ===
+                                                                                0
+                                                                              ? t.glass
+                                                                              : n ===
+                                                                                  1
+                                                                                ? "rgba(16,185,129,0.32)"
+                                                                                : n ===
+                                                                                    2
+                                                                                  ? "rgba(16,185,129,0.55)"
+                                                                                  : n <=
+                                                                                      4
+                                                                                    ? "rgba(16,185,129,0.78)"
+                                                                                    : "rgba(16,185,129,1)"
+                                                                    return (
+                                                                        <div
+                                                                            key={
+                                                                                c
+                                                                            }
+                                                                            title={
+                                                                                cell.future
+                                                                                    ? ""
+                                                                                    : `${cell.date.toLocaleDateString(
+                                                                                          "es-ES"
+                                                                                      )} · ${n} ${n === 1 ? "test" : "tests"}`
+                                                                            }
+                                                                            style={{
+                                                                                width: "12px",
+                                                                                height: "12px",
+                                                                                borderRadius:
+                                                                                    "3px",
+                                                                                background:
+                                                                                    bg,
+                                                                                border: cell.future
+                                                                                    ? "none"
+                                                                                    : `1px solid ${t.border}`,
+                                                                                boxSizing:
+                                                                                    "border-box",
+                                                                            }}
+                                                                        />
+                                                                    )
+                                                                }
+                                                            )}
+                                                        </div>
+                                                    )
+                                                )}
+                                            </div>
+                                        </div>
+                                        {/* leyenda */}
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: "6px",
+                                                marginTop: "12px",
+                                                fontSize: "11px",
+                                                color: t.textMuted,
+                                                justifyContent: "flex-end",
+                                            }}
+                                        >
+                                            <span>Menos</span>
+                                            {[
+                                                t.glass,
+                                                "rgba(16,185,129,0.32)",
+                                                "rgba(16,185,129,0.55)",
+                                                "rgba(16,185,129,0.78)",
+                                                "rgba(16,185,129,1)",
+                                            ].map((c, i) => (
+                                                <div
+                                                    key={i}
+                                                    style={{
+                                                        width: "12px",
+                                                        height: "12px",
+                                                        borderRadius: "3px",
+                                                        background: c,
+                                                        border: `1px solid ${t.border}`,
+                                                        boxSizing: "border-box",
+                                                    }}
+                                                />
+                                            ))}
+                                            <span>Más</span>
+                                        </div>
                                     </div>
 
                                     {/* Mejor resultado por test */}
