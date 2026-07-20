@@ -18,6 +18,7 @@ const TESTS_LINKS = [
 ]
 
 const NAV_LINKS = [
+    { label: "Segmentos", href: "/segmentos" },
     { label: "Ley 39/2015", href: "/ley-39-2015" },
     { label: "Constitución", href: "/constitucion" },
     { label: "Fechas OPE", href: "/fechas-opes" },
