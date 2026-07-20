@@ -1064,8 +1064,8 @@ export const dbSuperiores: Bloque[] = [
             {
                 id: "supe47",
                 tema: "E.T.47",
-                titulo: "E.T.47 — Docencia y formación en salud. Acreditación de tutores. Formación especializada",
-                preguntas: 30,
+                titulo: "E.T.47 — Docencia y formación en salud. Acreditación de tutores. Formación especializada (en preparación, disponible próximamente)",
+                preguntas: 0,
             },
         ],
     },
