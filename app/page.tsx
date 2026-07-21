@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import LightNavbar from "@/components/site/LightNavbar"
 import HeroSplit from "@/components/home/HeroSplit"
 import Reveal from "@/components/home/Reveal"
+import PremiumSection from "@/components/home/PremiumSection"
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site"
 
 export const metadata: Metadata = {
@@ -131,38 +132,8 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* ───────────── PREMIUM / COMUNIDAD (debajo del banner) ───────────── */}
-            <section className="px-5 py-12 sm:py-20">
-                <div className="mx-auto max-w-5xl">
-                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                        <Reveal>
-                            <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Premium</span>
-                            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Desbloquea todo y entra en la comunidad</h2>
-                            <p className="mt-3 text-zinc-500 dark:text-zinc-400">Empieza gratis y, cuando quieras dar el salto, accede a todo el material avanzado con un único pago. Sin suscripción.</p>
-                            <ul className="mt-6 space-y-3">
-                                {["Exámenes oficiales de convocatorias anteriores", "Simulacros con penalización real del IVAP", "Estadísticas avanzadas y seguimiento por tema", "Comunidad de opositores y novedades de la OPE"].map((b) => (
-                                    <li key={b} className="flex items-start gap-3 text-[15px] text-zinc-700 dark:text-zinc-300">
-                                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[12px] font-bold text-white" style={{ backgroundColor: ACCENT }}>✓</span>
-                                        {b}
-                                    </li>
-                                ))}
-                            </ul>
-                        </Reveal>
-                        <Reveal delay={120}>
-                            <div className="flex flex-col justify-center rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8">
-                                <div className="text-[13px] font-semibold uppercase tracking-wide text-zinc-400 dark:text-zinc-500">Acceso completo</div>
-                                <div className="mt-2 flex items-end gap-2">
-                                    <span className="text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">24,99€</span>
-                                    <span className="mb-1.5 text-[14px] text-zinc-400 dark:text-zinc-500 line-through">40€</span>
-                                </div>
-                                <div className="mt-1 text-[14px] text-zinc-500 dark:text-zinc-400">Pago único · Acceso de por vida</div>
-                                <Link href="/payment" className="mt-6 inline-flex items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 px-6 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03]">Conseguir acceso</Link>
-                                <Link href="/signup" className="mt-3 text-center text-[13px] font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900">o empieza gratis →</Link>
-                            </div>
-                        </Reveal>
-                    </div>
-                </div>
-            </section>
+            {/* ───────────── PREMIUM / COMUNIDAD (oculta la venta a quien ya es premium) ───────────── */}
+            <PremiumSection />
 
             {/* ───────────── POR ESCALA ───────────── */}
             <section className="px-5 py-12 sm:py-20">
