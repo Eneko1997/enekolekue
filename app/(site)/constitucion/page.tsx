@@ -104,7 +104,7 @@ export default function ConstitucionPage() {
                     <Link href="/ley-39-2015" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
                         → Ley 39/2015
                     </Link>
-                    <Link href="/dashboard" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
+                    <Link href="/" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
                         → Todos los tests por escala
                     </Link>
                     <Link href="/fechas-opes" className="hover:text-zinc-950 dark:hover:text-white hover:underline">

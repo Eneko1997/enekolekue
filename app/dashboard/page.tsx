@@ -1,24 +1,8 @@
-import type { Metadata } from "next"
-import DashboardClient from "@/components/dashboard/DashboardClient"
-import LightNavbar from "@/components/site/LightNavbar"
-import SiteFooter from "@/components/site/SiteFooter"
+import { redirect } from "next/navigation"
 
-export const metadata: Metadata = {
-    title: "Mis tests — Gainditu",
-    description:
-        "Catálogo de tests por tema oficial del IVAP para la OPE del Gobierno Vasco 2026. Practica por escala, bloque o temario oficial y mide tu progreso.",
-    alternates: { canonical: "/dashboard" },
-}
-
-// El catálogo de tests (antes en la home). La home pasa a ser una landing de marketing.
+// La antigua home/catálogo vivía aquí. Ahora la home es "/" y cada escala tiene
+// su propia página en /oposiciones/[slug], por lo que /dashboard ya no se usa:
+// redirige a la home para no romper enlaces o marcadores antiguos.
 export default function DashboardPage() {
-    return (
-        <div className="flex min-h-dvh flex-col bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50">
-            <LightNavbar />
-            <div className="flex-1">
-                <DashboardClient />
-            </div>
-            <SiteFooter />
-        </div>
-    )
+    redirect("/")
 }

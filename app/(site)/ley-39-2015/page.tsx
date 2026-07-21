@@ -107,7 +107,7 @@ export default function Ley39Page() {
                     <Link href="/constitucion" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
                         → La Constitución Española
                     </Link>
-                    <Link href="/dashboard" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
+                    <Link href="/" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
                         → Todos los tests por escala
                     </Link>
                     <Link href="/fechas-opes" className="hover:text-zinc-950 dark:hover:text-white hover:underline">

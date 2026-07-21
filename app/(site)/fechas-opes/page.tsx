@@ -57,7 +57,7 @@ export default function FechasOpesPage() {
                 title="Fechas de las OPEs"
                 subtitle="Convocatorias y primera prueba de la OPE 2026 del Gobierno Vasco. Organízate y llega con el temario dominado."
                 accent={ACCENT}
-                ctaHref="/dashboard"
+                ctaHref="/"
                 ctaLabel="Ver los tests →"
                 stats={[
                     { n: "2026", label: "convocatoria" },
@@ -130,7 +130,7 @@ export default function FechasOpesPage() {
 
             <div className="mx-auto mb-12 max-w-4xl px-5">
                 <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
-                    <Link href="/dashboard" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
+                    <Link href="/" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
                         → Todos los tests por escala
                     </Link>
                     <Link href="/constitucion" className="hover:text-zinc-950 dark:hover:text-white hover:underline">

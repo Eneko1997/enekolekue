@@ -86,8 +86,7 @@ export default function LightNavbar() {
     const { dark, toggle } = useTheme()
     const router = useRouter()
     const pathname = usePathname() || "/"
-    const testsActive =
-        pathname.startsWith("/oposiciones") || pathname === "/dashboard"
+    const testsActive = pathname.startsWith("/oposiciones")
     const [open, setOpen] = useState(false)
     const [testsOpen, setTestsOpen] = useState(false)
     const [mobileTestsOpen, setMobileTestsOpen] = useState(false)

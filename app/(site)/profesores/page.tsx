@@ -49,7 +49,7 @@ export default function ProfesoresPage() {
                         <a href={CONTACTO} className="inline-flex w-full items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 px-7 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03] sm:w-auto">
                             Anúnciate como profesor
                         </a>
-                        <Link href="/dashboard" className="inline-flex w-full items-center justify-center rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-7 py-3.5 text-[15px] font-semibold text-zinc-900 dark:text-zinc-100 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60 sm:w-auto">
+                        <Link href="/" className="inline-flex w-full items-center justify-center rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-7 py-3.5 text-[15px] font-semibold text-zinc-900 dark:text-zinc-100 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60 sm:w-auto">
                             Practicar tests
                         </Link>
                     </div>

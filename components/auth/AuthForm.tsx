@@ -13,7 +13,7 @@ type Mode = "login" | "register" | "forgot"
 export default function AuthForm({ mode }: { mode: Mode }) {
     const router = useRouter()
     const params = useSearchParams()
-    const redirect = params.get("redirect") || "/dashboard"
+    const redirect = params.get("redirect") || "/"
 
     const [nombre, setNombre] = useState("")
     const [email, setEmail] = useState("")
