@@ -526,6 +526,117 @@ function buildHeatmap(
     return { cols, activos, meses }
 }
 
+// Genera una tarjeta de progreso (dark-premium) en canvas para compartir/descargar.
+async function generarTarjetaProgreso(d: {
+    escala: string
+    preguntas: number
+    acierto: number
+    tests: number
+    horas: number
+    racha: number
+}): Promise<Blob | null> {
+    const W = 1080,
+        H = 1350
+    const canvas = document.createElement("canvas")
+    canvas.width = W
+    canvas.height = H
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return null
+    try {
+        await (document as any).fonts?.ready
+    } catch (_e) {}
+
+    const round = (x: number, y: number, w: number, h: number, r: number) => {
+        ctx.beginPath()
+        ctx.moveTo(x + r, y)
+        ctx.arcTo(x + w, y, x + w, y + h, r)
+        ctx.arcTo(x + w, y + h, x, y + h, r)
+        ctx.arcTo(x, y + h, x, y, r)
+        ctx.arcTo(x, y, x + w, y, r)
+        ctx.closePath()
+    }
+
+    // Fondo
+    const g = ctx.createLinearGradient(0, 0, 0, H)
+    g.addColorStop(0, "#0a1512")
+    g.addColorStop(1, "#05100c")
+    ctx.fillStyle = g
+    ctx.fillRect(0, 0, W, H)
+    const rg = ctx.createRadialGradient(W * 0.82, H * 0.14, 40, W * 0.82, H * 0.14, 720)
+    rg.addColorStop(0, "rgba(16,185,129,0.30)")
+    rg.addColorStop(1, "rgba(16,185,129,0)")
+    ctx.fillStyle = rg
+    ctx.fillRect(0, 0, W, H)
+
+    const P = 90
+    ctx.textBaseline = "alphabetic"
+    ctx.textAlign = "left"
+    ctx.fillStyle = "#10B981"
+    ctx.font = "800 48px Manrope, system-ui, sans-serif"
+    ctx.fillText("gainditu.", P, 128)
+    ctx.textAlign = "right"
+    ctx.fillStyle = "rgba(255,255,255,0.55)"
+    ctx.font = "700 27px Manrope, system-ui, sans-serif"
+    ctx.fillText("OPE 2026 · IVAP", W - P, 122)
+
+    ctx.textAlign = "left"
+    ctx.fillStyle = "#ffffff"
+    ctx.font = "800 92px Manrope, system-ui, sans-serif"
+    ctx.fillText("Mi semana", P, 310)
+    ctx.fillStyle = "rgba(255,255,255,0.5)"
+    ctx.font = "600 31px Manrope, system-ui, sans-serif"
+    ctx.fillText(
+        d.escala ? `Opositando · ${d.escala}` : "Opositando en Euskadi",
+        P,
+        362
+    )
+
+    const tiles = [
+        { n: String(d.preguntas), l: "preguntas" },
+        { n: `${d.acierto}%`, l: "de acierto" },
+        {
+            n: d.horas >= 1 ? `${d.horas.toFixed(1)}h` : `${Math.round(d.horas * 60)}min`,
+            l: "estudiando",
+        },
+        { n: `${d.racha}`, l: d.racha === 1 ? "día de racha" : "días de racha" },
+    ]
+    const gap = 40,
+        tw = (W - P * 2 - gap) / 2,
+        th = 300,
+        ty0 = 450
+    tiles.forEach((tl, i) => {
+        const col = i % 2,
+            row = Math.floor(i / 2)
+        const x = P + col * (tw + gap),
+            y = ty0 + row * (th + gap)
+        round(x, y, tw, th, 34)
+        ctx.fillStyle = "rgba(255,255,255,0.05)"
+        ctx.fill()
+        ctx.lineWidth = 1.5
+        ctx.strokeStyle = "rgba(255,255,255,0.12)"
+        ctx.stroke()
+        ctx.fillStyle = "#10B981"
+        ctx.font = "800 100px Manrope, system-ui, sans-serif"
+        ctx.fillText(tl.n, x + 44, y + 158)
+        ctx.fillStyle = "rgba(255,255,255,0.6)"
+        ctx.font = "600 36px Manrope, system-ui, sans-serif"
+        ctx.fillText(tl.l, x + 46, y + 222)
+    })
+
+    ctx.fillStyle = "rgba(255,255,255,0.42)"
+    ctx.font = "600 30px Manrope, system-ui, sans-serif"
+    ctx.fillText("gainditu-oposiciones.vercel.app", P, H - 92)
+    ctx.textAlign = "right"
+    ctx.fillStyle = "#10B981"
+    ctx.font = "700 30px Manrope, system-ui, sans-serif"
+    ctx.fillText("A base de tests, no de empollar", W - P, H - 92)
+    ctx.textAlign = "left"
+
+    return await new Promise<Blob | null>((res) =>
+        canvas.toBlob(res, "image/png")
+    )
+}
+
 // Iconos minimalistas de línea para las insignias (glyphs, no medallas)
 const INSIGNIA_ICONS: Record<string, React.ReactNode> = {
     inicio: (
@@ -1859,6 +1970,62 @@ export default function PerfilOPE({
         1,
         Math.ceil((finSemana.getTime() - Date.now()) / 86400000)
     )
+    // Métricas de la semana para la tarjeta compartible
+    const semanaPreguntas = resSemana.reduce(
+        (a, r) => a + (r.total_preguntas || 0),
+        0
+    )
+    const semanaCorrectas = resSemana.reduce(
+        (a, r) => a + (r.correctas || 0),
+        0
+    )
+    const semanaAcierto =
+        semanaPreguntas > 0
+            ? Math.round((semanaCorrectas / semanaPreguntas) * 100)
+            : 0
+    const semanaHoras =
+        resSemana.reduce((a, r) => a + (r.tiempo_segundos || 0), 0) / 3600
+    const escalaLabelTarjeta =
+        (
+            {
+                auxiliares: "Personal de Apoyo",
+                administrativos: "Administrativo",
+                gestion: "Técnico de Gestión",
+                superiores: "Técnico Superior",
+            } as Record<string, string>
+        )[escala] || ""
+    async function compartirTarjeta() {
+        const blob = await generarTarjetaProgreso({
+            escala: escalaLabelTarjeta,
+            preguntas: semanaPreguntas,
+            acierto: semanaAcierto,
+            tests: resSemana.length,
+            horas: semanaHoras,
+            racha,
+        })
+        if (!blob) return
+        const file = new File([blob], "gainditu-mi-semana.png", {
+            type: "image/png",
+        })
+        const nav = navigator as any
+        if (nav.canShare && nav.canShare({ files: [file] })) {
+            try {
+                await nav.share({
+                    files: [file],
+                    title: "Mi semana en Gainditu",
+                })
+                return
+            } catch (_e) {}
+        }
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url
+        a.download = "gainditu-mi-semana.png"
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+        setTimeout(() => URL.revokeObjectURL(url), 1000)
+    }
     // Acento único de marca (esmeralda) en todo el perfil; el color de escala
     // queda solo como etiqueta pequeña donde aplique.
     const accentColor = "#10B981"
@@ -2861,6 +3028,132 @@ export default function PerfilOPE({
                                                     </div>
                                                 </div>
                                             ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Tarjeta de estatus compartible (dark-premium) */}
+                                    <div
+                                        style={{
+                                            borderRadius: "16px",
+                                            padding: "24px",
+                                            marginBottom: "20px",
+                                            background:
+                                                "linear-gradient(160deg,#0a1512,#05100c)",
+                                            border: "1px solid rgba(16,185,129,0.28)",
+                                            position: "relative",
+                                            overflow: "hidden",
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                top: "-90px",
+                                                right: "-70px",
+                                                width: "300px",
+                                                height: "300px",
+                                                borderRadius: "50%",
+                                                background:
+                                                    "radial-gradient(circle, rgba(16,185,129,0.28), transparent 70%)",
+                                            }}
+                                        />
+                                        <div style={{ position: "relative" }}>
+                                            <div
+                                                style={{
+                                                    fontSize: "11px",
+                                                    fontWeight: 800,
+                                                    letterSpacing: "0.6px",
+                                                    textTransform: "uppercase",
+                                                    color: "#10B981",
+                                                }}
+                                            >
+                                                ✨ Comparte tu semana
+                                            </div>
+                                            <div
+                                                style={{
+                                                    fontSize: "18px",
+                                                    fontWeight: 800,
+                                                    color: "#ffffff",
+                                                    margin: "4px 0 16px",
+                                                }}
+                                            >
+                                                Mi semana
+                                            </div>
+                                            <div
+                                                style={{
+                                                    display: "grid",
+                                                    gridTemplateColumns:
+                                                        "1fr 1fr",
+                                                    gap: "12px",
+                                                    marginBottom: "18px",
+                                                }}
+                                            >
+                                                {[
+                                                    {
+                                                        n: semanaPreguntas,
+                                                        l: "preguntas",
+                                                    },
+                                                    {
+                                                        n: `${semanaAcierto}%`,
+                                                        l: "acierto",
+                                                    },
+                                                    {
+                                                        n:
+                                                            semanaHoras >= 1
+                                                                ? `${semanaHoras.toFixed(1)}h`
+                                                                : `${Math.round(semanaHoras * 60)}min`,
+                                                        l: "estudiando",
+                                                    },
+                                                    {
+                                                        n: racha,
+                                                        l: "días de racha",
+                                                    },
+                                                ].map((m, i) => (
+                                                    <div
+                                                        key={i}
+                                                        style={{
+                                                            background:
+                                                                "rgba(255,255,255,0.05)",
+                                                            border: "1px solid rgba(255,255,255,0.10)",
+                                                            borderRadius: "12px",
+                                                            padding: "14px 16px",
+                                                        }}
+                                                    >
+                                                        <div
+                                                            style={{
+                                                                fontSize: "26px",
+                                                                fontWeight: 800,
+                                                                color: "#10B981",
+                                                            }}
+                                                        >
+                                                            {m.n}
+                                                        </div>
+                                                        <div
+                                                            style={{
+                                                                fontSize: "12px",
+                                                                color: "rgba(255,255,255,0.55)",
+                                                            }}
+                                                        >
+                                                            {m.l}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <button
+                                                onClick={compartirTarjeta}
+                                                style={{
+                                                    width: "100%",
+                                                    background: "#10B981",
+                                                    color: "#ffffff",
+                                                    border: "none",
+                                                    borderRadius: "12px",
+                                                    padding: "14px",
+                                                    fontWeight: 700,
+                                                    cursor: "pointer",
+                                                    fontSize: "15px",
+                                                }}
+                                            >
+                                                Descargar / Compartir imagen
+                                            </button>
                                         </div>
                                     </div>
 
