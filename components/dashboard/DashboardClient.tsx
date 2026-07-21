@@ -396,7 +396,7 @@ function AuthModal({
         background: dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)",
         color: t.textMain,
         fontSize: "14px",
-        fontFamily: "Inter, system-ui, sans-serif",
+        fontFamily: "var(--font-manrope), system-ui, sans-serif",
         outline: "none",
         boxSizing: "border-box",
     }
@@ -499,7 +499,7 @@ function AuthModal({
                                 justifyContent: "center",
                                 gap: "10px",
                                 marginBottom: "16px",
-                                fontFamily: "Inter, system-ui, sans-serif",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             }}
                         >
                             <GoogleIcon />
@@ -614,7 +614,7 @@ function AuthModal({
                         fontWeight: 700,
                         cursor: "pointer",
                         marginTop: "14px",
-                        fontFamily: "Inter, system-ui, sans-serif",
+                        fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     }}
                 >
                     {loading
@@ -648,7 +648,7 @@ function AuthModal({
                                     color: accent,
                                     cursor: "pointer",
                                     fontSize: "12px",
-                                    fontFamily: "Inter, system-ui, sans-serif",
+                                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                 }}
                             >
                                 Crear cuenta nueva
@@ -665,7 +665,7 @@ function AuthModal({
                                     color: t.textMuted,
                                     cursor: "pointer",
                                     fontSize: "12px",
-                                    fontFamily: "Inter, system-ui, sans-serif",
+                                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                     textDecoration: "underline",
                                 }}
                             >
@@ -687,7 +687,7 @@ function AuthModal({
                                     color: accent,
                                     cursor: "pointer",
                                     fontSize: "12px",
-                                    fontFamily: "Inter, system-ui, sans-serif",
+                                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                 }}
                             >
                                 Entrar
@@ -706,7 +706,7 @@ function AuthModal({
                                 color: accent,
                                 cursor: "pointer",
                                 fontSize: "12px",
-                                fontFamily: "Inter, system-ui, sans-serif",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             }}
                         >
                             ← Volver al login
@@ -920,7 +920,7 @@ function PremiumPopup({
                             fontSize: "15px",
                             fontWeight: 700,
                             cursor: "pointer",
-                            fontFamily: "Inter, system-ui, sans-serif",
+                            fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             marginBottom: "12px",
                         }}
                     >
@@ -961,7 +961,7 @@ function PremiumPopup({
                                 fontSize: "15px",
                                 fontWeight: 700,
                                 cursor: "pointer",
-                                fontFamily: "Inter, system-ui, sans-serif",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                 marginBottom: "8px",
                             }}
                         >
@@ -980,7 +980,7 @@ function PremiumPopup({
                                     color: accent,
                                     cursor: "pointer",
                                     fontSize: "12px",
-                                    fontFamily: "Inter, system-ui, sans-serif",
+                                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                     textDecoration: "underline",
                                 }}
                             >
@@ -999,7 +999,7 @@ function PremiumPopup({
                             color: t.textMuted,
                             fontSize: "12px",
                             cursor: "pointer",
-                            fontFamily: "Inter, system-ui, sans-serif",
+                            fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             textDecoration: "underline",
                         }}
                     >
@@ -1307,7 +1307,7 @@ function SeccionPremium({
                                     fontSize: "14px",
                                     fontWeight: 800,
                                     cursor: "pointer",
-                                    fontFamily: "Inter, system-ui, sans-serif",
+                                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                     marginBottom: "6px",
                                 }}
                             >
@@ -1455,7 +1455,7 @@ function SeccionPremium({
                                         fontWeight: 800,
                                         cursor: "pointer",
                                         fontFamily:
-                                            "Inter, system-ui, sans-serif",
+                                            "var(--font-manrope), system-ui, sans-serif",
                                     }}
                                 >
                                     Conseguir acceso →
@@ -1930,7 +1930,7 @@ function LedButton({
                     fontSize: "14px",
                     fontWeight: 700,
                     cursor: "pointer",
-                    fontFamily: "Inter, system-ui, sans-serif",
+                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     whiteSpace: "nowrap",
                 }}
             >
@@ -2118,7 +2118,7 @@ function AvatarDropdown({
                                 fontWeight: 500,
                                 color: "#EF4444",
                                 cursor: "pointer",
-                                fontFamily: "Inter, system-ui, sans-serif",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             }}
                             onMouseEnter={(e) =>
                                 (e.currentTarget.style.background =
@@ -2370,7 +2370,7 @@ export default function DashboardOPE(props: {
                     justifyContent: "center",
                     flexDirection: "column",
                     gap: "16px",
-                    fontFamily: "Inter, system-ui, sans-serif",
+                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                 }}
             >
                 <motion.div
@@ -2405,7 +2405,7 @@ export default function DashboardOPE(props: {
                 minHeight: "100vh",
                 backgroundColor: dark ? "transparent" : t.bg,
                 color: t.textMain,
-                fontFamily: "Inter, system-ui, sans-serif",
+                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                 boxSizing: "border-box",
                 transition: "background 0.2s, color 0.2s",
             }}
@@ -2525,7 +2525,7 @@ export default function DashboardOPE(props: {
                                     fontSize: "14px",
                                     fontWeight: 700,
                                     cursor: "pointer",
-                                    fontFamily: "Inter, system-ui, sans-serif",
+                                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                     transition: "background 0.3s",
                                 }}
                             >
@@ -2681,7 +2681,7 @@ export default function DashboardOPE(props: {
                             background: t.surface,
                             color: t.textMain,
                             fontSize: "14px",
-                            fontFamily: "Inter, system-ui, sans-serif",
+                            fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             outline: "none",
                             boxSizing: "border-box",
                             transition: "border-color 0.15s",
@@ -2749,7 +2749,7 @@ export default function DashboardOPE(props: {
                                     fontSize: "13px",
                                     fontWeight: 600,
                                     cursor: "pointer",
-                                    fontFamily: "Inter, system-ui, sans-serif",
+                                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                     transition: "all 0.2s",
                                 }}
                             >

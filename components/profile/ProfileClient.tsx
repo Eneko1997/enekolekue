@@ -532,13 +532,13 @@ const INSIGNIA_ICONS: Record<string, React.ReactNode> = {
         <path d="M4 10.5l3.5 3.5L16 6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
     ),
     cien: (
-        <text x="10" y="13.5" textAnchor="middle" fontSize="8" fontWeight="800" fill="currentColor" fontFamily="Inter, sans-serif">100</text>
+        <text x="10" y="13.5" textAnchor="middle" fontSize="8" fontWeight="800" fill="currentColor" fontFamily="var(--font-manrope), sans-serif">100</text>
     ),
     mil: (
-        <text x="10" y="13.5" textAnchor="middle" fontSize="9" fontWeight="800" fill="currentColor" fontFamily="Inter, sans-serif">1K</text>
+        <text x="10" y="13.5" textAnchor="middle" fontSize="9" fontWeight="800" fill="currentColor" fontFamily="var(--font-manrope), sans-serif">1K</text>
     ),
     veterano: (
-        <text x="10" y="13.5" textAnchor="middle" fontSize="8.5" fontWeight="800" fill="currentColor" fontFamily="Inter, sans-serif">50</text>
+        <text x="10" y="13.5" textAnchor="middle" fontSize="8.5" fontWeight="800" fill="currentColor" fontFamily="var(--font-manrope), sans-serif">50</text>
     ),
     r7: (
         <path d="M10 2.5c.5 2.5 3 3.5 3 6a3 3 0 11-6 0c0-1.3.8-2.3 1.4-2.8.3.9.8 1.3 1.2 1.3C10.6 6 10 4 10 2.5z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
@@ -773,7 +773,7 @@ function AvatarDropdown({
                                 fontWeight: 500,
                                 color: "#EF4444",
                                 cursor: "pointer",
-                                fontFamily: "Inter, system-ui, sans-serif",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                 transition: "background 0.1s",
                             }}
                             onMouseEnter={(e) =>
@@ -1143,7 +1143,7 @@ function Navbar({
                                         fontSize: "13px",
                                         fontWeight: 600,
                                         fontFamily:
-                                            "Inter, system-ui, sans-serif",
+                                            "var(--font-manrope), system-ui, sans-serif",
                                         flexShrink: 0,
                                     }}
                                 >
@@ -1189,7 +1189,7 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                 borderTop: `1px solid ${t.border}`,
                 marginTop: "80px",
                 backgroundColor: dark ? "#080910" : "#EBEBED",
-                fontFamily: "Inter, system-ui, sans-serif",
+                fontFamily: "var(--font-manrope), system-ui, sans-serif",
             }}
         >
             <div
@@ -1714,7 +1714,7 @@ export default function PerfilOPE({
                     borderRadius: "12px",
                     flexDirection: "column",
                     gap: "12px",
-                    fontFamily: "Inter, system-ui, sans-serif",
+                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     border: `2px dashed ${t.borderStrong}`,
                 }}
             >
@@ -1752,7 +1752,7 @@ export default function PerfilOPE({
                     minHeight: "100svh",
                     backgroundColor: t.bg,
                     color: t.textMain,
-                    fontFamily: "Inter, system-ui, sans-serif",
+                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                 }}
             >
                 <LightNavbar />
@@ -1911,7 +1911,7 @@ export default function PerfilOPE({
         background: t.glass,
         color: t.textMain,
         fontSize: "14px",
-        fontFamily: "Inter, system-ui, sans-serif",
+        fontFamily: "var(--font-manrope), system-ui, sans-serif",
         outline: "none",
         boxSizing: "border-box",
     }
@@ -1932,7 +1932,7 @@ export default function PerfilOPE({
                 minHeight: "100svh",
                 backgroundColor: t.bg,
                 color: t.textMain,
-                fontFamily: "Inter, system-ui, sans-serif",
+                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                 boxSizing: "border-box",
             }}
         >
@@ -2308,7 +2308,7 @@ export default function PerfilOPE({
                                         border: "none",
                                         cursor: "pointer",
                                         fontFamily:
-                                            "Inter, system-ui, sans-serif",
+                                            "var(--font-manrope), system-ui, sans-serif",
                                         fontSize: "14px",
                                         fontWeight: tab === tb.id ? 700 : 500,
                                         color:
@@ -3960,7 +3960,7 @@ export default function PerfilOPE({
                                                 fontWeight: 700,
                                                 cursor: "pointer",
                                                 fontFamily:
-                                                    "Inter, system-ui, sans-serif",
+                                                    "var(--font-manrope), system-ui, sans-serif",
                                                 display: "flex",
                                                 alignItems: "center",
                                                 justifyContent: "center",
@@ -4058,7 +4058,7 @@ export default function PerfilOPE({
                                                     fontWeight: 600,
                                                     cursor: "pointer",
                                                     fontFamily:
-                                                        "Inter, system-ui, sans-serif",
+                                                        "var(--font-manrope), system-ui, sans-serif",
                                                     transition: "all 0.2s",
                                                 }}
                                                 onMouseOver={(e) => {

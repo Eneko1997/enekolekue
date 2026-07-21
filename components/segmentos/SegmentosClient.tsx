@@ -217,7 +217,7 @@ export default function SegmentosClient() {
     if (jugando && !resultado) {
         const p = preguntas[idx]
         return (
-            <div style={{ minHeight: "100svh", background: t.bg, color: t.textMain, fontFamily: "Inter, system-ui, sans-serif" }}>
+            <div style={{ minHeight: "100svh", background: t.bg, color: t.textMain, fontFamily: "var(--font-manrope), system-ui, sans-serif" }}>
                 <div style={{ maxWidth: "640px", margin: "0 auto", padding: "32px 20px 60px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
                         <button onClick={salir} style={{ background: "none", border: "none", color: t.textMuted, cursor: "pointer", fontSize: "14px", fontWeight: 600 }}>← Salir</button>
@@ -249,7 +249,7 @@ export default function SegmentosClient() {
     if (jugando && resultado) {
         const perfecto = resultado.correctas === resultado.total
         return (
-            <div style={{ minHeight: "100svh", background: t.bg, color: t.textMain, fontFamily: "Inter, system-ui, sans-serif" }}>
+            <div style={{ minHeight: "100svh", background: t.bg, color: t.textMain, fontFamily: "var(--font-manrope), system-ui, sans-serif" }}>
                 <div style={{ maxWidth: "560px", margin: "0 auto", padding: "48px 20px 60px", textAlign: "center" }}>
                     <div style={{ fontSize: "48px", marginBottom: "8px" }}>{perfecto ? "🏆" : resultado.correctas >= resultado.total * 0.7 ? "💪" : "📚"}</div>
                     <h2 style={{ fontSize: "24px", fontWeight: 800, margin: "0 0 4px" }}>{jugando.nombre}</h2>
@@ -278,7 +278,7 @@ export default function SegmentosClient() {
 
     // ── Listado de segmentos ──────────────────────────────────────────────────
     return (
-        <div style={{ minHeight: "100svh", background: t.bg, color: t.textMain, fontFamily: "Inter, system-ui, sans-serif" }}>
+        <div style={{ minHeight: "100svh", background: t.bg, color: t.textMain, fontFamily: "var(--font-manrope), system-ui, sans-serif" }}>
             <LightNavbar />
             <div style={{ maxWidth: "820px", margin: "0 auto", padding: "40px 20px 60px" }}>
                 <h1 style={{ fontSize: "28px", fontWeight: 800, margin: "0 0 6px", letterSpacing: "-0.5px" }}>Segmentos</h1>
