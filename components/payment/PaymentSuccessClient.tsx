@@ -13,9 +13,11 @@ export default function PaymentSuccessClient() {
     useEffect(() => {
         const supabase = createClient()
         let tries = 0
+        let cancelled = false
         let timer: ReturnType<typeof setTimeout>
 
         async function poll() {
+            if (cancelled) return
             tries++
             const {
                 data: { user },
@@ -32,15 +34,37 @@ export default function PaymentSuccessClient() {
                     return
                 }
             }
-            // El webhook de Stripe puede tardar unos segundos en activar premium.
-            if (tries < 8) {
+            if (tries < 6) {
                 timer = setTimeout(poll, 1500)
             } else {
                 setChecking(false)
             }
         }
-        poll()
-        return () => clearTimeout(timer)
+
+        async function activar() {
+            // 1) Confirmación directa con Stripe (no depende del webhook):
+            //    verifica el pago y activa premium al instante.
+            try {
+                const sessionId = new URLSearchParams(
+                    window.location.search
+                ).get("session_id")
+                if (sessionId) {
+                    await supabase.functions.invoke("confirm-checkout", {
+                        body: { session_id: sessionId },
+                    })
+                }
+            } catch (_e) {
+                // si falla, el webhook y el polling siguen como respaldo
+            }
+            // 2) Comprobar el estado (y reintentar por si el webhook llega antes)
+            poll()
+        }
+
+        activar()
+        return () => {
+            cancelled = true
+            clearTimeout(timer)
+        }
     }, [])
 
     return (
@@ -65,7 +89,7 @@ export default function PaymentSuccessClient() {
                         ? "Estamos activando tu acceso Premium… esto puede tardar unos segundos."
                         : premium
                           ? "Tu acceso Premium ya está activo. ¡A por la OPE!"
-                          : "Tu pago se ha registrado. Si el acceso Premium no aparece en unos minutos, escríbenos a hola@gainditu.com."}
+                          : "Tu pago se ha registrado. Si el acceso Premium no aparece en unos minutos, escríbenos a gaindituoposiciones@gmail.com."}
                 </p>
                 <Link
                     href="/"
