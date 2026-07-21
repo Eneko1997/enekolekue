@@ -554,6 +554,11 @@ export const dbAdministrativos: Bloque[] = [
         bloque: "Exámenes oficiales de convocatorias reales",
         tests: [
             {
+                id: "ex_erandio_adm_2024",
+                titulo: "Examen Administrativo — Ayuntamiento de Erandio, 2024 (parte A, 45 preguntas, con solución oficial)",
+                preguntas: 45,
+            },
+            {
                 id: "ex_muskiz_adm_2023",
                 titulo: "Examen Administrativo — Ayuntamiento de Muskiz, 2023 (60 preguntas, con solución explicada)",
                 preguntas: 60,
