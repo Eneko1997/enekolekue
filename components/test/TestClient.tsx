@@ -3683,7 +3683,8 @@ export default function TestScreen(props: {
     const titulo = TITULOS[testId] || TITULOS_CATALOGO[testId] || `Test ${testId}`
     const accentColor = getAccent(testId)
     const limiteFree = PREMIUM_TESTS[testId] ?? null // null = sin límite
-    const esSimulacro = testId.startsWith("sim_") // simulacros = solo premium
+    // Simulacros (sim_*) y exámenes oficiales de convocatorias reales (ex_*) = solo premium
+    const esSimulacro = testId.startsWith("sim_") || testId.startsWith("ex_")
 
     const { dark } = useTheme()
     const [sessionUser, setSessionUser] = useState<any>(null)

@@ -31,6 +31,7 @@ export const AREA_ORDER = [
     "Correspondencia y paquetería",
     "Almacenamiento y materiales",
     "Mantenimiento e instalaciones",
+    "Exámenes oficiales de convocatorias reales",
     "Simulacros",
     "Otros temas",
 ]
@@ -38,6 +39,7 @@ export const AREA_ORDER = [
 export function areaDeTest(test: Test): string {
     const s = `${test.tema ?? ""} ${test.titulo}`.toLowerCase()
     const has = (...w: string[]) => w.some((x) => s.includes(x))
+    if (test.id.startsWith("ex_")) return "Exámenes oficiales de convocatorias reales"
     if (has("simulacro")) return "Simulacros"
     // Constitución + marco europeo (la UE se integra aquí para no quedar suelta)
     if (
@@ -210,10 +212,13 @@ export function agruparPorArea(bloques: Bloque[]): Bloque[] {
             map.get(a)!.push(tt)
         })
     )
-    // Orden canónico (Simulacros se fuerza al final, fuera de la fusión)
-    const ordenadas = AREA_ORDER.filter((a) => map.has(a) && a !== "Simulacros")
+    // Áreas que se fijan al final en este orden, fuera de la fusión de bloques sueltos.
+    const PINNED = ["Exámenes oficiales de convocatorias reales", "Simulacros"]
+    const esPinned = (a: string) => PINNED.includes(a)
+    // Orden canónico (las áreas fijadas al final se excluyen aquí)
+    const ordenadas = AREA_ORDER.filter((a) => map.has(a) && !esPinned(a))
     const extra = [...map.keys()].filter(
-        (a) => !AREA_ORDER.includes(a) && a !== "Simulacros"
+        (a) => !AREA_ORDER.includes(a) && !esPinned(a)
     )
     const result: Bloque[] = [...ordenadas, ...extra].map((a) => ({
         bloque: a,
@@ -232,10 +237,10 @@ export function agruparPorArea(bloques: Bloque[]): Bloque[] {
             i--
         }
     }
-    // Simulacros siempre al final
-    if (map.has("Simulacros")) {
-        result.push({ bloque: "Simulacros", tests: map.get("Simulacros")! })
-    }
+    // Exámenes oficiales y Simulacros siempre al final, en ese orden.
+    PINNED.forEach((a) => {
+        if (map.has(a)) result.push({ bloque: a, tests: map.get(a)! })
+    })
     return result
 }
 
@@ -542,6 +547,16 @@ export const dbAdministrativos: Bloque[] = [
                 tema: "T.34",
                 titulo: "T.34 — La responsabilidad de las Administraciones Públicas, sus autoridades y personal",
                 preguntas: 30,
+            },
+        ],
+    },
+    {
+        bloque: "Exámenes oficiales de convocatorias reales",
+        tests: [
+            {
+                id: "ex_muskiz_adm_2023",
+                titulo: "Examen Administrativo — Ayuntamiento de Muskiz, 2023 (60 preguntas, con solución explicada)",
+                preguntas: 60,
             },
         ],
     },
