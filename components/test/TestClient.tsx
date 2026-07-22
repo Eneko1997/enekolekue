@@ -3500,7 +3500,7 @@ function PremiumPopup({
                                 textDecoration: "line-through",
                             }}
                         >
-                            40€
+                            59,99€
                         </span>
                         <span
                             style={{
@@ -3510,7 +3510,7 @@ function PremiumPopup({
                                 lineHeight: 1,
                             }}
                         >
-                            24,99€
+                            39,99€
                         </span>
                     </div>
                     <div style={{ fontSize: "12px", color: "#8B8D98" }}>

@@ -21,7 +21,7 @@ const PLANS: Record<
     { label: string; price: string; original?: string; suffix: string; sub: string }
 > = {
     monthly: { label: "Mensual", price: "8,99", suffix: "/mes", sub: "Cancela cuando quieras" },
-    lifetime: { label: "De por vida", price: "24,99", original: "40", suffix: "", sub: "Pago único · Para siempre" },
+    lifetime: { label: "De por vida", price: "39,99", original: "59,99", suffix: "", sub: "Pago único · Para siempre" },
 }
 
 const FEATURES = [

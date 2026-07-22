@@ -185,10 +185,10 @@ export default function PremiumSection() {
                                 </div>
                                 <div className="mt-1 flex items-end gap-2">
                                     <span className="text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">
-                                        24,99€
+                                        39,99€
                                     </span>
                                     <span className="mb-1 text-[13px] text-zinc-400 dark:text-zinc-500 line-through">
-                                        40€
+                                        59,99€
                                     </span>
                                 </div>
                                 <div className="mt-1 text-[13px] text-zinc-500 dark:text-zinc-400">
