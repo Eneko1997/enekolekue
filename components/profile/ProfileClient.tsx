@@ -1687,6 +1687,8 @@ export default function PerfilOPE({
     const [escala, setEscala] = useState("administrativos")
     const [isPremium, setIsPremium] = useState(false)
     const [premiumType, setPremiumType] = useState("free")
+    const [premiumPlan, setPremiumPlan] = useState<string | null>(null)
+    const [portalLoading, setPortalLoading] = useState(false)
     const [guardando, setGuardando] = useState(false)
     const [guardado, setGuardado] = useState(false)
 
@@ -1753,6 +1755,7 @@ export default function PerfilOPE({
                         setEscala(prof[0].escala_objetivo)
                     setIsPremium(!!prof[0].is_premium)
                     setPremiumType(prof[0].premium_type || "free")
+                    setPremiumPlan(prof[0].premium_plan ?? null)
                 }
             } catch (error: any) {
                 if (error.message === "EXPIRED_TOKEN") {
@@ -1823,6 +1826,21 @@ export default function PerfilOPE({
 
     async function handleSignOut() {
         limpiarSesion(homeUrl)
+    }
+
+    async function gestionarSuscripcion() {
+        try {
+            setPortalLoading(true)
+            const supabase = createClient()
+            const { data } = await supabase.functions.invoke(
+                "create-billing-portal",
+                {}
+            )
+            if (data?.url) window.location.href = data.url
+            else setPortalLoading(false)
+        } catch {
+            setPortalLoading(false)
+        }
     }
 
     if (isCanvas) {
@@ -4324,9 +4342,35 @@ export default function PerfilOPE({
                                                 }}
                                             >
                                                 {isPremium
-                                                    ? "Acceso completo a todos los exámenes, simulacros e historial ilimitado."
+                                                    ? premiumPlan === "monthly"
+                                                        ? "Suscripción mensual activa. Acceso completo a exámenes, simulacros e historial ilimitado."
+                                                        : "Acceso completo a todos los exámenes, simulacros e historial ilimitado."
                                                     : "Acceso a tests de temario. Actualiza para desbloquear exámenes oficiales."}
                                             </div>
+                                            {isPremium && premiumPlan === "monthly" && (
+                                                <button
+                                                    onClick={gestionarSuscripcion}
+                                                    disabled={portalLoading}
+                                                    style={{
+                                                        display: "inline-block",
+                                                        marginTop: "10px",
+                                                        padding: "6px 14px",
+                                                        borderRadius: "8px",
+                                                        background: "transparent",
+                                                        border: `1px solid ${t.border}`,
+                                                        color: t.textMuted,
+                                                        fontSize: "12px",
+                                                        fontWeight: 700,
+                                                        cursor: "pointer",
+                                                        fontFamily:
+                                                            "var(--font-manrope), system-ui, sans-serif",
+                                                    }}
+                                                >
+                                                    {portalLoading
+                                                        ? "Abriendo…"
+                                                        : "Gestionar o cancelar suscripción →"}
+                                                </button>
+                                            )}
                                             {!isPremium && (
                                                 <a
                                                     href="/payment"

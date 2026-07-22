@@ -1,40 +1,61 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { createClient } from "@/lib/supabase/client"
 import { useIsMobile } from "@/lib/use-is-mobile"
-import { SunIcon, MoonIcon, CheckIcon } from "@/components/icons"
+import { CheckIcon } from "@/components/icons"
 import LightNavbar from "@/components/site/LightNavbar"
 import { useTheme } from "@/lib/use-theme"
 import SiteFooter from "@/components/site/SiteFooter"
 
 const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_live_51TjFCiJMIRLdIAQNCE42HQtsnlfvPkFsBNqovT0ayide74xAphiDiJOY2SlI8NrR6A6uL1yWK2nvjCMu7na7dENq00dizBLEaF"
 const CHECKOUT_FN = process.env.NEXT_PUBLIC_CHECKOUT_FN_NAME || "create-embedded-checkout"
-const STRIPE_FALLBACK_URL = "https://buy.stripe.com/fZu6oI8MYeuW1Fj88Y2Ji00"
-
-const PRICE = "24,99"
-const ORIGINAL_PRICE = "40"
 const ACCENT = "#10B981"
 
+type PlanId = "monthly" | "lifetime"
+
+const PLANS: Record<
+    PlanId,
+    { label: string; price: string; original?: string; suffix: string; sub: string }
+> = {
+    monthly: {
+        label: "Mensual",
+        price: "8,99",
+        suffix: "/mes",
+        sub: "Cancela cuando quieras",
+    },
+    lifetime: {
+        label: "De por vida",
+        price: "24,99",
+        original: "40",
+        suffix: "",
+        sub: "Pago único · Para siempre",
+    },
+}
+
 const FEATURES = [
-    "Exámenes oficiales convocatorias anteriores",
-    "Simulacros con penalización real IVAP",
+    "Exámenes oficiales de convocatorias anteriores",
+    "Simulacros con penalización real del IVAP",
     "Estadísticas avanzadas y progreso por escala",
     "Actualizaciones gratuitas hasta el examen",
-    "Acceso de por vida · Sin suscripción",
 ]
+
+function getInitialPlan(): PlanId {
+    if (typeof window === "undefined") return "lifetime"
+    const p = new URLSearchParams(window.location.search).get("plan")
+    return p === "monthly" ? "monthly" : "lifetime"
+}
 
 export default function PaymentClient() {
     const rootRef = React.useRef<HTMLDivElement>(null)
     const isMobile = useIsMobile(rootRef)
     const { dark } = useTheme()
 
+    const [plan, setPlan] = React.useState<PlanId>("lifetime")
     const [isCreatingCheckout, setIsCreatingCheckout] = React.useState(false)
-    const [checkoutMounted, setCheckoutMounted] = React.useState(false)
-    const [checkoutError, setCheckoutError] = React.useState("")
     const [embeddedReady, setEmbeddedReady] = React.useState(false)
+    const [checkoutError, setCheckoutError] = React.useState("")
     const embeddedContainerRef = React.useRef<HTMLDivElement | null>(null)
     const checkoutInstanceRef = React.useRef<any>(null)
     const stripeScriptLoadedRef = React.useRef(false)
@@ -44,14 +65,16 @@ export default function PaymentClient() {
     const border = dark ? "rgba(255,255,255,0.08)" : "#E4E4E7"
     const textMain = dark ? "#FFFFFF" : "#09090B"
     const textMuted = dark ? "#8B8D98" : "#71717A"
-    const navBg = "rgba(10,10,12,0.96)"
+
+    const cfg = PLANS[plan]
+
+    React.useEffect(() => {
+        setPlan(getInitialPlan())
+    }, [])
 
     const ensureStripeScript = React.useCallback(async () => {
         if (typeof window === "undefined") return false
-        if ((window as any).Stripe) {
-            stripeScriptLoadedRef.current = true
-            return true
-        }
+        if ((window as any).Stripe) return true
         if (stripeScriptLoadedRef.current) return !!(window as any).Stripe
         stripeScriptLoadedRef.current = true
         await new Promise<void>((resolve, reject) => {
@@ -65,71 +88,142 @@ export default function PaymentClient() {
         return !!(window as any).Stripe
     }, [])
 
-    const mountEmbeddedCheckout = React.useCallback(async () => {
-        if (checkoutInstanceRef.current || isCreatingCheckout) return
-        try {
-            setCheckoutError("")
-            setIsCreatingCheckout(true)
-            if (!STRIPE_PK.startsWith("pk_")) {
-                setCheckoutError("Falta la Stripe Publishable Key.")
-                return
-            }
-            const stripeOk = await ensureStripeScript()
-            if (!stripeOk || !(window as any).Stripe) {
-                setCheckoutError("Stripe.js no disponible.")
-                return
-            }
-
-            // Llamada a la edge function (gestiona apikey + JWT del usuario).
-            const supabase = createClient()
-            const { data, error } = await supabase.functions.invoke(CHECKOUT_FN, {
-                body: {
-                    productName: "Gainditu Premium — Acceso de por vida",
-                    price: PRICE,
-                    currency: "€",
-                },
-            })
-            if (error) throw new Error(error.message || "Error al crear la sesión de pago")
-            const clientSecret = data?.clientSecret || data?.client_secret
-            if (!clientSecret) throw new Error("No se recibió el clientSecret de Stripe")
-
-            const stripe = (window as any).Stripe(STRIPE_PK)
-            const checkout = await stripe.initEmbeddedCheckout({
-                fetchClientSecret: async () => clientSecret,
-            })
-            checkoutInstanceRef.current = checkout
-            setCheckoutMounted(true)
-            setEmbeddedReady(true)
-        } catch (err: any) {
-            setCheckoutError(err?.message || "Error al iniciar el checkout.")
-            setEmbeddedReady(false)
-        } finally {
-            setIsCreatingCheckout(false)
-        }
-    }, [ensureStripeScript, isCreatingCheckout])
-
-    React.useEffect(() => {
-        if (!checkoutMounted || !embeddedContainerRef.current) return
-        const checkout = checkoutInstanceRef.current
-        if (!checkout) return
-        checkout.mount(embeddedContainerRef.current)
-        return () => {
-            try {
-                checkout.unmount?.()
-            } catch {}
-            try {
-                checkout.destroy?.()
-            } catch {}
+    const teardown = React.useCallback(() => {
+        const inst = checkoutInstanceRef.current
+        if (inst) {
+            try { inst.unmount?.() } catch {}
+            try { inst.destroy?.() } catch {}
             checkoutInstanceRef.current = null
         }
-    }, [checkoutMounted])
-
-    // Auto-iniciar el checkout embebido al entrar.
-    React.useEffect(() => {
-        if (checkoutMounted || isCreatingCheckout) return
-        mountEmbeddedCheckout()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    // Crea/reinicia el checkout embebido para el plan activo.
+    const initCheckout = React.useCallback(
+        async (forPlan: PlanId) => {
+            if (isCreatingCheckout) return
+            try {
+                setCheckoutError("")
+                setEmbeddedReady(false)
+                setIsCreatingCheckout(true)
+                teardown()
+
+                if (!STRIPE_PK.startsWith("pk_")) {
+                    setCheckoutError("Falta la Stripe Publishable Key.")
+                    return
+                }
+                const stripeOk = await ensureStripeScript()
+                if (!stripeOk || !(window as any).Stripe) {
+                    setCheckoutError("Stripe.js no disponible.")
+                    return
+                }
+
+                const supabase = createClient()
+                const { data, error } = await supabase.functions.invoke(CHECKOUT_FN, {
+                    body: { plan: forPlan },
+                })
+                if (error) throw new Error(error.message || "Error al crear la sesión de pago")
+                const clientSecret = data?.clientSecret || data?.client_secret
+                if (!clientSecret) throw new Error("No se recibió el clientSecret de Stripe")
+
+                const stripe = (window as any).Stripe(STRIPE_PK)
+                const checkout = await stripe.initEmbeddedCheckout({
+                    fetchClientSecret: async () => clientSecret,
+                })
+                checkoutInstanceRef.current = checkout
+                if (embeddedContainerRef.current) {
+                    checkout.mount(embeddedContainerRef.current)
+                    setEmbeddedReady(true)
+                }
+            } catch (err: any) {
+                setCheckoutError(err?.message || "Error al iniciar el checkout.")
+                setEmbeddedReady(false)
+            } finally {
+                setIsCreatingCheckout(false)
+            }
+        },
+        [ensureStripeScript, isCreatingCheckout, teardown]
+    )
+
+    // (Re)inicia al montar y cada vez que cambia el plan.
+    React.useEffect(() => {
+        initCheckout(plan)
+        return () => teardown()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [plan])
+
+    function PlanCard({ id }: { id: PlanId }) {
+        const p = PLANS[id]
+        const active = plan === id
+        const recommended = id === "lifetime"
+        return (
+            <button
+                onClick={() => setPlan(id)}
+                disabled={isCreatingCheckout && !active}
+                style={{
+                    flex: 1,
+                    textAlign: "left",
+                    padding: "14px 16px",
+                    borderRadius: "14px",
+                    border: `1.5px solid ${active ? ACCENT : border}`,
+                    background: active ? `${ACCENT}12` : surface,
+                    cursor: "pointer",
+                    position: "relative",
+                    fontFamily: "inherit",
+                    transition: "all .15s",
+                }}
+            >
+                {recommended && (
+                    <span
+                        style={{
+                            position: "absolute",
+                            top: "-9px",
+                            right: "12px",
+                            fontSize: "9px",
+                            fontWeight: 800,
+                            letterSpacing: "0.5px",
+                            textTransform: "uppercase",
+                            color: "#fff",
+                            background: ACCENT,
+                            padding: "2px 8px",
+                            borderRadius: "100px",
+                        }}
+                    >
+                        Recomendado
+                    </span>
+                )}
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span
+                        style={{
+                            width: "16px",
+                            height: "16px",
+                            borderRadius: "50%",
+                            border: `2px solid ${active ? ACCENT : textMuted}`,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        {active && (
+                            <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: ACCENT }} />
+                        )}
+                    </span>
+                    <span style={{ fontSize: "14px", fontWeight: 700, color: textMain }}>{p.label}</span>
+                </div>
+                <div style={{ marginTop: "8px", display: "flex", alignItems: "baseline", gap: "6px" }}>
+                    <span style={{ fontSize: "22px", fontWeight: 900, color: textMain, letterSpacing: "-0.5px" }}>
+                        €{p.price}
+                    </span>
+                    <span style={{ fontSize: "12px", color: textMuted }}>{p.suffix}</span>
+                    {p.original && (
+                        <span style={{ fontSize: "12px", color: textMuted, textDecoration: "line-through" }}>
+                            €{p.original}
+                        </span>
+                    )}
+                </div>
+                <div style={{ fontSize: "11px", color: textMuted, marginTop: "2px" }}>{p.sub}</div>
+            </button>
+        )
+    }
 
     return (
         <div
@@ -139,13 +233,12 @@ export default function PaymentClient() {
                 minHeight: "100vh",
                 backgroundColor: bg,
                 color: textMain,
-                fontFamily: "Inter, system-ui, sans-serif",
+                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                 boxSizing: "border-box",
             }}
         >
             <LightNavbar />
 
-            {/* CONTENIDO */}
             <div
                 style={{
                     maxWidth: "900px",
@@ -157,12 +250,12 @@ export default function PaymentClient() {
                     alignItems: "start",
                 }}
             >
-                {/* COLUMNA IZQUIERDA */}
+                {/* IZQUIERDA */}
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35 }}
-                    style={{ display: "flex", flexDirection: "column", gap: isMobile ? "14px" : "24px" }}
+                    style={{ display: "flex", flexDirection: "column", gap: isMobile ? "16px" : "22px" }}
                 >
                     <div>
                         {!isMobile && (
@@ -185,89 +278,41 @@ export default function PaymentClient() {
                                 fontWeight: 800,
                                 letterSpacing: "-0.6px",
                                 lineHeight: 1.2,
-                                margin: isMobile ? "0 0 10px" : "0 0 20px",
+                                margin: "0 0 6px",
                                 color: textMain,
                             }}
                         >
-                            {isMobile ? (
-                                "Acceso completo de por vida."
-                            ) : (
-                                <>
-                                    Acceso completo
-                                    <br />
-                                    <span style={{ color: ACCENT }}>de por vida.</span>
-                                </>
-                            )}
+                            Elige tu acceso a{" "}
+                            <span style={{ color: ACCENT }}>Gainditu Premium.</span>
                         </h1>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-                            <span
-                                style={{
-                                    fontSize: isMobile ? "32px" : "44px",
-                                    fontWeight: 900,
-                                    color: textMain,
-                                    letterSpacing: "-1.5px",
-                                    lineHeight: 1,
-                                }}
-                            >
-                                €{PRICE}
-                            </span>
-                            <span
-                                style={{
-                                    fontSize: isMobile ? "14px" : "18px",
-                                    color: textMuted,
-                                    textDecoration: "line-through",
-                                }}
-                            >
-                                €{ORIGINAL_PRICE}
-                            </span>
-                        </div>
-                        <div style={{ fontSize: "11px", color: textMuted, marginTop: "4px" }}>
-                            Pago único · Sin suscripción
-                        </div>
+                        <p style={{ fontSize: "13px", color: textMuted, margin: 0 }}>
+                            Prueba con la mensual o asegúrate el acceso de por vida con un único pago.
+                        </p>
                     </div>
 
-                    {isMobile ? (
-                        <div style={{ fontSize: "12px", color: textMuted, lineHeight: 1.7 }}>
-                            Exámenes oficiales y simulacros con penalización IVAP · ✓
-                            Estadísticas avanzadas · Acceso de por vida, sin suscripción
-                        </div>
-                    ) : (
-                        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                            {FEATURES.map((f, i) => (
-                                <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                    <CheckIcon color={ACCENT} />
-                                    <span style={{ fontSize: "13px", color: textMain }}>{f}</span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                    {/* Selector de plan */}
+                    <div style={{ display: "flex", gap: "12px", marginTop: "2px" }}>
+                        <PlanCard id="monthly" />
+                        <PlanCard id="lifetime" />
+                    </div>
 
-                    {!isMobile ? (
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "10px",
-                                padding: "12px 16px",
-                                background: surface,
-                                border: `1px solid ${border}`,
-                                borderRadius: "10px",
-                            }}
-                        >
-                            <span style={{ fontSize: "18px" }}></span>
-                            <span style={{ fontSize: "12px", color: textMuted }}>
-                                Garantía de <strong style={{ color: textMain }}>30 días</strong> o
-                                te devolvemos el dinero
-                            </span>
-                        </div>
-                    ) : (
-                        <div style={{ fontSize: "11px", color: textMuted }}>
-                            Garantía de 30 días o te devolvemos el dinero
-                        </div>
-                    )}
+                    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                        {FEATURES.map((f, i) => (
+                            <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <CheckIcon color={ACCENT} />
+                                <span style={{ fontSize: "13px", color: textMain }}>{f}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div style={{ fontSize: "11px", color: textMuted }}>
+                        {plan === "monthly"
+                            ? "Suscripción mensual · Cancela en un clic cuando quieras."
+                            : "Pago único · Sin suscripción · Garantía de 30 días."}
+                    </div>
                 </motion.div>
 
-                {/* COLUMNA DERECHA — Checkout */}
+                {/* DERECHA — Checkout */}
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -276,103 +321,75 @@ export default function PaymentClient() {
                     <div style={{ background: surface, border: `1px solid ${border}`, borderRadius: "20px", overflow: "hidden" }}>
                         <div
                             style={{
-                                padding: "20px 24px",
+                                padding: "16px 24px",
                                 borderBottom: `1px solid ${border}`,
                                 display: "flex",
                                 alignItems: "center",
-                                gap: "8px",
+                                justifyContent: "space-between",
                             }}
                         >
-                            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.5 }}>
-                                <rect x="2.5" y="6" width="9" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
-                                <path d="M4.5 6V4.5C4.5 3.12 5.62 2 7 2C8.38 2 9.5 3.12 9.5 4.5V6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                            </svg>
                             <span style={{ fontSize: "12px", color: textMuted }}>
-                                Pago seguro vía Stripe · SSL 256-bit
+                                Pago seguro vía Stripe · SSL
+                            </span>
+                            <span style={{ fontSize: "13px", fontWeight: 800, color: textMain }}>
+                                €{cfg.price}
+                                <span style={{ fontSize: "11px", fontWeight: 600, color: textMuted }}>{cfg.suffix}</span>
                             </span>
                         </div>
 
-                        <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
-                            {!embeddedReady && (
-                                <motion.button
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.97 }}
-                                    onClick={mountEmbeddedCheckout}
-                                    disabled={isCreatingCheckout}
-                                    style={{
-                                        width: "100%",
-                                        padding: "15px",
-                                        borderRadius: "12px",
-                                        background: ACCENT,
-                                        color: "#fff",
-                                        border: "none",
-                                        fontSize: "15px",
-                                        fontWeight: 700,
-                                        cursor: isCreatingCheckout ? "default" : "pointer",
-                                        fontFamily: "Inter, system-ui, sans-serif",
-                                        opacity: isCreatingCheckout ? 0.7 : 1,
-                                        boxSizing: "border-box",
-                                    }}
-                                >
-                                    {isCreatingCheckout ? "Preparando pago..." : `Pagar €${PRICE} →`}
-                                </motion.button>
-                            )}
-
-                            <AnimatePresence>
-                                {embeddedReady && (
-                                    <motion.div
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        style={{ borderRadius: "10px", overflow: "hidden", minHeight: "480px", background: "#fff" }}
-                                    >
-                                        <div ref={embeddedContainerRef} style={{ width: "100%", minHeight: "480px" }} />
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                        <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                            <div
+                                style={{
+                                    borderRadius: "10px",
+                                    overflow: "hidden",
+                                    minHeight: "480px",
+                                    background: "#fff",
+                                    position: "relative",
+                                }}
+                            >
+                                <div ref={embeddedContainerRef} style={{ width: "100%", minHeight: "480px" }} />
+                                <AnimatePresence>
+                                    {(!embeddedReady || isCreatingCheckout) && !checkoutError && (
+                                        <motion.div
+                                            initial={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            style={{
+                                                position: "absolute",
+                                                inset: 0,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                background: "#fff",
+                                                color: "#71717A",
+                                                fontSize: "13px",
+                                            }}
+                                        >
+                                            Preparando el pago…
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
 
                             {checkoutError && (
                                 <div
                                     style={{
                                         fontSize: "12px",
-                                        color: "#FCA5A5",
-                                        background: "rgba(127,29,29,0.2)",
+                                        color: "#B91C1C",
+                                        background: "rgba(248,113,113,0.12)",
                                         border: "1px solid rgba(248,113,113,0.3)",
                                         padding: "10px 12px",
                                         borderRadius: "8px",
                                     }}
                                 >
-                                    {checkoutError}
+                                    {checkoutError}{" "}
+                                    <button
+                                        onClick={() => initCheckout(plan)}
+                                        style={{ color: ACCENT, background: "none", border: "none", cursor: "pointer", fontWeight: 700 }}
+                                    >
+                                        Reintentar
+                                    </button>
                                 </div>
                             )}
-
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <div style={{ flex: 1, height: "1px", background: border }} />
-                                <span style={{ fontSize: "11px", color: textMuted }}>o</span>
-                                <div style={{ flex: 1, height: "1px", background: border }} />
-                            </div>
-
-                            <a
-                                href={STRIPE_FALLBACK_URL}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{
-                                    width: "100%",
-                                    padding: "12px",
-                                    borderRadius: "10px",
-                                    border: `1px solid ${ACCENT}40`,
-                                    color: ACCENT,
-                                    fontSize: "13px",
-                                    fontWeight: 600,
-                                    textDecoration: "none",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    boxSizing: "border-box",
-                                }}
-                            >
-                                Pagar en página externa →
-                            </a>
 
                             <p style={{ fontSize: "11px", color: textMuted, textAlign: "center", margin: 0, lineHeight: 1.6 }}>
                                 El acceso se activa inmediatamente tras el pago.
