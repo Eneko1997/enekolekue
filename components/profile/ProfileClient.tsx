@@ -286,6 +286,13 @@ const TITULOS: Record<string, string> = {
 
 const EXAMENES_PREMIUM = [
     {
+        id: "ex_zamudio_adm_2024",
+        titulo: "Examen Administrativo — Zamudio 2024 (partes A y B)",
+        preguntas: 100,
+        escala: "administrativos",
+        badge: "OFICIAL",
+    },
+    {
         id: "ex_erandio_adm_2024",
         titulo: "Examen Administrativo — Erandio 2024 (parte A)",
         preguntas: 45,
