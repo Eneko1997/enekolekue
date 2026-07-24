@@ -119,10 +119,10 @@ export default function PremiumSection() {
                                     </button>
                                 ) : (
                                     <Link
-                                        href="/oposiciones/administrativo#tests-escala"
+                                        href="/perfil?tab=stats"
                                         className="mt-3 text-center text-[13px] font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
                                     >
-                                        Ir a exámenes y simulacros →
+                                        Ver mi progreso →
                                     </Link>
                                 )}
                             </div>
