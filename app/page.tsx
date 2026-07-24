@@ -56,9 +56,9 @@ const FAQS = [
 /* ── Tira marquee de academias: sticky abajo, acompaña dentro de su contenedor ── */
 const MARQUEE_ITEMS = [
     "¿Tienes una academia de oposiciones?",
-    "Publicítala en Gainditu y llega a miles de opositores del País Vasco",
-    "Espacios destacados · Campañas a medida",
-    "Escríbenos a gaindituoposiciones@gmail.com",
+    "Anúnciate en Gainditu y llega a opositores del País Vasco",
+    "Justo donde estudian: tests, simulacros y exámenes oficiales",
+    "Cuéntanos qué necesitas y lo montamos",
 ]
 function MarqueeGroup() {
     return (
@@ -97,7 +97,7 @@ function AcademiaMarquee() {
                     className="shrink-0 rounded-full px-3.5 py-1.5 text-[12px] font-semibold text-white"
                     style={{ background: ACCENT }}
                 >
-                    Contactar →
+                    Anúnciate →
                 </span>
             </a>
         </div>
