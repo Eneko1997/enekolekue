@@ -1387,7 +1387,7 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                         ["Administrativos", "/oposiciones/administrativo"],
                         ["Técnicos de Gestión", "/oposiciones/tecnico-gestion"],
                         ["Técnicos Superiores", "/oposiciones/tecnico-superior"],
-                        ["Exámenes Oficiales", "/payment"],
+                        ["Exámenes Oficiales", "/oposiciones/administrativo#tests-escala"],
                     ].map(([l, h]) => (
                         <a
                             key={l}

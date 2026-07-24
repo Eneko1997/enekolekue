@@ -1220,7 +1220,7 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                         },
                         {
                             label: "Exámenes Oficiales",
-                            href: "/payment",
+                            href: "/oposiciones/administrativo#tests-escala",
                         },
                     ].map((l) => (
                         <a
