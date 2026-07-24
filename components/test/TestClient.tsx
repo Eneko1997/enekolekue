@@ -596,7 +596,7 @@ function AvatarDropdown({
                                 fontWeight: 500,
                                 color: "#EF4444",
                                 cursor: "pointer",
-                                fontFamily: "Inter, system-ui, sans-serif",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                 transition: "background 0.1s",
                             }}
                             onMouseEnter={(e) =>
@@ -824,7 +824,7 @@ function SharedNavbar({
                                 fontSize: "13px",
                                 fontWeight: 700,
                                 cursor: "pointer",
-                                fontFamily: "Inter, system-ui, sans-serif",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             }}
                         >
                             Entrar
@@ -1089,7 +1089,7 @@ function SharedNavbar({
                                         color: "#EF4444",
                                         cursor: "pointer",
                                         fontFamily:
-                                            "Inter, system-ui, sans-serif",
+                                            "var(--font-manrope), system-ui, sans-serif",
                                         marginTop: "4px",
                                     }}
                                 >
@@ -1115,7 +1115,7 @@ function SharedNavbar({
                                         fontWeight: 700,
                                         cursor: "pointer",
                                         fontFamily:
-                                            "Inter, system-ui, sans-serif",
+                                            "var(--font-manrope), system-ui, sans-serif",
                                     }}
                                 >
                                     Entrar / Registrarse
@@ -1138,7 +1138,7 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                 borderTop: `1px solid ${t.border}`,
                 marginTop: "80px",
                 backgroundColor: dark ? "#080910" : "#EBEBED",
-                fontFamily: "Inter, system-ui, sans-serif",
+                fontFamily: "var(--font-manrope), system-ui, sans-serif",
             }}
         >
             <div
@@ -1455,13 +1455,13 @@ function PantallaInicio({
                     fontSize: "14px",
                     marginBottom: "32px",
                     padding: 0,
-                    fontFamily: "Inter,system-ui,sans-serif",
+                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     display: "flex",
                     alignItems: "center",
                     gap: "6px",
                 }}
             >
-                ← Volver al dashboard
+                ← Volver
             </button>
             <div
                 style={{
@@ -1566,14 +1566,14 @@ function PantallaInicio({
                     style={{
                         width: "100%",
                         padding: "15px",
-                        borderRadius: "12px",
+                        borderRadius: "100px",
                         background: accent,
                         color: "#fff",
                         border: "none",
                         fontSize: "15px",
                         fontWeight: 700,
                         cursor: "pointer",
-                        fontFamily: "Inter,system-ui,sans-serif",
+                        fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     }}
                 >
                     Empezar {modo === "repaso" ? "repaso" : "examen"} →
@@ -1638,7 +1638,7 @@ function PantallaConfigExamen({
                     fontSize: "14px",
                     marginBottom: "32px",
                     padding: 0,
-                    fontFamily: "Inter,system-ui,sans-serif",
+                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     display: "flex",
                     alignItems: "center",
                     gap: "6px",
@@ -1723,7 +1723,7 @@ function PantallaConfigExamen({
                                 fontSize: "13px",
                                 fontWeight: 600,
                                 cursor: "pointer",
-                                fontFamily: "Inter,system-ui,sans-serif",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                 transition: "all 0.15s",
                             }}
                         >
@@ -1805,14 +1805,14 @@ function PantallaConfigExamen({
                     style={{
                         width: "100%",
                         padding: "15px",
-                        borderRadius: "12px",
+                        borderRadius: "100px",
                         background: accent,
                         color: "#fff",
                         border: "none",
                         fontSize: "15px",
                         fontWeight: 700,
                         cursor: "pointer",
-                        fontFamily: "Inter,system-ui,sans-serif",
+                        fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     }}
                 >
                     Empezar examen →
@@ -1942,7 +1942,7 @@ function ModalImpugnar({
                             cursor: "pointer",
                             fontSize: "14px",
                             fontWeight: 600,
-                            fontFamily: "Inter,system-ui,sans-serif",
+                            fontFamily: "var(--font-manrope), system-ui, sans-serif",
                         }}
                     >
                         Cancelar
@@ -1960,7 +1960,7 @@ function ModalImpugnar({
                             cursor: "pointer",
                             fontSize: "14px",
                             fontWeight: 700,
-                            fontFamily: "Inter,system-ui,sans-serif",
+                            fontFamily: "var(--font-manrope), system-ui, sans-serif",
                         }}
                     >
                         Sí, impugnar
@@ -2225,7 +2225,7 @@ function PantallaPregunta({
                                         fontWeight: 600,
                                         cursor: "pointer",
                                         fontFamily:
-                                            "Inter,system-ui,sans-serif",
+                                            "var(--font-manrope), system-ui, sans-serif",
                                     }}
                                 >
                                     {verExp ? "Ocultar" : "Ver"}
@@ -2271,7 +2271,7 @@ function PantallaPregunta({
                         fontSize: "14px",
                         fontWeight: 700,
                         cursor: "pointer",
-                        fontFamily: "Inter,system-ui,sans-serif",
+                        fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     }}
                 >
                     {numero === total ? "Ver resultados →" : "Siguiente →"}
@@ -2289,7 +2289,7 @@ function PantallaPregunta({
                             fontSize: "11px",
                             color: "rgba(255,255,255,0.25)",
                             cursor: "pointer",
-                            fontFamily: "Inter,system-ui,sans-serif",
+                            fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             textDecoration: "underline",
                             padding: "8px 16px",
                         }}
@@ -2552,7 +2552,7 @@ function PantallaExamen({
                             fontSize: "13px",
                             fontWeight: 600,
                             cursor: "pointer",
-                            fontFamily: "Inter,system-ui,sans-serif",
+                            fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             marginBottom: "10px",
                         }}
                     >
@@ -2579,7 +2579,7 @@ function PantallaExamen({
                         fontSize: "15px",
                         fontWeight: 800,
                         cursor: "pointer",
-                        fontFamily: "Inter,system-ui,sans-serif",
+                        fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     }}
                 >
                     {respondidas === total
@@ -2914,7 +2914,7 @@ function PantallaResultados({
                         fontSize: "14px",
                         fontWeight: 700,
                         cursor: "pointer",
-                        fontFamily: "Inter,system-ui,sans-serif",
+                        fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     }}
                 >
                     Repetir test
@@ -2933,10 +2933,10 @@ function PantallaResultados({
                         fontSize: "14px",
                         fontWeight: 600,
                         cursor: "pointer",
-                        fontFamily: "Inter,system-ui,sans-serif",
+                        fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     }}
                 >
-                    Volver al dashboard
+                    Volver
                 </motion.button>
             </div>
         </motion.div>
@@ -3093,7 +3093,7 @@ function RegisterPopup({
         background: dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)",
         color: t.textMain,
         fontSize: "14px",
-        fontFamily: "Inter, system-ui, sans-serif",
+        fontFamily: "var(--font-manrope), system-ui, sans-serif",
         outline: "none",
         boxSizing: "border-box",
     }
@@ -3206,7 +3206,7 @@ function RegisterPopup({
                                 fontSize: "13px",
                                 fontWeight: 600,
                                 cursor: "pointer",
-                                fontFamily: "Inter, system-ui, sans-serif",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                 background: tab === t2 ? accent : "transparent",
                                 color: tab === t2 ? "#fff" : t.textMuted,
                                 transition: "all 0.15s",
@@ -3241,7 +3241,7 @@ function RegisterPopup({
                         justifyContent: "center",
                         gap: "8px",
                         marginBottom: "12px",
-                        fontFamily: "Inter, system-ui, sans-serif",
+                        fontFamily: "var(--font-manrope), system-ui, sans-serif",
                     }}
                 >
                     <svg width="16" height="16" viewBox="0 0 48 48">
@@ -3356,7 +3356,7 @@ function RegisterPopup({
                         fontSize: "14px",
                         fontWeight: 700,
                         cursor: "pointer",
-                        fontFamily: "Inter, system-ui, sans-serif",
+                        fontFamily: "var(--font-manrope), system-ui, sans-serif",
                         marginTop: "12px",
                     }}
                 >
@@ -3560,7 +3560,7 @@ function PremiumPopup({
                             fontSize: "15px",
                             fontWeight: 700,
                             cursor: "pointer",
-                            fontFamily: "Inter,system-ui,sans-serif",
+                            fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             marginBottom: "12px",
                         }}
                     >
@@ -3601,7 +3601,7 @@ function PremiumPopup({
                                 fontSize: "15px",
                                 fontWeight: 700,
                                 cursor: "pointer",
-                                fontFamily: "Inter,system-ui,sans-serif",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                 marginBottom: "8px",
                             }}
                         >
@@ -3620,7 +3620,7 @@ function PremiumPopup({
                                     color: accent,
                                     cursor: "pointer",
                                     fontSize: "12px",
-                                    fontFamily: "Inter,system-ui,sans-serif",
+                                    fontFamily: "var(--font-manrope), system-ui, sans-serif",
                                     textDecoration: "underline",
                                 }}
                             >
@@ -3638,14 +3638,14 @@ function PremiumPopup({
                         color: "#8B8D98",
                         fontSize: "12px",
                         cursor: "pointer",
-                        fontFamily: "Inter,system-ui,sans-serif",
+                        fontFamily: "var(--font-manrope), system-ui, sans-serif",
                         textDecoration: "underline",
                         marginTop: "12px",
                         display: "block",
                         width: "100%",
                     }}
                 >
-                    Ahora no, volver al dashboard
+                    Ahora no, volver
                 </button>
             </motion.div>
         </motion.div>
@@ -4044,7 +4044,7 @@ export default function TestScreen(props: {
                 minHeight: "100vh",
                 backgroundColor: theme.bg,
                 color: theme.textMain,
-                fontFamily: "Inter,system-ui,sans-serif",
+                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                 boxSizing: "border-box",
                 overflowX: "hidden",
                 transition: "background 0.2s",
@@ -4140,10 +4140,10 @@ export default function TestScreen(props: {
                                 fontSize: "14px",
                                 fontWeight: 700,
                                 cursor: "pointer",
-                                fontFamily: "Inter,system-ui,sans-serif",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             }}
                         >
-                            ← Volver al dashboard
+                            ← Volver
                         </motion.button>
                     </motion.div>
                 )}
