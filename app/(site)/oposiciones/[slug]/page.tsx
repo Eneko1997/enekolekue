@@ -32,16 +32,16 @@ const ESCALAS: Record<string, EscalaData> = {
         color: SCALE_COLORS.auxiliares,
         convocatoria: "Septiembre 2026",
         prueba: "Enero 2027",
-        title: "Oposiciones Personal de Apoyo Gobierno Vasco 2026 — Tests IVAP",
+        title: "Oposiciones Personal de Apoyo Gobierno Vasco 2026 — Tests OPE",
         description:
-            "Prepara la oposición de la Agrupación Profesional de Personal de Apoyo del Gobierno Vasco 2026 con tests por tema del temario oficial del IVAP. Parte general (temas 1–14) y específicos de la agrupación.",
+            "Prepara la oposición de la Agrupación Profesional de Personal de Apoyo del Gobierno Vasco 2026 con tests por tema del temario oficial de la convocatoria. Parte general (temas 1–14) y específicos de la agrupación.",
         keywords: [
             "oposiciones personal de apoyo Gobierno Vasco",
             "agrupación profesional personal de apoyo Euskadi 2026",
-            "test personal de apoyo IVAP",
+            "test personal de apoyo",
             "OPE personal de apoyo Eusko Jaurlaritza",
         ],
-        intro: "La Agrupación Profesional de Personal de Apoyo (grupo E) es la puerta de entrada al empleo público vasco. Practica el temario oficial del IVAP tema a tema.",
+        intro: "La Agrupación Profesional de Personal de Apoyo (grupo E) es la puerta de entrada al empleo público vasco. Practica el temario oficial de la convocatoria tema a tema.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización del Estado y de Euskadi, empleo público, protección de datos y prevención de riesgos." },
             { t: "Atención a la ciudadanía", d: "Derechos de la ciudadanía, comunicación escrita y oral, y atención al público." },
@@ -50,7 +50,7 @@ const ESCALAS: Record<string, EscalaData> = {
         ],
         faqs: [
             { q: "¿Qué se necesita para ser Personal de Apoyo del Gobierno Vasco?", a: "No se exige titulación académica para la Agrupación Profesional de Personal de Apoyo (grupo E); basta con los requisitos generales de acceso al empleo público." },
-            { q: "¿Cuándo es el examen de Personal de Apoyo?", a: "Según el calendario provisional del IVAP, la convocatoria se prevé en septiembre de 2026 y la primera prueba en enero de 2027." },
+            { q: "¿Cuándo es el examen de Personal de Apoyo?", a: "Según el calendario provisional de la OPE, la convocatoria se prevé en septiembre de 2026 y la primera prueba en enero de 2027." },
             { q: "¿Qué temas entran en la oposición de Personal de Apoyo?", a: "El bloque común (temas 1–14) más los temas específicos de atención a la ciudadanía, vigilancia y labores de apoyo, correspondencia, almacenamiento y mantenimiento." },
         ],
     },
@@ -61,16 +61,16 @@ const ESCALAS: Record<string, EscalaData> = {
         color: SCALE_COLORS.administrativos,
         convocatoria: "Septiembre 2026",
         prueba: "Enero 2027",
-        title: "Oposiciones Administrativo Gobierno Vasco 2026 — Tests IVAP",
+        title: "Oposiciones Administrativo Gobierno Vasco 2026 — Tests OPE",
         description:
-            "Prepara la oposición de Administrativo del Gobierno Vasco 2026 con tests por tema oficial del IVAP: parte general (temas 1–14), procedimiento administrativo y específicos de la escala administrativa.",
+            "Prepara la oposición de Administrativo del Gobierno Vasco 2026 con tests por tema oficial: parte general (temas 1–14), procedimiento administrativo y específicos de la escala administrativa.",
         keywords: [
             "oposiciones administrativo Gobierno Vasco",
             "administrativo Euskadi 2026",
-            "test administrativo IVAP",
+            "test administrativo",
             "OPE administrativo Eusko Jaurlaritza",
         ],
-        intro: "La escala Administrativa (subgrupo C1) amplía las funciones del auxiliar con más procedimiento y gestión. Practica con el temario oficial del IVAP.",
+        intro: "La escala Administrativa (subgrupo C1) amplía las funciones del auxiliar con más procedimiento y gestión. Practica con el temario oficial de la convocatoria.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización de Euskadi, empleo público, protección de datos y prevención de riesgos." },
             { t: "Procedimiento administrativo", d: "Ley 39/2015: acto administrativo, fases, recursos y responsabilidad." },
@@ -79,7 +79,7 @@ const ESCALAS: Record<string, EscalaData> = {
         ],
         faqs: [
             { q: "¿Qué titulación se necesita para Administrativo del Gobierno Vasco?", a: "El título de Bachiller o Técnico (o equivalente), exigido para el subgrupo C1." },
-            { q: "¿Cuándo es el examen de Administrativo?", a: "Convocatoria prevista en septiembre de 2026 y primera prueba en enero de 2027 (calendario provisional del IVAP)." },
+            { q: "¿Cuándo es el examen de Administrativo?", a: "Convocatoria prevista en septiembre de 2026 y primera prueba en enero de 2027 (calendario provisional de la OPE)." },
             { q: "¿Qué diferencia hay entre Auxiliar y Administrativo?", a: "El Administrativo (C1) asume tareas de mayor responsabilidad y procedimiento, y exige una titulación superior a la del Auxiliar (C2)." },
         ],
     },
@@ -90,15 +90,15 @@ const ESCALAS: Record<string, EscalaData> = {
         color: SCALE_COLORS.gestion,
         convocatoria: "Octubre 2026",
         prueba: "Abril 2027",
-        title: "Oposiciones Técnico de Gestión Gobierno Vasco 2026 — Tests IVAP",
+        title: "Oposiciones Técnico de Gestión Gobierno Vasco 2026 — Tests OPE",
         description:
-            "Prepara la oposición de Técnico de Gestión Administrativa del Gobierno Vasco 2026 con tests del temario oficial del IVAP: parte general, procedimiento y gestión administrativa.",
+            "Prepara la oposición de Técnico de Gestión Administrativa del Gobierno Vasco 2026 con tests del temario oficial de la convocatoria: parte general, procedimiento y gestión administrativa.",
         keywords: [
             "oposiciones técnico de gestión Gobierno Vasco",
             "gestión administrativa Euskadi 2026",
-            "test técnico gestión IVAP",
+            "test técnico gestión",
         ],
-        intro: "La escala de Gestión Administrativa (grupo B) requiere un perfil técnico-administrativo. Practica el temario oficial del IVAP por temas.",
+        intro: "La escala de Gestión Administrativa (grupo B) requiere un perfil técnico-administrativo. Practica el temario oficial de la convocatoria por temas.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización de Euskadi, empleo público y protección de datos." },
             { t: "Procedimiento administrativo", d: "Ley 39/2015 y régimen jurídico del sector público." },
@@ -107,7 +107,7 @@ const ESCALAS: Record<string, EscalaData> = {
         ],
         faqs: [
             { q: "¿Qué titulación se necesita para Técnico de Gestión?", a: "Una titulación de grado B (Técnico Superior de FP o equivalente) según las bases de la convocatoria." },
-            { q: "¿Cuándo es el examen de Técnico de Gestión?", a: "Convocatoria prevista en octubre de 2026 y primera prueba en abril de 2027 (calendario provisional del IVAP)." },
+            { q: "¿Cuándo es el examen de Técnico de Gestión?", a: "Convocatoria prevista en octubre de 2026 y primera prueba en abril de 2027 (calendario provisional de la OPE)." },
             { q: "¿Qué temas entran?", a: "El bloque común y los específicos de gestión y procedimiento administrativo." },
         ],
     },
@@ -118,15 +118,15 @@ const ESCALAS: Record<string, EscalaData> = {
         color: SCALE_COLORS.superiores,
         convocatoria: "Octubre 2026",
         prueba: "Abril 2027",
-        title: "Oposiciones Técnico Superior de Administración Gobierno Vasco 2026 — Tests IVAP",
+        title: "Oposiciones Técnico Superior de Administración Gobierno Vasco 2026 — Tests OPE",
         description:
-            "Prepara la oposición de la Escala Superior de Administración del Gobierno Vasco 2026 con tests del temario oficial del IVAP: parte general, procedimiento avanzado y régimen jurídico.",
+            "Prepara la oposición de la Escala Superior de Administración del Gobierno Vasco 2026 con tests del temario oficial de la convocatoria: parte general, procedimiento avanzado y régimen jurídico.",
         keywords: [
             "oposiciones técnico superior Gobierno Vasco",
             "escala superior administración Euskadi",
-            "test técnico superior IVAP",
+            "test técnico superior",
         ],
-        intro: "La Escala Superior de Administración (grupo A) es el nivel más alto del cuerpo general. Practica el temario oficial del IVAP a base de tests.",
+        intro: "La Escala Superior de Administración (grupo A) es el nivel más alto del cuerpo general. Practica el temario oficial de la convocatoria a base de tests.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización de Euskadi, empleo público y protección de datos." },
             { t: "Procedimiento avanzado", d: "Ley 39/2015 en profundidad: actos, fases, recursos y responsabilidad patrimonial." },
@@ -135,7 +135,7 @@ const ESCALAS: Record<string, EscalaData> = {
         ],
         faqs: [
             { q: "¿Qué titulación se necesita para Técnico Superior?", a: "Un título universitario de grado (grupo A1/A2) según las bases de la convocatoria." },
-            { q: "¿Cuándo es el examen de Técnico Superior?", a: "Convocatoria prevista en octubre de 2026 y primera prueba en abril de 2027 (calendario provisional del IVAP)." },
+            { q: "¿Cuándo es el examen de Técnico Superior?", a: "Convocatoria prevista en octubre de 2026 y primera prueba en abril de 2027 (calendario provisional de la OPE)." },
             { q: "¿Qué nivel tiene esta oposición?", a: "Es la escala más alta del cuerpo general, con mayor profundidad en derecho administrativo y régimen jurídico." },
         ],
     },
@@ -186,7 +186,7 @@ export default async function OposicionPage({
                     { n: d.grupo, label: "grupo" },
                     { n: d.convocatoria.split(" ")[0], label: "convocatoria" },
                     { n: d.prueba.split(" ")[0], label: "1ª prueba" },
-                    { n: "IVAP", label: "temario" },
+                    { n: "Oficial", label: "temario" },
                 ]}
             />
 
@@ -204,7 +204,7 @@ export default async function OposicionPage({
                 accent={ACCENT}
                 href="/payment"
                 titulo="Desbloquea todo el temario"
-                texto="Hazte Premium y accede a exámenes oficiales, simulacros con penalización real del IVAP y estadísticas avanzadas."
+                texto="Hazte Premium y accede a exámenes oficiales, simulacros con penalización real del examen y estadísticas avanzadas."
                 cta="Ver acceso Premium →"
             />
 

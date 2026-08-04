@@ -2,12 +2,12 @@
 
 export const SITE_URL =
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-    "https://gainditu.com"
+    "https://gaindituoposiciones.com"
 
 export const SITE_NAME = "Gainditu"
 
 export const SITE_DESCRIPTION =
-    "Tests por tema oficial del IVAP para la OPE del Gobierno Vasco 2026. Auxiliares, Administrativos, Técnicos de Gestión y Superiores. Practica con miles de preguntas y mide tu progreso."
+    "Tests para preparar las oposiciones de Euskadi: Gobierno Vasco, Osakidetza, Ertzaintza, Educación y más. Practica por temario oficial y mide tu progreso."
 
 export const CONTACT_EMAIL = "gaindituoposiciones@gmail.com"
 

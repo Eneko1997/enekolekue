@@ -25,7 +25,7 @@ export default function SiteFooter() {
                         gain<span style={{ color: ACCENT }}>ditu</span>.
                     </div>
                     <p className="mt-2 max-w-xs text-[13px] text-zinc-500 dark:text-zinc-400">
-                        Tests por temario oficial del IVAP para la OPE del Gobierno
+                        Tests por temario oficial para la OPE del Gobierno
                         Vasco 2026.
                     </p>
                 </div>
@@ -43,7 +43,7 @@ export default function SiteFooter() {
             </div>
             <div className="mx-auto mt-10 max-w-5xl border-t border-zinc-100 pt-6 text-[12px] text-zinc-400 dark:border-zinc-800/70 dark:text-zinc-500">
                 © {new Date().getFullYear()} {SITE_NAME}. No oficial; sin relación con
-                el IVAP ni el Gobierno Vasco.
+                el Gobierno Vasco.
             </div>
         </footer>
     )

@@ -30,8 +30,8 @@ export default function PrivacidadPage() {
                     tests para mostrarte estadísticas.
                 </li>
                 <li>
-                    <strong>Pago:</strong> el cobro lo gestiona Stripe; nosotros
-                    no almacenamos los datos de tu tarjeta.
+                    <strong>Pago:</strong> el cobro lo gestiona una pasarela de
+                    pago segura; nosotros no almacenamos los datos de tu tarjeta.
                 </li>
             </ul>
 
@@ -44,10 +44,11 @@ export default function PrivacidadPage() {
 
             <h2>4. Encargados y proveedores</h2>
             <p>
-                Utilizamos <strong>Supabase</strong> (autenticación y base de
-                datos), <strong>Stripe</strong> (pagos) y <strong>Vercel</strong>{" "}
-                (alojamiento). Estos proveedores tratan datos por cuenta de
-                Gainditu conforme a sus propias garantías.
+                Para prestar el servicio nos apoyamos en proveedores
+                tecnológicos de confianza (alojamiento, autenticación, base de
+                datos y pasarela de pago). Estos proveedores tratan los datos
+                por cuenta de Gainditu, conforme a sus propias garantías y a la
+                normativa de protección de datos.
             </p>
 
             <h2>5. Conservación</h2>

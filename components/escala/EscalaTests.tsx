@@ -96,7 +96,7 @@ export default function EscalaTests({
                     Tests de {nombre}
                 </h2>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
-                    Practica el temario oficial del IVAP tema a tema. Cámbialo entre
+                    Practica el temario oficial de la convocatoria tema a tema. Cámbialo entre
                     vista por bloques temáticos o el temario oficial completo.
                 </p>
 

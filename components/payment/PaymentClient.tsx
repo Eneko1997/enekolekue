@@ -26,7 +26,7 @@ const PLANS: Record<
 
 const FEATURES = [
     "Exámenes oficiales de convocatorias anteriores",
-    "Simulacros con penalización real del IVAP",
+    "Simulacros con penalización real del examen",
     "Estadísticas avanzadas y progreso por escala",
     "Actualizaciones gratuitas hasta el examen",
 ]

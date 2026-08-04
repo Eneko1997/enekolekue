@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Manrope } from "next/font/google"
+import { Manrope, Inter } from "next/font/google"
 import "./globals.css"
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/site"
 
@@ -9,24 +9,31 @@ const manrope = Manrope({
     display: "swap",
 })
 
+// Solo para las superficies de lectura del test (enunciado, opciones y
+// explicación): más legible en textos densos que Manrope.
+const inter = Inter({
+    variable: "--font-inter",
+    subsets: ["latin"],
+    display: "swap",
+})
+
 export const metadata: Metadata = {
     metadataBase: new URL(SITE_URL),
     title: {
-        default: `${SITE_NAME} — Tests OPE Gobierno Vasco 2026 (IVAP)`,
+        default: `${SITE_NAME} — Tests para oposiciones de Euskadi`,
         template: `%s | ${SITE_NAME}`,
     },
     description: SITE_DESCRIPTION,
     applicationName: SITE_NAME,
     keywords: [
-        "OPE Gobierno Vasco",
         "oposiciones Euskadi",
-        "IVAP",
-        "test oposiciones",
-        "auxiliar administrativo",
-        "administrativo",
-        "técnico de gestión",
-        "Ley 39/2015",
-        "Constitución Española",
+        "oposiciones País Vasco",
+        "tests oposiciones Euskadi",
+        "test oposiciones online",
+        "oposiciones Gobierno Vasco",
+        "oposiciones Osakidetza",
+        "oposiciones Ertzaintza",
+        "oposiciones Educación País Vasco",
     ],
     authors: [{ name: SITE_NAME }],
     alternates: { canonical: "/" },
@@ -35,12 +42,12 @@ export const metadata: Metadata = {
         locale: "es_ES",
         url: SITE_URL,
         siteName: SITE_NAME,
-        title: `${SITE_NAME} — Tests OPE Gobierno Vasco 2026`,
+        title: `${SITE_NAME} — Tests para oposiciones de Euskadi`,
         description: SITE_DESCRIPTION,
     },
     twitter: {
         card: "summary_large_image",
-        title: `${SITE_NAME} — Tests OPE Gobierno Vasco 2026`,
+        title: `${SITE_NAME} — Tests para oposiciones de Euskadi`,
         description: SITE_DESCRIPTION,
     },
     robots: {
@@ -57,7 +64,7 @@ export default function RootLayout({
     return (
         <html
             lang="es"
-            className={`${manrope.variable} h-full antialiased`}
+            className={`${manrope.variable} ${inter.variable} h-full antialiased`}
             suppressHydrationWarning
         >
             <head>

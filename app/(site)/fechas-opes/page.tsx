@@ -9,14 +9,14 @@ import { SITE_URL } from "@/lib/site"
 const ACCENT = "#10B981"
 
 export const metadata: Metadata = {
-    title: "Fechas OPE Gobierno Vasco 2026 — Convocatorias y exámenes (IVAP)",
+    title: "Fechas OPE Gobierno Vasco 2026 — Convocatorias y exámenes",
     description:
-        "Calendario de la OPE 2026 del Gobierno Vasco: fechas de convocatoria y primera prueba para Personal de Apoyo, Administrativo, Técnico de Gestión y Superior. Calendario provisional del IVAP.",
+        "Calendario de la OPE 2026 del Gobierno Vasco: fechas de convocatoria y primera prueba para Personal de Apoyo, Administrativo, Técnico de Gestión y Superior. Calendario provisional de la OPE.",
     keywords: [
         "fechas OPE Gobierno Vasco 2026",
         "convocatoria OPE Euskadi 2026",
         "examen auxiliar administrativo Gobierno Vasco",
-        "calendario oposiciones IVAP",
+        "calendario oposiciones",
         "fechas examen administrativo Euskadi",
     ],
     alternates: { canonical: "/fechas-opes" },
@@ -33,7 +33,7 @@ const FILAS = [
 const FAQS: Faq[] = [
     {
         q: "¿Cuándo es la OPE del Gobierno Vasco 2026?",
-        a: "Según el calendario provisional del IVAP, las convocatorias de las escalas administrativas se publican entre septiembre y octubre de 2026, con las primeras pruebas entre enero y abril de 2027.",
+        a: "Según el calendario provisional de la OPE, las convocatorias de las escalas administrativas se publican entre septiembre y octubre de 2026, con las primeras pruebas entre enero y abril de 2027.",
     },
     {
         q: "¿Cuándo es el examen de Personal de Apoyo del Gobierno Vasco?",
@@ -63,7 +63,7 @@ export default function FechasOpesPage() {
                     { n: "2026", label: "convocatoria" },
                     { n: "2027", label: "1ª prueba" },
                     { n: "4", label: "escalas" },
-                    { n: "IVAP", label: "temario" },
+                    { n: "Oficial", label: "temario" },
                 ]}
             />
 
@@ -124,7 +124,7 @@ export default function FechasOpesPage() {
                 accent={ACCENT}
                 href="/payment"
                 titulo="Llega al examen con ventaja"
-                texto="Hazte Premium y prepara la OPE con exámenes oficiales, simulacros con penalización IVAP y estadísticas de tu progreso."
+                texto="Hazte Premium y prepara la OPE con exámenes oficiales, simulacros con penalización oficial y estadísticas de tu progreso."
                 cta="Ver acceso Premium →"
             />
 

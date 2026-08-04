@@ -13,9 +13,11 @@ export default function AvisoLegalPage() {
         <LegalShell title="Aviso legal" updated="junio de 2026">
             <h2>1. Titular del sitio web</h2>
             <p>
-                El presente sitio web <strong>gainditu.com</strong> (en adelante,
-                «Gainditu») es titularidad de <strong>Gainditu Oposiciones</strong>.
-                Para cualquier consulta puedes contactar en{" "}
+                El presente sitio web{" "}
+                <strong>gaindituoposiciones.com</strong> (en adelante,
+                «Gainditu») es titularidad de{" "}
+                <strong>Gainditu Oposiciones</strong>. Para cualquier consulta
+                puedes contactar en{" "}
                 <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
             </p>
 
@@ -24,7 +26,7 @@ export default function AvisoLegalPage() {
                 Gainditu es una plataforma de preparación de oposiciones que
                 ofrece tests y materiales de estudio orientados a la OPE del
                 Gobierno Vasco. Se trata de un proyecto independiente, sin
-                vinculación oficial con el Gobierno Vasco ni con el IVAP.
+                vinculación oficial con el Gobierno Vasco.
             </p>
 
             <h2>3. Condiciones de uso</h2>
@@ -47,7 +49,7 @@ export default function AvisoLegalPage() {
                 Los resúmenes y materiales tienen carácter divulgativo y
                 orientativo. Las fechas y temarios pueden variar; el usuario debe
                 verificar siempre la información oficial en las fuentes
-                pertinentes (BOPV, euskadi.eus e IVAP).
+                pertinentes (BOPV y euskadi.eus).
             </p>
 
             <h2>6. Legislación aplicable</h2>

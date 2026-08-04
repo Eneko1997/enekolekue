@@ -598,7 +598,7 @@ async function generarTarjetaProgreso(d: {
     ctx.textAlign = "right"
     ctx.fillStyle = "rgba(255,255,255,0.55)"
     ctx.font = "700 27px Manrope, system-ui, sans-serif"
-    ctx.fillText("OPE 2026 · IVAP", W - P, 122)
+    ctx.fillText("OPE 2026 · Gobierno Vasco", W - P, 122)
 
     ctx.textAlign = "left"
     ctx.fillStyle = "#ffffff"
@@ -1354,11 +1354,11 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                             margin: "0 0 14px",
                         }}
                     >
-                        Tests por tema oficial del IVAP para la OPE Gobierno
+                        Tests por tema oficial para la OPE Gobierno
                         Vasco 2026.
                     </p>
                     <a
-                        href="mailto:hola@gainditu.com"
+                        href="mailto:gaindituoposiciones@gmail.com"
                         style={{
                             fontSize: "13px",
                             color: accent,
@@ -1366,7 +1366,7 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                             fontWeight: 600,
                         }}
                     >
-                        hola@gainditu.com
+                        gaindituoposiciones@gmail.com
                     </a>
                 </div>
                 <div>
@@ -1422,7 +1422,7 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                             marginBottom: "14px",
                         }}
                     >
-                        Temario IVAP
+                        Temario oficial
                     </div>
                     {[
                         ["T.1 — Constitución Española", "/test?id=c01"],
@@ -3736,8 +3736,8 @@ export default function PerfilOPE({
                                                       prog.mejor_porcentaje
                                                   )
                                                 : null
-                                            const exColor =
-                                                SCALE_COLORS[ex.escala]
+                                            // Gainditu tiene un único acento (verde); nada de color por escala.
+                                            const exColor = accentColor
                                             return (
                                                 <motion.a
                                                     key={ex.id}

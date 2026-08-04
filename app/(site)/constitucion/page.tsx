@@ -1,4 +1,5 @@
 import Link from "next/link"
+import TestsLead from "@/components/site/TestsLead"
 import type { Metadata } from "next"
 import TemaTests, { type TemaTest } from "@/components/tests/TemaTests"
 import LeccionHero from "@/components/lecciones/LeccionHero"
@@ -10,36 +11,45 @@ import { SITE_URL } from "@/lib/site"
 const ACCENT = "#10B981"
 
 export const metadata: Metadata = {
-    title: "Test Constitución Española — Oposiciones OPE Gobierno Vasco 2026",
+    title: "Test Constitución Española — Oposiciones Euskadi",
     description:
-        "Tests de la Constitución Española para la OPE del Gobierno Vasco 2026 (IVAP): más de 400 preguntas sobre derechos, garantías y organización del Estado. Practica gratis el tema 1.",
+        "Tests de la Constitución Española y la organización del Estado para oposiciones de Euskadi: derechos, garantías, CCAA, Unión Europea e instituciones vascas. Practica gratis.",
     keywords: [
         "test constitución española",
         "test constitución oposiciones",
         "constitución española OPE Gobierno Vasco",
-        "tema 1 oposiciones IVAP",
+        "tema 1 oposiciones",
         "preguntas constitución 1978",
     ],
     alternates: { canonical: "/constitucion" },
 }
 
 const TESTS: TemaTest[] = [
-    { id: "c01", tema: "T.1", titulo: "La Constitución: derechos, libertades y garantías. Deberes. Principios constitucionales de la actuación administrativa", preguntas: 350 },
+    // Tema 1 (pool grande) presentado en 11 bloques de ~30, cada uno con su
+    // propio contenido y su propio progreso (ids sintéticos c01_bN).
+    ...Array.from({ length: 11 }, (_, i) => ({
+        id: `c01_b${i + 1}`,
+        tema: `T.1 · B${i + 1}`,
+        titulo: `La Constitución: derechos, libertades y garantías — Bloque ${i + 1} de 11`,
+        preguntas: 30,
+    })),
     { id: "c02", tema: "T.2", titulo: "Organización territorial del Estado. Comunidades Autónomas y Estatutos de Autonomía", preguntas: 30 },
+    { id: "c03", tema: "T.3", titulo: "Derecho de la Unión Europea. Instituciones. Reglamentos y Directivas", preguntas: 30 },
     { id: "c04", tema: "T.4", titulo: "Organización política y administrativa de la CAE. Parlamento, Gobierno Vasco y Lehendakari", preguntas: 30 },
+    { id: "c05", tema: "T.5", titulo: "Distribución de competencias CAE–Territorios Históricos. Concierto Económico. Instituciones Locales", preguntas: 30 },
 ]
 
 const PUNTOS = [
-    { t: "Derechos y libertades", d: "Título I: fundamentales (arts. 15–29), garantías y suspensión de derechos." },
-    { t: "Garantías (art. 53)", d: "Recurso de amparo, reserva de ley orgánica y niveles de protección." },
-    { t: "Organización del Estado", d: "Corona, Cortes Generales, Gobierno y poder judicial." },
-    { t: "Euskadi", d: "Parlamento Vasco, Gobierno Vasco y Lehendakari." },
+    { t: "Derechos y garantías", d: "Título I, derechos fundamentales, garantías y recurso de amparo (art. 53)." },
+    { t: "Organización territorial", d: "Comunidades Autónomas, Estatutos de Autonomía y distribución de competencias." },
+    { t: "Unión Europea", d: "Instituciones de la UE, reglamentos y directivas." },
+    { t: "Instituciones vascas", d: "Parlamento Vasco, Gobierno Vasco, Lehendakari y Concierto Económico." },
 ]
 
 const FAQS: Faq[] = [
     {
         q: "¿Cuántas preguntas de la Constitución entran en el examen?",
-        a: "Depende de la escala, pero la Constitución (tema 1) es uno de los temas con más peso en la OPE del Gobierno Vasco. En Gainditu tienes más de 400 preguntas para practicarlo a fondo.",
+        a: "Depende de la escala, pero la Constitución (tema 1) es uno de los temas con más peso en la OPE del Gobierno Vasco. En Gainditu tienes más de 430 preguntas, incluyendo la organización del Estado (temas 1 a 5), para practicarla a fondo.",
     },
     {
         q: "¿Qué partes de la Constitución son más importantes para la oposición?",
@@ -51,7 +61,7 @@ const FAQS: Faq[] = [
     },
     {
         q: "¿Puedo practicar los tests de la Constitución gratis?",
-        a: "Sí. Puedes crear una cuenta gratis y practicar. El acceso Premium añade exámenes oficiales, simulacros con penalización IVAP y estadísticas avanzadas.",
+        a: "Sí. Puedes crear una cuenta gratis y practicar. El acceso Premium añade exámenes oficiales, simulacros con penalización oficial y estadísticas avanzadas.",
     },
 ]
 
@@ -59,14 +69,14 @@ export default function ConstitucionPage() {
     return (
         <main className="flex flex-1 flex-col">
             <LeccionHero
-                eyebrow="Temario IVAP · OPE 2026"
+                eyebrow="Temario oficial · OPE 2026"
                 title="La Constitución Española"
-                subtitle="El tema 1 y de los más preguntados. Domínalo a base de tests reales, no de leer artículos."
+                subtitle="La Constitución y la organización del Estado (temas 1 a 5), de lo más preguntado. Domínalos a base de tests reales, no de leer artículos."
                 accent={ACCENT}
                 stats={[
-                    { n: "410", label: "preguntas" },
-                    { n: "1978", label: "año" },
-                    { n: "T.1", label: "bloque común" },
+                    { n: "430", label: "preguntas" },
+                    { n: "5", label: "temas" },
+                    { n: "1978", label: "Constitución" },
                     { n: "169", label: "artículos" },
                 ]}
             />
@@ -78,13 +88,11 @@ export default function ConstitucionPage() {
                     <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">
                         Tests de la Constitución
                     </h2>
-                    <p className="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
-                        Más de 350 preguntas solo del tema 1.{" "}
-                        <Link href="/login" className="font-semibold text-zinc-950 dark:text-zinc-50 hover:underline">
-                            Inicia sesión
-                        </Link>{" "}
-                        para ver tu progreso.
-                    </p>
+                    <TestsLead
+                        prefix="Constitución y organización del Estado, tema a tema (temas 1 a 5 de la parte general)."
+                        guestTail="para ver tu progreso."
+                        loggedTail="Tu progreso se guarda automáticamente."
+                    />
                     <TemaTests tests={TESTS} accent={ACCENT} />
                 </div>
             </section>
@@ -95,7 +103,7 @@ export default function ConstitucionPage() {
                 accent={ACCENT}
                 href="/payment"
                 titulo="Desbloquea todo el temario"
-                texto="Hazte Premium y accede a exámenes oficiales, simulacros con penalización real del IVAP y estadísticas avanzadas para todas las escalas."
+                texto="Hazte Premium y accede a exámenes oficiales, simulacros con penalización real del examen y estadísticas avanzadas para todas las escalas."
                 cta="Ver acceso Premium →"
             />
 

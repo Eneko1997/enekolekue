@@ -1029,10 +1029,10 @@ function SeccionPremium({
 
     // En mobile: solo 2 cards borrosas. En desktop: 6
     const bloqueadas = isMobile
-        ? ["Simulacro IVAP Oficial 2024"]
+        ? ["Simulacro Oficial 2024"]
         : [
               "Examen Bilbao — Auxiliares Administrativos 2022",
-              "Simulacro IVAP Oficial 2024 — 90 preguntas",
+              "Simulacro Oficial 2024 — 90 preguntas",
               "Examen Osakidetza — Gestión 2023",
               "Simulacro Cronometrado — 45 min presión real",
               "Examen Vitoria-Gasteiz — Superiores 2022",
@@ -1062,7 +1062,7 @@ function SeccionPremium({
                 }}
             >
                 Exámenes reales de convocatorias anteriores + simulacros con
-                penalización oficial del IVAP.
+                penalización oficial.
             </p>
 
             {/* Contenedor único, sin doble marco */}
@@ -1551,7 +1551,7 @@ function TiraAcademias({ accent, dark }: { accent: string; dark: boolean }) {
                 </div>
             </div>
             <a
-                href={`mailto:hola@gainditu.com?subject=Quiero anunciarme en Gainditu`}
+                href={`mailto:gaindituoposiciones@gmail.com?subject=Quiero anunciarme en Gainditu`}
                 style={{
                     padding: "9px 18px",
                     borderRadius: "9px",
@@ -1613,11 +1613,11 @@ function Footer({ dark, accent }: { dark: boolean; accent: string }) {
                             margin: "0 0 16px",
                         }}
                     >
-                        Tests por tema oficial del IVAP para la OPE Gobierno
+                        Tests por tema oficial para la OPE Gobierno
                         Vasco 2026.
                     </p>
                     <a
-                        href="mailto:hola@gainditu.com"
+                        href="mailto:gaindituoposiciones@gmail.com"
                         style={{
                             fontSize: "13px",
                             color: accent,
@@ -1625,7 +1625,7 @@ function Footer({ dark, accent }: { dark: boolean; accent: string }) {
                             fontWeight: 600,
                         }}
                     >
-                        hola@gainditu.com
+                        gaindituoposiciones@gmail.com
                     </a>
                 </div>
 
@@ -1686,7 +1686,7 @@ function Footer({ dark, accent }: { dark: boolean; accent: string }) {
                             marginBottom: "14px",
                         }}
                     >
-                        Temario IVAP
+                        Temario oficial
                     </div>
                     {[
                         {
@@ -2494,7 +2494,7 @@ export default function DashboardOPE(props: {
                                 lineHeight: 1.6,
                             }}
                         >
-                            Tests por tema oficial del IVAP para la OPE 2026.
+                            Tests por tema oficial para la OPE 2026.
                         </p>
                         <div style={{ height: "24px" }} />
                         <div

@@ -5,7 +5,7 @@ import TestClient from "@/components/test/TestClient"
 export const metadata: Metadata = {
     title: "Test",
     description:
-        "Responde el test por tema oficial del IVAP y mide tu progreso para la OPE del Gobierno Vasco 2026.",
+        "Responde el test por tema oficial y mide tu progreso para la OPE del Gobierno Vasco 2026.",
     robots: { index: false, follow: true },
 }
 

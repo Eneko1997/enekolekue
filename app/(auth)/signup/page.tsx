@@ -4,7 +4,7 @@ import AuthForm from "@/components/auth/AuthForm"
 
 export const metadata: Metadata = {
     title: "Crear cuenta gratis",
-    description: "Regístrate gratis en Gainditu y empieza a practicar tests por tema oficial del IVAP para la OPE del Gobierno Vasco 2026.",
+    description: "Regístrate gratis en Gainditu y empieza a practicar tests por tema oficial para la OPE del Gobierno Vasco 2026.",
     robots: { index: false, follow: true },
 }
 

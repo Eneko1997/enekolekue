@@ -47,7 +47,7 @@ export default function LeccionCTA({
     const yaPremium = esVentaPremium && isPremium
     const tit = yaPremium ? "Ya tienes acceso Premium" : titulo
     const txt = yaPremium
-        ? "Tienes desbloqueados los exámenes oficiales, los simulacros con penalización del IVAP y las estadísticas avanzadas."
+        ? "Tienes desbloqueados los exámenes oficiales, los simulacros con penalización oficial y las estadísticas avanzadas."
         : texto
     const destino = yaPremium ? "/perfil?tab=examenes" : href
     const etiqueta = yaPremium ? "Ir a mis exámenes oficiales →" : cta

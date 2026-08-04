@@ -39,7 +39,7 @@ export default function Footer() {
                         gain<span style={{ color: BRAND_ACCENT }}>ditu</span>.
                     </div>
                     <p className="mb-4 max-w-[220px] text-[13px] leading-relaxed text-white/55">
-                        Tests por tema oficial del IVAP para la OPE del Gobierno
+                        Tests por tema oficial para la OPE del Gobierno
                         Vasco 2026.
                     </p>
                     <a
@@ -73,7 +73,7 @@ export default function Footer() {
                 <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-5 text-[12px] text-white/40 sm:flex-row">
                     <span>
                         © {new Date().getFullYear()} Gainditu. Proyecto
-                        independiente, no vinculado al Gobierno Vasco ni al IVAP.
+                        independiente, no vinculado al Gobierno Vasco.
                     </span>
                     <a
                         href={SOCIAL.instagram}

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import TestsLead from "@/components/site/TestsLead"
 import type { Metadata } from "next"
 import TemaTests, { type TemaTest } from "@/components/tests/TemaTests"
 import LeccionHero from "@/components/lecciones/LeccionHero"
@@ -10,9 +11,9 @@ import { SITE_URL } from "@/lib/site"
 const ACCENT = "#10B981"
 
 export const metadata: Metadata = {
-    title: "Test Ley 39/2015 — Procedimiento Administrativo Común (OPE Gobierno Vasco)",
+    title: "Test Ley 39/2015 — Procedimiento Administrativo Común",
     description:
-        "Tests de la Ley 39/2015 del Procedimiento Administrativo Común para la OPE del Gobierno Vasco 2026 (IVAP): actos, fases del procedimiento, recursos y responsabilidad. Más de 280 preguntas para practicar.",
+        "Tests de la Ley 39/2015 del Procedimiento Administrativo Común para oposiciones de Euskadi: interesados, acto, nulidad, fases, silencio y plazos, recursos y responsabilidad.",
     keywords: [
         "test ley 39/2015",
         "test procedimiento administrativo común",
@@ -24,19 +25,29 @@ export const metadata: Metadata = {
 }
 
 const TESTS: TemaTest[] = [
-    { id: "adm30", tema: "Acto administrativo", titulo: "El acto administrativo: producción, contenido, motivación, eficacia, nulidad y anulabilidad", preguntas: 40 },
+    { id: "supe07", tema: "Interesados", titulo: "Interesados: capacidad de obrar, representación y derechos ante la Administración", preguntas: 30 },
+    { id: "adm30", tema: "Acto administrativo", titulo: "El acto administrativo: producción, contenido, motivación, eficacia, nulidad y anulabilidad", preguntas: 30 },
+    { id: "supe09", tema: "Nulidad y validez", titulo: "Nulidad y anulabilidad. Conversión, conservación y convalidación de los actos", preguntas: 30 },
     { id: "adm31", tema: "Procedimiento", titulo: "Procedimiento administrativo: principios, personas interesadas, abstención y recusación", preguntas: 30 },
-    { id: "adm32", tema: "Fases", titulo: "Fases del procedimiento administrativo: iniciación, ordenación, instrucción y finalización", preguntas: 115 },
-    { id: "adm33", tema: "Recursos", titulo: "Revisión de los actos: recursos administrativos, revisión de oficio y rectificación de errores", preguntas: 39 },
+    // Fases (pool grande, 115 preg) presentado en 4 bloques de ~29, cada uno
+    // con su propio contenido y progreso (ids sintéticos adm32_bN).
+    ...Array.from({ length: 4 }, (_, i) => ({
+        id: `adm32_b${i + 1}`,
+        tema: `Fases · B${i + 1}`,
+        titulo: `Fases del procedimiento administrativo — Bloque ${i + 1} de 4`,
+        preguntas: 30,
+    })),
+    { id: "supe11", tema: "Silencio y plazos", titulo: "Obligación de resolver, silencio administrativo, términos y plazos", preguntas: 30 },
+    { id: "adm33", tema: "Recursos", titulo: "Revisión de los actos: recursos administrativos, revisión de oficio y rectificación de errores", preguntas: 30 },
     { id: "adm34", tema: "Responsabilidad", titulo: "Responsabilidad patrimonial de las Administraciones Públicas", preguntas: 30 },
     { id: "c07", tema: "Admin. electrónica", titulo: "Administración electrónica: sede, identificación y firma, expediente y archivo electrónico", preguntas: 30 },
 ]
 
 const PUNTOS = [
-    { t: "El acto administrativo", d: "Requisitos, eficacia, notificación, nulidad y anulabilidad." },
-    { t: "Fases del procedimiento", d: "Iniciación, ordenación, instrucción y finalización. Plazos y silencio." },
-    { t: "Recursos y revisión", d: "Alzada, reposición, extraordinario de revisión y revisión de oficio." },
-    { t: "Responsabilidad patrimonial", d: "Cuándo responde la Administración y su procedimiento." },
+    { t: "Interesados y derechos", d: "Capacidad de obrar, representación y derechos en las relaciones con la Administración." },
+    { t: "Acto y validez", d: "Requisitos, eficacia, notificación, nulidad, anulabilidad y convalidación." },
+    { t: "Procedimiento y plazos", d: "Fases del procedimiento, obligación de resolver, silencio administrativo y plazos." },
+    { t: "Recursos y responsabilidad", d: "Alzada, reposición, revisión de oficio y responsabilidad patrimonial." },
 ]
 
 const FAQS: Faq[] = [
@@ -46,7 +57,7 @@ const FAQS: Faq[] = [
     },
     {
         q: "¿Cuántos temas del examen cubre la Ley 39/2015?",
-        a: "Es transversal: aparece en varios temas (acto administrativo, fases, recursos y responsabilidad). En Gainditu la practicas con más de 280 preguntas repartidas en 6 tests.",
+        a: "Es transversal: aparece en varios temas (interesados, acto administrativo, fases del procedimiento, silencio y plazos, recursos y responsabilidad). En Gainditu la practicas con más de 370 preguntas repartidas por subtema.",
     },
     {
         q: "¿Qué diferencia hay entre la Ley 39/2015 y la 40/2015?",
@@ -62,13 +73,13 @@ export default function Ley39Page() {
     return (
         <main className="flex flex-1 flex-col">
             <LeccionHero
-                eyebrow="Temario IVAP · OPE 2026"
+                eyebrow="Temario oficial · OPE 2026"
                 title="Ley 39/2015"
                 subtitle="El Procedimiento Administrativo Común: el tema estrella de casi toda oposición. A base de tests, no de empollar el BOE."
                 accent={ACCENT}
                 stats={[
-                    { n: "284", label: "preguntas" },
-                    { n: "6", label: "tests" },
+                    { n: "370", label: "preguntas" },
+                    { n: "9", label: "temas" },
                     { n: "2015", label: "en vigor" },
                     { n: "LPACAP", label: "ley" },
                 ]}
@@ -81,13 +92,11 @@ export default function Ley39Page() {
                     <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">
                         Tests de la Ley 39/2015
                     </h2>
-                    <p className="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
-                        Practica tema a tema.{" "}
-                        <Link href="/login" className="font-semibold text-zinc-950 dark:text-zinc-50 hover:underline">
-                            Inicia sesión
-                        </Link>{" "}
-                        para ver tu mejor nota en cada test.
-                    </p>
+                    <TestsLead
+                        prefix="Del acto administrativo al silencio y los recursos, tema a tema."
+                        guestTail="para ver tu mejor nota en cada test."
+                        loggedTail="Tu mejor nota aparece en cada test."
+                    />
                     <TemaTests tests={TESTS} accent={ACCENT} />
                 </div>
             </section>
@@ -98,7 +107,7 @@ export default function Ley39Page() {
                 accent={ACCENT}
                 href="/payment"
                 titulo="Desbloquea todo el temario"
-                texto="Hazte Premium y accede a exámenes oficiales, simulacros con penalización real del IVAP y estadísticas avanzadas para todas las escalas."
+                texto="Hazte Premium y accede a exámenes oficiales, simulacros con penalización real del examen y estadísticas avanzadas para todas las escalas."
                 cta="Ver acceso Premium →"
             />
 

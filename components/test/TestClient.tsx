@@ -43,6 +43,51 @@ async function fetchPreguntas(
     return data
 }
 
+// ── Bloques "virtuales" de un pool grande ────────────────────────────────────
+// Un pool con muchas preguntas (p. ej. c01, Tema 1) se puede presentar en varios
+// bloques mediante ids sintéticos `<base>_bN`. Cada bloque sirve una porción
+// DETERMINISTA y distinta del pool (sin duplicar datos ni tocar la BD) y guarda
+// su propio progreso (su propio test_id sintético). El pool original queda
+// intacto para simulacros y para el resto de listados.
+const BLOQUES_POOL: Record<string, number> = { c01: 11, adm32: 4 }
+// Tests cuyo pool supera 30 pero no merece partirse en bloques: se sirven como
+// una sesión estándar de N aleatorias (el resto del pool rota entre sesiones).
+const LIMITE_TESTS: Record<string, number> = { adm30: 30, adm33: 30 }
+const BLOQUES_TITULO: Record<string, string> = {
+    c01: "Constitución (Tema 1)",
+    adm32: "Fases del procedimiento · Ley 39/2015",
+}
+const BLOQUE_RE = /^(.+)_b(\d+)$/
+
+function partirEnBloques<T>(arr: T[], n: number): T[][] {
+    const base = Math.floor(arr.length / n)
+    const rem = arr.length % n
+    const out: T[][] = []
+    let start = 0
+    for (let i = 0; i < n; i++) {
+        const size = base + (i < rem ? 1 : 0)
+        out.push(arr.slice(start, start + size))
+        start += size
+    }
+    return out
+}
+
+async function fetchPreguntasBloque(
+    base: string,
+    indice: number,
+    nBloques: number
+): Promise<any[]> {
+    // La tabla preguntas tiene lectura pública: leemos el pool ordenado por
+    // "orden" y devolvemos su bloque nº `indice` (1-indexado).
+    const { data, error } = await supabase
+        .from("preguntas")
+        .select("*")
+        .eq("test_id", base)
+        .order("orden", { ascending: true })
+    if (error || !Array.isArray(data)) return []
+    return partirEnBloques(data as any[], nBloques)[indice - 1] ?? []
+}
+
 async function saveResult(payload: object, _token: string) {
     await supabase.from("test_results").insert(payload as any)
 }
@@ -119,7 +164,7 @@ function getUrlParam(name: string): string | null {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MAPA DE TÍTULOS — alineado con DashboardOPE v8 (temarios oficiales IVAP)
+// MAPA DE TÍTULOS — alineado con DashboardOPE v8 (temarios oficiales)
 // ─────────────────────────────────────────────────────────────────────────────
 const TITULOS: Record<string, string> = {
     // ── BLOQUE COMÚN (temas 1-14, compartidos en las 4 escalas) ──────────────
@@ -282,18 +327,36 @@ const TITULOS: Record<string, string> = {
 // ─────────────────────────────────────────────────────────────────────────────
 // TEMA
 // ─────────────────────────────────────────────────────────────────────────────
-const c = {
-    bg: "#FFFFFF",
-    surface: "#FFFFFF",
-    surfaceHover: "#FAFAFA",
-    border: "#E4E4E7",
-    borderStrong: "#D4D4D8",
-    accent: "#10B981", // color único de marca
-    text: "#09090B",
-    muted: "#71717A",
-    success: "#16A34A",
-    error: "#DC2626",
-    warning: "#D97706",
+// Paleta del flujo de test. Un único acento (verde); el resto se adapta al modo
+// noche. Los componentes hacen `const c = getC(dark)`.
+function getC(dark: boolean) {
+    return dark
+        ? {
+              bg: "#0B0C10",
+              surface: "#15161E",
+              surfaceHover: "rgba(255,255,255,0.06)",
+              border: "rgba(255,255,255,0.10)",
+              borderStrong: "rgba(255,255,255,0.20)",
+              accent: "#10B981",
+              text: "#FFFFFF",
+              muted: "#9A9CA8",
+              success: "#22C55E",
+              error: "#F87171",
+              warning: "#FBBF24",
+          }
+        : {
+              bg: "#FFFFFF",
+              surface: "#FFFFFF",
+              surfaceHover: "#FAFAFA",
+              border: "#E4E4E7",
+              borderStrong: "#D4D4D8",
+              accent: "#10B981",
+              text: "#09090B",
+              muted: "#71717A",
+              success: "#16A34A",
+              error: "#DC2626",
+              warning: "#D97706",
+          }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -316,18 +379,21 @@ type Fase =
     | "examen"
     | "resultados"
 
-// Color del acento: viene del URL param "accent" (lo pasa el Dashboard)
-// o se infiere del test_id según la escala
+// Gainditu tiene un ÚNICO acento de marca (verde) en todo el flujo de test.
+// Nada de colores por escala.
 const SCALE_COLORS_TEST: Record<string, string> = {
-    auxiliares: "#3B82F6",
-    administrativos: "#F43F5E",
-    gestion: "#14B8A6",
-    superiores: "#8B5CF6",
+    auxiliares: "#10B981",
+    administrativos: "#10B981",
+    gestion: "#10B981",
+    superiores: "#10B981",
 }
 
+// Fuente SOLO para la lectura del test (enunciado, opciones y explicación):
+// Inter es más legible en textos densos y cansa menos que Manrope. El resto de
+// la interfaz sigue en Manrope.
+const READ_FONT = "var(--font-inter), system-ui, sans-serif"
+
 function getAccent(testId: string): string {
-    const fromUrl = getUrlParam("accent")
-    if (fromUrl) return decodeURIComponent(fromUrl)
     if (testId.startsWith("aux") || testId.startsWith("sim_aux"))
         return SCALE_COLORS_TEST.auxiliares
     if (testId.startsWith("adm") || testId.startsWith("sim_adm"))
@@ -1172,11 +1238,11 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                             margin: "0 0 14px",
                         }}
                     >
-                        Tests por tema oficial del IVAP para la OPE Gobierno
+                        Tests por tema oficial para la OPE Gobierno
                         Vasco 2026.
                     </p>
                     <a
-                        href="mailto:hola@gainditu.com"
+                        href="mailto:gaindituoposiciones@gmail.com"
                         style={{
                             fontSize: "13px",
                             color: accent,
@@ -1184,7 +1250,7 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                             fontWeight: 600,
                         }}
                     >
-                        hola@gainditu.com
+                        gaindituoposiciones@gmail.com
                     </a>
                 </div>
                 {/* OPE 2026 */}
@@ -1257,7 +1323,7 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                             marginBottom: "14px",
                         }}
                     >
-                        Temario IVAP
+                        Temario oficial
                     </div>
                     {[
                         {
@@ -1435,6 +1501,8 @@ function PantallaInicio({
     modo: Modo
     setModo: (m: Modo) => void
 }) {
+    const { dark } = useTheme()
+    const c = getC(dark)
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1607,6 +1675,8 @@ function PantallaConfigExamen({
     numConfig: number
     setNumConfig: (v: number) => void
 }) {
+    const { dark } = useTheme()
+    const c = getC(dark)
     const num = numConfig
     const setNum = setNumConfig
 
@@ -1755,7 +1825,7 @@ function PantallaConfigExamen({
                         {
                             val: true,
                             label: "Sí — -0,33 por respuesta incorrecta",
-                            desc: "Sistema oficial IVAP. Las incorrectas restan puntos.",
+                            desc: "Sistema oficial. Las incorrectas restan puntos.",
                         },
                         {
                             val: false,
@@ -1840,6 +1910,7 @@ function ModalImpugnar({
     onConfirm: () => void
 }) {
     const t = getTheme(dark)
+    const c = getC(dark)
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -1998,6 +2069,8 @@ function PantallaPregunta({
     onToggleExp: () => void
     onImpugnar?: (p: Pregunta) => void
 }) {
+    const { dark } = useTheme()
+    const c = getC(dark)
     const respondida = respuesta !== null
     const mostrarFeedback = modo === "repaso" && respondida
     const fallo = mostrarFeedback && respuesta !== pregunta.correcta
@@ -2118,6 +2191,7 @@ function PantallaPregunta({
                         lineHeight: 1.65,
                         margin: 0,
                         fontWeight: 500,
+                        fontFamily: READ_FONT,
                     }}
                 >
                     {pregunta.enunciado}
@@ -2135,7 +2209,6 @@ function PantallaPregunta({
                 {pregunta.opciones.map((op, i) => (
                     <motion.div
                         key={i}
-                        whileHover={!respondida ? { scale: 1.01 } : {}}
                         whileTap={!respondida ? { scale: 0.99 } : {}}
                         onClick={() => !respondida && onRespuesta(i)}
                         style={{
@@ -2175,7 +2248,7 @@ function PantallaPregunta({
                         >
                             {icono(i)}
                         </span>
-                        <span style={{ fontSize: "14px", lineHeight: 1.4 }}>
+                        <span style={{ fontSize: "14px", lineHeight: 1.4, fontFamily: READ_FONT }}>
                             {op}
                         </span>
                     </motion.div>
@@ -2243,6 +2316,7 @@ function PantallaPregunta({
                                             margin: 0,
                                             color: c.text,
                                             opacity: 0.88,
+                                            fontFamily: READ_FONT,
                                         }}
                                     >
                                         {pregunta.explicacion}
@@ -2287,7 +2361,7 @@ function PantallaPregunta({
                             background: "none",
                             border: "none",
                             fontSize: "11px",
-                            color: "rgba(255,255,255,0.25)",
+                            color: c.muted,
                             cursor: "pointer",
                             fontFamily: "var(--font-manrope), system-ui, sans-serif",
                             textDecoration: "underline",
@@ -2320,6 +2394,8 @@ function PantallaExamen({
     accent: string
     penalizacion: number
 }) {
+    const { dark } = useTheme()
+    const c = getC(dark)
     const total = preguntas.length
     const respondidas = respuestas.filter((r) => r !== null).length
 
@@ -2365,7 +2441,7 @@ function PantallaExamen({
                     >
                         Responde todas las preguntas y envía al final.{" "}
                         {penalizacion > 0
-                            ? "Los fallos restan −0,33 puntos (sistema IVAP)."
+                            ? "Los fallos restan −0,33 puntos (sistema oficial)."
                             : "Sin penalización por fallo."}{" "}
                         Sin feedback hasta que termines.
                     </div>
@@ -2458,6 +2534,7 @@ function PantallaExamen({
                                     lineHeight: 1.65,
                                     margin: 0,
                                     fontWeight: 500,
+                                    fontFamily: READ_FONT,
                                 }}
                             >
                                 {pregunta.enunciado}
@@ -2518,6 +2595,7 @@ function PantallaExamen({
                                         style={{
                                             fontSize: "14px",
                                             lineHeight: 1.4,
+                                            fontFamily: READ_FONT,
                                         }}
                                     >
                                         {op}
@@ -2617,6 +2695,8 @@ function PantallaResultados({
     onVolver: () => void
     accent: string
 }) {
+    const { dark } = useTheme()
+    const c = getC(dark)
     const total = preguntas.length
     const correctas = respuestas.filter(
         (r, i) => r === preguntas[i].correcta
@@ -3520,7 +3600,7 @@ function PremiumPopup({
                 <div style={{ textAlign: "left", marginBottom: "22px" }}>
                     {[
                         " Exámenes oficiales de convocatorias anteriores",
-                        " Simulacros cronometrados con penalización real IVAP",
+                        " Simulacros cronometrados con penalización real del examen",
                         " Técnicas de estudio y memorización",
                         " Actualizaciones gratuitas hasta el examen",
                         " Comunidad privada de opositores vascos",
@@ -3680,13 +3760,22 @@ export default function TestScreen(props: {
     onBack?: () => void
 }) {
     const testId = props.testId || getUrlParam("id") || "c01"
-    const titulo = TITULOS[testId] || TITULOS_CATALOGO[testId] || `Test ${testId}`
+    // Si es un bloque virtual `<base>_bN` de un pool conocido, lo detectamos.
+    const bloqueMatch = testId.match(BLOQUE_RE)
+    const bloqueBase =
+        bloqueMatch && BLOQUES_POOL[bloqueMatch[1]] ? bloqueMatch[1] : null
+    const bloqueIdx = bloqueBase ? parseInt(bloqueMatch![2], 10) : 0
+    const bloqueTotal = bloqueBase ? BLOQUES_POOL[bloqueBase] : 0
+    const titulo = bloqueBase
+        ? `${BLOQUES_TITULO[bloqueBase] ?? bloqueBase} — Bloque ${bloqueIdx} de ${bloqueTotal}`
+        : TITULOS[testId] || TITULOS_CATALOGO[testId] || `Test ${testId}`
     const accentColor = getAccent(testId)
     const limiteFree = PREMIUM_TESTS[testId] ?? null // null = sin límite
     // Simulacros (sim_*) y exámenes oficiales de convocatorias reales (ex_*) = solo premium
     const esSimulacro = testId.startsWith("sim_") || testId.startsWith("ex_")
 
     const { dark } = useTheme()
+    const c = getC(dark)
     const [sessionUser, setSessionUser] = useState<any>(null)
     const [sessionToken, setSessionToken] = useState<string | null>(null)
     const [numPreguntas, setNumPreguntas] = useState<number>(0)
@@ -3770,7 +3859,10 @@ export default function TestScreen(props: {
 
     useEffect(() => {
         setFase("cargando")
-        fetchPreguntas(testId).then((rows) => {
+        const cargar = bloqueBase
+            ? fetchPreguntasBloque(bloqueBase, bloqueIdx, bloqueTotal)
+            : fetchPreguntas(testId, LIMITE_TESTS[testId] ?? null)
+        cargar.then((rows) => {
             if (!rows || rows.length === 0) {
                 setFase("sin_preguntas")
                 return

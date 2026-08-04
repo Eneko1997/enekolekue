@@ -9,7 +9,7 @@ const ACCENT = "#10B981"
 
 const VENTAJAS = [
     "Exámenes oficiales de convocatorias anteriores",
-    "Simulacros con penalización real del IVAP",
+    "Simulacros con penalización real del examen",
     "Estadísticas avanzadas y seguimiento por tema",
     "Comunidad de opositores y novedades de la OPE",
 ]

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og"
 
-export const alt = "Gainditu — Tests OPE Gobierno Vasco 2026 (IVAP)"
+export const alt = "Gainditu — Tests para oposiciones de Euskadi"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
@@ -33,7 +33,7 @@ export default function OpengraphImage() {
                         maxWidth: 900,
                     }}
                 >
-                    Tests OPE Gobierno Vasco 2026
+                    Tests para oposiciones de Euskadi
                 </div>
                 <div
                     style={{
@@ -43,8 +43,7 @@ export default function OpengraphImage() {
                         maxWidth: 900,
                     }}
                 >
-                    Temario oficial IVAP · Personal de Apoyo, Administrativos, Gestión y
-                    Superiores
+                    Gobierno Vasco · Osakidetza · Ertzaintza · Educación · y más
                 </div>
             </div>
         ),

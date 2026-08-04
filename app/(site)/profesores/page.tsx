@@ -3,9 +3,9 @@ import type { Metadata } from "next"
 import { SITE_URL } from "@/lib/site"
 
 export const metadata: Metadata = {
-    title: "Profesores particulares — OPE Gobierno Vasco 2026",
+    title: "Profesores particulares para oposiciones de Euskadi",
     description:
-        "Profesores particulares especializados en la OPE del Gobierno Vasco (IVAP): clases de derecho administrativo, Constitución, euskera y más. ¿Eres profe? Anúnciate en Gainditu.",
+        "Profesores particulares para oposiciones de Euskadi: derecho administrativo, Constitución, euskera para el perfil lingüístico y más. ¿Eres profe? Anúnciate en Gainditu.",
     alternates: { canonical: "/profesores" },
 }
 
@@ -15,7 +15,7 @@ const CONTACTO = "mailto:gaindituoposiciones@gmail.com?subject=Quiero%20anunciar
 const PROFES = [
     { n: "Ane M.", mat: "Derecho administrativo · Ley 39/2015 y 40/2015", zona: "Bilbao · online", ini: "A" },
     { n: "Gorka L.", mat: "Constitución y organización del Estado y de Euskadi", zona: "Vitoria-Gasteiz · presencial", ini: "G" },
-    { n: "Leire S.", mat: "Euskera para oposiciones · perfil lingüístico (IVAP/HABE)", zona: "Donostia · online", ini: "L" },
+    { n: "Leire S.", mat: "Euskera para oposiciones · perfil lingüístico (HABE)", zona: "Donostia · online", ini: "L" },
     { n: "Mikel A.", mat: "Empleo público vasco y régimen jurídico", zona: "Online", ini: "M" },
 ]
 
@@ -43,7 +43,7 @@ export default function ProfesoresPage() {
                         para tu oposición
                     </h1>
                     <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-zinc-500 dark:text-zinc-400">
-                        Refuerza los bloques que más te cuestan con profesores especializados en el temario del IVAP. Y si eres profe, anúnciate y llega a nuevos alumnos.
+                        Refuerza los bloques que más te cuestan con profesores especializados en el temario oficial. Y si eres profe, anúnciate y llega a nuevos alumnos.
                     </p>
                     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                         <a href={CONTACTO} className="inline-flex w-full items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 px-7 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03] sm:w-auto">
