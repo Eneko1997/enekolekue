@@ -245,6 +245,29 @@ export default async function ConvocatoriaFicha({
                             Boletín: {c.boletin ?? "BOPV"}
                         </div>
                     </div>
+
+                    <div className="mt-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5">
+                        <div className="text-[13px] font-semibold uppercase tracking-wide text-zinc-400">
+                            Herramientas útiles
+                        </div>
+                        <ul className="mt-3 space-y-2 text-[14px]">
+                            <li>
+                                <Link href="/herramientas/calculadora-nota-corte" className="font-medium hover:underline" style={{ color: ACCENT }}>
+                                    Calculadora de nota de corte →
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/herramientas/equivalencias-perfil-linguistico" className="font-medium hover:underline" style={{ color: ACCENT }}>
+                                    Equivalencias de euskera →
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/herramientas/ratio-aspirantes-plaza" className="font-medium hover:underline" style={{ color: ACCENT }}>
+                                    Ratio aspirantes / plaza →
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                 </aside>
             </div>
 

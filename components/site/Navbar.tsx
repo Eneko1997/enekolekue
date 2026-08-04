@@ -19,6 +19,7 @@ const TESTS_LINKS = [
 const NAV_LINKS = [
     { label: "Temario", href: "/temario" },
     { label: "Convocatorias", href: "/convocatorias" },
+    { label: "Herramientas", href: "/herramientas" },
 ]
 
 const CUENTA_ITEMS = [

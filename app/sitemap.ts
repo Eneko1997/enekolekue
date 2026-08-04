@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next"
 import { SITE_URL } from "@/lib/site"
 import { CONVOCATORIAS } from "@/lib/data/convocatorias"
 import { NORMATIVAS } from "@/lib/data/temario/normativas"
+import { HERRAMIENTAS } from "@/lib/data/herramientas"
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const now = new Date()
@@ -22,6 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: "/constitucion", priority: 0.8, freq: "monthly" as const },
         ...NORMATIVAS.map((n) => ({
             path: `/temario/${n.slug}`,
+            priority: 0.7,
+            freq: "monthly" as const,
+        })),
+        { path: "/herramientas", priority: 0.7, freq: "monthly" as const },
+        ...HERRAMIENTAS.map((h) => ({
+            path: `/herramientas/${h.slug}`,
             priority: 0.7,
             freq: "monthly" as const,
         })),
