@@ -18,8 +18,7 @@ const TESTS_LINKS = [
 ]
 
 const NAV_LINKS = [
-    { label: "Ley 39/2015", href: "/ley-39-2015" },
-    { label: "Constitución", href: "/constitucion" },
+    { label: "Temario", href: "/temario" },
     { label: "Convocatorias", href: "/convocatorias" },
     { label: "Profesores", href: "/profesores" },
 ]
