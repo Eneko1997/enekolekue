@@ -77,6 +77,14 @@ export const ORGANISMOS: Organismo[] = [
         cuerpos: ["Administrativo/a", "Auxiliar administrativo/a", "Policía local"],
         disponibleTests: false,
     },
+    {
+        slug: "bomberos",
+        nombre: "Bomberos",
+        corto: "Bomberos",
+        descripcion: "Servicios de extinción de incendios (forales y municipales).",
+        cuerpos: ["Bombero/a", "Bombero/a conductor/a"],
+        disponibleTests: false,
+    },
 ]
 
 /** Nombres cortos para listar en copys ("Gobierno Vasco, Osakidetza, …"). */

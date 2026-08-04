@@ -243,6 +243,126 @@ export const CONVOCATORIAS: Convocatoria[] = [
             { etiqueta: "Constitución", url: "/constitucion" },
         ],
     },
+
+    // ───────────────────────── Diputaciones Forales ─────────────────────────
+    {
+        slug: "ope-diputaciones-forales",
+        organismo: "diputaciones-forales",
+        nombre: "Oposiciones de las Diputaciones Forales (Álava, Bizkaia y Gipuzkoa)",
+        cuerpoOCategoria: [
+            "Administrativo/a",
+            "Auxiliar administrativo/a",
+            "Técnicos/as",
+            "Personal foral",
+        ],
+        grupo: null,
+        estado: "oep-aprobada",
+        plazas: null,
+        plazasDetalle: [],
+        fechasClave: [
+            {
+                etiqueta: "Convocatorias",
+                fecha: "Periódicas, por cada Diputación Foral",
+                iso: null,
+                nota: "Cada Diputación publica su propia OPE. Pendiente de convocatoria concreta.",
+            },
+        ],
+        perfilLinguistico: "Perfil de euskera según plaza.",
+        enlacesOficiales: [
+            { etiqueta: "Diputación Foral de Bizkaia", url: "https://www.bizkaia.eus/" },
+            { etiqueta: "Diputación Foral de Gipuzkoa", url: "https://www.gipuzkoa.eus/" },
+            { etiqueta: "Diputación Foral de Álava", url: "https://www.araba.eus/" },
+            {
+                etiqueta: "IVAP — OPE de otras administraciones vascas",
+                url: "https://www.ivap.euskadi.eus/oferta-publica-de-empleo-ope-de-otras-administraciones-publicas-vascas/webivap00-a2eusk/es/",
+            },
+        ],
+        boletin: "BOPV y boletines forales (BOB, BOG, BOTHA)",
+        ultimaActualizacion: HOY,
+        resumen:
+            "Las tres Diputaciones Forales (Álava, Bizkaia y Gipuzkoa) convocan sus propias oposiciones de forma periódica. Consulta la web de cada Diputación para la convocatoria concreta, plazas y fechas.",
+        testsRelacionados: [
+            { etiqueta: "Ley 39/2015", url: "/ley-39-2015" },
+            { etiqueta: "Constitución", url: "/constitucion" },
+        ],
+    },
+
+    // ───────────────────────── Ayuntamientos ─────────────────────────
+    {
+        slug: "ope-ayuntamientos",
+        organismo: "administracion-local",
+        nombre: "Oposiciones de Ayuntamientos (País Vasco)",
+        cuerpoOCategoria: [
+            "Administrativo/a",
+            "Auxiliar administrativo/a",
+            "Policía local",
+            "Personal de servicios",
+        ],
+        grupo: null,
+        estado: "oep-aprobada",
+        plazas: null,
+        plazasDetalle: [],
+        fechasClave: [
+            {
+                etiqueta: "Convocatorias",
+                fecha: "Periódicas, por cada ayuntamiento",
+                iso: null,
+                nota: "Cada municipio publica su propia OPE. Pendiente de convocatoria concreta.",
+            },
+        ],
+        perfilLinguistico: "Perfil de euskera según plaza y municipio.",
+        enlacesOficiales: [
+            { etiqueta: "Ayuntamiento de Bilbao", url: "https://www.bilbao.eus/" },
+            { etiqueta: "Ayuntamiento de Vitoria-Gasteiz", url: "https://www.vitoria-gasteiz.org/" },
+            { etiqueta: "Ayuntamiento de Donostia / San Sebastián", url: "https://www.donostia.eus/" },
+            {
+                etiqueta: "IVAP — OPE de otras administraciones vascas",
+                url: "https://www.ivap.euskadi.eus/oferta-publica-de-empleo-ope-de-otras-administraciones-publicas-vascas/webivap00-a2eusk/es/",
+            },
+        ],
+        boletin: "BOPV y boletines territoriales (BOB, BOG, BOTHA)",
+        ultimaActualizacion: HOY,
+        resumen:
+            "Los ayuntamientos del País Vasco convocan sus propias oposiciones (administrativo, auxiliar, policía local y personal de servicios) de forma periódica. Consulta la web de cada ayuntamiento para la convocatoria concreta.",
+        testsRelacionados: [
+            { etiqueta: "Ley 39/2015", url: "/ley-39-2015" },
+            { etiqueta: "Constitución", url: "/constitucion" },
+        ],
+    },
+
+    // ───────────────────────── Bomberos ─────────────────────────
+    {
+        slug: "ope-bomberos-euskadi",
+        organismo: "bomberos",
+        nombre: "Oposiciones de Bomberos (País Vasco)",
+        cuerpoOCategoria: ["Bombero/a", "Bombero/a conductor/a"],
+        grupo: null,
+        estado: "oep-aprobada",
+        plazas: null,
+        plazasDetalle: [],
+        fechasClave: [
+            {
+                etiqueta: "Convocatorias",
+                fecha: "Periódicas, por servicio (foral o municipal)",
+                iso: null,
+                nota: "Pendiente de convocatoria concreta.",
+            },
+        ],
+        perfilLinguistico: "Perfil de euskera según convocatoria.",
+        enlacesOficiales: [
+            { etiqueta: "Diputación Foral de Bizkaia (bomberos)", url: "https://www.bizkaia.eus/" },
+            { etiqueta: "Diputación Foral de Gipuzkoa", url: "https://www.gipuzkoa.eus/" },
+            {
+                etiqueta: "IVAP — OPE de otras administraciones vascas",
+                url: "https://www.ivap.euskadi.eus/oferta-publica-de-empleo-ope-de-otras-administraciones-publicas-vascas/webivap00-a2eusk/es/",
+            },
+        ],
+        boletin: "BOPV y boletines forales",
+        ultimaActualizacion: HOY,
+        resumen:
+            "En el País Vasco los servicios de bomberos dependen de las Diputaciones Forales y de algunos ayuntamientos, que convocan sus procesos de forma periódica. El número de plazas y las fechas dependen de cada convocatoria concreta.",
+        testsRelacionados: [{ etiqueta: "Constitución", url: "/constitucion" }],
+    },
 ]
 
 export function getConvocatoria(slug: string): Convocatoria | undefined {
