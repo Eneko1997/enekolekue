@@ -10,7 +10,7 @@ const LINKS: [string, string][] = [
     ["Técnico Superior", "/oposiciones/tecnico-superior"],
     ["Constitución", "/constitucion"],
     ["Ley 39/2015", "/ley-39-2015"],
-    ["Fechas OPE", "/fechas-opes"],
+    ["Convocatorias", "/convocatorias"],
     ["Profesores", "/profesores"],
     ["Aviso legal", "/aviso-legal"],
     ["Privacidad", "/privacidad"],

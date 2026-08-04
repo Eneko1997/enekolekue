@@ -17,7 +17,7 @@ const COLS = [
         links: [
             { label: "Ley 39/2015", href: "/ley-39-2015" },
             { label: "Constitución Española", href: "/constitucion" },
-            { label: "Fechas de las OPEs", href: "/fechas-opes" },
+            { label: "Convocatorias", href: "/convocatorias" },
         ],
     },
     {

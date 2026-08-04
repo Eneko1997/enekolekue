@@ -957,8 +957,8 @@ function Navbar({
     const accent = HEADER_ACCENT // el acento del header SIEMPRE es fijo, ignora el prop dinámico de escala
     const links = [
         {
-            label: "Fechas OPE",
-            href: "/fechas-opes",
+            label: "Convocatorias",
+            href: "/convocatorias",
         },
         { label: "Ley 39/2015", href: "/ley-39-2015" },
         { label: "Constitución", href: "/constitucion" },

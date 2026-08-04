@@ -115,8 +115,8 @@ export default function ConstitucionPage() {
                     <Link href="/" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
                         → Todos los tests por escala
                     </Link>
-                    <Link href="/fechas-opes" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
-                        → Fechas de las OPEs 2026
+                    <Link href="/convocatorias" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
+                        → Convocatorias de Euskadi
                     </Link>
                 </div>
             </div>

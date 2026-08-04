@@ -717,8 +717,8 @@ function SharedNavbar({
 
     const links = [
         {
-            label: "Fechas OPE",
-            href: "/fechas-opes",
+            label: "Convocatorias",
+            href: "/convocatorias",
         },
         { label: "Ley 39/2015", href: "/ley-39-2015" },
         { label: "Constitución", href: "/constitucion" },

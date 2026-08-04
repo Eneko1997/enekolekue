@@ -248,7 +248,7 @@ export default function HomePage() {
                         {[
                             { t: "Constitución Española", d: "Test y teoría del bloque común.", href: "/constitucion" },
                             { t: "Ley 39/2015", d: "Procedimiento Administrativo Común.", href: "/ley-39-2015" },
-                            { t: "Fechas de las OPEs 2026", d: "Calendario provisional de la OPE.", href: "/fechas-opes" },
+                            { t: "Convocatorias de Euskadi", d: "Estado, plazas y fechas de cada oposición, con enlaces oficiales.", href: "/convocatorias" },
                         ].map((r, i) => (
                             <Reveal key={r.href} delay={i * 70}>
                                 <Link href={r.href} className="group block h-full rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 transition-all hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-xl hover:shadow-zinc-900/5">
@@ -297,7 +297,7 @@ export default function HomePage() {
                             ["Técnico Superior", "/oposiciones/tecnico-superior"],
                             ["Constitución", "/constitucion"],
                             ["Ley 39/2015", "/ley-39-2015"],
-                            ["Fechas OPE", "/fechas-opes"],
+                            ["Convocatorias", "/convocatorias"],
                             ["Aviso legal", "/aviso-legal"],
                             ["Privacidad", "/privacidad"],
                         ].map(([l, h]) => (

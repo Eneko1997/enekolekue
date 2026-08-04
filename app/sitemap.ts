@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next"
 import { SITE_URL } from "@/lib/site"
+import { CONVOCATORIAS } from "@/lib/data/convocatorias"
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const now = new Date()
@@ -9,9 +10,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: "/oposiciones/administrativo", priority: 0.9, freq: "monthly" as const },
         { path: "/oposiciones/tecnico-gestion", priority: 0.9, freq: "monthly" as const },
         { path: "/oposiciones/tecnico-superior", priority: 0.9, freq: "monthly" as const },
+        { path: "/convocatorias", priority: 0.9, freq: "weekly" as const },
+        ...CONVOCATORIAS.map((c) => ({
+            path: `/convocatorias/${c.slug}`,
+            priority: 0.8,
+            freq: "weekly" as const,
+        })),
         { path: "/ley-39-2015", priority: 0.8, freq: "monthly" as const },
         { path: "/constitucion", priority: 0.8, freq: "monthly" as const },
-        { path: "/fechas-opes", priority: 0.7, freq: "weekly" as const },
         { path: "/profesores", priority: 0.6, freq: "monthly" as const },
         { path: "/aviso-legal", priority: 0.2, freq: "yearly" as const },
         { path: "/privacidad", priority: 0.2, freq: "yearly" as const },
