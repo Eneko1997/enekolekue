@@ -258,13 +258,21 @@ export const CONVOCATORIAS: Convocatoria[] = [
         grupo: null,
         estado: "oep-aprobada",
         plazas: null,
-        plazasDetalle: [],
+        plazasDetalle: [
+            { cuerpo: "Bizkaia — OPE 2026 (34 de administrativo/a)", plazas: 69 },
+        ],
         fechasClave: [
             {
-                etiqueta: "Convocatorias",
-                fecha: "Periódicas, por cada Diputación Foral",
+                etiqueta: "Bizkaia — OPE 2026",
+                fecha: "Aprobada en 2026 (69 plazas, 34 de administrativo/a)",
                 iso: null,
-                nota: "Cada Diputación publica su propia OPE. Pendiente de convocatoria concreta.",
+                nota: "Convocatorias por categoría en el BOB. Segunda OEP prevista para fin de año.",
+            },
+            {
+                etiqueta: "Gipuzkoa y Álava",
+                fecha: "Convocan sus propias OPE",
+                iso: null,
+                nota: "Consulta cada Diputación para plazas y fechas concretas.",
             },
         ],
         perfilLinguistico: "Perfil de euskera según plaza.",
@@ -280,7 +288,7 @@ export const CONVOCATORIAS: Convocatoria[] = [
         boletin: "BOPV y boletines forales (BOB, BOG, BOTHA)",
         ultimaActualizacion: HOY,
         resumen:
-            "Las tres Diputaciones Forales (Álava, Bizkaia y Gipuzkoa) convocan sus propias oposiciones de forma periódica. Consulta la web de cada Diputación para la convocatoria concreta, plazas y fechas.",
+            "Las tres Diputaciones Forales convocan sus propias oposiciones. La Diputación de Bizkaia aprobó su OPE 2026 con 69 plazas (34 de administrativo/a) y en 2025 ofertó más de un centenar en varias fases; Gipuzkoa y Álava convocan las suyas. Consulta cada Diputación para las convocatorias por categoría.",
         testsRelacionados: [
             { etiqueta: "Ley 39/2015", url: "/ley-39-2015" },
             { etiqueta: "Constitución", url: "/constitucion" },
@@ -299,15 +307,23 @@ export const CONVOCATORIAS: Convocatoria[] = [
             "Personal de servicios",
         ],
         grupo: null,
-        estado: "oep-aprobada",
+        estado: "bases-publicadas",
         plazas: null,
-        plazasDetalle: [],
+        plazasDetalle: [
+            { cuerpo: "Bilbao — Administrativo/a (turno libre)", plazas: 76 },
+        ],
         fechasClave: [
             {
-                etiqueta: "Convocatorias",
-                fecha: "Periódicas, por cada ayuntamiento",
+                etiqueta: "Bilbao — 76 administrativos/as",
+                fecha: "Convocatoria publicada en el BOE (junio de 2025)",
                 iso: null,
-                nota: "Cada municipio publica su propia OPE. Pendiente de convocatoria concreta.",
+                nota: "Sistema de concurso-oposición.",
+            },
+            {
+                etiqueta: "Otros municipios",
+                fecha: "Vitoria-Gasteiz, Donostia y otros convocan sus propias OPE",
+                iso: null,
+                nota: "Consulta cada ayuntamiento para plazas y fechas.",
             },
         ],
         perfilLinguistico: "Perfil de euskera según plaza y municipio.",
@@ -323,7 +339,7 @@ export const CONVOCATORIAS: Convocatoria[] = [
         boletin: "BOPV y boletines territoriales (BOB, BOG, BOTHA)",
         ultimaActualizacion: HOY,
         resumen:
-            "Los ayuntamientos del País Vasco convocan sus propias oposiciones (administrativo, auxiliar, policía local y personal de servicios) de forma periódica. Consulta la web de cada ayuntamiento para la convocatoria concreta.",
+            "Los ayuntamientos vascos convocan sus propias oposiciones. El Ayuntamiento de Bilbao convocó 76 plazas de Administrativo/a (BOE de junio de 2025) y otros municipios como Vitoria-Gasteiz y Donostia publican sus OPE de forma periódica. Consulta cada ayuntamiento para las convocatorias concretas.",
         testsRelacionados: [
             { etiqueta: "Ley 39/2015", url: "/ley-39-2015" },
             { etiqueta: "Constitución", url: "/constitucion" },
@@ -337,15 +353,24 @@ export const CONVOCATORIAS: Convocatoria[] = [
         nombre: "Oposiciones de Bomberos (País Vasco)",
         cuerpoOCategoria: ["Bombero/a", "Bombero/a conductor/a"],
         grupo: null,
-        estado: "oep-aprobada",
+        estado: "bases-publicadas",
         plazas: null,
-        plazasDetalle: [],
+        plazasDetalle: [
+            { cuerpo: "Gipuzkoa — Bombero/a (turno libre)", plazas: 68 },
+            { cuerpo: "Bizkaia — Bombero/a conductor/a", plazas: 39 },
+        ],
         fechasClave: [
             {
-                etiqueta: "Convocatorias",
-                fecha: "Periódicas, por servicio (foral o municipal)",
+                etiqueta: "Gipuzkoa — bases",
+                fecha: "BOG nº 238, de 12 de diciembre de 2025",
                 iso: null,
-                nota: "Pendiente de convocatoria concreta.",
+                nota: "68 plazas de Bombero/a (16 de la OPE 2024 y 52 de la OPE 2025).",
+            },
+            {
+                etiqueta: "Bizkaia — primeras pruebas",
+                fecha: "Primer semestre de 2026",
+                iso: null,
+                nota: "39 plazas de bombero/a conductor/a, además de plazas de cabo.",
             },
         ],
         perfilLinguistico: "Perfil de euskera según convocatoria.",
@@ -360,7 +385,7 @@ export const CONVOCATORIAS: Convocatoria[] = [
         boletin: "BOPV y boletines forales",
         ultimaActualizacion: HOY,
         resumen:
-            "En el País Vasco los servicios de bomberos dependen de las Diputaciones Forales y de algunos ayuntamientos, que convocan sus procesos de forma periódica. El número de plazas y las fechas dependen de cada convocatoria concreta.",
+            "Los servicios de bomberos vascos dependen de las Diputaciones Forales. Gipuzkoa convocó 68 plazas de Bombero/a (bases en el BOG de diciembre de 2025) y Bizkaia 39 plazas de bombero/a conductor/a, con primeras pruebas en el primer semestre de 2026. Consulta cada servicio para el estado exacto del proceso.",
         testsRelacionados: [{ etiqueta: "Constitución", url: "/constitucion" }],
     },
 ]
