@@ -259,20 +259,28 @@ export const CONVOCATORIAS: Convocatoria[] = [
         estado: "oep-aprobada",
         plazas: null,
         plazasDetalle: [
+            { cuerpo: "Gipuzkoa — OPE 2026 (153 de administrativo/a)", plazas: 281 },
             { cuerpo: "Bizkaia — OPE 2026 (34 de administrativo/a)", plazas: 69 },
+            { cuerpo: "Álava — 1ª OPE 2026", plazas: 40 },
         ],
         fechasClave: [
             {
+                etiqueta: "Gipuzkoa — OPE 2026",
+                fecha: "281 plazas en 18 procesos selectivos",
+                iso: null,
+                nota: "Incluye 153 plazas de Administrativo/a (150 de la Diputación y 3 de las Juntas Generales) y 68 de Bombero/a. Primeras pruebas no antes de enero de 2027.",
+            },
+            {
                 etiqueta: "Bizkaia — OPE 2026",
-                fecha: "Aprobada en 2026 (69 plazas, 34 de administrativo/a)",
+                fecha: "69 plazas (34 de administrativo/a)",
                 iso: null,
                 nota: "Convocatorias por categoría en el BOB. Segunda OEP prevista para fin de año.",
             },
             {
-                etiqueta: "Gipuzkoa y Álava",
-                fecha: "Convocan sus propias OPE",
+                etiqueta: "Álava — 1ª OPE 2026",
+                fecha: "40 plazas (BOTHA nº 55, mayo de 2026)",
                 iso: null,
-                nota: "Consulta cada Diputación para plazas y fechas concretas.",
+                nota: "19 de técnico/a de administración general, 8 laborantes, 5 inspector/a auxiliar de tributos, 5 guardería forestal y 3 letrado/a. Segunda OPE prevista antes de fin de año.",
             },
         ],
         perfilLinguistico: "Perfil de euskera según plaza.",
@@ -288,7 +296,7 @@ export const CONVOCATORIAS: Convocatoria[] = [
         boletin: "BOPV y boletines forales (BOB, BOG, BOTHA)",
         ultimaActualizacion: HOY,
         resumen:
-            "Las tres Diputaciones Forales convocan sus propias oposiciones. La Diputación de Bizkaia aprobó su OPE 2026 con 69 plazas (34 de administrativo/a) y en 2025 ofertó más de un centenar en varias fases; Gipuzkoa y Álava convocan las suyas. Consulta cada Diputación para las convocatorias por categoría.",
+            "Las tres Diputaciones Forales convocan sus propias oposiciones. Gipuzkoa aprobó su OPE 2026 con 281 plazas en 18 procesos selectivos, entre ellas 153 de Administrativo/a; Bizkaia ofertó 69 plazas (34 de administrativo/a) y Álava, una primera OPE 2026 de 40 plazas. Consulta cada Diputación para las convocatorias por categoría.",
         testsRelacionados: [
             { etiqueta: "Ley 39/2015", url: "/ley-39-2015" },
             { etiqueta: "Constitución", url: "/constitucion" },
