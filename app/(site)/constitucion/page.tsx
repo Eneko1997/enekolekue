@@ -1,14 +1,8 @@
-import Link from "next/link"
-import TestsLead from "@/components/site/TestsLead"
 import type { Metadata } from "next"
-import TemaTests, { type TemaTest } from "@/components/tests/TemaTests"
-import LeccionHero from "@/components/lecciones/LeccionHero"
-import PuntosExamen from "@/components/lecciones/PuntosExamen"
-import LeccionCTA from "@/components/lecciones/LeccionCTA"
-import FaqLeccion, { type Faq } from "@/components/lecciones/FaqLeccion"
+import { type TemaTest } from "@/components/tests/TemaTests"
+import { type Faq } from "@/components/lecciones/FaqLeccion"
+import TemaTestsShell from "@/components/temario/TemaTestsShell"
 import { SITE_URL } from "@/lib/site"
-
-const ACCENT = "#10B981"
 
 export const metadata: Metadata = {
     title: "Test Constitución Española — Oposiciones Euskadi",
@@ -39,6 +33,14 @@ const TESTS: TemaTest[] = [
     { id: "c05", tema: "T.5", titulo: "Distribución de competencias CAE–Territorios Históricos. Concierto Económico. Instituciones Locales", preguntas: 30 },
 ]
 
+const ESTRUCTURA = [
+    { titulo: "Título Preliminar", detalle: "Principios básicos: Estado social y democrático de Derecho, soberanía nacional, lenguas y símbolos (arts. 1 a 9)." },
+    { titulo: "Título I — Derechos y deberes", detalle: "Derechos fundamentales, garantías y recurso de amparo. El artículo 53 y la suspensión de derechos (art. 55)." },
+    { titulo: "Títulos II a VI — Poderes del Estado", detalle: "La Corona, las Cortes Generales, el Gobierno y la Administración, y el Poder Judicial." },
+    { titulo: "Títulos VII y VIII — Economía y territorio", detalle: "Economía y Hacienda y la organización territorial del Estado (municipios, provincias y Comunidades Autónomas)." },
+    { titulo: "Títulos IX y X — Tribunal Constitucional y reforma", detalle: "El Tribunal Constitucional y los procedimientos de reforma constitucional (arts. 166 a 169)." },
+]
+
 const PUNTOS = [
     { t: "Derechos y garantías", d: "Título I, derechos fundamentales, garantías y recurso de amparo (art. 53)." },
     { t: "Organización territorial", d: "Comunidades Autónomas, Estatutos de Autonomía y distribución de competencias." },
@@ -65,95 +67,69 @@ const FAQS: Faq[] = [
     },
 ]
 
+const JSON_LD = [
+    {
+        "@context": "https://schema.org",
+        "@type": "LearningResource",
+        name: "Tests de la Constitución Española — OPE Gobierno Vasco 2026",
+        educationalLevel: "Oposiciones",
+        about: "Constitución Española de 1978",
+        provider: { "@type": "Organization", name: "Gainditu" },
+        url: `${SITE_URL}/constitucion`,
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
+            { "@type": "ListItem", position: 2, name: "La Constitución Española", item: `${SITE_URL}/constitucion` },
+        ],
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: FAQS.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+    },
+]
+
 export default function ConstitucionPage() {
     return (
-        <main className="flex flex-1 flex-col">
-            <LeccionHero
-                eyebrow="Temario oficial · OPE 2026"
-                title="La Constitución Española"
-                subtitle="La Constitución y la organización del Estado (temas 1 a 5), de lo más preguntado. Domínalos a base de tests reales, no de leer artículos."
-                accent={ACCENT}
-                stats={[
-                    { n: "430", label: "preguntas" },
-                    { n: "5", label: "temas" },
-                    { n: "1978", label: "Constitución" },
-                    { n: "169", label: "artículos" },
-                ]}
-            />
-
-            <PuntosExamen puntos={PUNTOS} accent={ACCENT} />
-
-            <section id="tests" className="scroll-mt-20 px-5 py-8">
-                <div className="mx-auto max-w-4xl">
-                    <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">
-                        Tests de la Constitución
-                    </h2>
-                    <TestsLead
-                        prefix="Constitución y organización del Estado, tema a tema (temas 1 a 5 de la parte general)."
-                        guestTail="para ver tu progreso."
-                        loggedTail="Tu progreso se guarda automáticamente."
-                    />
-                    <TemaTests tests={TESTS} accent={ACCENT} />
-                </div>
-            </section>
-
-            <FaqLeccion faqs={FAQS} accent={ACCENT} />
-
-            <LeccionCTA
-                accent={ACCENT}
-                href="/payment"
-                titulo="Desbloquea todo el temario"
-                texto="Hazte Premium y accede a exámenes oficiales, simulacros con penalización real del examen y estadísticas avanzadas para todas las escalas."
-                cta="Ver acceso Premium →"
-            />
-
-            <div className="mx-auto mb-12 max-w-4xl px-5">
-                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
-                    <Link href="/ley-39-2015" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
-                        → Ley 39/2015
-                    </Link>
-                    <Link href="/" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
-                        → Todos los tests por escala
-                    </Link>
-                    <Link href="/convocatorias" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
-                        → Convocatorias de Euskadi
-                    </Link>
-                </div>
-            </div>
-
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify([
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "LearningResource",
-                            name: "Tests de la Constitución Española — OPE Gobierno Vasco 2026",
-                            educationalLevel: "Oposiciones",
-                            about: "Constitución Española de 1978",
-                            provider: { "@type": "Organization", name: "Gainditu" },
-                            url: `${SITE_URL}/constitucion`,
-                        },
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "BreadcrumbList",
-                            itemListElement: [
-                                { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
-                                { "@type": "ListItem", position: 2, name: "La Constitución Española", item: `${SITE_URL}/constitucion` },
-                            ],
-                        },
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "FAQPage",
-                            mainEntity: FAQS.map((f) => ({
-                                "@type": "Question",
-                                name: f.q,
-                                acceptedAnswer: { "@type": "Answer", text: f.a },
-                            })),
-                        },
-                    ]),
-                }}
-            />
-        </main>
+        <TemaTestsShell
+            eyebrow="Temario oficial · OPE 2026"
+            title="La Constitución Española"
+            subtitle="La Constitución y la organización del Estado (temas 1 a 5), de lo más preguntado. Domínalos a base de tests reales, no de leer artículos."
+            ley="Constitución Española de 1978"
+            stats={[
+                { n: "430", label: "preguntas" },
+                { n: "5", label: "temas" },
+                { n: "1978", label: "Constitución" },
+                { n: "169", label: "artículos" },
+            ]}
+            enOposiciones="Forma parte del bloque común de todas las escalas del Gobierno Vasco (Personal de Apoyo, Administrativos, Técnicos de Gestión y Superiores) y también entra en Diputaciones Forales, ayuntamientos, Osakidetza y Ertzaintza."
+            estructura={ESTRUCTURA}
+            puntos={PUNTOS}
+            testsTitulo="Tests de la Constitución"
+            testsLead={{
+                prefix: "Constitución y organización del Estado, tema a tema (temas 1 a 5 de la parte general).",
+                guestTail: "para ver tu progreso.",
+                loggedTail: "Tu progreso se guarda automáticamente.",
+            }}
+            tests={TESTS}
+            faqs={FAQS}
+            relacionadas={[
+                { label: "Ley 39/2015", href: "/ley-39-2015" },
+                { label: "Todos los tests por escala", href: "/" },
+                { label: "Convocatorias de Euskadi", href: "/convocatorias" },
+            ]}
+            fuenteOficial={{
+                label: "Texto consolidado (BOE)",
+                href: "https://www.boe.es/buscar/act.php?id=BOE-A-1978-31229",
+            }}
+            jsonLd={JSON_LD}
+        />
     )
 }

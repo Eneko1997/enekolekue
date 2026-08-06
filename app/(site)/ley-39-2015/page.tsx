@@ -1,14 +1,8 @@
-import Link from "next/link"
-import TestsLead from "@/components/site/TestsLead"
 import type { Metadata } from "next"
-import TemaTests, { type TemaTest } from "@/components/tests/TemaTests"
-import LeccionHero from "@/components/lecciones/LeccionHero"
-import PuntosExamen from "@/components/lecciones/PuntosExamen"
-import LeccionCTA from "@/components/lecciones/LeccionCTA"
-import FaqLeccion, { type Faq } from "@/components/lecciones/FaqLeccion"
+import { type TemaTest } from "@/components/tests/TemaTests"
+import { type Faq } from "@/components/lecciones/FaqLeccion"
+import TemaTestsShell from "@/components/temario/TemaTestsShell"
 import { SITE_URL } from "@/lib/site"
-
-const ACCENT = "#10B981"
 
 export const metadata: Metadata = {
     title: "Test Ley 39/2015 — Procedimiento Administrativo Común",
@@ -43,6 +37,15 @@ const TESTS: TemaTest[] = [
     { id: "c07", tema: "Admin. electrónica", titulo: "Administración electrónica: sede, identificación y firma, expediente y archivo electrónico", preguntas: 30 },
 ]
 
+const ESTRUCTURA = [
+    { titulo: "Título Preliminar", detalle: "Objeto y ámbito de aplicación de la Ley del Procedimiento Administrativo Común (LPACAP)." },
+    { titulo: "Título I — Interesados", detalle: "Capacidad de obrar, concepto de interesado, representación e identificación ante la Administración." },
+    { titulo: "Título II — Actividad de las Administraciones", detalle: "Normas generales de actuación, términos y plazos, y notificaciones." },
+    { titulo: "Título III — Actos administrativos", detalle: "Requisitos, eficacia, notificación, nulidad, anulabilidad, conversión y convalidación." },
+    { titulo: "Título IV — Procedimiento administrativo común", detalle: "Fases del procedimiento: iniciación, ordenación, instrucción y finalización. Silencio administrativo." },
+    { titulo: "Títulos V a VII — Revisión y responsabilidad", detalle: "Revisión de oficio, recursos administrativos (alzada y reposición), iniciativa legislativa y potestad reglamentaria." },
+]
+
 const PUNTOS = [
     { t: "Interesados y derechos", d: "Capacidad de obrar, representación y derechos en las relaciones con la Administración." },
     { t: "Acto y validez", d: "Requisitos, eficacia, notificación, nulidad, anulabilidad y convalidación." },
@@ -69,95 +72,69 @@ const FAQS: Faq[] = [
     },
 ]
 
+const JSON_LD = [
+    {
+        "@context": "https://schema.org",
+        "@type": "LearningResource",
+        name: "Tests de la Ley 39/2015 — OPE Gobierno Vasco 2026",
+        educationalLevel: "Oposiciones",
+        about: "Ley 39/2015 del Procedimiento Administrativo Común",
+        provider: { "@type": "Organization", name: "Gainditu" },
+        url: `${SITE_URL}/ley-39-2015`,
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
+            { "@type": "ListItem", position: 2, name: "Ley 39/2015", item: `${SITE_URL}/ley-39-2015` },
+        ],
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: FAQS.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+    },
+]
+
 export default function Ley39Page() {
     return (
-        <main className="flex flex-1 flex-col">
-            <LeccionHero
-                eyebrow="Temario oficial · OPE 2026"
-                title="Ley 39/2015"
-                subtitle="El Procedimiento Administrativo Común: el tema estrella de casi toda oposición. A base de tests, no de empollar el BOE."
-                accent={ACCENT}
-                stats={[
-                    { n: "370", label: "preguntas" },
-                    { n: "9", label: "temas" },
-                    { n: "2015", label: "en vigor" },
-                    { n: "LPACAP", label: "ley" },
-                ]}
-            />
-
-            <PuntosExamen puntos={PUNTOS} accent={ACCENT} />
-
-            <section id="tests" className="scroll-mt-20 px-5 py-8">
-                <div className="mx-auto max-w-4xl">
-                    <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">
-                        Tests de la Ley 39/2015
-                    </h2>
-                    <TestsLead
-                        prefix="Del acto administrativo al silencio y los recursos, tema a tema."
-                        guestTail="para ver tu mejor nota en cada test."
-                        loggedTail="Tu mejor nota aparece en cada test."
-                    />
-                    <TemaTests tests={TESTS} accent={ACCENT} />
-                </div>
-            </section>
-
-            <FaqLeccion faqs={FAQS} accent={ACCENT} />
-
-            <LeccionCTA
-                accent={ACCENT}
-                href="/payment"
-                titulo="Desbloquea todo el temario"
-                texto="Hazte Premium y accede a exámenes oficiales, simulacros con penalización real del examen y estadísticas avanzadas para todas las escalas."
-                cta="Ver acceso Premium →"
-            />
-
-            <div className="mx-auto mb-12 max-w-4xl px-5">
-                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
-                    <Link href="/constitucion" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
-                        → La Constitución Española
-                    </Link>
-                    <Link href="/" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
-                        → Todos los tests por escala
-                    </Link>
-                    <Link href="/convocatorias" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
-                        → Convocatorias de Euskadi
-                    </Link>
-                </div>
-            </div>
-
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify([
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "LearningResource",
-                            name: "Tests de la Ley 39/2015 — OPE Gobierno Vasco 2026",
-                            educationalLevel: "Oposiciones",
-                            about: "Ley 39/2015 del Procedimiento Administrativo Común",
-                            provider: { "@type": "Organization", name: "Gainditu" },
-                            url: `${SITE_URL}/ley-39-2015`,
-                        },
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "BreadcrumbList",
-                            itemListElement: [
-                                { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
-                                { "@type": "ListItem", position: 2, name: "Ley 39/2015", item: `${SITE_URL}/ley-39-2015` },
-                            ],
-                        },
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "FAQPage",
-                            mainEntity: FAQS.map((f) => ({
-                                "@type": "Question",
-                                name: f.q,
-                                acceptedAnswer: { "@type": "Answer", text: f.a },
-                            })),
-                        },
-                    ]),
-                }}
-            />
-        </main>
+        <TemaTestsShell
+            eyebrow="Temario oficial · OPE 2026"
+            title="Ley 39/2015"
+            subtitle="El Procedimiento Administrativo Común: el tema estrella de casi toda oposición. A base de tests, no de empollar el BOE."
+            ley="Ley 39/2015, de 1 de octubre, del Procedimiento Administrativo Común de las Administraciones Públicas"
+            stats={[
+                { n: "370", label: "preguntas" },
+                { n: "9", label: "temas" },
+                { n: "2015", label: "en vigor" },
+                { n: "LPACAP", label: "ley" },
+            ]}
+            enOposiciones="Es un tema transversal del bloque común: entra en todas las escalas del Gobierno Vasco (Personal de Apoyo, Administrativos, Técnicos de Gestión y Superiores) y también en Diputaciones Forales, ayuntamientos y Osakidetza."
+            estructura={ESTRUCTURA}
+            puntos={PUNTOS}
+            testsTitulo="Tests de la Ley 39/2015"
+            testsLead={{
+                prefix: "Del acto administrativo al silencio y los recursos, tema a tema.",
+                guestTail: "para ver tu mejor nota en cada test.",
+                loggedTail: "Tu mejor nota aparece en cada test.",
+            }}
+            tests={TESTS}
+            faqs={FAQS}
+            relacionadas={[
+                { label: "La Constitución Española", href: "/constitucion" },
+                { label: "Todos los tests por escala", href: "/" },
+                { label: "Convocatorias de Euskadi", href: "/convocatorias" },
+            ]}
+            fuenteOficial={{
+                label: "Texto consolidado (BOE)",
+                href: "https://www.boe.es/buscar/act.php?id=BOE-A-2015-10565",
+            }}
+            jsonLd={JSON_LD}
+        />
     )
 }
