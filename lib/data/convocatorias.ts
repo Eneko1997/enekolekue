@@ -20,6 +20,8 @@ export interface FechaClave {
     fecha: string | null
     /** Fecha ISO (YYYY-MM-DD) si es un día concreto, para JSON-LD Event. */
     iso?: string | null
+    /** Fin del rango en ISO (YYYY-MM-DD), para el endDate del Event. */
+    isoFin?: string | null
     nota?: string
 }
 
@@ -218,6 +220,7 @@ export const CONVOCATORIAS: Convocatoria[] = [
                 etiqueta: "Exámenes primeras categorías",
                 fecha: "19–21 de junio de 2026",
                 iso: "2026-06-19",
+                isoFin: "2026-06-21",
                 nota: "Realizados (BEC, Barakaldo).",
             },
             {

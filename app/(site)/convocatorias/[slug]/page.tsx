@@ -86,7 +86,15 @@ export default async function ConvocatoriaFicha({
     const org = getOrganismo(c.organismo)
     const estado = ESTADOS[c.estado]
     const faqs = faqsDe(c)
-    const examen = c.fechasClave.find((f) => /examen/i.test(f.etiqueta) && f.iso)
+    // Todas las fechas de examen/prueba con día concreto → un Event cada una.
+    // Normalizamos tildes para que "Exámenes" también case con /examen/.
+    const eventos = c.fechasClave.filter((f) => {
+        if (!f.iso) return false
+        const norm = f.etiqueta
+            .normalize("NFD")
+            .replace(/[̀-ͯ]/g, "")
+        return /examen|prueba|oposici/i.test(norm)
+    })
 
     return (
         <main className="flex flex-1 flex-col">
@@ -294,30 +302,27 @@ export default async function ConvocatoriaFicha({
                                 acceptedAnswer: { "@type": "Answer", text: f.a },
                             })),
                         },
-                        ...(examen?.iso
-                            ? [
-                                  {
-                                      "@context": "https://schema.org",
-                                      "@type": "Event",
-                                      name: `Examen — ${c.nombre}`,
-                                      startDate: examen.iso,
-                                      eventAttendanceMode:
-                                          "https://schema.org/OfflineEventAttendanceMode",
-                                      eventStatus: "https://schema.org/EventScheduled",
-                                      location: {
-                                          "@type": "Place",
-                                          name: examen.nota?.includes("BEC")
-                                              ? "Bilbao Exhibition Centre (BEC), Barakaldo"
-                                              : "País Vasco",
-                                      },
-                                      organizer: {
-                                          "@type": "Organization",
-                                          name: org?.nombre ?? "Administración vasca",
-                                      },
-                                      url: `${SITE_URL}/convocatorias/${c.slug}`,
-                                  },
-                              ]
-                            : []),
+                        ...eventos.map((ev) => ({
+                            "@context": "https://schema.org",
+                            "@type": "Event",
+                            name: `${ev.etiqueta} — ${c.nombre}`,
+                            startDate: ev.iso,
+                            ...(ev.isoFin ? { endDate: ev.isoFin } : {}),
+                            eventAttendanceMode:
+                                "https://schema.org/OfflineEventAttendanceMode",
+                            eventStatus: "https://schema.org/EventScheduled",
+                            location: {
+                                "@type": "Place",
+                                name: ev.nota?.includes("BEC")
+                                    ? "Bilbao Exhibition Centre (BEC), Barakaldo"
+                                    : "País Vasco",
+                            },
+                            organizer: {
+                                "@type": "Organization",
+                                name: org?.nombre ?? "Administración vasca",
+                            },
+                            url: `${SITE_URL}/convocatorias/${c.slug}`,
+                        })),
                     ]),
                 }}
             />
