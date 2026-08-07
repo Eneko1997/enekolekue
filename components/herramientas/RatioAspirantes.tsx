@@ -12,14 +12,18 @@ function interpreta(ratio: number): { texto: string; color: string } {
     return { texto: "Altamente competida", color: "#EF4444" }
 }
 
+const PRESENTA = [40, 50, 60, 70, 100]
+
 export default function RatioAspirantes() {
     const [aspirantes, setAspirantes] = useState(3000)
     const [plazas, setPlazas] = useState(100)
+    const [presenta, setPresenta] = useState(60)
 
-    const { ratio, info } = useMemo(() => {
+    const { ratio, efectivo, info } = useMemo(() => {
         const ratio = plazas > 0 ? aspirantes / plazas : 0
-        return { ratio, info: interpreta(ratio) }
-    }, [aspirantes, plazas])
+        const efectivo = ratio * (presenta / 100)
+        return { ratio, efectivo, info: interpreta(efectivo) }
+    }, [aspirantes, plazas, presenta])
 
     return (
         <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6">
@@ -48,11 +52,38 @@ export default function RatioAspirantes() {
                 </label>
             </div>
 
+            <div className="mt-4">
+                <div className="mb-2 text-[13px] font-medium text-zinc-600 dark:text-zinc-400">
+                    ¿Qué % de admitidos suele presentarse?
+                </div>
+                <div className="flex flex-wrap gap-2">
+                    {PRESENTA.map((p) => (
+                        <button
+                            key={p}
+                            type="button"
+                            onClick={() => setPresenta(p)}
+                            className="rounded-full border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 text-[13px] font-semibold text-zinc-600 dark:text-zinc-300 transition-colors hover:border-zinc-300"
+                            style={presenta === p ? { background: ACCENT, borderColor: ACCENT, color: "#fff" } : undefined}
+                        >
+                            {p === 100 ? "Todos" : `${p} %`}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
             <div className="mt-5 flex flex-wrap items-center justify-between gap-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 px-5 py-4">
-                <div>
-                    <div className="text-[12px] uppercase tracking-wide text-zinc-400">Aspirantes por plaza</div>
-                    <div className="text-3xl font-extrabold tracking-tight" style={{ color: ACCENT }}>
-                        {ratio > 0 ? ratio.toFixed(1) : "—"}
+                <div className="flex gap-6">
+                    <div>
+                        <div className="text-[12px] uppercase tracking-wide text-zinc-400">Sobre admitidos</div>
+                        <div className="text-2xl font-bold tracking-tight text-zinc-500 dark:text-zinc-400">
+                            {ratio > 0 ? ratio.toFixed(1) : "—"}
+                        </div>
+                    </div>
+                    <div>
+                        <div className="text-[12px] uppercase tracking-wide text-zinc-400">Ratio efectivo</div>
+                        <div className="text-3xl font-extrabold tracking-tight" style={{ color: ACCENT }}>
+                            {efectivo > 0 ? efectivo.toFixed(1) : "—"}
+                        </div>
                     </div>
                 </div>
                 <span
@@ -64,9 +95,11 @@ export default function RatioAspirantes() {
             </div>
 
             <p className="mt-4 text-[12px] text-zinc-500 dark:text-zinc-400">
-                Método: <em>ratio = aspirantes admitidos ÷ plazas convocadas</em>. Es orientativo: no
-                todos los admitidos se presentan al examen y el ratio efectivo suele ser menor.
-                Como guía: &lt;10 asequible, 10-30 competida, &gt;30 muy competida.
+                Método: <em>ratio = aspirantes admitidos ÷ plazas</em>, y{" "}
+                <em>ratio efectivo = ratio × (% que se presenta)</em>. Como en muchas oposiciones se
+                presenta solo el 50-60 % de los admitidos, el ratio efectivo (real de competencia)
+                suele ser bastante menor. Guía sobre el efectivo: &lt;10 asequible, 10-30 competida,
+                &gt;30 muy competida.
             </p>
         </div>
     )

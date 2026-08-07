@@ -42,13 +42,16 @@ export default function CalculadoraNotaCorte() {
     const [fallos, setFallos] = useState(10)
     const [pen, setPen] = useState(3)
     const [escala, setEscala] = useState(10)
+    const [corte, setCorte] = useState(5)
 
-    const { blancos, netos, nota } = useMemo(() => {
+    const { blancos, netos, nota, apto, margen } = useMemo(() => {
         const blancos = Math.max(0, total - aciertos - fallos)
         const netos = pen > 0 ? aciertos - fallos / pen : aciertos
         const nota = total > 0 ? Math.max(0, (netos / total) * escala) : 0
-        return { blancos, netos, nota }
-    }, [total, aciertos, fallos, pen, escala])
+        const apto = nota >= corte
+        const margen = nota - corte
+        return { blancos, netos, nota, apto, margen }
+    }, [total, aciertos, fallos, pen, escala, corte])
 
     const excede = aciertos + fallos > total
 
@@ -76,13 +79,26 @@ export default function CalculadoraNotaCorte() {
                     <span className="text-[13px] font-medium text-zinc-600 dark:text-zinc-400">Escala</span>
                     <select
                         value={escala}
-                        onChange={(e) => setEscala(Number(e.target.value))}
+                        onChange={(e) => {
+                            const next = Number(e.target.value)
+                            setEscala(next)
+                            // Ajusta el corte al 50 % de la nueva escala.
+                            setCorte(next / 2)
+                        }}
                         className="w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2.5 text-[16px] text-zinc-900 dark:text-zinc-100 outline-none focus:border-emerald-500"
                     >
                         <option value={10}>Sobre 10</option>
                         <option value={100}>Sobre 100</option>
                     </select>
                 </label>
+            </div>
+
+            <div className="mt-3 max-w-[220px]">
+                <Campo
+                    label="Nota de corte / mínimo para aprobar"
+                    value={corte}
+                    onChange={setCorte}
+                />
             </div>
 
             {excede && (
@@ -96,10 +112,24 @@ export default function CalculadoraNotaCorte() {
                     En blanco: <strong className="text-zinc-700 dark:text-zinc-200">{blancos}</strong> ·
                     Netos: <strong className="text-zinc-700 dark:text-zinc-200">{netos.toFixed(2)}</strong>
                 </div>
-                <div className="text-right">
-                    <div className="text-[12px] uppercase tracking-wide text-zinc-400">Tu nota</div>
-                    <div className="text-3xl font-extrabold tracking-tight" style={{ color: ACCENT }}>
-                        {nota.toFixed(2)}
+                <div className="flex items-center gap-4">
+                    <span
+                        className="rounded-full px-3 py-1.5 text-[13px] font-bold"
+                        style={{
+                            color: apto ? "#047857" : "#b91c1c",
+                            background: apto ? "#10B98118" : "#ef444418",
+                            border: `1px solid ${apto ? "#10B98130" : "#ef444430"}`,
+                        }}
+                    >
+                        {apto
+                            ? `Apruebas · +${margen.toFixed(2)}`
+                            : `No llegas · ${margen.toFixed(2)}`}
+                    </span>
+                    <div className="text-right">
+                        <div className="text-[12px] uppercase tracking-wide text-zinc-400">Tu nota</div>
+                        <div className="text-3xl font-extrabold tracking-tight" style={{ color: ACCENT }}>
+                            {nota.toFixed(2)}
+                        </div>
                     </div>
                 </div>
             </div>
