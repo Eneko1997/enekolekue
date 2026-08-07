@@ -5,6 +5,7 @@ import HeroSplit from "@/components/home/HeroSplit"
 import Reveal from "@/components/home/Reveal"
 import PremiumSection from "@/components/home/PremiumSection"
 import FinalCTA from "@/components/home/FinalCTA"
+import BackToTop from "@/components/site/BackToTop"
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site"
 import { ORGANISMOS_NOMBRES } from "@/lib/data/organismos"
 
@@ -307,6 +308,8 @@ export default function HomePage() {
                 </div>
                 <div className="mx-auto mt-10 max-w-5xl border-t border-zinc-100 dark:border-zinc-800/70 pt-6 text-[12px] text-zinc-400 dark:text-zinc-500">© {new Date().getFullYear()} {SITE_NAME}. No oficial; sin relación con las administraciones convocantes.</div>
             </footer>
+
+            <BackToTop />
 
             <script
                 type="application/ld+json"
