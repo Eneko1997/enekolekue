@@ -1,5 +1,6 @@
 import LightNavbar from "@/components/site/LightNavbar"
 import SiteFooter from "@/components/site/SiteFooter"
+import BackToTop from "@/components/site/BackToTop"
 
 // Layout de las páginas públicas / de contenido (ley, constitución, fechas,
 // oposiciones, legales) — tema claro. Las páginas de la app (dashboard, test,
@@ -14,6 +15,7 @@ export default function SiteLayout({
             <LightNavbar />
             <div className="flex-1">{children}</div>
             <SiteFooter />
+            <BackToTop />
         </div>
     )
 }
