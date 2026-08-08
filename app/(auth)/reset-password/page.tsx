@@ -38,7 +38,7 @@ export default function ResetPasswordPage() {
             </div>
 
             {done ? (
-                <p className="text-center text-sm" style={{ color: "#22C55E" }}>
+                <p className="text-center text-sm" style={{ color: "#10B981" }}>
                     Contraseña actualizada. Redirigiendo…
                 </p>
             ) : (

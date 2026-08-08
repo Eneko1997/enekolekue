@@ -48,7 +48,7 @@ export function getTheme(dark: boolean): Theme {
         textMuted: dark ? "#8B8D98" : "#666870",
         overlay: "rgba(0,0,0,0.6)",
         modalBg: dark ? "#141520" : "#FFFFFF",
-        success: "#22C55E",
+        success: "#10B981",
         navBg: "rgba(10,10,12,0.96)",
         navText: "#FFFFFF",
         navTextMuted: "rgba(255,255,255,0.62)",

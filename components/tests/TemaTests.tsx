@@ -14,7 +14,7 @@ export interface TemaTest {
 }
 
 function Badge({ pct, accent }: { pct: number; accent: string }) {
-    const color = pct >= 70 ? "#22C55E" : accent
+    const color = pct >= 70 ? "#10B981" : accent
     return (
         <span
             style={{
@@ -107,7 +107,7 @@ export default function TemaTests({
                                     width: `${prog.mejor_porcentaje}%`,
                                     background:
                                         prog.mejor_porcentaje >= 70
-                                            ? "#22C55E"
+                                            ? "#10B981"
                                             : accent,
                                 }}
                             />

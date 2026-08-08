@@ -340,7 +340,7 @@ function getC(dark: boolean) {
               accent: "#10B981",
               text: "#FFFFFF",
               muted: "#9A9CA8",
-              success: "#22C55E",
+              success: "#10B981",
               error: "#F87171",
               warning: "#FBBF24",
           }
@@ -3411,7 +3411,7 @@ function RegisterPopup({
                 {success && (
                     <p
                         style={{
-                            color: "#22C55E",
+                            color: "#10B981",
                             fontSize: "12px",
                             margin: "8px 0 0",
                             textAlign: "center",

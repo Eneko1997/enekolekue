@@ -196,7 +196,7 @@ function getTheme(dark: boolean) {
         textMuted: dark ? "#8B8D98" : "#71717A",
         overlay: "rgba(0,0,0,0.6)",
         modalBg: dark ? "#141520" : "#FFFFFF",
-        success: "#22C55E",
+        success: "#10B981",
         // Navbar: negro neutro fijo, independiente del modo claro/oscuro
         navBg: dark ? "rgba(10,10,12,0.96)" : "rgba(255,255,255,0.9)",
         navText: dark ? "#FFFFFF" : "#09090B",
@@ -588,7 +588,7 @@ function AuthModal({
                 {success && (
                     <p
                         style={{
-                            color: "#22C55E",
+                            color: "#10B981",
                             fontSize: "12px",
                             margin: "10px 0 0",
                             textAlign: "center",
@@ -1481,7 +1481,7 @@ function SeccionPremium({
 
 // ─── PROGRESS BADGE ───────────────────────────────────────────────────────────
 function ProgressBadge({ pct, accent }: { pct: number; accent: string }) {
-    const color = pct >= 70 ? "#22C55E" : accent
+    const color = pct >= 70 ? "#10B981" : accent
     return (
         <span
             style={{
@@ -2587,7 +2587,7 @@ export default function DashboardOPE(props: {
                                         style={{
                                             fontSize: "20px",
                                             fontWeight: 800,
-                                            color: "#22C55E",
+                                            color: "#10B981",
                                         }}
                                     >
                                         {avgPct}%
@@ -3090,7 +3090,7 @@ export default function DashboardOPE(props: {
                                                                 background:
                                                                     prog.mejor_porcentaje >=
                                                                     70
-                                                                        ? "#22C55E"
+                                                                        ? "#10B981"
                                                                         : accent,
                                                                 transition:
                                                                     "width 0.4s, background 0.3s",

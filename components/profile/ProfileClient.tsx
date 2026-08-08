@@ -99,7 +99,7 @@ function getTheme(dark: boolean) {
         borderStrong: dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.20)",
         textMain: dark ? "#FFFFFF" : "#09090B",
         textMuted: dark ? "#8B8D98" : "#71717A",
-        success: "#22C55E",
+        success: "#10B981",
         warning: "#F59E0B",
         error: "#EF4444",
         glass: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.03)",

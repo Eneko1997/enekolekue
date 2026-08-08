@@ -164,7 +164,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
                     <p className="text-[13px] text-red-500">{error}</p>
                 )}
                 {info && (
-                    <p className="text-[13px]" style={{ color: "#22C55E" }}>
+                    <p className="text-[13px]" style={{ color: "#10B981" }}>
                         {info}
                     </p>
                 )}
