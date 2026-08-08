@@ -41,7 +41,7 @@ const ESCALAS: Record<string, EscalaData> = {
             "test personal de apoyo",
             "OPE personal de apoyo Eusko Jaurlaritza",
         ],
-        intro: "La Agrupación Profesional de Personal de Apoyo (grupo E) es la puerta de entrada al empleo público vasco. Practica el temario oficial de la convocatoria tema a tema.",
+        intro: "La Agrupación Profesional de Personal de Apoyo (grupo E) es la puerta de entrada al empleo público vasco. Practica el temario oficial de la convocatoria tema a tema, a tu ritmo y sin agobios aunque hace años que no estudias.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización del Estado y de Euskadi, empleo público, protección de datos y prevención de riesgos." },
             { t: "Atención a la ciudadanía", d: "Derechos de la ciudadanía, comunicación escrita y oral, y atención al público." },
@@ -70,7 +70,7 @@ const ESCALAS: Record<string, EscalaData> = {
             "test administrativo",
             "OPE administrativo Eusko Jaurlaritza",
         ],
-        intro: "La escala Administrativa (subgrupo C1) amplía las funciones del auxiliar con más procedimiento y gestión. Practica con el temario oficial de la convocatoria.",
+        intro: "La escala Administrativa (subgrupo C1) amplía las funciones del auxiliar con más procedimiento y gestión. Practica con el temario oficial de la convocatoria, tema a tema y sabiendo siempre por dónde vas.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización de Euskadi, empleo público, protección de datos y prevención de riesgos." },
             { t: "Procedimiento administrativo", d: "Ley 39/2015: acto administrativo, fases, recursos y responsabilidad." },
@@ -98,7 +98,7 @@ const ESCALAS: Record<string, EscalaData> = {
             "gestión administrativa Euskadi 2026",
             "test técnico gestión",
         ],
-        intro: "La escala de Gestión Administrativa (grupo B) requiere un perfil técnico-administrativo. Practica el temario oficial de la convocatoria por temas.",
+        intro: "La escala de Gestión Administrativa (grupo B) requiere un perfil técnico-administrativo. Practica el temario oficial de la convocatoria por temas, con todo ordenado para no perderte aunque retomes el estudio ahora.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización de Euskadi, empleo público y protección de datos." },
             { t: "Procedimiento administrativo", d: "Ley 39/2015 y régimen jurídico del sector público." },
@@ -126,7 +126,7 @@ const ESCALAS: Record<string, EscalaData> = {
             "escala superior administración Euskadi",
             "test técnico superior",
         ],
-        intro: "La Escala Superior de Administración (grupo A) es el nivel más alto del cuerpo general. Practica el temario oficial de la convocatoria a base de tests.",
+        intro: "La Escala Superior de Administración (grupo A) es el nivel más alto del cuerpo general. Practica el temario oficial de la convocatoria a base de tests, paso a paso y con tu progreso a la vista.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización de Euskadi, empleo público y protección de datos." },
             { t: "Procedimiento avanzado", d: "Ley 39/2015 en profundidad: actos, fases, recursos y responsabilidad patrimonial." },

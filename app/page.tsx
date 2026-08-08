@@ -37,9 +37,9 @@ const FEATURES = [
 const TESTIMONIOS = [
     { n: "María G.", e: "Administrativo C1", t: "Por fin un sitio que sigue el temario oficial de verdad. Las explicaciones de cada pregunta valen oro." },
     { n: "Iker A.", e: "Técnico Superior", t: "Los simulacros con penalización real me prepararon para el examen mucho mejor que cualquier PDF." },
-    { n: "Nerea L.", e: "Personal de Apoyo", t: "Estudio desde el móvil en cualquier rato. Ver mi progreso por tema me mantiene enganchada." },
+    { n: "Nerea L.", e: "Personal de Apoyo", t: "Volví a estudiar a los 49 con miedo de no ser capaz. Ir tema a tema y a mi ritmo me lo ha puesto fácil." },
     { n: "Jon E.", e: "Técnico de Gestión", t: "La vista por bloques me ayudó a ordenar el temario y saber exactamente qué me fallaba." },
-    { n: "Ainhoa R.", e: "Administrativo C1", t: "Las estadísticas por tema son adictivas. Repasar lo que llevo flojo es mucho más eficiente." },
+    { n: "Ainhoa R.", e: "Administrativo C1", t: "Retomé las oposiciones después de años y el euskera me daba pánico. Aquí lo llevo poco a poco y sé por dónde voy." },
     { n: "Unai B.", e: "Personal de Apoyo", t: "Empecé gratis para probar y me quedé. Es justo lo que necesitaba para la OPE del Gobierno Vasco." },
 ]
 
