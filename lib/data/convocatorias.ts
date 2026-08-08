@@ -74,7 +74,7 @@ export const ESTADOS: Record<
     finalizada: { label: "Finalizada", color: "#9CA3AF", orden: 7 },
 }
 
-const HOY = "2026-08-01" // última revisión general de las fichas
+const HOY = "2026-08-08" // última revisión general de las fichas
 
 export const CONVOCATORIAS: Convocatoria[] = [
     // ───────────────────────── Gobierno Vasco ─────────────────────────
