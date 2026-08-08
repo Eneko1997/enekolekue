@@ -126,7 +126,8 @@ export default function HeroSplit() {
                         className="mt-6 max-w-md text-base leading-relaxed text-zinc-500 sm:text-lg"
                     >
                         Tests, simulacros y seguimiento de tu progreso para
-                        preparar tu oposición en Euskadi, todo en un mismo sitio.
+                        preparar tu oposición en Euskadi. Empieza por donde
+                        quieras, a tu ritmo, aunque hace años que no estudias.
                     </motion.p>
 
                     <motion.div
