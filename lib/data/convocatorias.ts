@@ -481,7 +481,7 @@ export const CONVOCATORIAS: Convocatoria[] = [
     },
     {
         slug: "ope-bilbao-policia-local-2026",
-        organismo: "administracion-local",
+        organismo: "policia-local",
         nombre: "Policía Local · Ayuntamiento de Bilbao",
         cuerpoOCategoria: ["Agente de Policía Municipal"],
         grupo: "C1",
@@ -504,7 +504,7 @@ export const CONVOCATORIAS: Convocatoria[] = [
     },
     {
         slug: "ope-irun-policia-local-2026",
-        organismo: "administracion-local",
+        organismo: "policia-local",
         nombre: "Policía Local · Ayuntamiento de Irun",
         cuerpoOCategoria: ["Agente de Policía Local"],
         grupo: "C1",

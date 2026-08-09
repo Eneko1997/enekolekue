@@ -14,7 +14,7 @@ type EuskId = "ninguno" | "b1" | "b2" | "c1"
 const AREA_ORGANISMOS: Record<Area, string[]> = {
     administracion: ["gobierno-vasco", "diputaciones-forales", "administracion-local"],
     sanidad: ["osakidetza"],
-    seguridad: ["ertzaintza", "bomberos"],
+    seguridad: ["ertzaintza", "bomberos", "policia-local"],
     educacion: ["educacion"],
 }
 
@@ -79,7 +79,7 @@ const EUSKERA_INFO: Record<EuskId, string> = {
 const AREAS: { id: Area; label: string }[] = [
     { id: "administracion", label: "Administración" },
     { id: "sanidad", label: "Sanidad (Osakidetza)" },
-    { id: "seguridad", label: "Seguridad (Ertzaintza/Bomberos)" },
+    { id: "seguridad", label: "Seguridad (Ertzaintza/Policía Local/Bomberos)" },
     { id: "educacion", label: "Educación (docentes)" },
 ]
 

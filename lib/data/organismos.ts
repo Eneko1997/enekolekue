@@ -74,7 +74,15 @@ export const ORGANISMOS: Organismo[] = [
         nombre: "Ayuntamientos",
         corto: "Ayuntamientos",
         descripcion: "Administración local del País Vasco.",
-        cuerpos: ["Administrativo/a", "Auxiliar administrativo/a", "Policía local"],
+        cuerpos: ["Administrativo/a", "Auxiliar administrativo/a", "Personal de servicios"],
+        disponibleTests: false,
+    },
+    {
+        slug: "policia-local",
+        nombre: "Policía Local (Euskadi)",
+        corto: "Policía Local",
+        descripcion: "Agentes de Policía Local de los municipios vascos.",
+        cuerpos: ["Agente de Policía Local"],
         disponibleTests: false,
     },
     {
