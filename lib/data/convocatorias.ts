@@ -91,22 +91,14 @@ export const CONVOCATORIAS: Convocatoria[] = [
         ],
         grupo: null,
         estado: "oep-aprobada",
-        plazas: 1739,
-        plazasDetalle: [
-            { cuerpo: "OPE 2026 — plazas iniciales (ampliables)", plazas: 1739 },
-        ],
+        plazas: null,
+        plazasDetalle: [],
         fechasClave: [
             {
-                etiqueta: "Inicio de las convocatorias",
-                fecha: "4 de mayo de 2026",
-                iso: "2026-05-04",
-                nota: "Nuevo modelo de OPE con evaluación por competencias. Las convocatorias por escala se publican de forma escalonada en el BOPV.",
-            },
-            {
-                etiqueta: "Distribución por escala",
-                fecha: "Pendiente de publicación oficial",
+                etiqueta: "Primeras convocatorias",
+                fecha: "Previstas desde finales de agosto de 2026",
                 iso: null,
-                nota: "15 categorías laborales y 44 escalas de personal funcionario; el reparto concreto de plazas se dará a conocer en cada convocatoria.",
+                nota: "Según fuentes no oficiales; pendiente de publicación en el BOPV.",
             },
         ],
         perfilLinguistico: "Variable según plaza (buena parte PL1; el euskera puntúa).",
@@ -120,7 +112,7 @@ export const CONVOCATORIAS: Convocatoria[] = [
         boletin: "BOPV (según convocatoria)",
         ultimaActualizacion: HOY,
         resumen:
-            "Oferta de empleo de la Administración General del Gobierno Vasco, gestionada por el IVAP. La OPE 2026 arrancó el 4 de mayo de 2026 con 1.739 plazas iniciales (ampliables), repartidas en 15 categorías laborales y 44 escalas de personal funcionario, bajo un nuevo modelo con evaluación por competencias. Las convocatorias por escala se publican de forma escalonada en el BOPV; el reparto concreto de plazas se conocerá en cada una.",
+            "Oferta de empleo de la Administración General del Gobierno Vasco, gestionada por el IVAP. Las convocatorias por cuerpo se publican de forma escalonada en el BOPV. El número de plazas y las fechas están pendientes de confirmación oficial.",
         testsRelacionados: [
             { etiqueta: "Personal de Apoyo", url: "/oposiciones/personal-de-apoyo" },
             { etiqueta: "Administrativo", url: "/oposiciones/administrativo" },
@@ -329,14 +321,27 @@ export const CONVOCATORIAS: Convocatoria[] = [
         estado: "bases-publicadas",
         plazas: null,
         plazasDetalle: [
+            { cuerpo: "Getxo — Administrativo/a (C1)", plazas: 34 },
             { cuerpo: "Bilbao — Administrativo/a (turno libre)", plazas: 76 },
         ],
         fechasClave: [
+            {
+                etiqueta: "Getxo — 34 administrativos/as",
+                fecha: "Solicitudes hasta el 14 de agosto de 2026",
+                iso: "2026-08-14",
+                nota: "29 de turno libre y 5 de reserva por discapacidad (subgrupo C1). Perfil lingüístico PL2 preceptivo en la mayoría. Bases en el BOB.",
+            },
             {
                 etiqueta: "Bilbao — 76 administrativos/as",
                 fecha: "Convocatoria publicada en el BOE (junio de 2025)",
                 iso: null,
                 nota: "Sistema de concurso-oposición.",
+            },
+            {
+                etiqueta: "Bilbao — OEP 2026",
+                fecha: "Aprobada en 2026",
+                iso: null,
+                nota: "Incluye 41 plazas de Policía Local y 32 de Administrativo/a, entre otras.",
             },
             {
                 etiqueta: "Otros municipios",
@@ -347,6 +352,7 @@ export const CONVOCATORIAS: Convocatoria[] = [
         ],
         perfilLinguistico: "Perfil de euskera según plaza y municipio.",
         enlacesOficiales: [
+            { etiqueta: "Ayuntamiento de Getxo", url: "https://www.getxo.eus/" },
             { etiqueta: "Ayuntamiento de Bilbao", url: "https://www.bilbao.eus/" },
             { etiqueta: "Ayuntamiento de Vitoria-Gasteiz", url: "https://www.vitoria-gasteiz.org/" },
             { etiqueta: "Ayuntamiento de Donostia / San Sebastián", url: "https://www.donostia.eus/" },
@@ -358,7 +364,7 @@ export const CONVOCATORIAS: Convocatoria[] = [
         boletin: "BOPV y boletines territoriales (BOB, BOG, BOTHA)",
         ultimaActualizacion: HOY,
         resumen:
-            "Los ayuntamientos vascos convocan sus propias oposiciones. El Ayuntamiento de Bilbao convocó 76 plazas de Administrativo/a (BOE de junio de 2025) y otros municipios como Vitoria-Gasteiz y Donostia publican sus OPE de forma periódica. Consulta cada ayuntamiento para las convocatorias concretas.",
+            "Los ayuntamientos vascos convocan sus propias oposiciones. Getxo tiene abierta una convocatoria de 34 plazas de Administrativo/a (solicitudes hasta el 14 de agosto de 2026); Bilbao ofertó 76 de Administrativo/a (BOE de junio de 2025) y su OEP 2026 suma 41 de Policía Local y 32 de Administrativo/a. Otros municipios como Vitoria-Gasteiz y Donostia publican sus OPE de forma periódica.",
         testsRelacionados: [
             { etiqueta: "Ley 39/2015", url: "/ley-39-2015" },
             { etiqueta: "Constitución", url: "/constitucion" },
