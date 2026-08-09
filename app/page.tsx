@@ -5,6 +5,7 @@ import HeroSplit from "@/components/home/HeroSplit"
 import Reveal from "@/components/home/Reveal"
 import PremiumSection from "@/components/home/PremiumSection"
 import FinalCTA from "@/components/home/FinalCTA"
+import Testimonios from "@/components/home/Testimonios"
 import BackToTop from "@/components/site/BackToTop"
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site"
 import { ORGANISMOS_NOMBRES } from "@/lib/data/organismos"
@@ -186,27 +187,12 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* ───────────── OPINIONES (carrusel automático) ───────────── */}
+            {/* ───────────── OPINIONES (carrusel manual con flechas) ───────────── */}
             <section className="py-12 sm:py-20">
                 <div className="mx-auto max-w-5xl px-5">
-                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Lo que dicen los opositores</h2></Reveal>
-                    <div className="marquee-group relative mt-10 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]">
-                        <div className="animate-marquee-slow flex w-max gap-4">
-                        {[...TESTIMONIOS, ...TESTIMONIOS].map((t, i) => (
-                            <figure key={i} className="flex w-[300px] shrink-0 flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 sm:w-[360px]">
-                                <div className="mb-3 flex gap-0.5" style={{ color: ACCENT }} aria-hidden>{"★★★★★".split("").map((s, k) => (<span key={k}>{s}</span>))}</div>
-                                <blockquote className="flex-1 text-[14px] leading-relaxed text-zinc-700 dark:text-zinc-300">“{t.t}”</blockquote>
-                                <figcaption className="mt-5 flex items-center gap-3">
-                                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 text-[13px] font-bold text-white">{t.n[0]}</span>
-                                    <span>
-                                        <span className="block text-[13px] font-bold text-zinc-950 dark:text-zinc-50">{t.n}</span>
-                                        <span className="block text-[12px] text-zinc-400 dark:text-zinc-500">{t.e}</span>
-                                    </span>
-                                </figcaption>
-                            </figure>
-                        ))}
-                        </div>
-                    </div>
+                    <Reveal>
+                        <Testimonios items={TESTIMONIOS} />
+                    </Reveal>
                 </div>
             </section>
 
