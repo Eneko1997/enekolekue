@@ -91,14 +91,22 @@ export const CONVOCATORIAS: Convocatoria[] = [
         ],
         grupo: null,
         estado: "oep-aprobada",
-        plazas: null,
-        plazasDetalle: [],
+        plazas: 1739,
+        plazasDetalle: [
+            { cuerpo: "OPE 2026 — plazas iniciales (ampliables)", plazas: 1739 },
+        ],
         fechasClave: [
             {
-                etiqueta: "Primeras convocatorias",
-                fecha: "Previstas desde finales de agosto de 2026",
+                etiqueta: "Inicio de las convocatorias",
+                fecha: "4 de mayo de 2026",
+                iso: "2026-05-04",
+                nota: "Nuevo modelo de OPE con evaluación por competencias. Las convocatorias por escala se publican de forma escalonada en el BOPV.",
+            },
+            {
+                etiqueta: "Distribución por escala",
+                fecha: "Pendiente de publicación oficial",
                 iso: null,
-                nota: "Según fuentes no oficiales; pendiente de publicación en el BOPV.",
+                nota: "15 categorías laborales y 44 escalas de personal funcionario; el reparto concreto de plazas se dará a conocer en cada convocatoria.",
             },
         ],
         perfilLinguistico: "Variable según plaza (buena parte PL1; el euskera puntúa).",
@@ -112,7 +120,7 @@ export const CONVOCATORIAS: Convocatoria[] = [
         boletin: "BOPV (según convocatoria)",
         ultimaActualizacion: HOY,
         resumen:
-            "Oferta de empleo de la Administración General del Gobierno Vasco, gestionada por el IVAP. Las convocatorias por cuerpo se publican de forma escalonada en el BOPV. El número de plazas y las fechas están pendientes de confirmación oficial.",
+            "Oferta de empleo de la Administración General del Gobierno Vasco, gestionada por el IVAP. La OPE 2026 arrancó el 4 de mayo de 2026 con 1.739 plazas iniciales (ampliables), repartidas en 15 categorías laborales y 44 escalas de personal funcionario, bajo un nuevo modelo con evaluación por competencias. Las convocatorias por escala se publican de forma escalonada en el BOPV; el reparto concreto de plazas se conocerá en cada una.",
         testsRelacionados: [
             { etiqueta: "Personal de Apoyo", url: "/oposiciones/personal-de-apoyo" },
             { etiqueta: "Administrativo", url: "/oposiciones/administrativo" },
