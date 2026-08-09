@@ -502,6 +502,29 @@ export const CONVOCATORIAS: Convocatoria[] = [
             "El Ayuntamiento de Bilbao incluye en su OEP 2026 41 plazas de agente de Policía Municipal (turno libre), aprobadas en el BOPV de 19 de mayo de 2026. La convocatoria del proceso selectivo se publicará próximamente.",
         testsRelacionados: [{ etiqueta: "Constitución", url: "/constitucion" }],
     },
+    {
+        slug: "ope-irun-policia-local-2026",
+        organismo: "administracion-local",
+        nombre: "Policía Local · Ayuntamiento de Irun",
+        cuerpoOCategoria: ["Agente de Policía Local"],
+        grupo: "C1",
+        estado: "oep-aprobada",
+        plazas: 9,
+        plazasDetalle: [],
+        fechasClave: [
+            { etiqueta: "OEP 2026", fecha: "BOPV de 30 de enero de 2026", iso: null, nota: "9 plazas de agente de Policía Local. Convocatoria del proceso selectivo pendiente." },
+        ],
+        perfilLinguistico: "Perfil lingüístico según convocatoria.",
+        enlacesOficiales: [
+            { etiqueta: "Ayuntamiento de Irun", url: "https://www.irun.org/" },
+            { etiqueta: "IVAP — OPE de otras administraciones vascas", url: "https://www.ivap.euskadi.eus/oferta-publica-de-empleo-ope-de-otras-administraciones-publicas-vascas/webivap00-a2eusk/es/" },
+        ],
+        boletin: "BOPV / BOG",
+        ultimaActualizacion: HOY,
+        resumen:
+            "El Ayuntamiento de Irun incluye en su OEP 2026 9 plazas de agente de Policía Local, aprobadas en el BOPV de 30 de enero de 2026. La convocatoria del proceso selectivo se publicará próximamente.",
+        testsRelacionados: [{ etiqueta: "Constitución", url: "/constitucion" }],
+    },
 
     // ───────────────────────── Bomberos (una ficha por convocatoria) ─────────────────────────
     {
