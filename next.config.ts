@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
         destination: "/convocatorias",
         permanent: true,
       },
+      {
+        // La ficha única de GV se dividió en una por escala.
+        source: "/convocatorias/ope-gobierno-vasco-2026",
+        destination: "/convocatorias/ope-gobierno-vasco-administrativo-2026",
+        permanent: true,
+      },
     ];
   },
 };

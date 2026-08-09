@@ -121,12 +121,16 @@ export default function ConvocatoriasList({
                             className="group flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-xl hover:shadow-zinc-900/5"
                         >
                             <div className="flex items-start justify-between gap-3">
-                                <EstadoBadge estado={c.estado} />
-                                <span className="text-[11px] text-zinc-400">
-                                    {org?.corto}
+                                <span className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide" style={{ color: ACCENT }}>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
+                                        <path d="M12 21s-7-6.3-7-11a7 7 0 1 1 14 0c0 4.7-7 11-7 11Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                                        <circle cx="12" cy="10" r="2.4" stroke="currentColor" strokeWidth="2" />
+                                    </svg>
+                                    {org?.corto ?? c.organismo}
                                 </span>
+                                <EstadoBadge estado={c.estado} />
                             </div>
-                            <h3 className="mt-3 text-[15px] font-bold leading-snug text-zinc-950 dark:text-zinc-50">
+                            <h3 className="mt-2.5 text-[17px] font-extrabold leading-snug tracking-tight text-zinc-950 dark:text-zinc-50">
                                 {c.nombre}
                             </h3>
                             <p className="mt-1.5 line-clamp-2 text-[13px] text-zinc-500 dark:text-zinc-400">
