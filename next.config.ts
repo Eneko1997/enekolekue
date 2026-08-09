@@ -20,6 +20,23 @@ const nextConfig: NextConfig = {
         destination: "/convocatorias/ope-gobierno-vasco-administrativo-2026",
         permanent: true,
       },
+      // Los hubs de diputaciones/ayuntamientos/bomberos se dividieron en una
+      // ficha por convocatoria; sus slugs antiguos van al listado filtrable.
+      {
+        source: "/convocatorias/ope-diputaciones-forales",
+        destination: "/convocatorias/ope-gipuzkoa-administrativo-2026",
+        permanent: true,
+      },
+      {
+        source: "/convocatorias/ope-ayuntamientos",
+        destination: "/convocatorias/ope-getxo-administrativo-2026",
+        permanent: true,
+      },
+      {
+        source: "/convocatorias/ope-bomberos-euskadi",
+        destination: "/convocatorias/ope-bomberos-gipuzkoa-2026",
+        permanent: true,
+      },
     ];
   },
 };

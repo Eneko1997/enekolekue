@@ -264,7 +264,7 @@ export const NORMATIVAS: Normativa[] = [
         ],
         relacionadas: [
             { label: "Instituciones y Territorios Históricos", href: "/temario/instituciones-comunes-territorios-historicos" },
-            { label: "Convocatorias de Ayuntamientos", href: "/convocatorias/ope-ayuntamientos" },
+            { label: "Convocatorias de Ayuntamientos", href: "/convocatorias" },
         ],
         fuenteOficial: { label: "Texto en el BOE (Ley 2/2016)", href: "https://www.boe.es/buscar/act.php?id=BOE-A-2016-4171" },
     },
