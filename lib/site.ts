@@ -7,7 +7,7 @@ export const SITE_URL =
 export const SITE_NAME = "Gainditu"
 
 export const SITE_DESCRIPTION =
-    "Tests para preparar las oposiciones de Euskadi: Gobierno Vasco, Osakidetza, Ertzaintza, Educación y más. Practica por temario oficial y mide tu progreso."
+    "El portal de las oposiciones de Euskadi: tests, convocatorias, temario y herramientas. Gobierno Vasco, Osakidetza, Ertzaintza, Educación y más, por temario oficial."
 
 export const CONTACT_EMAIL = "gaindituoposiciones@gmail.com"
 

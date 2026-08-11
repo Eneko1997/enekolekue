@@ -28,8 +28,8 @@ export default function SiteFooter() {
                         gain<span style={{ color: ACCENT }}>ditu</span>.
                     </div>
                     <p className="mt-2 max-w-xs text-[13px] text-zinc-500 dark:text-zinc-400">
-                        Tests por temario oficial para las oposiciones de
-                        Euskadi.
+                        El portal de las oposiciones de Euskadi: tests,
+                        convocatorias, temario y herramientas.
                     </p>
                 </div>
                 <div className="grid grid-cols-2 gap-x-12 gap-y-2 text-[14px] sm:grid-cols-3">

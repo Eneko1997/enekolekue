@@ -11,7 +11,7 @@ import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site"
 import { ORGANISMOS_NOMBRES } from "@/lib/data/organismos"
 
 export const metadata: Metadata = {
-    title: { absolute: "Gainditu — Tests para oposiciones de Euskadi" },
+    title: { absolute: "Gainditu — Oposiciones de Euskadi: tests, convocatorias y temario" },
     description: SITE_DESCRIPTION,
     alternates: { canonical: "/" },
 }
@@ -52,7 +52,7 @@ const PROFES = [
 ]
 
 const FAQS = [
-    { q: "¿Qué es Gainditu?", a: "Una plataforma de tests para preparar oposiciones en Euskadi (Gobierno Vasco, Osakidetza, Ertzaintza, Educación…), con preguntas organizadas por el temario oficial de cada convocatoria." },
+    { q: "¿Qué es Gainditu?", a: "El portal de las oposiciones de Euskadi (Gobierno Vasco, Osakidetza, Ertzaintza, Educación…): tests por temario oficial, convocatorias con sus fechas, temario y herramientas, todo en un mismo sitio." },
     { q: "¿Los tests son gratis?", a: "Sí. Creas una cuenta gratis y empiezas a practicar. El acceso Premium añade exámenes oficiales de convocatorias anteriores, simulacros con penalización real del examen y estadísticas avanzadas." },
     { q: "¿Qué organismos y cuerpos cubrís?", a: `Nos centramos en las oposiciones del País Vasco: ${ORGANISMOS_NOMBRES.join(", ")}. Ahora mismo tienes el temario completo del Gobierno Vasco (Personal de Apoyo, Administrativo, Técnico de Gestión y Superior) y la normativa vasca común, que también sirve para el resto de organismos. Vamos ampliando.` },
     { q: "¿Incluye la Constitución y la Ley 39/2015?", a: "Sí, además de tests específicos tienes páginas dedicadas a la Constitución Española y a la Ley 39/2015 del Procedimiento Administrativo Común." },
@@ -274,7 +274,7 @@ export default function HomePage() {
                 <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-8 sm:flex-row">
                     <div>
                         <div className="text-xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">gain<span style={{ color: ACCENT }}>ditu</span>.</div>
-                        <p className="mt-2 max-w-xs text-[13px] text-zinc-500 dark:text-zinc-400">Tests para preparar las oposiciones de Euskadi, por temario oficial.</p>
+                        <p className="mt-2 max-w-xs text-[13px] text-zinc-500 dark:text-zinc-400">El portal de las oposiciones de Euskadi: tests, convocatorias, temario y herramientas.</p>
                     </div>
                     <div className="grid grid-cols-2 gap-x-12 gap-y-2 text-[14px] sm:grid-cols-3">
                         {[

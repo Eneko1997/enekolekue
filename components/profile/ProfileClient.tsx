@@ -646,7 +646,7 @@ async function generarTarjetaProgreso(d: {
 
     ctx.fillStyle = "rgba(255,255,255,0.42)"
     ctx.font = "600 30px Manrope, system-ui, sans-serif"
-    ctx.fillText("gainditu-oposiciones.vercel.app", P, H - 92)
+    ctx.fillText("gaindituoposiciones.com", P, H - 92)
     ctx.textAlign = "right"
     ctx.fillStyle = "#10B981"
     ctx.font = "700 30px Manrope, system-ui, sans-serif"
