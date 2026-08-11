@@ -9,7 +9,7 @@ const ACCENT = "#10B981"
 export const metadata: Metadata = {
     title: "Herramientas para oposiciones de Euskadi",
     description:
-        "Herramientas para opositar en Euskadi: calculadora de nota de corte, ratio aspirantes/plaza, equivalencias de perfil lingüístico y test de qué oposición elegir. Con tu cuenta gratis.",
+        "Herramientas para opositar en Euskadi: calculadora de nota de corte (sin registro), ratio aspirantes/plaza, equivalencias de perfil lingüístico y test de qué oposición elegir.",
     keywords: [
         "calculadora nota de corte oposiciones",
         "equivalencias perfil lingüístico euskera",
@@ -23,16 +23,16 @@ export default function HerramientasIndex() {
     return (
         <main className="flex flex-1 flex-col">
             <LeccionHero
-                eyebrow="Con tu cuenta gratis"
+                eyebrow="Gratis"
                 title="Herramientas"
-                subtitle="Utilidades para opositar en Euskadi: calcula tu nota, mira cómo de competida está tu plaza, convierte tu nivel de euskera y descubre qué oposición encaja contigo. Gratis con tu cuenta."
+                subtitle="Utilidades para opositar en Euskadi: calcula tu nota, mira cómo de competida está tu plaza, convierte tu nivel de euskera y descubre qué oposición encaja contigo. La calculadora de nota de corte, sin registro; el resto, con tu cuenta gratis."
                 accent={ACCENT}
                 ctaHref="#lista"
                 ctaLabel="Ver herramientas →"
                 stats={[
                     { n: String(HERRAMIENTAS.length), label: "herramientas" },
-                    { n: "Gratis", label: "con tu cuenta" },
-                    { n: "1", label: "Premium" },
+                    { n: "Gratis", label: "para opositores" },
+                    { n: "1", label: "sin registro" },
                     { n: "Euskadi", label: "enfoque" },
                 ]}
             />
@@ -47,12 +47,12 @@ export default function HerramientasIndex() {
                         >
                             <div className="flex items-start justify-between gap-2">
                                 <h2 className="text-[16px] font-bold text-zinc-950 dark:text-zinc-50">{h.titulo}</h2>
-                                {h.premium && (
+                                {h.libre && (
                                     <span
                                         className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide"
                                         style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}
                                     >
-                                        Premium
+                                        Sin registro
                                     </span>
                                 )}
                             </div>

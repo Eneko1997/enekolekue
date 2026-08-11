@@ -31,7 +31,7 @@ export default function Page() {
             </section>
             <section className="px-5 pb-10">
                 <div className="mx-auto max-w-3xl">
-                    <HerramientaGate premium>
+                    <HerramientaGate>
                         <RatioAspirantes />
                     </HerramientaGate>
                 </div>
