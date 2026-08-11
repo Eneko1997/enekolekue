@@ -8,6 +8,8 @@ export interface Herramienta {
     subtitulo: string
     /** Descripción SEO (120-155). */
     descripcion: string
+    /** Solo disponible con acceso Premium. */
+    premium?: boolean
 }
 
 export const HERRAMIENTAS: Herramienta[] = [
@@ -16,14 +18,15 @@ export const HERRAMIENTAS: Herramienta[] = [
         titulo: "Calculadora de nota de corte",
         subtitulo: "Tu nota según aciertos, fallos y penalización.",
         descripcion:
-            "Calcula tu nota de oposición según aciertos, fallos, preguntas en blanco y la penalización de la convocatoria. Gratis, sin registro y al instante.",
+            "Calcula tu nota de oposición según aciertos, fallos, preguntas en blanco y la penalización de la convocatoria. Al instante, con tu cuenta gratis de Gainditu.",
     },
     {
         slug: "ratio-aspirantes-plaza",
         titulo: "Ratio aspirantes por plaza",
         subtitulo: "Cómo de competida está tu oposición.",
         descripcion:
-            "Calcula el ratio de aspirantes por plaza de una oposición y descubre cómo de competida está. Herramienta gratuita, sin registro.",
+            "Calcula el ratio de aspirantes por plaza de una oposición y descubre cómo de competida está de verdad. Herramienta Premium de Gainditu.",
+        premium: true,
     },
     {
         slug: "equivalencias-perfil-linguistico",
@@ -37,7 +40,7 @@ export const HERRAMIENTAS: Herramienta[] = [
         titulo: "¿Qué oposición elegir?",
         subtitulo: "Encuentra la oposición de Euskadi que encaja contigo.",
         descripcion:
-            "Test rápido para descubrir qué oposición de Euskadi encaja con tu titulación, tu nivel de euskera y tu área de interés. Gratis y sin registro.",
+            "Test rápido para descubrir qué oposición de Euskadi encaja con tu titulación, tu nivel de euskera y tu área de interés. Con tu cuenta gratis de Gainditu.",
     },
 ]
 

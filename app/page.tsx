@@ -282,9 +282,11 @@ export default function HomePage() {
                             ["Administrativo", "/oposiciones/administrativo"],
                             ["Técnico de Gestión", "/oposiciones/tecnico-gestion"],
                             ["Técnico Superior", "/oposiciones/tecnico-superior"],
+                            ["Temario", "/temario"],
+                            ["Convocatorias", "/convocatorias"],
+                            ["Herramientas", "/herramientas"],
                             ["Constitución", "/constitucion"],
                             ["Ley 39/2015", "/ley-39-2015"],
-                            ["Convocatorias", "/convocatorias"],
                             ["Aviso legal", "/aviso-legal"],
                             ["Privacidad", "/privacidad"],
                         ].map(([l, h]) => (

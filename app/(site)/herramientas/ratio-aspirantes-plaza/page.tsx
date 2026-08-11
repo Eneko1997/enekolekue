@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import LeccionCTA from "@/components/lecciones/LeccionCTA"
 import RatioAspirantes from "@/components/herramientas/RatioAspirantes"
+import HerramientaGate from "@/components/herramientas/HerramientaGate"
 import { getHerramienta } from "@/lib/data/herramientas"
 import { SITE_URL } from "@/lib/site"
 
@@ -30,7 +31,9 @@ export default function Page() {
             </section>
             <section className="px-5 pb-10">
                 <div className="mx-auto max-w-3xl">
-                    <RatioAspirantes />
+                    <HerramientaGate premium>
+                        <RatioAspirantes />
+                    </HerramientaGate>
                 </div>
             </section>
             <LeccionCTA

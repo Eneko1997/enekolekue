@@ -8,12 +8,15 @@ const LINKS: [string, string][] = [
     ["Administrativo", "/oposiciones/administrativo"],
     ["Técnico de Gestión", "/oposiciones/tecnico-gestion"],
     ["Técnico Superior", "/oposiciones/tecnico-superior"],
+    ["Temario", "/temario"],
+    ["Convocatorias", "/convocatorias"],
+    ["Herramientas", "/herramientas"],
     ["Constitución", "/constitucion"],
     ["Ley 39/2015", "/ley-39-2015"],
-    ["Convocatorias", "/convocatorias"],
     ["Profesores", "/profesores"],
     ["Aviso legal", "/aviso-legal"],
     ["Privacidad", "/privacidad"],
+    ["Cookies", "/cookies"],
 ]
 
 export default function SiteFooter() {
@@ -25,8 +28,8 @@ export default function SiteFooter() {
                         gain<span style={{ color: ACCENT }}>ditu</span>.
                     </div>
                     <p className="mt-2 max-w-xs text-[13px] text-zinc-500 dark:text-zinc-400">
-                        Tests por temario oficial para la OPE del Gobierno
-                        Vasco 2026.
+                        Tests por temario oficial para las oposiciones de
+                        Euskadi.
                     </p>
                 </div>
                 <div className="grid grid-cols-2 gap-x-12 gap-y-2 text-[14px] sm:grid-cols-3">
@@ -43,7 +46,7 @@ export default function SiteFooter() {
             </div>
             <div className="mx-auto mt-10 max-w-5xl border-t border-zinc-100 pt-6 text-[12px] text-zinc-400 dark:border-zinc-800/70 dark:text-zinc-500">
                 © {new Date().getFullYear()} {SITE_NAME}. No oficial; sin relación con
-                el Gobierno Vasco.
+                las administraciones convocantes.
             </div>
         </footer>
     )
