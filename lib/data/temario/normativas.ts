@@ -38,6 +38,8 @@ export interface Normativa {
     puntosClave: PuntoNorma[]
     /** CTA al test de ese bloque (o null). */
     test: Enlace | null
+    /** El fallo/trampa más habitual en el examen sobre esta norma (1-2 líneas). */
+    errorTipico?: string
     faqs: FaqNorma[]
     /** Otras normas/páginas relacionadas. */
     relacionadas: Enlace[]
@@ -72,6 +74,8 @@ export const NORMATIVAS: Normativa[] = [
             { t: "Reforma", d: "Requiere mayoría absoluta del Parlamento Vasco y referéndum." },
         ],
         test: { label: "Practica instituciones vascas", href: "/test?id=c04" },
+        errorTipico:
+            "Creer que basta el Parlamento Vasco para reformar el Estatuto: hace falta, además, referéndum. Y ojo: el euskera es la lengua propia, pero las oficiales son dos (euskera y castellano).",
         faqs: [
             { q: "¿Qué es el Estatuto de Gernika?", a: "La norma institucional básica del País Vasco (LO 3/1979), aprobada en referéndum en 1979, que fija las instituciones y competencias de la Comunidad Autónoma." },
             { q: "¿Cuáles son las lenguas oficiales según el Estatuto?", a: "El euskera y el castellano, ambas oficiales en todo el territorio de la CAE (art. 6)." },
@@ -111,6 +115,8 @@ export const NORMATIVAS: Normativa[] = [
             { t: "Perfiles lingüísticos", d: "PL1-PL4 y su carácter preceptivo o de mérito según el puesto." },
         ],
         test: { label: "Test de función pública vasca", href: "/test?id=c09" },
+        errorTipico:
+            "Confundir las clases de personal. El personal eventual (de confianza o asesoramiento) NO es funcionario, no accede por mérito y cesa automáticamente al cesar la autoridad a la que sirve.",
         faqs: [
             { q: "¿Qué ley regula la función pública vasca?", a: "La Ley 11/2022, de 1 de diciembre, de Empleo Público Vasco, que sustituyó a la Ley 6/1989." },
             { q: "¿Qué clases de personal distingue?", a: "Funcionariado de carrera e interino, personal laboral y personal eventual (arts. 27-30)." },
@@ -119,6 +125,8 @@ export const NORMATIVAS: Normativa[] = [
         relacionadas: [
             { label: "EBEP (estatal)", href: "/temario/ebep" },
             { label: "Normalización del euskera", href: "/temario/ley-normalizacion-euskera" },
+            { label: "Guía: cómo funciona el concurso-oposición", href: "/guias/concurso-oposicion-euskadi" },
+            { label: "Guía: turnos de acceso", href: "/guias/turnos-de-acceso-oposiciones" },
         ],
         fuenteOficial: { label: "Texto en el BOPV (Ley 11/2022)", href: "https://www.euskadi.eus/y22-bopv/es/p43aBOPVWebWar/VerParalelo.do?cd2022005556" },
     },
@@ -147,14 +155,16 @@ export const NORMATIVAS: Normativa[] = [
             { t: "Derecho de la ciudadanía", d: "Relacionarse con la Administración en la lengua oficial que elija." },
         ],
         test: { label: "Test de normalización del euskera", href: "/test?id=c08" },
+        errorTipico:
+            "Pensar que el ciudadano está obligado a usar el euskera. Es la persona quien elige la lengua oficial; la obligación de garantizar ambas recae en la Administración, no en la ciudadanía.",
         faqs: [
             { q: "¿Qué es la Ley de Normalización del Euskera?", a: "La Ley 10/1982, ley básica que regula la cooficialidad y el uso del euskera en Euskadi." },
             { q: "¿Qué es un perfil lingüístico?", a: "El nivel de euskera (PL1 a PL4) asociado a un puesto de trabajo público, que puede ser preceptivo o valorarse como mérito." },
             { q: "¿Puedo dirigirme a la Administración en castellano?", a: "Sí: la ciudadanía tiene derecho a relacionarse con la Administración en euskera o en castellano, a su elección." },
         ],
         relacionadas: [
-            { label: "Equivalencias de perfil lingüístico", href: "/herramientas/equivalencias-perfil-linguistico" },
             { label: "Función Pública Vasca", href: "/temario/ley-funcion-publica-vasca" },
+            { label: "Guía: cómo puntúa el euskera en el concurso-oposición", href: "/guias/concurso-oposicion-euskadi" },
         ],
         fuenteOficial: { label: "Texto en el BOE (Ley 10/1982)", href: "https://www.boe.es/buscar/act.php?id=BOE-A-2012-3402" },
     },
@@ -184,6 +194,8 @@ export const NORMATIVAS: Normativa[] = [
             { t: "Impacto de género", d: "Evaluación previa del impacto en función del género de las normas." },
         ],
         test: { label: "Test de igualdad", href: "/test?id=c06" },
+        errorTipico:
+            "Fallar la representación equilibrada: es 40%-60% para CADA sexo (ni por debajo del 40% ni por encima del 60%), no un simple «mínimo del 50% de mujeres».",
         faqs: [
             { q: "¿Qué ley regula la igualdad en Euskadi?", a: "La Ley 4/2005 para la Igualdad de Mujeres y Hombres, modificada en profundidad por la Ley 1/2022." },
             { q: "¿Qué es la representación equilibrada?", a: "Que en órganos y tribunales cada sexo tenga al menos un 40% y como máximo un 60% de presencia." },
@@ -221,6 +233,8 @@ export const NORMATIVAS: Normativa[] = [
             { t: "Juntas Generales vs Diputación", d: "Las Juntas Generales son el órgano normativo; la Diputación Foral, el ejecutivo." },
         ],
         test: { label: "Test de instituciones y competencias", href: "/test?id=c05" },
+        errorTipico:
+            "Mezclar Juntas Generales y Diputación Foral. Las Juntas Generales son el órgano normativo (el «parlamento» del Territorio Histórico); la Diputación Foral es el órgano ejecutivo.",
         faqs: [
             { q: "¿Qué es la Ley de Territorios Históricos?", a: "La Ley 27/1983 (LTH), que regula el reparto de competencias entre las Instituciones Comunes de la CAE y los Órganos Forales." },
             { q: "¿Qué es la Comisión Arbitral?", a: "El órgano que resuelve los conflictos de competencia entre las Instituciones Comunes y los Órganos Forales de los Territorios Históricos." },
@@ -258,6 +272,8 @@ export const NORMATIVAS: Normativa[] = [
             { t: "Financiación local", d: "Órganos de coordinación de la financiación municipal." },
         ],
         test: { label: "Test de instituciones locales", href: "/test?id=c05" },
+        errorTipico:
+            "Aplicar a los municipios vascos solo la ley estatal de régimen local. En Euskadi rige además la Ley 2/2016, con una garantía reforzada de la autonomía local y competencias propias.",
         faqs: [
             { q: "¿Qué ley regula los municipios vascos?", a: "La Ley 2/2016, de Instituciones Locales de Euskadi, que regula sus competencias, organización y financiación." },
             { q: "¿Qué competencias tienen los municipios?", a: "Las competencias propias que enumera la ley, con garantía reforzada de la autonomía local." },
@@ -296,6 +312,8 @@ export const NORMATIVAS: Normativa[] = [
             { t: "Convenios", d: "Requisitos y contenido mínimo de los convenios entre Administraciones." },
         ],
         test: { label: "Practica organización administrativa", href: "/oposiciones/administrativo" },
+        errorTipico:
+            "Colocar la responsabilidad patrimonial o la potestad sancionadora en la Ley 39/2015. Sus PRINCIPIOS están en la Ley 40/2015; el PROCEDIMIENTO para exigirlas, en la 39/2015.",
         faqs: [
             { q: "¿Qué diferencia hay entre la Ley 39/2015 y la 40/2015?", a: "La 39/2015 regula el procedimiento administrativo común (relación con el ciudadano) y la 40/2015 el Régimen Jurídico del Sector Público (organización y funcionamiento interno)." },
             { q: "¿Dónde se regula la responsabilidad patrimonial?", a: "Los principios están en la Ley 40/2015 y el procedimiento en la Ley 39/2015: es una materia compartida." },
@@ -334,6 +352,8 @@ export const NORMATIVAS: Normativa[] = [
             { t: "Faltas y sanciones", d: "Clasificación en leves, graves y muy graves y sus sanciones." },
         ],
         test: { label: "Test de empleo público", href: "/test?id=c09" },
+        errorTipico:
+            "Mezclar los plazos de prescripción de las faltas: muy graves a los 3 años, graves a los 2 años y leves a los 6 meses. No los confundas con los plazos de prescripción de las sanciones.",
         faqs: [
             { q: "¿Qué es el EBEP?", a: "El Estatuto Básico del Empleado Público (RDL 5/2015), norma estatal básica que regula el régimen de los empleados públicos." },
             { q: "¿Qué relación tiene con la Ley 11/2022 vasca?", a: "El EBEP es la norma básica estatal; la Ley 11/2022 de Empleo Público Vasco la desarrolla y adapta en la CAE." },
@@ -341,6 +361,8 @@ export const NORMATIVAS: Normativa[] = [
         relacionadas: [
             { label: "Función Pública Vasca (Ley 11/2022)", href: "/temario/ley-funcion-publica-vasca" },
             { label: "Ley 40/2015", href: "/temario/ley-40-2015" },
+            { label: "Guía: cómo funciona el concurso-oposición", href: "/guias/concurso-oposicion-euskadi" },
+            { label: "Guía: turnos de acceso", href: "/guias/turnos-de-acceso-oposiciones" },
         ],
         fuenteOficial: { label: "Texto en el BOE (RDL 5/2015)", href: "https://www.boe.es/buscar/act.php?id=BOE-A-2015-11719" },
     },

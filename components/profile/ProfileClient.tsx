@@ -2,9 +2,11 @@
 
 import * as React from "react"
 import { useState, useEffect, useCallback, useRef } from "react"
+import { useSearchParams } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 
 import { createClient } from "@/lib/supabase/client"
+import { TITULOS_CATALOGO } from "@/components/dashboard/catalogo"
 import LightNavbar from "@/components/site/LightNavbar"
 import { useTheme } from "@/lib/use-theme"
 import SiteFooter from "@/components/site/SiteFooter"
@@ -279,76 +281,256 @@ const TITULOS: Record<string, string> = {
     sim_sup5: "Simulacro Gestión Pública Avanzada — 40 preguntas",
     sim_sup6: "Simulacro completo Cuerpo Superior — 90 preguntas",
 
+    // ── SIMULACROS GRATIS (embudo) ───────────────────────────────────────────
+    free_sim_adm: "Simulacro gratis · Administrativo",
+    free_sim_aux: "Simulacro gratis · Personal de Apoyo",
+    free_sim_ges: "Simulacro gratis · Técnico de Gestión",
+    free_sim_sup: "Simulacro gratis · Técnico Superior",
+
     // ── ALEATORIO ─────────────────────────────────────────────────────────────
     random: "Test Aleatorio — OPE Gobierno Vasco 2026",
     premium_demo: "Examen Sopela — Administrativos 2023",
 }
 
-const EXAMENES_PREMIUM = [
+// Nombre legible de un test: mapa local → catálogo → fallback digno (nunca el id
+// crudo en mayúsculas, que quedaba feo con ids como "FREE_SIM_ADM" o huérfanos "a12").
+function nombreTest(id: string): string {
+    return TITULOS[id] || TITULOS_CATALOGO[id] || "Otro test"
+}
+// Versión corta para etiquetas estrechas: quita los prefijos "T.N —" / "E.T.N —".
+function nombreCorto(id: string): string {
+    return nombreTest(id)
+        .replace(/^T\.\d+\s*—\s*/, "")
+        .replace(/^E\.T\.\d+\s*—\s*/, "")
+}
+
+const EXAMENES_OFICIALES = [
+    {
+        id: "ex_admin_ope_gv_2010",
+        titulo: "Examen Administrativo — OPE Gobierno Vasco 2010 · Prueba 1ª (teórico)",
+        preguntas: 114,
+        escala: "administrativos",
+        badge: "OFICIAL",
+    },
+    {
+        id: "ex_admin_ope_gv_2010_p2",
+        titulo: "Examen Administrativo — OPE Gobierno Vasco 2010 · Prueba 2ª (supuestos prácticos)",
+        preguntas: 52,
+        escala: "administrativos",
+        badge: "OFICIAL",
+    },
+    {
+        id: "ex_admin_bolsa_gv_2017",
+        titulo: "Examen Administrativo — Bolsa Gobierno Vasco 2017",
+        preguntas: 57,
+        escala: "administrativos",
+        badge: "OFICIAL",
+    },
+    {
+        id: "ex_supe_bolsa_gv_2015",
+        titulo: "Examen Técnico Superior — Bolsa Gobierno Vasco 2015",
+        preguntas: 68,
+        escala: "superiores",
+        badge: "OFICIAL",
+    },
+    {
+        id: "ex_vitoria_tsag_2026",
+        titulo: "Examen Técnico Superior de Admón. General — Ayto. Vitoria-Gasteiz",
+        preguntas: 85,
+        escala: "superiores",
+        badge: "OFICIAL",
+    },
     {
         id: "ex_zamudio_adm_2024",
-        titulo: "Examen Administrativo — Zamudio 2024 (partes A y B)",
+        titulo: "Examen Administrativo — Ayto. Zamudio 2024 (partes A y B)",
         preguntas: 100,
         escala: "administrativos",
         badge: "OFICIAL",
     },
     {
         id: "ex_erandio_adm_2024",
-        titulo: "Examen Administrativo — Erandio 2024 (parte A)",
+        titulo: "Examen Administrativo — Ayto. Erandio 2024 (parte A)",
         preguntas: 45,
         escala: "administrativos",
         badge: "OFICIAL",
     },
     {
         id: "ex_muskiz_adm_2023",
-        titulo: "Examen Administrativo — Muskiz 2023",
+        titulo: "Examen Administrativo — Ayto. Muskiz 2023",
         preguntas: 60,
         escala: "administrativos",
         badge: "OFICIAL",
     },
-    {
-        id: "premium_demo",
-        titulo: "Examen Sopela — Administrativos 2023",
-        preguntas: 60,
-        escala: "administrativos",
-        badge: "OFICIAL",
-    },
+]
+
+const SIMULACROS_GAINDITU = [
     {
         id: "sim_adm1",
         titulo: "Simulacro completo Administrativos",
         preguntas: 70,
         escala: "administrativos",
-        badge: "SIMULACRO",
+        badge: "GAINDITU",
     },
     {
         id: "sim_aux1",
         titulo: "Simulacro completo Auxiliares",
         preguntas: 60,
         escala: "auxiliares",
-        badge: "SIMULACRO",
+        badge: "GAINDITU",
     },
     {
         id: "sim_ges1",
         titulo: "Simulacro Técnicos de Gestión",
         preguntas: 60,
         escala: "gestion",
-        badge: "SIMULACRO",
+        badge: "GAINDITU",
     },
     {
         id: "sim_sup6",
         titulo: "Simulacro completo Cuerpo Superior",
         preguntas: 90,
         escala: "superiores",
-        badge: "SIMULACRO",
+        badge: "GAINDITU",
     },
     {
         id: "sim_sup2",
         titulo: "Simulacro Específico Parte I (E.T.1–14)",
         preguntas: 60,
         escala: "superiores",
-        badge: "SIMULACRO",
+        badge: "GAINDITU",
     },
 ]
+
+const CASOS_PRACTICOS = [
+    {
+        id: "ex_practico_admin_mix_1",
+        titulo: "Casos Prácticos Gainditu — Administrativo · Procedimiento y función pública",
+        preguntas: 20,
+        escala: "administrativos",
+        badge: "GAINDITU",
+    },
+    {
+        id: "ex_practico_admin_mix_2",
+        titulo: "Casos Prácticos Gainditu — Administrativo · Hacienda y régimen local",
+        preguntas: 20,
+        escala: "administrativos",
+        badge: "GAINDITU",
+    },
+    {
+        id: "ex_practico_admin_mix_3",
+        titulo: "Casos Prácticos Gainditu — Administrativo · Constitución, UE y archivo",
+        preguntas: 20,
+        escala: "administrativos",
+        badge: "GAINDITU",
+    },
+    {
+        id: "ex_practico_admin_recursos_5",
+        titulo: "Casos Prácticos Gainditu — Administrativo · Recursos",
+        preguntas: 20,
+        escala: "administrativos",
+        badge: "GAINDITU",
+    },
+    {
+        id: "ex_practico_admin_mix_7",
+        titulo: "Casos Prácticos Gainditu — Administrativo · Administración electrónica y datos",
+        preguntas: 20,
+        escala: "administrativos",
+        badge: "GAINDITU",
+    },
+    {
+        id: "ex_practico_ges_mix_6",
+        titulo: "Casos Prácticos Gainditu — Técnico de Gestión",
+        preguntas: 20,
+        escala: "gestion",
+        badge: "GAINDITU",
+    },
+    {
+        id: "ex_practico_supe_mix_4",
+        titulo: "Casos Prácticos Gainditu — Técnico Superior",
+        preguntas: 20,
+        escala: "superiores",
+        badge: "GAINDITU",
+    },
+]
+
+function ExamCard({ ex, t, accentColor, progress, testPageUrl }: any) {
+    const prog = progress[ex.id]
+    const pct = prog ? Math.round(prog.mejor_porcentaje) : null
+    const exColor = accentColor
+    return (
+        <motion.a
+            href={`${testPageUrl}?id=${ex.id}&accent=${encodeURIComponent(exColor)}`}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            style={{
+                background: t.surface,
+                border: `1.5px solid ${exColor}40`,
+                borderRadius: "14px",
+                padding: "18px",
+                textDecoration: "none",
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                position: "relative",
+                overflow: "hidden",
+            }}
+        >
+            <div
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: "3px",
+                    background: pct
+                        ? `linear-gradient(to right, ${exColor} ${pct}%, ${t.border} ${pct}%)`
+                        : exColor,
+                }}
+            />
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", paddingTop: "4px" }}>
+                <span
+                    style={{
+                        fontSize: "9px",
+                        fontWeight: 800,
+                        color: exColor,
+                        letterSpacing: "0.5px",
+                        background: `${exColor}18`,
+                        padding: "2px 7px",
+                        borderRadius: "100px",
+                    }}
+                >
+                    {ex.badge}
+                </span>
+                {pct !== null && (
+                    <span
+                        style={{
+                            fontSize: "10px",
+                            fontWeight: 700,
+                            color: pct >= 70 ? t.success : pct >= 50 ? t.warning : t.error,
+                        }}
+                    >
+                        {pct}%
+                    </span>
+                )}
+            </div>
+            <div style={{ fontSize: "13px", fontWeight: 700, color: t.textMain, lineHeight: 1.35 }}>{ex.titulo}</div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span
+                    style={{
+                        fontSize: "11px",
+                        color: t.textMuted,
+                        background: `${t.border}`,
+                        padding: "2px 8px",
+                        borderRadius: "100px",
+                    }}
+                >
+                    {ex.preguntas} preguntas
+                </span>
+                <span style={{ color: exColor, fontSize: "14px", fontWeight: 700 }}>→</span>
+            </div>
+        </motion.a>
+    )
+}
 
 function SunIcon() {
     return (
@@ -1358,7 +1540,7 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                         Vasco 2026.
                     </p>
                     <a
-                        href="mailto:gaindituoposiciones@gmail.com"
+                        href="mailto:info@gaindituoposiciones.com"
                         style={{
                             fontSize: "13px",
                             color: accent,
@@ -1366,7 +1548,7 @@ function FooterHome({ dark, accent }: { dark: boolean; accent: string }) {
                             fontWeight: 600,
                         }}
                     >
-                        gaindituoposiciones@gmail.com
+                        info@gaindituoposiciones.com
                     </a>
                 </div>
                 <div>
@@ -1686,6 +1868,21 @@ export default function PerfilOPE({
     const [tab, setTab] = useState<
         "stats" | "examenes" | "historial" | "ajustes"
     >(initialTab as any)
+
+    // Sincroniza la pestaña con ?tab= de la URL. Necesario porque el menú del
+    // navbar usa <Link> (navegación suave): al estar ya en /perfil el componente
+    // no se remonta, así que sin esto el cambio de ?tab no movía la pestaña.
+    const searchParams = useSearchParams()
+    useEffect(() => {
+        const p = searchParams.get("tab")
+        if (
+            p === "stats" ||
+            p === "examenes" ||
+            p === "historial" ||
+            p === "ajustes"
+        )
+            setTab(p)
+    }, [searchParams])
     const [resultados, setResultados] = useState<any[]>([])
     const [progress, setProgress] = useState<Record<string, any>>({})
     const [loading, setLoading] = useState(true)
@@ -1698,6 +1895,26 @@ export default function PerfilOPE({
     const [portalLoading, setPortalLoading] = useState(false)
     const [guardando, setGuardando] = useState(false)
     const [guardado, setGuardado] = useState(false)
+    const [nuevaPass, setNuevaPass] = useState("")
+    const [savingPass, setSavingPass] = useState(false)
+    const [passMsg, setPassMsg] = useState<{ ok: boolean; text: string } | null>(null)
+
+    async function cambiarPassword() {
+        setPassMsg(null)
+        if (nuevaPass.length < 6) {
+            setPassMsg({ ok: false, text: "La contraseña debe tener al menos 6 caracteres." })
+            return
+        }
+        setSavingPass(true)
+        const { error } = await supabase.auth.updateUser({ password: nuevaPass })
+        setSavingPass(false)
+        if (error) {
+            setPassMsg({ ok: false, text: "No se pudo cambiar la contraseña. Vuelve a iniciar sesión e inténtalo de nuevo." })
+            return
+        }
+        setNuevaPass("")
+        setPassMsg({ ok: true, text: "Contraseña actualizada correctamente." })
+    }
 
     const cargarDatos = useCallback(
         async (isInitialLoad = false) => {
@@ -2576,7 +2793,7 @@ export default function PerfilOPE({
                                                         color: accentColor,
                                                     }}
                                                 >
-                                                    🎯 Reto de la semana
+                                                    Reto de la semana
                                                 </div>
                                                 <div
                                                     style={{
@@ -2790,7 +3007,7 @@ export default function PerfilOPE({
                                                                 : t.textMuted,
                                                     }}
                                                 >
-                                                    🔥 {racha}{" "}
+                                                    {racha}{" "}
                                                     {racha === 1
                                                         ? "día"
                                                         : "días"}{" "}
@@ -3105,7 +3322,7 @@ export default function PerfilOPE({
                                                     color: "#10B981",
                                                 }}
                                             >
-                                                ✨ Comparte tu semana
+                                                Comparte tu semana
                                             </div>
                                             <div
                                                 style={{
@@ -3266,12 +3483,9 @@ export default function PerfilOPE({
                                                                     }}
                                                                 >
                                                                     <div
-                                                                        title={
-                                                                            TITULOS[
-                                                                                testId
-                                                                            ] ||
+                                                                        title={nombreTest(
                                                                             testId
-                                                                        }
+                                                                        )}
                                                                         style={{
                                                                             fontSize:
                                                                                 "11px",
@@ -3288,21 +3502,9 @@ export default function PerfilOPE({
                                                                             cursor: "help",
                                                                         }}
                                                                     >
-                                                                        {TITULOS[
+                                                                        {nombreCorto(
                                                                             testId
-                                                                        ]
-                                                                            ? TITULOS[
-                                                                                  testId
-                                                                              ]
-                                                                                  .replace(
-                                                                                      /^T\.\d+\s*—\s*/,
-                                                                                      ""
-                                                                                  )
-                                                                                  .replace(
-                                                                                      /^E\.T\.\d+\s*—\s*/,
-                                                                                      ""
-                                                                                  )
-                                                                            : testId.toUpperCase()}
+                                                                        )}
                                                                     </div>
                                                                     <div
                                                                         style={{
@@ -3697,7 +3899,7 @@ export default function PerfilOPE({
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0 }}
                                 >
-                                    <div style={{ marginBottom: "20px" }}>
+                                    <div style={{ marginBottom: "12px" }}>
                                         <h3
                                             style={{
                                                 fontSize: "16px",
@@ -3707,7 +3909,7 @@ export default function PerfilOPE({
                                                 letterSpacing: "-0.3px",
                                             }}
                                         >
-                                            Tus exámenes oficiales
+                                            Exámenes oficiales de OPEs
                                         </h3>
                                         <p
                                             style={{
@@ -3716,9 +3918,97 @@ export default function PerfilOPE({
                                                 margin: 0,
                                             }}
                                         >
-                                            Acceso completo sin límite de
-                                            preguntas. Tu progreso se guarda
+                                            Exámenes reales de convocatorias
+                                            anteriores, con solución explicada.
+                                            Tu progreso se guarda
                                             automáticamente.
+                                        </p>
+                                    </div>
+                                    <div
+                                        style={{
+                                            display: "grid",
+                                            gridTemplateColumns:
+                                                "repeat(auto-fill, minmax(260px, 1fr))",
+                                            gap: "12px",
+                                            marginBottom: "28px",
+                                        }}
+                                    >
+                                        {EXAMENES_OFICIALES.map((ex) => (
+                                            <ExamCard
+                                                key={ex.id}
+                                                ex={ex}
+                                                t={t}
+                                                accentColor={accentColor}
+                                                progress={progress}
+                                                testPageUrl={testPageUrl}
+                                            />
+                                        ))}
+                                    </div>
+                                    <div style={{ marginBottom: "12px" }}>
+                                        <h3
+                                            style={{
+                                                fontSize: "16px",
+                                                fontWeight: 800,
+                                                color: t.textMain,
+                                                margin: "0 0 6px",
+                                                letterSpacing: "-0.3px",
+                                            }}
+                                        >
+                                            Casos Prácticos Gainditu
+                                        </h3>
+                                        <p
+                                            style={{
+                                                fontSize: "13px",
+                                                color: t.textMuted,
+                                                margin: 0,
+                                            }}
+                                        >
+                                            Supuestos prácticos: la parte del
+                                            examen que marca la diferencia.
+                                        </p>
+                                    </div>
+                                    <div
+                                        style={{
+                                            display: "grid",
+                                            gridTemplateColumns:
+                                                "repeat(auto-fill, minmax(260px, 1fr))",
+                                            gap: "12px",
+                                            marginBottom: "28px",
+                                        }}
+                                    >
+                                        {CASOS_PRACTICOS.map((ex) => (
+                                            <ExamCard
+                                                key={ex.id}
+                                                ex={ex}
+                                                t={t}
+                                                accentColor={accentColor}
+                                                progress={progress}
+                                                testPageUrl={testPageUrl}
+                                            />
+                                        ))}
+                                    </div>
+                                    <div style={{ marginBottom: "12px" }}>
+                                        <h3
+                                            style={{
+                                                fontSize: "16px",
+                                                fontWeight: 800,
+                                                color: t.textMain,
+                                                margin: "0 0 6px",
+                                                letterSpacing: "-0.3px",
+                                            }}
+                                        >
+                                            Simulacros Gainditu
+                                        </h3>
+                                        <p
+                                            style={{
+                                                fontSize: "13px",
+                                                color: t.textMuted,
+                                                margin: 0,
+                                            }}
+                                        >
+                                            Simulacros propios de Gainditu, con
+                                            la estructura y el nivel del examen
+                                            real.
                                         </p>
                                     </div>
                                     <div
@@ -3729,7 +4019,7 @@ export default function PerfilOPE({
                                             gap: "12px",
                                         }}
                                     >
-                                        {EXAMENES_PREMIUM.map((ex) => {
+                                        {SIMULACROS_GAINDITU.map((ex) => {
                                             const prog = progress[ex.id]
                                             const pct = prog
                                                 ? Math.round(
@@ -4026,7 +4316,9 @@ export default function PerfilOPE({
                                                                 }}
                                                             >
                                                                 {r.test_titulo ||
-                                                                    r.test_id}
+                                                                    nombreTest(
+                                                                        r.test_id
+                                                                    )}
                                                             </div>
                                                             <div
                                                                 style={{
@@ -4205,6 +4497,89 @@ export default function PerfilOPE({
                                                     letterSpacing: "0.5px",
                                                 }}
                                             >
+                                                Contraseña
+                                            </label>
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    flexDirection: "column",
+                                                    gap: "10px",
+                                                }}
+                                            >
+                                                <input
+                                                    type="password"
+                                                    value={nuevaPass}
+                                                    onChange={(e) =>
+                                                        setNuevaPass(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    placeholder="Nueva contraseña (mín. 6 caracteres)"
+                                                    autoComplete="new-password"
+                                                    style={inputStyle}
+                                                />
+                                                <button
+                                                    onClick={cambiarPassword}
+                                                    disabled={
+                                                        savingPass ||
+                                                        !nuevaPass
+                                                    }
+                                                    style={{
+                                                        alignSelf: "flex-start",
+                                                        padding: "10px 18px",
+                                                        borderRadius: "10px",
+                                                        background:
+                                                            "transparent",
+                                                        border: `1.5px solid ${t.border}`,
+                                                        color: t.textMain,
+                                                        fontSize: "13px",
+                                                        fontWeight: 700,
+                                                        cursor:
+                                                            savingPass ||
+                                                            !nuevaPass
+                                                                ? "default"
+                                                                : "pointer",
+                                                        opacity:
+                                                            savingPass ||
+                                                            !nuevaPass
+                                                                ? 0.6
+                                                                : 1,
+                                                        fontFamily:
+                                                            "var(--font-manrope), system-ui, sans-serif",
+                                                    }}
+                                                >
+                                                    {savingPass
+                                                        ? "Guardando…"
+                                                        : "Cambiar contraseña"}
+                                                </button>
+                                                {passMsg && (
+                                                    <p
+                                                        style={{
+                                                            fontSize: "12.5px",
+                                                            fontWeight: 600,
+                                                            margin: 0,
+                                                            color: passMsg.ok
+                                                                ? t.success
+                                                                : "#EF4444",
+                                                        }}
+                                                    >
+                                                        {passMsg.text}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    display: "block",
+                                                    fontSize: "12px",
+                                                    fontWeight: 700,
+                                                    color: t.textMuted,
+                                                    marginBottom: "8px",
+                                                    textTransform: "uppercase",
+                                                    letterSpacing: "0.5px",
+                                                }}
+                                            >
                                                 Escala objetivo
                                             </label>
                                             <div
@@ -4225,10 +4600,10 @@ export default function PerfilOPE({
                                                                 "14px 16px",
                                                             borderRadius:
                                                                 "12px",
-                                                            border: `1.5px solid ${escala === e.id ? SCALE_COLORS[e.id] : t.border}`,
+                                                            border: `1.5px solid ${escala === e.id ? accentColor : t.border}`,
                                                             background:
                                                                 escala === e.id
-                                                                    ? `${SCALE_COLORS[e.id]}12`
+                                                                    ? `${accentColor}12`
                                                                     : t.glass,
                                                             cursor: "pointer",
                                                             display: "flex",
@@ -4252,10 +4627,7 @@ export default function PerfilOPE({
                                                                 color:
                                                                     escala ===
                                                                     e.id
-                                                                        ? SCALE_COLORS[
-                                                                              e
-                                                                                  .id
-                                                                          ]
+                                                                        ? accentColor
                                                                         : t.textMain,
                                                             }}
                                                         >
@@ -4263,11 +4635,7 @@ export default function PerfilOPE({
                                                         </span>
                                                         {escala === e.id && (
                                                             <IconCheck
-                                                                color={
-                                                                    SCALE_COLORS[
-                                                                        e.id
-                                                                    ]
-                                                                }
+                                                                color={accentColor}
                                                                 size={18}
                                                             />
                                                         )}
@@ -4339,7 +4707,7 @@ export default function PerfilOPE({
                                                 {isPremium
                                                     ? premiumType === "admin"
                                                         ? "Cuenta Admin"
-                                                        : "Cuenta Premium"
+                                                        : "Objetivo Plaza"
                                                     : "Plan gratuito"}
                                             </div>
                                             <div
@@ -4349,12 +4717,16 @@ export default function PerfilOPE({
                                                 }}
                                             >
                                                 {isPremium
-                                                    ? premiumPlan === "monthly"
-                                                        ? "Suscripción mensual activa. Acceso completo a exámenes, simulacros e historial ilimitado."
-                                                        : "Acceso completo a todos los exámenes, simulacros e historial ilimitado."
+                                                    ? premiumPlan === "lifetime"
+                                                        ? "Acceso completo de por vida. Exámenes, simulacros e historial ilimitado."
+                                                        : premiumPlan === "monthly"
+                                                          ? "Suscripción mensual activa. Acceso completo a exámenes, simulacros e historial ilimitado."
+                                                          : premiumPlan === "annual"
+                                                            ? "Suscripción anual activa. Acceso completo a exámenes, simulacros e historial ilimitado."
+                                                            : "Acceso completo hasta tu examen. Exámenes, simulacros e historial ilimitado."
                                                     : "Acceso a tests de temario. Actualiza para desbloquear exámenes oficiales."}
                                             </div>
-                                            {isPremium && premiumPlan === "monthly" && (
+                                            {isPremium && (premiumPlan === "monthly" || premiumPlan === "annual") && (
                                                 <button
                                                     onClick={gestionarSuscripcion}
                                                     disabled={portalLoading}

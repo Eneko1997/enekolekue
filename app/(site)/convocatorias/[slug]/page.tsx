@@ -3,16 +3,18 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import FaqLeccion, { type Faq } from "@/components/lecciones/FaqLeccion"
 import LeccionCTA from "@/components/lecciones/LeccionCTA"
-import {
-    CONVOCATORIAS,
-    getConvocatoria,
-    ESTADOS,
-    type Convocatoria,
-} from "@/lib/data/convocatorias"
+import ConvocatoriaAlerta from "@/components/convocatorias/ConvocatoriaAlerta"
+import SimulacroNudge from "@/components/site/SimulacroNudge"
+import { CONVOCATORIAS, ESTADOS, type Convocatoria } from "@/lib/data/convocatorias"
+import { getConvocatoriaBySlug } from "@/lib/data/convocatorias-db"
 import { getOrganismo } from "@/lib/data/organismos"
 import { SITE_URL } from "@/lib/site"
 
 const ACCENT = "#10B981"
+
+// Se regenera cada hora; las auto-ingeridas del BOE (slugs no prerenderizados) se
+// generan bajo demanda (dynamicParams por defecto).
+export const revalidate = 3600
 
 export function generateStaticParams() {
     return CONVOCATORIAS.map((c) => ({ slug: c.slug }))
@@ -24,15 +26,39 @@ export async function generateMetadata({
     params: Promise<{ slug: string }>
 }): Promise<Metadata> {
     const { slug } = await params
-    const c = getConvocatoria(slug)
+    const c = await getConvocatoriaBySlug(slug)
     if (!c) return { title: "Convocatoria no encontrada" }
     const org = getOrganismo(c.organismo)?.corto ?? ""
+    const examen = c.fechasClave.find((f) => /examen/i.test(f.etiqueta))
+    const title = `${c.nombre} — Plazas y fechas`.slice(0, 60)
+    // Descripción específica con estado + plazas + examen (lo útil en el preview de WhatsApp/Telegram).
+    const factos = [
+        ESTADOS[c.estado].label,
+        c.plazas ? `${c.plazas} plazas` : null,
+        examen?.fecha ? `Examen: ${examen.fecha}` : null,
+    ]
+        .filter(Boolean)
+        .join(" · ")
+    const resumenLimpio = c.resumen.replace(/\s*Fuente:.*$/i, "").trim()
+    const ogDesc = `${factos}. ${resumenLimpio}`.slice(0, 200)
+    const url = `${SITE_URL}/convocatorias/${c.slug}`
     return {
-        title: `${c.nombre} — Plazas y fechas`.slice(0, 60),
-        description:
-            `${c.resumen}`.slice(0, 155) ||
+        title,
+        description: `${resumenLimpio}`.slice(0, 155) ||
             `Convocatoria de ${org}: estado, plazas, fechas y enlaces oficiales.`,
         alternates: { canonical: `/convocatorias/${c.slug}` },
+        openGraph: {
+            title: c.nombre,
+            description: ogDesc,
+            url,
+            type: "article",
+            siteName: "Gainditu",
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: c.nombre,
+            description: ogDesc,
+        },
     }
 }
 
@@ -80,7 +106,7 @@ export default async function ConvocatoriaFicha({
     params: Promise<{ slug: string }>
 }) {
     const { slug } = await params
-    const c = getConvocatoria(slug)
+    const c = await getConvocatoriaBySlug(slug)
     if (!c) notFound()
 
     const org = getOrganismo(c.organismo)
@@ -95,6 +121,94 @@ export default async function ConvocatoriaFicha({
             .replace(/[̀-ͯ]/g, "")
         return /examen|prueba|oposici/i.test(norm)
     })
+
+    // CTA final: nunca a /payment desde tráfico frío. Si la convocatoria es de una
+    // escala del cuerpo general con simulacro gratis, enlaza EL SUYO (embudo de venta);
+    // si no (Ertzaintza, Osakidetza, Educación…), a la herramienta de orientación.
+    const simConv = ((): { path: string; nombre: string } | null => {
+        const txt = `${c.slug} ${c.nombre} ${c.cuerpoOCategoria.join(" ")} ${c.testsRelacionados
+            .map((t) => t.url)
+            .join(" ")}`.toLowerCase()
+        if (/personal de apoyo|subalterno|\bapoyo\b/.test(txt))
+            return { path: "/simulacro-personal-apoyo-gobierno-vasco", nombre: "Personal de Apoyo" }
+        if (/t[eé]cnico\/?a? superior|escala superior/.test(txt))
+            return { path: "/simulacro-tecnico-superior-gobierno-vasco", nombre: "Técnico Superior" }
+        if (/t[eé]cnico\/?a? de gesti[oó]n|gesti[oó]n administrativa/.test(txt))
+            return { path: "/simulacro-tecnico-gestion-gobierno-vasco", nombre: "Técnico de Gestión" }
+        if (/administrativo|auxiliar administrativo/.test(txt))
+            return { path: "/simulacro-administrativo-gobierno-vasco", nombre: "Administrativo" }
+        return null
+    })()
+    const cta = simConv
+        ? {
+              href: simConv.path,
+              titulo: "Haz un simulacro gratis",
+              texto: `${simConv.path.includes("administrativo") ? 30 : 60} preguntas tipo examen de ${simConv.nombre} del Gobierno Vasco, corregidas al momento con tu nota y tus puntos débiles. Sin registro para empezar.`,
+              boton: "Empezar el simulacro →",
+          }
+        : {
+              href: "/herramientas/que-oposicion-elegir",
+              titulo: "¿Qué oposición te encaja?",
+              texto: "Responde unas preguntas y te decimos qué oposiciones de Euskadi encajan contigo. Gratis y sin registro.",
+              boton: "Descúbrelo gratis →",
+          }
+
+    // Inscripción abierta: CTA destacado con el enlace oficial de inscripción.
+    const abierta = c.estado === "inscripcion-abierta"
+    // Botón honesto según a dónde lleva DE VERDAD el enlace principal:
+    //   - inscripción real (solo en curadas con enlace explícito) → "Inscribirme"
+    //   - portal de empleo del ayuntamiento/diputación → "Ver empleo público"
+    //   - bases del boletín → "Ver las bases"
+    //   - ficha/convocatoria → "Ver la convocatoria"
+    // Nunca "Inscribirme" para las automáticas: no garantizamos un formulario directo.
+    const enlaceInscripcion = c.enlacesOficiales.find((e) => /inscri|solicitud/i.test(e.etiqueta))
+    const enlacePrimario = enlaceInscripcion ?? c.enlacesOficiales[0]
+    const inscripcionUrl = enlacePrimario?.url
+    const etPrim = (enlacePrimario?.etiqueta ?? "").toLowerCase()
+    const ctaLabel = enlaceInscripcion
+        ? "Inscribirme ↗"
+        : /empleo p[uú]blico/.test(etPrim)
+          ? "Ver empleo público ↗"
+          : /bases/.test(etPrim)
+            ? "Ver las bases ↗"
+            : "Ver la convocatoria ↗"
+    // "Plazo" = rango inicio–cierre cuando hay ambas fechas (no solo el inicio).
+    const plazoIni = c.fechasClave.find((f) => /inicio/i.test(f.etiqueta))?.fecha
+    const plazoFin = c.fechasClave.find((f) => /fin|cierre/i.test(f.etiqueta))?.fecha
+    const plazoInscripcion =
+        plazoIni && plazoFin
+            ? `${plazoIni} – ${plazoFin}`
+            : plazoFin ??
+              plazoIni ??
+              c.fechasClave.find((f) => /inscrip|solicitud|plazo/i.test(f.etiqueta))?.fecha ??
+              null
+
+    // Días naturales que faltan para el cierre de inscripción (o null): para el aviso de urgencia.
+    const finIso =
+        c.fechasClave
+            .filter((f) => f?.iso && /(fin|cierre|inscrip|plazo|solicitud)/i.test(f.etiqueta || ""))
+            .map((f) => f.iso as string)
+            .sort()
+            .pop() ?? null
+    const diasCierre = (() => {
+        if (!finIso) return null
+        const [y, m, d] = finIso.split("-").map((n) => parseInt(n, 10))
+        if (!y || !m || !d) return null
+        const hoy = new Date(); hoy.setHours(0, 0, 0, 0)
+        return Math.round((new Date(y, m - 1, d).getTime() - hoy.getTime()) / 86400000)
+    })()
+    const avisoDias =
+        abierta && diasCierre !== null && diasCierre >= 0 && diasCierre <= 10
+            ? {
+                  color: diasCierre <= 3 ? "#DC2626" : "#F59E0B",
+                  texto:
+                      diasCierre === 0
+                          ? "¡Último día para inscribirte!"
+                          : diasCierre === 1
+                            ? "Queda 1 día para el cierre"
+                            : `Faltan ${diasCierre} días para el cierre`,
+              }
+            : null
 
     return (
         <main className="flex flex-1 flex-col">
@@ -125,8 +239,58 @@ export default async function ConvocatoriaFicha({
                         {c.nombre}
                     </h1>
                     <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300">
-                        {c.resumen}
+                        {c.resumen.replace(/\s*Fuente:.*$/i, "").trim()}
                     </p>
+
+                    {abierta && inscripcionUrl && (
+                        <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 dark:border-emerald-900/40 dark:from-emerald-950/30 dark:to-zinc-900 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="flex items-center gap-4">
+                                {c.plazas != null && (
+                                    <div className="shrink-0 text-center">
+                                        <div className="text-3xl font-extrabold leading-none sm:text-4xl" style={{ color: ACCENT }}>
+                                            {c.plazas}
+                                        </div>
+                                        <div className="mt-1 text-[10px] font-bold uppercase tracking-wide text-zinc-400 dark:text-zinc-500">
+                                            plazas
+                                        </div>
+                                    </div>
+                                )}
+                                <div>
+                                    <div className="text-[15px] font-bold text-zinc-950 dark:text-zinc-50">
+                                        Inscripción abierta
+                                    </div>
+                                    {plazoInscripcion && (
+                                        <div className="mt-0.5 text-[13px] text-zinc-600 dark:text-zinc-300">
+                                            Plazo:{" "}
+                                            <span className="font-semibold text-zinc-800 dark:text-zinc-100">{plazoInscripcion}</span>
+                                        </div>
+                                    )}
+                                    {avisoDias && (
+                                        <div
+                                            className="mt-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-bold"
+                                            style={{ color: avisoDias.color, background: `${avisoDias.color}18`, border: `1px solid ${avisoDias.color}33` }}
+                                        >
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
+                                                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+                                                <path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                            {avisoDias.texto}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            <a
+                                href={inscripcionUrl}
+                                target="_blank"
+                                rel="noopener noreferrer nofollow"
+                                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full px-6 py-3 text-[15px] font-bold text-white transition-transform hover:scale-[1.03]"
+                                style={{ background: ACCENT, boxShadow: "0 10px 25px -5px rgba(16,185,129,0.4)" }}
+                            >
+                                {ctaLabel}
+                            </a>
+                        </div>
+                    )}
+
                     <p className="mt-4 text-[12px] text-zinc-400">
                         Actualizado el {formatISO(c.ultimaActualizacion)}
                     </p>
@@ -160,6 +324,11 @@ export default async function ConvocatoriaFicha({
                                 </li>
                             ))}
                         </ol>
+
+                        {/* Alerta: captura en el momento en que lee "pendiente de confirmación" */}
+                        <div className="mt-6">
+                            <ConvocatoriaAlerta slug={c.slug} nombre={c.nombre} accent={ACCENT} organismo={c.organismo} />
+                        </div>
                     </section>
 
                     {/* Plazas */}
@@ -206,26 +375,6 @@ export default async function ConvocatoriaFicha({
                         </p>
                     </section>
 
-                    {/* CTA a tests relacionados */}
-                    {c.testsRelacionados.length > 0 && (
-                        <section>
-                            <h2 className="mb-3 text-lg font-bold text-zinc-950 dark:text-zinc-50">
-                                Prepárate con tests
-                            </h2>
-                            <div className="flex flex-wrap gap-2">
-                                {c.testsRelacionados.map((t) => (
-                                    <Link
-                                        key={t.url}
-                                        href={t.url}
-                                        className="rounded-full px-4 py-2 text-[14px] font-semibold text-white transition-transform hover:scale-[1.03]"
-                                        style={{ background: ACCENT }}
-                                    >
-                                        {t.etiqueta} →
-                                    </Link>
-                                ))}
-                            </div>
-                        </section>
-                    )}
                 </div>
 
                 {/* Columna lateral: enlaces oficiales */}
@@ -254,28 +403,33 @@ export default async function ConvocatoriaFicha({
                         </div>
                     </div>
 
+                    {(simConv || c.testsRelacionados.length > 0) && (
                     <div className="mt-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5">
                         <div className="text-[13px] font-semibold uppercase tracking-wide text-zinc-400">
-                            Herramientas útiles
+                            Mejora tu nivel
                         </div>
-                        <ul className="mt-3 space-y-2 text-[14px]">
-                            <li>
-                                <Link href="/herramientas/calculadora-nota-corte" className="font-medium hover:underline" style={{ color: ACCENT }}>
-                                    Calculadora de nota de corte →
+                        <div className="mt-3 space-y-2">
+                            {simConv && (
+                                <Link
+                                    href={simConv.path}
+                                    className="block rounded-full px-4 py-2.5 text-center text-[14px] font-semibold text-white transition-transform hover:scale-[1.02]"
+                                    style={{ background: ACCENT }}
+                                >
+                                    Haz un simulacro gratis →
                                 </Link>
-                            </li>
-                            <li>
-                                <Link href="/herramientas/equivalencias-perfil-linguistico" className="font-medium hover:underline" style={{ color: ACCENT }}>
-                                    Equivalencias de euskera →
+                            )}
+                            {c.testsRelacionados.map((t) => (
+                                <Link
+                                    key={t.url}
+                                    href={t.url}
+                                    className="block rounded-full border border-zinc-200 px-4 py-2.5 text-center text-[14px] font-semibold text-zinc-800 transition-colors hover:border-zinc-300 dark:border-zinc-700 dark:text-zinc-100 dark:hover:border-zinc-600"
+                                >
+                                    {t.etiqueta} →
                                 </Link>
-                            </li>
-                            <li>
-                                <Link href="/herramientas/ratio-aspirantes-plaza" className="font-medium hover:underline" style={{ color: ACCENT }}>
-                                    Ratio aspirantes / plaza →
-                                </Link>
-                            </li>
-                        </ul>
+                            ))}
+                        </div>
                     </div>
+                    )}
                 </aside>
             </div>
 
@@ -283,11 +437,14 @@ export default async function ConvocatoriaFicha({
 
             <LeccionCTA
                 accent={ACCENT}
-                href="/payment"
-                titulo="Prepara tu oposición con tests"
-                texto="Practica el temario oficial por tema, con simulacros y estadísticas de tu progreso. Empieza gratis."
-                cta="Ver los tests →"
+                href={cta.href}
+                titulo={cta.titulo}
+                texto={cta.texto}
+                cta={cta.boton}
             />
+
+            {/* Nudge del simulacro gratis: en fichas de escalas del cuerpo general (tráfico caliente) */}
+            {simConv && <SimulacroNudge href={simConv.path} />}
 
             <script
                 type="application/ld+json"

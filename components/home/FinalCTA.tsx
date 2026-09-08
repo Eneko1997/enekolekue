@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import Reveal from "@/components/home/Reveal"
+import AnimatedGlowBg from "@/components/home/AnimatedGlowBg"
 import { createClient } from "@/lib/supabase/client"
 
 const ACCENT = "#10B981"
@@ -72,16 +73,19 @@ export default function FinalCTA() {
     return (
         <section className="px-5 py-12 sm:py-20">
             <Reveal className="mx-auto max-w-5xl">
-                <div className="overflow-hidden rounded-[2rem] bg-zinc-950 dark:border dark:border-zinc-800 dark:bg-zinc-900 px-8 py-16 text-center">
-                    <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{contenido.titulo}</h2>
-                    <p className="mx-auto mt-4 max-w-xl text-zinc-400 dark:text-zinc-500">{contenido.texto}</p>
-                    <Link
-                        href={contenido.href}
-                        className="mt-8 inline-flex items-center justify-center rounded-full px-7 py-3.5 text-[15px] font-semibold text-zinc-950 dark:text-zinc-50 transition-transform hover:scale-[1.03]"
-                        style={{ backgroundColor: ACCENT }}
-                    >
-                        {contenido.cta}
-                    </Link>
+                <div className="relative overflow-hidden rounded-[2rem] border border-white/5 bg-zinc-950 px-8 py-16 text-center">
+                    <AnimatedGlowBg />
+                    <div className="relative z-10">
+                        <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{contenido.titulo}</h2>
+                        <p className="mx-auto mt-4 max-w-xl text-zinc-400">{contenido.texto}</p>
+                        <Link
+                            href={contenido.href}
+                            className="mt-8 inline-flex items-center justify-center rounded-full px-7 py-3.5 text-[15px] font-semibold text-zinc-950 transition-transform hover:scale-[1.03]"
+                            style={{ backgroundColor: ACCENT }}
+                        >
+                            {contenido.cta}
+                        </Link>
+                    </div>
                 </div>
             </Reveal>
         </section>

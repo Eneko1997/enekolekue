@@ -48,12 +48,17 @@ export default function AccountMenu({ user }: { user: User }) {
     }
 
     return (
-        <div ref={ref} className="relative">
-            <button
-                onClick={() => setOpen((v) => !v)}
+        <div
+            ref={ref}
+            className="relative flex items-center gap-1"
+            onMouseEnter={() => setOpen(true)}
+            onMouseLeave={() => setOpen(false)}
+        >
+            {/* El avatar lleva directo a "Mi progreso" */}
+            <Link
+                href="/perfil?tab=stats"
+                aria-label="Mi progreso"
                 className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 py-1 pl-1 pr-2.5 transition-colors hover:bg-white/10"
-                aria-haspopup="menu"
-                aria-expanded={open}
             >
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[11px] font-bold text-[#0A0A0C]">
                     {initials(user)}
@@ -61,7 +66,7 @@ export default function AccountMenu({ user }: { user: User }) {
                 <span className="hidden max-w-[120px] truncate text-[13px] font-semibold text-white/80 sm:block">
                     {(user.email || "").split("@")[0]}
                 </span>
-            </button>
+            </Link>
 
             <AnimatePresence>
                 {open && (
@@ -71,8 +76,9 @@ export default function AccountMenu({ user }: { user: User }) {
                         exit={{ opacity: 0, y: -6, scale: 0.98 }}
                         transition={{ duration: 0.15 }}
                         role="menu"
-                        className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-white/10 bg-[#141520] shadow-2xl"
+                        className="absolute right-0 top-full w-56 pt-2"
                     >
+                      <div className="overflow-hidden rounded-xl border border-white/10 bg-[#141520] shadow-2xl">
                         <div className="truncate border-b border-white/10 px-4 py-3 text-[12px] text-white/45">
                             {user.email}
                         </div>
@@ -96,6 +102,7 @@ export default function AccountMenu({ user }: { user: User }) {
                         >
                             Cerrar sesión
                         </button>
+                      </div>
                     </motion.div>
                 )}
             </AnimatePresence>

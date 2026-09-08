@@ -104,9 +104,9 @@ const JSON_LD = [
 export default function Ley39Page() {
     return (
         <TemaTestsShell
-            eyebrow="Temario oficial · OPE 2026"
+            eyebrow="Temario oficial · Euskadi"
             title="Ley 39/2015"
-            subtitle="El Procedimiento Administrativo Común: el tema estrella de casi toda oposición. A base de tests, no de empollar el BOE."
+            subtitle="El Procedimiento Administrativo Común, el tema estrella de casi toda oposición. A base de tests."
             ley="Ley 39/2015, de 1 de octubre, del Procedimiento Administrativo Común de las Administraciones Públicas"
             stats={[
                 { n: "370", label: "preguntas" },
@@ -126,8 +126,8 @@ export default function Ley39Page() {
             tests={TESTS}
             faqs={FAQS}
             relacionadas={[
+                { label: "Temario completo", href: "/temario" },
                 { label: "La Constitución Española", href: "/constitucion" },
-                { label: "Todos los tests por escala", href: "/" },
                 { label: "Convocatorias de Euskadi", href: "/convocatorias" },
             ]}
             fuenteOficial={{

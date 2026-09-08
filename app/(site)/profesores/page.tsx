@@ -1,6 +1,6 @@
-import Link from "next/link"
 import type { Metadata } from "next"
 import { SITE_URL } from "@/lib/site"
+import ProfesorForm from "@/components/profesores/ProfesorForm"
 
 export const metadata: Metadata = {
     title: "Profesores particulares para oposiciones de Euskadi",
@@ -10,8 +10,6 @@ export const metadata: Metadata = {
 }
 
 const ACCENT = "#10B981"
-const CONTACTO = "mailto:gaindituoposiciones@gmail.com?subject=Quiero%20anunciarme%20como%20profesor"
-
 const PROFES = [
     { n: "Ane M.", mat: "Derecho administrativo · Ley 39/2015 y 40/2015", zona: "Bilbao · online", ini: "A" },
     { n: "Gorka L.", mat: "Constitución y organización del Estado y de Euskadi", zona: "Vitoria-Gasteiz · presencial", ini: "G" },
@@ -32,34 +30,32 @@ export default function ProfesoresPage() {
                         filter: "blur(50px)",
                     }}
                 />
-                <div className="relative z-10 mx-auto max-w-4xl text-center">
+                <div className="relative z-10 mx-auto max-w-5xl">
                     <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
                         <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: ACCENT }} />
                         Clases particulares · País Vasco
                     </span>
-                    <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-6xl">
-                        Profesores particulares
-                        <br />
-                        para tu oposición
+                    <h1 className="mt-6 max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-6xl">
+                        Profesores particulares para tu oposición
                     </h1>
-                    <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-zinc-500 dark:text-zinc-400">
+                    <p className="mt-5 max-w-xl text-lg leading-relaxed text-zinc-500 dark:text-zinc-400">
                         Refuerza los bloques que más te cuestan con profesores especializados en el temario oficial. Y si eres profe, anúnciate y llega a nuevos alumnos.
                     </p>
-                    <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                        <a href={CONTACTO} className="inline-flex w-full items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 px-7 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03] sm:w-auto">
-                            Anúnciate como profesor
+                    <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                        <a href="#profesores" className="inline-flex w-full items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 px-7 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03] sm:w-auto">
+                            Contacta con un profesor
                         </a>
-                        <Link href="/" className="inline-flex w-full items-center justify-center rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-7 py-3.5 text-[15px] font-semibold text-zinc-900 dark:text-zinc-100 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60 sm:w-auto">
-                            Practicar tests
-                        </Link>
+                        <a href="#anunciarse" className="inline-flex w-full items-center justify-center rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-7 py-3.5 text-[15px] font-semibold text-zinc-900 dark:text-zinc-100 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60 sm:w-auto">
+                            Anunciarte como profesor
+                        </a>
                     </div>
                 </div>
             </section>
 
             {/* LISTADO (ejemplos) */}
-            <section className="px-5 py-14">
+            <section id="profesores" className="scroll-mt-24 px-5 py-14">
                 <div className="mx-auto max-w-5xl">
-                    <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-3xl">Algunos profesores</h2>
+                    <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-3xl">Profesores disponibles</h2>
                     <p className="mt-2 text-[14px] text-zinc-400 dark:text-zinc-500">
                         Fichas de ejemplo. El directorio está en marcha: escríbenos para aparecer aquí.
                     </p>
@@ -94,10 +90,21 @@ export default function ProfesoresPage() {
                         <p className="mt-2 text-[14px] leading-relaxed text-zinc-500 dark:text-zinc-400">
                             Date a conocer entre opositores del País Vasco. Nos cuentas tu perfil (materias, zona, modalidad) y te incluimos. Escríbenos y te explicamos cómo funciona.
                         </p>
-                        <a href={CONTACTO} className="mt-4 inline-flex items-center justify-center rounded-full px-5 py-2.5 text-[14px] font-semibold text-zinc-950 dark:text-zinc-50 transition-transform hover:scale-[1.03]" style={{ backgroundColor: ACCENT }}>
+                        <a href="#anunciarse" className="mt-4 inline-flex items-center justify-center rounded-full px-5 py-2.5 text-[14px] font-semibold text-zinc-950 dark:text-zinc-50 transition-transform hover:scale-[1.03]" style={{ backgroundColor: ACCENT }}>
                             Quiero anunciarme →
                         </a>
                     </div>
+                </div>
+            </section>
+
+            {/* FORMULARIO ANUNCIARSE */}
+            <section id="anunciarse" className="scroll-mt-24 px-5 py-14">
+                <div className="mx-auto max-w-3xl">
+                    <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-3xl">Anúnciate como profesor</h2>
+                    <p className="mt-2 mb-8 text-[14px] text-zinc-500 dark:text-zinc-400">
+                        Déjanos tus datos y te escribimos para incluirte en el directorio de profesores de Gainditu. Sin coste para empezar.
+                    </p>
+                    <ProfesorForm />
                 </div>
             </section>
 

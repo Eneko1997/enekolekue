@@ -62,6 +62,7 @@ function useIsMobile(containerRef: React.RefObject<HTMLElement | null>) {
 }
 
 import { createClient } from "@/lib/supabase/client"
+import RankingSemanal from "@/components/dashboard/RankingSemanal"
 import { useTheme } from "@/lib/use-theme"
 import { translateAuthError } from "@/lib/auth-errors"
 
@@ -855,7 +856,7 @@ function PremiumPopup({
                                 textDecoration: "line-through",
                             }}
                         >
-                            40€
+                            195€
                         </span>
                         <span
                             style={{
@@ -864,7 +865,7 @@ function PremiumPopup({
                                 color: accent,
                             }}
                         >
-                            24,99€
+                            39,99€
                         </span>
                     </div>
                     <div
@@ -874,18 +875,19 @@ function PremiumPopup({
                             marginTop: "4px",
                         }}
                     >
-                        Acceso completo · Pago único · Sin suscripción
+                        Acceso completo · Pago único · Hasta tu examen
                     </div>
                 </div>
 
                 {/* Lo que incluye */}
                 <div style={{ textAlign: "left", marginBottom: "20px" }}>
                     {[
+                        "Plan de estudio personalizado hasta tu examen",
                         "Exámenes oficiales convocatorias anteriores",
+                        "Casos Prácticos Gainditu: la parte que marca la diferencia",
                         "Simulacros cronometrados con penalización real",
-                        "Técnicas de estudio y memorización",
-                        "Actualizaciones gratuitas hasta el examen",
-                        "Comunidad privada de opositores vascos",
+                        "Explicación con IA en cada pregunta",
+                        "Estadísticas y seguimiento de tu progreso",
                     ].map((item, i) => (
                         <div
                             key={i}
@@ -1269,7 +1271,7 @@ function SeccionPremium({
                                         textDecoration: "line-through",
                                     }}
                                 >
-                                    40€
+                                    195€
                                 </span>
                                 <span
                                     style={{
@@ -1279,7 +1281,7 @@ function SeccionPremium({
                                         lineHeight: 1,
                                     }}
                                 >
-                                    24,99€
+                                    39,99€
                                 </span>
                                 <span
                                     style={{
@@ -1316,7 +1318,7 @@ function SeccionPremium({
                             <div
                                 style={{ fontSize: "10px", color: t.textMuted }}
                             >
-                                Sin suscripción · Acceso de por vida
+                                Pago único · sin suscripción · hasta tu examen
                             </div>
                         </div>
                     ) : (
@@ -1364,10 +1366,11 @@ function SeccionPremium({
                                     }}
                                 >
                                     {[
+                                        "Plan personalizado",
                                         "Exámenes oficiales",
+                                        "Casos Prácticos Gainditu",
                                         "Simulacros reales",
-                                        "Técnicas de estudio",
-                                        "Comunidad privada",
+                                        "Explicación con IA",
                                     ].map((item) => (
                                         <span
                                             key={item}
@@ -1407,7 +1410,7 @@ function SeccionPremium({
                                             display: "block",
                                         }}
                                     >
-                                        Precio normal 40€
+                                        Valor total: 195€
                                     </span>
                                     <div
                                         style={{
@@ -1425,7 +1428,7 @@ function SeccionPremium({
                                                 lineHeight: 1,
                                             }}
                                         >
-                                            24,99€
+                                            39,99€
                                         </span>
                                         <span
                                             style={{
@@ -1468,7 +1471,7 @@ function SeccionPremium({
                                         width: "100%",
                                     }}
                                 >
-                                    Sin suscripción · Acceso de por vida
+                                    Pago único · sin suscripción · hasta tu examen
                                 </div>
                             </div>
                         </div>
@@ -1551,7 +1554,7 @@ function TiraAcademias({ accent, dark }: { accent: string; dark: boolean }) {
                 </div>
             </div>
             <a
-                href={`mailto:gaindituoposiciones@gmail.com?subject=Quiero anunciarme en Gainditu`}
+                href={`mailto:info@gaindituoposiciones.com?subject=Quiero anunciarme en Gainditu`}
                 style={{
                     padding: "9px 18px",
                     borderRadius: "9px",
@@ -1617,7 +1620,7 @@ function Footer({ dark, accent }: { dark: boolean; accent: string }) {
                         Vasco 2026.
                     </p>
                     <a
-                        href="mailto:gaindituoposiciones@gmail.com"
+                        href="mailto:info@gaindituoposiciones.com"
                         style={{
                             fontSize: "13px",
                             color: accent,
@@ -1625,7 +1628,7 @@ function Footer({ dark, accent }: { dark: boolean; accent: string }) {
                             fontWeight: 600,
                         }}
                     >
-                        gaindituoposiciones@gmail.com
+                        info@gaindituoposiciones.com
                     </a>
                 </div>
 
@@ -2757,6 +2760,11 @@ export default function DashboardOPE(props: {
                             </motion.button>
                         )
                     })}
+                </div>
+
+                {/* RANKING SEMANAL */}
+                <div style={{ margin: "0 0 20px" }}>
+                    <RankingSemanal />
                 </div>
 
                 {/* TIRA ACADEMIAS */}

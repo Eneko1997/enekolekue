@@ -326,18 +326,6 @@ export default function EscalaTests({
                                                     opacity: sinPreguntas ? 0.55 : 1,
                                                 }}
                                             >
-                                                {test.tema && (
-                                                    <div
-                                                        style={{
-                                                            fontSize: 10,
-                                                            fontWeight: 700,
-                                                            color: ACCENT,
-                                                            letterSpacing: "0.4px",
-                                                        }}
-                                                    >
-                                                        {test.tema}
-                                                    </div>
-                                                )}
                                                 <div
                                                     style={{
                                                         fontSize: 13,

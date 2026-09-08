@@ -48,7 +48,7 @@ export default function TemarioIndexPage() {
             <LeccionHero
                 eyebrow="Oposiciones de Euskadi"
                 title="Temario"
-                subtitle="El temario de las oposiciones vascas explicado, norma a norma: qué es, en qué oposiciones entra y lo que más se pregunta. Con test en cada bloque."
+                subtitle="El temario de las oposiciones vascas, norma a norma, con test en cada bloque."
                 accent={ACCENT}
                 ctaHref="#normativa"
                 ctaLabel="Ver el temario →"

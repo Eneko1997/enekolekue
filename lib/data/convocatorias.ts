@@ -56,6 +56,8 @@ export interface Convocatoria {
     resumen: string
     /** CTAs a los tests relacionados dentro de Gainditu. */
     testsRelacionados: EnlaceOficial[]
+    /** Cuándo se subió/ingirió (created_at de la BD). Solo en las auto; para ordenar por recientes. */
+    creadaEn?: string | null
 }
 
 // ── Metadatos de estado: etiqueta, color (paleta sobria: verde=activo,
@@ -87,46 +89,54 @@ export const CONVOCATORIAS: Convocatoria[] = [
         nombre: "OPE Gobierno Vasco 2026 · Personal de Apoyo",
         cuerpoOCategoria: ["Personal de Apoyo (Agrupación Profesional)"],
         grupo: "E",
-        estado: "oep-aprobada",
-        plazas: null,
-        plazasDetalle: [],
+        estado: "inscripcion-abierta",
+        plazas: 117,
+        plazasDetalle: [
+            { cuerpo: "Turno libre — acceso general", plazas: 112 },
+            { cuerpo: "Reserva para personas con discapacidad", plazas: 5 },
+        ],
         fechasClave: [
-            { etiqueta: "Convocatoria (previsión)", fecha: "Septiembre de 2026", iso: null, nota: "Calendario provisional de la OPE; pendiente de publicación en el BOPV." },
-            { etiqueta: "Primera prueba (previsión)", fecha: "Enero de 2027", iso: null, nota: "Fecha orientativa según el calendario provisional." },
+            { etiqueta: "Inicio de inscripción", fecha: "20 de agosto de 2026", iso: "2026-08-20" },
+            { etiqueta: "Fin de inscripción", fecha: "16 de septiembre de 2026", iso: "2026-09-16", nota: "Hasta las 14:00 h. Solicitud telemática en euskadi.eus (BOPV n.º 157, 19-08-2026)." },
+            { etiqueta: "Primera prueba (previsión)", fecha: "Enero de 2027", iso: null, nota: "Según el calendario de la convocatoria." },
         ],
-        perfilLinguistico: "Variable según plaza (buena parte PL1; el euskera puntúa).",
+        perfilLinguistico: "PL1 o PL2 (requisito en puestos con fecha de preceptividad vencida); en el resto, el euskera puntúa como mérito.",
         enlacesOficiales: [
-            { etiqueta: "Empleo público del Gobierno Vasco", url: "https://www.euskadi.eus/empleo-publico/" },
-            { etiqueta: "IVAP — OPE de la Administración autonómica", url: "https://www.ivap.euskadi.eus/oferta-publica-de-empleo-ope-de-la-administracion-autonomica-de-euskadi/webivap00-h2home/es/" },
+            { etiqueta: "Inscripción — sede de OPE (euskadi.eus)", url: "https://www.euskadi.eus/web01-sedeope/es/ac27aaUdaWar/convocatorias" },
+            { etiqueta: "IVAP — empleo y materiales de apoyo", url: "https://www.ivap.euskadi.eus/empleo-ivap/" },
         ],
-        boletin: "BOPV (según convocatoria)",
-        ultimaActualizacion: HOY,
+        boletin: "BOPV n.º 157, de 19 de agosto de 2026 (Orden de 30 de julio de 2026)",
+        ultimaActualizacion: "2026-08-26",
         resumen:
-            "Oposición de la Agrupación Profesional de Personal de Apoyo (grupo E) del Gobierno Vasco, dentro de la OPE 2026. Es la puerta de entrada al empleo público vasco y no exige titulación. Plazas y fechas pendientes de confirmación oficial en el BOPV.",
+            "117 plazas de Personal de Apoyo (grupo AP) del Gobierno Vasco: 112 de acceso general y 5 de reserva por discapacidad. Sin titulación: la puerta de entrada al empleo público vasco. Concurso-oposición. Plazo hasta el 16 de septiembre de 2026. Tasa: 8,18 €.",
         testsRelacionados: [{ etiqueta: "Tests de Personal de Apoyo", url: "/oposiciones/personal-de-apoyo" }],
     },
     {
         slug: "ope-gobierno-vasco-administrativo-2026",
         organismo: "gobierno-vasco",
-        nombre: "OPE Gobierno Vasco 2026 · Administrativo",
-        cuerpoOCategoria: ["Administrativo/a"],
+        nombre: "OPE Gobierno Vasco 2026 · Administrativo (C1)",
+        cuerpoOCategoria: ["Administrativo/a (Escala Administrativa)"],
         grupo: "C1",
-        estado: "oep-aprobada",
-        plazas: null,
-        plazasDetalle: [],
+        estado: "inscripcion-abierta",
+        plazas: 305,
+        plazasDetalle: [
+            { cuerpo: "Turno libre", plazas: 160 },
+            { cuerpo: "Promoción interna vertical", plazas: 145 },
+        ],
         fechasClave: [
-            { etiqueta: "Convocatoria (previsión)", fecha: "Septiembre de 2026", iso: null, nota: "Calendario provisional de la OPE; pendiente de publicación en el BOPV." },
-            { etiqueta: "Primera prueba (previsión)", fecha: "Enero de 2027", iso: null, nota: "Fecha orientativa según el calendario provisional." },
+            { etiqueta: "Inicio de inscripción", fecha: "20 de agosto de 2026", iso: "2026-08-20" },
+            { etiqueta: "Fin de inscripción", fecha: "16 de septiembre de 2026", iso: "2026-09-16", nota: "Hasta las 14:00 h. Solicitud telemática en euskadi.eus (BOPV n.º 157, 19-08-2026)." },
+            { etiqueta: "Primera prueba (previsión)", fecha: "Enero de 2027", iso: null, nota: "Según el calendario de la convocatoria." },
         ],
-        perfilLinguistico: "Variable según plaza (buena parte PL1; el euskera puntúa).",
+        perfilLinguistico: "PL2, PL3 o PL4 (requisito en puestos con fecha de preceptividad vencida); en el resto, el euskera puntúa como mérito.",
         enlacesOficiales: [
-            { etiqueta: "Empleo público del Gobierno Vasco", url: "https://www.euskadi.eus/empleo-publico/" },
-            { etiqueta: "IVAP — OPE de la Administración autonómica", url: "https://www.ivap.euskadi.eus/oferta-publica-de-empleo-ope-de-la-administracion-autonomica-de-euskadi/webivap00-h2home/es/" },
+            { etiqueta: "Inscripción — sede de OPE (euskadi.eus)", url: "https://www.euskadi.eus/web01-sedeope/es/ac27aaUdaWar/convocatorias" },
+            { etiqueta: "IVAP — temarios de Administración General", url: "https://www.ivap.euskadi.eus/temarios-administracion-general-de-la-cae-y-sus-organismos-autonomos/webivap00-a3gaizerr/es/" },
         ],
-        boletin: "BOPV (según convocatoria)",
-        ultimaActualizacion: HOY,
+        boletin: "BOPV n.º 157, de 19 de agosto de 2026 (Orden de 30 de julio de 2026)",
+        ultimaActualizacion: "2026-08-26",
         resumen:
-            "Oposición de la escala Administrativa (subgrupo C1) del Gobierno Vasco, dentro de la OPE 2026. Requiere Bachiller o FP de grado superior. Plazas y fechas pendientes de confirmación oficial en el BOPV.",
+            "305 plazas de Administrativo (C1) del Gobierno Vasco: 160 de turno libre y 145 de promoción interna. Requiere Bachiller o FP de grado medio. Concurso-oposición. Plazo hasta el 16 de septiembre de 2026. Tasa: 20,68 €.",
         testsRelacionados: [{ etiqueta: "Tests de Administrativo", url: "/oposiciones/administrativo" }],
     },
     {
@@ -304,95 +314,10 @@ export const CONVOCATORIAS: Convocatoria[] = [
         ],
     },
 
-    // ───────────────────────── Diputaciones Forales (una ficha por convocatoria) ─────────────────────────
-    {
-        slug: "ope-gipuzkoa-administrativo-2026",
-        organismo: "diputaciones-forales",
-        nombre: "Administrativo/a · Diputación Foral de Gipuzkoa",
-        cuerpoOCategoria: ["Administrativo/a"],
-        grupo: "C1",
-        estado: "inscripcion-abierta",
-        plazas: 138,
-        plazasDetalle: [
-            { cuerpo: "Turno libre", plazas: 124 },
-            { cuerpo: "Reserva por discapacidad", plazas: 14 },
-        ],
-        fechasClave: [
-            { etiqueta: "Plazo de solicitudes", fecha: "21 de julio – 21 de agosto de 2026", iso: "2026-08-21", nota: "Concurso-oposición. Bases en el BOG de 20 de julio de 2026." },
-            { etiqueta: "Primeras pruebas (previsión)", fecha: "No antes de enero de 2027", iso: null, nota: "Fecha orientativa; pendiente de confirmación." },
-        ],
-        perfilLinguistico: "Perfil lingüístico según plaza.",
-        enlacesOficiales: [
-            { etiqueta: "Diputación Foral de Gipuzkoa — empleo público", url: "https://www.gipuzkoa.eus/es/web/laneskaintza" },
-            { etiqueta: "IVAP — OPE de otras administraciones vascas", url: "https://www.ivap.euskadi.eus/oferta-publica-de-empleo-ope-de-otras-administraciones-publicas-vascas/webivap00-a2eusk/es/" },
-        ],
-        boletin: "BOG (Boletín Oficial de Gipuzkoa)",
-        ultimaActualizacion: HOY,
-        resumen:
-            "La Diputación Foral de Gipuzkoa tiene abierta la convocatoria de 138 plazas de Administrativo/a (124 de turno libre y 14 de reserva por discapacidad), subgrupo C1, por concurso-oposición. El plazo de solicitudes está abierto hasta el 21 de agosto de 2026, dentro de su OPE 2026 de 281 plazas.",
-        testsRelacionados: [
-            { etiqueta: "Tests de Administrativo", url: "/oposiciones/administrativo" },
-            { etiqueta: "Ley 39/2015", url: "/ley-39-2015" },
-            { etiqueta: "Constitución", url: "/constitucion" },
-        ],
-    },
-    {
-        slug: "ope-bizkaia-2026",
-        organismo: "diputaciones-forales",
-        nombre: "OPE 2026 · Diputación Foral de Bizkaia",
-        cuerpoOCategoria: ["Administrativo/a", "Técnicos/as", "Personal foral"],
-        grupo: null,
-        estado: "oep-aprobada",
-        plazas: 69,
-        plazasDetalle: [
-            { cuerpo: "Administrativo/a", plazas: 34 },
-        ],
-        fechasClave: [
-            { etiqueta: "OEP 2026 aprobada", fecha: "69 plazas (34 de administrativo/a)", iso: null, nota: "Las convocatorias por categoría se publican en el BOB. Segunda OEP prevista para fin de año." },
-        ],
-        perfilLinguistico: "Perfil lingüístico según plaza.",
-        enlacesOficiales: [
-            { etiqueta: "Diputación Foral de Bizkaia", url: "https://www.bizkaia.eus/" },
-            { etiqueta: "IVAP — OPE de otras administraciones vascas", url: "https://www.ivap.euskadi.eus/oferta-publica-de-empleo-ope-de-otras-administraciones-publicas-vascas/webivap00-a2eusk/es/" },
-        ],
-        boletin: "BOB (Boletín Oficial de Bizkaia)",
-        ultimaActualizacion: HOY,
-        resumen:
-            "La Diputación Foral de Bizkaia aprobó su OPE 2026 con 69 plazas, entre ellas 34 de Administrativo/a. Las convocatorias por categoría se publican de forma escalonada en el BOB; hay una segunda OEP prevista para fin de año.",
-        testsRelacionados: [
-            { etiqueta: "Tests de Administrativo", url: "/oposiciones/administrativo" },
-            { etiqueta: "Constitución", url: "/constitucion" },
-        ],
-    },
-    {
-        slug: "ope-alava-2026",
-        organismo: "diputaciones-forales",
-        nombre: "1ª OPE 2026 · Diputación Foral de Álava",
-        cuerpoOCategoria: ["Técnico/a de administración general", "Otras escalas forales"],
-        grupo: null,
-        estado: "oep-aprobada",
-        plazas: 40,
-        plazasDetalle: [
-            { cuerpo: "Técnico/a de administración general", plazas: 19 },
-            { cuerpo: "Laborantes", plazas: 8 },
-            { cuerpo: "Inspector/a auxiliar de tributos", plazas: 5 },
-            { cuerpo: "Guardería forestal", plazas: 5 },
-            { cuerpo: "Letrado/a", plazas: 3 },
-        ],
-        fechasClave: [
-            { etiqueta: "1ª OPE 2026 aprobada", fecha: "BOTHA nº 55, mayo de 2026", iso: null, nota: "40 plazas. Segunda OPE prevista antes de fin de año." },
-        ],
-        perfilLinguistico: "Perfil lingüístico según plaza.",
-        enlacesOficiales: [
-            { etiqueta: "Diputación Foral de Álava — empleo público", url: "https://enplegupublikoa.araba.eus/es/" },
-            { etiqueta: "IVAP — OPE de otras administraciones vascas", url: "https://www.ivap.euskadi.eus/oferta-publica-de-empleo-ope-de-otras-administraciones-publicas-vascas/webivap00-a2eusk/es/" },
-        ],
-        boletin: "BOTHA (Boletín Oficial del Territorio Histórico de Álava)",
-        ultimaActualizacion: HOY,
-        resumen:
-            "La Diputación Foral de Álava aprobó su primera OPE 2026 con 40 plazas (BOTHA nº 55, mayo de 2026): 19 de técnico/a de administración general, 8 laborantes, 5 inspector/a auxiliar de tributos, 5 de guardería forestal y 3 letrado/a. Está prevista una segunda OPE antes de fin de año.",
-        testsRelacionados: [{ etiqueta: "Constitución", url: "/constitucion" }],
-    },
+    // ───────────────────────── Diputaciones Forales ─────────────────────────
+    // Las OPE de las diputaciones forales (Gipuzkoa/Bizkaia/Álava) ya NO se curan aquí:
+    // se auto-ingieren de la sede de euskadi.eus (edge function `ingest-euskadi-dip`,
+    // fuente='opendata-euskadi-dip', organismo='diputaciones-forales') y viven en convocatorias_auto.
 
     // ───────────────────────── Ayuntamientos (una ficha por convocatoria) ─────────────────────────
     {

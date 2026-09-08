@@ -1,13 +1,12 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import LeccionCTA from "@/components/lecciones/LeccionCTA"
-import EquivalenciasPL from "@/components/herramientas/EquivalenciasPL"
-import HerramientaGate from "@/components/herramientas/HerramientaGate"
+import CalculadoraMeritos from "@/components/herramientas/CalculadoraMeritos"
 import { getHerramienta } from "@/lib/data/herramientas"
 import { SITE_URL } from "@/lib/site"
 
 const ACCENT = "#10B981"
-const H = getHerramienta("equivalencias-perfil-linguistico")!
+const H = getHerramienta("calculadora-meritos-gobierno-vasco")!
 
 export const metadata: Metadata = {
     title: H.titulo,
@@ -31,17 +30,15 @@ export default function Page() {
             </section>
             <section className="px-5 pb-10">
                 <div className="mx-auto max-w-3xl">
-                    <HerramientaGate>
-                        <EquivalenciasPL />
-                    </HerramientaGate>
+                    <CalculadoraMeritos />
                 </div>
             </section>
             <LeccionCTA
                 accent={ACCENT}
-                href="/temario/ley-normalizacion-euskera"
-                titulo="El euskera en tu oposición"
-                texto="Repasa la Ley de Normalización del Euskera y el sistema de perfiles lingüísticos que piden las oposiciones vascas."
-                cta="Ver el temario de euskera →"
+                href="/signup"
+                titulo="Prepara la oposición, no solo el concurso"
+                texto="La fase de oposición son 100 puntos: practica el temario oficial por tema, con simulacros y estadísticas de tu progreso. Empieza gratis."
+                cta="Crear cuenta gratis →"
             />
             <script
                 type="application/ld+json"

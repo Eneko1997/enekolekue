@@ -14,37 +14,27 @@ const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_live_51T
 const CHECKOUT_FN = process.env.NEXT_PUBLIC_CHECKOUT_FN_NAME || "create-embedded-checkout"
 const ACCENT = "#10B981"
 
-type PlanId = "monthly" | "lifetime"
+// Oferta única: pago único, acceso completo hasta el examen (mínimo 12 meses).
+const OFFER = { price: "39,99", valorTotal: "195" }
 
-const PLANS: Record<
-    PlanId,
-    { label: string; price: string; original?: string; suffix: string; sub: string }
-> = {
-    monthly: { label: "Mensual", price: "8,99", suffix: "/mes", sub: "Cancela cuando quieras" },
-    lifetime: { label: "De por vida", price: "39,99", original: "59,99", suffix: "", sub: "Pago único · Para siempre" },
-}
-
-const FEATURES = [
-    "Exámenes oficiales de convocatorias anteriores",
-    "Simulacros con penalización real del examen",
-    "Estadísticas avanzadas y progreso por escala",
-    "Actualizaciones gratuitas hasta el examen",
+// Lo que entra, con su valor de referencia (deliverables reales del producto).
+const INCLUYE = [
+    { t: "Exámenes oficiales de convocatorias anteriores", v: "59€" },
+    { t: "Casos Prácticos Gainditu, exclusivos", v: "49€" },
+    { t: "Simulacros con penalización real", v: "39€" },
+    { t: "Explicación con IA en cada pregunta", v: "29€" },
+    { t: "Estadísticas y progreso por escala", v: "19€" },
 ]
 
-function getInitialPlan(): PlanId {
-    if (typeof window === "undefined") return "lifetime"
-    return new URLSearchParams(window.location.search).get("plan") === "monthly"
-        ? "monthly"
-        : "lifetime"
-}
+// Bono real y exclusivo del acceso (las herramientas, avisos de convocatoria y
+// demás son gratis para todos, así que NO cuentan aquí como valor de pago).
+const BONOS = [{ t: "Plan de estudio personalizado hasta tu examen", v: "49€" }]
 
 export default function PaymentClient() {
     const rootRef = React.useRef<HTMLDivElement>(null)
     const isMobile = useIsMobile(rootRef)
     const { dark } = useTheme()
 
-    const [plan, setPlan] = React.useState<PlanId>("lifetime")
-    const [resolved, setResolved] = React.useState(false)
     const [authChecked, setAuthChecked] = React.useState(false)
     const [user, setUser] = React.useState<any>(null)
 
@@ -62,13 +52,15 @@ export default function PaymentClient() {
     const textMain = dark ? "#FFFFFF" : "#09090B"
     const textMuted = dark ? "#8B8D98" : "#71717A"
 
-    const cfg = PLANS[plan]
-    const authRedirect = `/payment?plan=${plan}`
+    const authRedirect = "/payment"
 
-    // Lee el plan de la URL y comprueba la sesión (una sola vez).
+    // Al entrar, siempre arriba (evita heredar el scroll de la página anterior).
     React.useEffect(() => {
-        setPlan(getInitialPlan())
-        setResolved(true)
+        window.scrollTo(0, 0)
+    }, [])
+
+    // Comprueba la sesión (una sola vez).
+    React.useEffect(() => {
         const supabase = createClient()
         supabase.auth.getUser().then(({ data }) => {
             setUser(data.user ?? null)
@@ -101,10 +93,9 @@ export default function PaymentClient() {
         }
     }, [])
 
-    // Crea/reinicia el checkout embebido para un plan. Descarta resultados obsoletos
-    // (si el plan cambió mientras se creaba la sesión, no monta la sesión vieja).
+    // Crea/reinicia el checkout embebido. El precio y el modo los fija el servidor.
     const initCheckout = React.useCallback(
-        async (forPlan: PlanId) => {
+        async () => {
             const myReq = ++reqIdRef.current
             setCheckoutError("")
             setEmbeddedReady(false)
@@ -124,7 +115,7 @@ export default function PaymentClient() {
 
                 const supabase = createClient()
                 const { data, error } = await supabase.functions.invoke(CHECKOUT_FN, {
-                    body: { plan: forPlan },
+                    body: {},
                 })
                 if (myReq !== reqIdRef.current) return
                 if (error) throw new Error(error.message || "Error al crear la sesión de pago")
@@ -156,80 +147,13 @@ export default function PaymentClient() {
         [ensureStripeScript, teardown]
     )
 
-    // Solo se crea el checkout cuando: URL leída + sesión comprobada + usuario logueado.
+    // Solo se crea el checkout cuando: sesión comprobada + usuario logueado.
     React.useEffect(() => {
-        if (!resolved || !authChecked || !user) return
-        initCheckout(plan)
+        if (!authChecked || !user) return
+        initCheckout()
         return () => teardown()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [plan, resolved, authChecked, user])
-
-    function PlanCard({ id }: { id: PlanId }) {
-        const p = PLANS[id]
-        const active = plan === id
-        const recommended = id === "lifetime"
-        return (
-            <button
-                onClick={() => setPlan(id)}
-                style={{
-                    flex: 1,
-                    textAlign: "left",
-                    padding: "14px 16px",
-                    borderRadius: "14px",
-                    border: `1.5px solid ${active ? ACCENT : border}`,
-                    background: active ? `${ACCENT}12` : surface,
-                    cursor: "pointer",
-                    position: "relative",
-                    fontFamily: "inherit",
-                    transition: "all .15s",
-                }}
-            >
-                {recommended && (
-                    <span
-                        style={{
-                            position: "absolute",
-                            top: "-9px",
-                            right: "12px",
-                            fontSize: "9px",
-                            fontWeight: 800,
-                            letterSpacing: "0.5px",
-                            textTransform: "uppercase",
-                            color: "#fff",
-                            background: ACCENT,
-                            padding: "2px 8px",
-                            borderRadius: "100px",
-                        }}
-                    >
-                        Recomendado
-                    </span>
-                )}
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <span
-                        style={{
-                            width: "16px",
-                            height: "16px",
-                            borderRadius: "50%",
-                            border: `2px solid ${active ? ACCENT : textMuted}`,
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}
-                    >
-                        {active && <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: ACCENT }} />}
-                    </span>
-                    <span style={{ fontSize: "14px", fontWeight: 700, color: textMain }}>{p.label}</span>
-                </div>
-                <div style={{ marginTop: "8px", display: "flex", alignItems: "baseline", gap: "6px" }}>
-                    <span style={{ fontSize: "22px", fontWeight: 900, color: textMain, letterSpacing: "-0.5px" }}>€{p.price}</span>
-                    <span style={{ fontSize: "12px", color: textMuted }}>{p.suffix}</span>
-                    {p.original && (
-                        <span style={{ fontSize: "12px", color: textMuted, textDecoration: "line-through" }}>€{p.original}</span>
-                    )}
-                </div>
-                <div style={{ fontSize: "11px", color: textMuted, marginTop: "2px" }}>{p.sub}</div>
-            </button>
-        )
-    }
+    }, [authChecked, user])
 
     return (
         <div
@@ -266,35 +190,69 @@ export default function PaymentClient() {
                     <div>
                         {!isMobile && (
                             <div style={{ fontSize: "11px", fontWeight: 700, color: ACCENT, letterSpacing: "1px", textTransform: "uppercase", marginBottom: "12px" }}>
-                                OPE Gobierno Vasco 2026
+                                Objetivo Plaza · OPE Gobierno Vasco 2026
                             </div>
                         )}
                         <h1 style={{ fontSize: isMobile ? "22px" : "30px", fontWeight: 800, letterSpacing: "-0.6px", lineHeight: 1.2, margin: "0 0 6px", color: textMain }}>
-                            Elige tu acceso a <span style={{ color: ACCENT }}>Gainditu Premium.</span>
+                            Todo hecho por ti para <span style={{ color: ACCENT }}>aprobar.</span>
                         </h1>
-                        <p style={{ fontSize: "13px", color: textMuted, margin: 0 }}>
-                            Prueba con la mensual o asegúrate el acceso de por vida con un único pago.
+                        <p style={{ fontSize: "13px", color: textMuted, margin: 0, lineHeight: 1.6 }}>
+                            Un único pago. Acceso completo hasta el día de tu examen.
                         </p>
                     </div>
 
-                    <div style={{ display: "flex", gap: "12px", marginTop: "2px" }}>
-                        <PlanCard id="monthly" />
-                        <PlanCard id="lifetime" />
-                    </div>
-
-                    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                        {FEATURES.map((f, i) => (
+                    {/* Value stack: lo que entra */}
+                    <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
+                        {INCLUYE.map((f, i) => (
                             <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                 <CheckIcon color={ACCENT} />
-                                <span style={{ fontSize: "13px", color: textMain }}>{f}</span>
+                                <span style={{ fontSize: "13px", color: textMain, flex: 1 }}>{f.t}</span>
+                                <span style={{ fontSize: "12px", color: textMuted, textDecoration: "line-through" }}>{f.v}</span>
+                            </div>
+                        ))}
+                        <div style={{ fontSize: "11px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "0.5px", marginTop: "6px" }}>
+                            Y además, de regalo:
+                        </div>
+                        {BONOS.map((f, i) => (
+                            <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <CheckIcon color={ACCENT} />
+                                <span style={{ fontSize: "13px", color: textMain, flex: 1 }}>{f.t}</span>
+                                <span style={{ fontSize: "12px", color: textMuted, textDecoration: "line-through" }}>{f.v}</span>
                             </div>
                         ))}
                     </div>
 
-                    <div style={{ fontSize: "11px", color: textMuted }}>
-                        {plan === "monthly"
-                            ? "Suscripción mensual · Cancela en un clic cuando quieras."
-                            : "Pago único · Sin suscripción · Garantía de 30 días."}
+                    {/* Total apilado vs precio */}
+                    <div style={{ borderTop: `1px solid ${border}`, paddingTop: "14px", display: "flex", flexDirection: "column", gap: "4px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                            <span style={{ fontSize: "13px", color: textMuted }}>Valor total</span>
+                            <span style={{ fontSize: "15px", color: textMuted, textDecoration: "line-through" }}>€{OFFER.valorTotal}</span>
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                            <span style={{ fontSize: "15px", fontWeight: 800, color: textMain }}>Hoy, pago único</span>
+                            <span style={{ fontSize: "30px", fontWeight: 900, color: ACCENT, letterSpacing: "-1px" }}>€{OFFER.price}</span>
+                        </div>
+                    </div>
+
+                    {/* Garantía */}
+                    <div style={{ background: `${ACCENT}10`, border: `1px solid ${ACCENT}35`, borderRadius: "12px", padding: "12px 14px", display: "flex", gap: "10px", alignItems: "flex-start" }}>
+                        <span style={{ marginTop: "1px" }}><CheckIcon color={ACCENT} /></span>
+                        <div>
+                            <div style={{ fontSize: "13px", fontWeight: 800, color: textMain }}>Garantía de 7 días*</div>
+                            <div style={{ fontSize: "12px", color: textMuted, lineHeight: 1.55 }}>
+                                Si no es para ti, te devolvemos el dinero. Sin preguntas.
+                                <span style={{ display: "block", marginTop: "4px", fontSize: "11px", opacity: 0.85 }}>
+                                    *No aplicable en compras a menos de un mes de un examen ya convocado.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Urgencia honesta + reason why (breve) */}
+                    <div style={{ fontSize: "11px", color: textMuted, lineHeight: 1.6 }}>
+                        <strong style={{ color: textMain }}>Precio de lanzamiento</strong>, subirá cuando
+                        publiquen las fechas de examen. Pago único, sin suscripción, con acceso hasta tu
+                        examen (mínimo 12 meses).
                     </div>
                 </motion.div>
 
@@ -312,7 +270,7 @@ export default function PaymentClient() {
                                     Inicia sesión para continuar
                                 </div>
                                 <p style={{ fontSize: "13px", color: textMuted, margin: 0, lineHeight: 1.6 }}>
-                                    El acceso Premium se vincula a tu cuenta. Entra o crea una cuenta gratis
+                                    El acceso se vincula a tu cuenta. Entra o crea una cuenta gratis
                                     y volverás aquí para completar el pago.
                                 </p>
                                 <Link
@@ -333,8 +291,8 @@ export default function PaymentClient() {
                                 <div style={{ padding: "16px 24px", borderBottom: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                     <span style={{ fontSize: "12px", color: textMuted }}>Pago seguro vía Stripe · SSL</span>
                                     <span style={{ fontSize: "13px", fontWeight: 800, color: textMain }}>
-                                        €{cfg.price}
-                                        <span style={{ fontSize: "11px", fontWeight: 600, color: textMuted }}>{cfg.suffix}</span>
+                                        €{OFFER.price}
+                                        <span style={{ fontSize: "11px", fontWeight: 600, color: textMuted }}> pago único</span>
                                     </span>
                                 </div>
 
@@ -357,7 +315,7 @@ export default function PaymentClient() {
                                     {checkoutError && (
                                         <div style={{ fontSize: "12px", color: "#B91C1C", background: "rgba(248,113,113,0.12)", border: "1px solid rgba(248,113,113,0.3)", padding: "10px 12px", borderRadius: "8px" }}>
                                             {checkoutError}{" "}
-                                            <button onClick={() => initCheckout(plan)} style={{ color: ACCENT, background: "none", border: "none", cursor: "pointer", fontWeight: 700 }}>
+                                            <button onClick={() => initCheckout()} style={{ color: ACCENT, background: "none", border: "none", cursor: "pointer", fontWeight: 700 }}>
                                                 Reintentar
                                             </button>
                                         </div>

@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     robots: { index: false, follow: false },
 }
 
+// Página privada por usuario: se renderiza en cliente (usa ?tab= reactivo).
+export const dynamic = "force-dynamic"
+
 export default function PerfilPage() {
     return <ProfileClient />
 }

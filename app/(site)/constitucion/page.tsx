@@ -99,9 +99,9 @@ const JSON_LD = [
 export default function ConstitucionPage() {
     return (
         <TemaTestsShell
-            eyebrow="Temario oficial · OPE 2026"
+            eyebrow="Temario oficial · Euskadi"
             title="La Constitución Española"
-            subtitle="La Constitución y la organización del Estado (temas 1 a 5), de lo más preguntado. Domínalos a base de tests reales, no de leer artículos."
+            subtitle="La Constitución y la organización del Estado (temas 1-5), de lo más preguntado. Domínalos con tests."
             ley="Constitución Española de 1978"
             stats={[
                 { n: "430", label: "preguntas" },
@@ -121,8 +121,8 @@ export default function ConstitucionPage() {
             tests={TESTS}
             faqs={FAQS}
             relacionadas={[
+                { label: "Temario completo", href: "/temario" },
                 { label: "Ley 39/2015", href: "/ley-39-2015" },
-                { label: "Todos los tests por escala", href: "/" },
                 { label: "Convocatorias de Euskadi", href: "/convocatorias" },
             ]}
             fuenteOficial={{

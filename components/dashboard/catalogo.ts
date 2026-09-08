@@ -32,6 +32,7 @@ export const AREA_ORDER = [
     "Almacenamiento y materiales",
     "Mantenimiento e instalaciones",
     "Exámenes oficiales de convocatorias reales",
+    "Casos Prácticos Gainditu",
     "Simulacros",
     "Otros temas",
 ]
@@ -39,6 +40,7 @@ export const AREA_ORDER = [
 export function areaDeTest(test: Test): string {
     const s = `${test.tema ?? ""} ${test.titulo}`.toLowerCase()
     const has = (...w: string[]) => w.some((x) => s.includes(x))
+    if (test.id.startsWith("ex_practico")) return "Casos Prácticos Gainditu"
     if (test.id.startsWith("ex_")) return "Exámenes oficiales de convocatorias reales"
     if (has("simulacro")) return "Simulacros"
     // Constitución + marco europeo (la UE se integra aquí para no quedar suelta)
@@ -213,7 +215,11 @@ export function agruparPorArea(bloques: Bloque[]): Bloque[] {
         })
     )
     // Áreas que se fijan al final en este orden, fuera de la fusión de bloques sueltos.
-    const PINNED = ["Exámenes oficiales de convocatorias reales", "Simulacros"]
+    const PINNED = [
+        "Exámenes oficiales de convocatorias reales",
+        "Casos Prácticos Gainditu",
+        "Simulacros",
+    ]
     const esPinned = (a: string) => PINNED.includes(a)
     // Orden canónico (las áreas fijadas al final se excluyen aquí)
     const ordenadas = AREA_ORDER.filter((a) => map.has(a) && !esPinned(a))
@@ -391,6 +397,12 @@ export const dbAuxiliares: Bloque[] = [
         ],
     },
     {
+        bloque: "Prevención de sobreesfuerzos y ergonomía",
+        tests: [
+            { id: "apoyo31", titulo: "Ergonomía y prevención de sobreesfuerzos: manipulación de cargas, posturas forzadas, movimientos repetitivos y fuerzas de empuje y tracción", preguntas: 30 },
+        ],
+    },
+    {
         bloque: "Simulacros Personal de Apoyo",
         tests: [
             { id: "sim_aux1", titulo: "Simulacro completo Personal de Apoyo — 60 preguntas", preguntas: 60 },
@@ -413,6 +425,16 @@ export const dbAdministrativos: Bloque[] = [
                 id: "adm16",
                 tema: "T.16",
                 titulo: "T.16 — Presupuesto de ingresos: tipos, fases y devolución de ingresos indebidos",
+                preguntas: 30,
+            },
+        ],
+    },
+    {
+        bloque: "Hacienda General del País Vasco",
+        tests: [
+            {
+                id: "adm35",
+                titulo: "Hacienda General del País Vasco: concepto y principios, recaudación, contabilidad pública y finanzas",
                 preguntas: 30,
             },
         ],
@@ -554,25 +576,90 @@ export const dbAdministrativos: Bloque[] = [
         bloque: "Exámenes oficiales de convocatorias reales",
         tests: [
             {
+                id: "ex_admin_ope_gv_2010",
+                titulo: "Examen Administrativo — OPE del Gobierno Vasco, 2010 · Prueba 1ª (teórico)",
+                preguntas: 114,
+            },
+            {
+                id: "ex_admin_ope_gv_2010_p2",
+                titulo: "Examen Administrativo — OPE del Gobierno Vasco, 2010 · Prueba 2ª (supuestos prácticos)",
+                preguntas: 52,
+            },
+            {
+                id: "ex_admin_bolsa_gv_2017",
+                titulo: "Examen Administrativo — Bolsa de Trabajo del Gobierno Vasco, 2017",
+                preguntas: 57,
+            },
+            {
+                id: "ex_supe_bolsa_gv_2015",
+                titulo: "Examen Técnico Superior de Administración — Bolsa de Trabajo del Gobierno Vasco, 2015",
+                preguntas: 68,
+            },
+            {
+                id: "ex_vitoria_tsag_2026",
+                titulo: "Examen Técnico Superior de Administración General — Ayuntamiento de Vitoria-Gasteiz, 2024",
+                preguntas: 85,
+            },
+            {
                 id: "ex_zamudio_adm_2024",
-                titulo: "Examen Administrativo — Ayuntamiento de Zamudio, 2024 (partes A y B, 100 preguntas, con solución oficial)",
+                titulo: "Examen Administrativo — Ayuntamiento de Zamudio, 2024",
                 preguntas: 100,
             },
             {
                 id: "ex_erandio_adm_2024",
-                titulo: "Examen Administrativo — Ayuntamiento de Erandio, 2024 (parte A, 45 preguntas, con solución oficial)",
+                titulo: "Examen Administrativo — Ayuntamiento de Erandio, 2024",
                 preguntas: 45,
             },
             {
                 id: "ex_muskiz_adm_2023",
-                titulo: "Examen Administrativo — Ayuntamiento de Muskiz, 2023 (60 preguntas, con solución explicada)",
+                titulo: "Examen Administrativo — Ayuntamiento de Muskiz, 2023",
                 preguntas: 60,
+            },
+            {
+                id: "ex_admin_bilbao_2024",
+                titulo: "Examen Administrativo — Ayuntamiento de Bilbao, 2024 · Bloque de derecho general",
+                preguntas: 61,
+            },
+        ],
+    },
+    {
+        bloque: "Casos Prácticos Gainditu",
+        tests: [
+            {
+                id: "ex_practico_admin_mix_1",
+                titulo: "Casos Prácticos Gainditu — Administrativo · Procedimiento y función pública",
+                preguntas: 20,
+            },
+            {
+                id: "ex_practico_admin_mix_2",
+                titulo: "Casos Prácticos Gainditu — Administrativo · Hacienda y régimen local",
+                preguntas: 20,
+            },
+            {
+                id: "ex_practico_admin_mix_3",
+                titulo: "Casos Prácticos Gainditu — Administrativo · Constitución, UE y archivo",
+                preguntas: 20,
+            },
+            {
+                id: "ex_practico_admin_recursos_5",
+                titulo: "Casos Prácticos Gainditu — Administrativo · Recursos",
+                preguntas: 20,
+            },
+            {
+                id: "ex_practico_admin_mix_7",
+                titulo: "Casos Prácticos Gainditu — Administrativo · Administración electrónica y datos",
+                preguntas: 20,
             },
         ],
     },
     {
         bloque: "Simulacros Administrativos",
         tests: [
+            {
+                id: "sim_adm_general_1",
+                titulo: "Simulacro de examen Administrativo — 100 preguntas (90 + 10 de reserva)",
+                preguntas: 100,
+            },
             {
                 id: "sim_adm1",
                 titulo: "Simulacro completo — 70 preguntas",
@@ -683,6 +770,16 @@ export const dbGestion: Bloque[] = [
                 id: "ges_pronto",
                 titulo: "Temario específico — En preparación, disponible próximamente",
                 preguntas: 0,
+            },
+        ],
+    },
+    {
+        bloque: "Casos Prácticos Gainditu",
+        tests: [
+            {
+                id: "ex_practico_ges_mix_6",
+                titulo: "Casos Prácticos Gainditu — Técnico de Gestión",
+                preguntas: 20,
             },
         ],
     },
@@ -1095,8 +1192,23 @@ export const dbSuperiores: Bloque[] = [
         ],
     },
     {
+        bloque: "Casos Prácticos Gainditu",
+        tests: [
+            {
+                id: "ex_practico_supe_mix_4",
+                titulo: "Casos Prácticos Gainditu — Técnico Superior",
+                preguntas: 20,
+            },
+        ],
+    },
+    {
         bloque: "Simulacros Técnicos Superiores",
         tests: [
+            {
+                id: "sim_sup_general_1",
+                titulo: "Simulacro de examen Técnico Superior — 100 preguntas (90 + 10 de reserva)",
+                preguntas: 100,
+            },
             {
                 id: "sim_sup1",
                 titulo: "Simulacro Parte General — 50 preguntas",

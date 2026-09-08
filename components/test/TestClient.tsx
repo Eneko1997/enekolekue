@@ -9,6 +9,11 @@ import { TITULOS_CATALOGO } from "@/components/dashboard/catalogo"
 import LightNavbar from "@/components/site/LightNavbar"
 import { useTheme } from "@/lib/use-theme"
 import SiteFooter from "@/components/site/SiteFooter"
+import FunnelWall from "@/components/funnel/FunnelWall"
+import { logFunnelEvent } from "@/lib/funnel"
+
+// Crédito gratuito vitalicio (preguntas de temario) para usuarios registrados no premium.
+const LIMITE_GRATIS = 350
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ougvtcmqmcutrexxrxvz.supabase.co")
 const SUPABASE_ANON_KEY = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_lfcfMDSYpIDWzy2CWufT_A_NfJbTimc")
@@ -88,6 +93,21 @@ async function fetchPreguntasBloque(
     return partirEnBloques(data as any[], nBloques)[indice - 1] ?? []
 }
 
+async function fetchPreguntasOficial(testId: string): Promise<any[]> {
+    // Exámenes oficiales (ex_*): se sirven EN ORDEN (no barajados) para respetar
+    // la secuencia real del examen y, sobre todo, los supuestos prácticos
+    // encadenados (un caso con varias preguntas que dependen del enunciado
+    // anterior). La tabla preguntas tiene lectura pública; el candado premium de
+    // los ex_* es de cliente (esSimulacro && !isPremium).
+    const { data, error } = await supabase
+        .from("preguntas")
+        .select("*")
+        .eq("test_id", testId)
+        .order("orden", { ascending: true })
+    if (error || !Array.isArray(data)) return []
+    return data
+}
+
 async function saveResult(payload: object, _token: string) {
     await supabase.from("test_results").insert(payload as any)
 }
@@ -141,9 +161,37 @@ function shuffleArray<T>(arr: T[]): T[] {
     return a
 }
 
-// Baraja las opciones de una pregunta y recalcula el índice de la correcta,
-// para que la posición de la respuesta no revele el acierto (todo el banco
-// tiende a colocar la correcta en la 2ª opción).
+// Opción "agregada": su sentido depende del conjunto ("Todas las anteriores",
+// "Ninguna de las otras respuestas", "Todas son correctas"…). Se deja al FINAL,
+// pero el resto de opciones puede barajarse sin problema.
+function esOpcionAgregada(texto: string): boolean {
+    const t = String(texto || "").toLowerCase()
+    return (
+        /\banteriores\b/.test(t) ||
+        /\btod[oa]s\b[^.]*\bson\s+(correct|incorrect)/.test(t) ||
+        /\btod[oa]s\s+l[oa]s\s+(respuestas|opciones|afirmaciones)\b/.test(t) ||
+        /\bningun[ao]\b[^.]*\b(otras?|respuestas?|opciones|correct)/.test(t)
+    )
+}
+
+// Opción que referencia LETRAS concretas de otras opciones ("a y b son correctas",
+// "a) y c) son correctas", "respuestas a y c"…). Además de ir al final, obliga a NO
+// barajar el contenido: si se moviera, "a"/"b"/"c"/"d" dejarían de apuntar a lo debido.
+function refiereLetras(texto: string): boolean {
+    const t = String(texto || "").toLowerCase()
+    return (
+        /\b[a-d]\)\s*y\s*[a-d]\)/.test(t) || // "a) y c)"
+        /\b[a-d]\s+y\s+[a-d]\s+(son|resultan|ser[íi]an)\b/.test(t) || // "a y b son correctas/incorrectas"
+        /\brespuestas?\s+[a-d]\b/.test(t) || // "respuesta a", "respuestas a) y c)"
+        /\b(letras?|opci[oó]n(?:es)?)\s+[a-d]\b/.test(t) // "letra a", "opción c"
+    )
+}
+
+// Baraja las opciones y recalcula el índice de la correcta, para que la posición no
+// revele el acierto (el banco tiende a poner la correcta en la 2ª). Salvedades: las
+// opciones "agregadas" (todas/ninguna de las anteriores) se dejan al final; y si alguna
+// opción referencia letras concretas (a y b son correctas…), el contenido NO se baraja,
+// para no romper esas referencias — se limita a llevar las "meta" al final.
 function shuffleOpciones(
     opciones: string[],
     correcta: number
@@ -151,7 +199,16 @@ function shuffleOpciones(
     if (!Array.isArray(opciones) || opciones.length < 2)
         return { opciones, correcta }
     const textoCorrecto = opciones[correcta]
-    const barajadas = shuffleArray(opciones)
+    const esMeta = (o: string) => esOpcionAgregada(o) || refiereLetras(o)
+    const metas = opciones.filter((o) => esMeta(o))
+    const contenido = opciones.filter((o) => !esMeta(o))
+    if (metas.length === 0) {
+        const barajadas = shuffleArray(opciones)
+        return { opciones: barajadas, correcta: barajadas.indexOf(textoCorrecto) }
+    }
+    const hayRefLetras = opciones.some(refiereLetras)
+    const contenidoFinal = hayRefLetras ? contenido : shuffleArray(contenido)
+    const barajadas = [...contenidoFinal, ...metas]
     return { opciones: barajadas, correcta: barajadas.indexOf(textoCorrecto) }
 }
 
@@ -169,6 +226,10 @@ function getUrlParam(name: string): string | null {
 const TITULOS: Record<string, string> = {
     // ── BLOQUE COMÚN (temas 1-14, compartidos en las 4 escalas) ──────────────
     c00: "Simulacro Parte General — Temas 1 al 14",
+    free_sim_adm: "Simulacro Administrativo — Gobierno Vasco",
+    free_sim_apoyo: "Simulacro Personal de Apoyo — Gobierno Vasco",
+    free_sim_ges: "Simulacro Técnico de Gestión — Gobierno Vasco",
+    free_sim_sup: "Simulacro Técnico Superior — Gobierno Vasco",
     c01: "T.1 — Constitución: derechos, libertades y garantías. Deberes. Principios constitucionales de la actuación administrativa",
     c02: "T.2 — Organización territorial del Estado. Comunidades Autónomas y Estatutos de Autonomía",
     c03: "T.3 — Derecho de la Unión Europea. Instituciones. Reglamentos y Directivas",
@@ -368,6 +429,7 @@ interface Pregunta {
     opciones: string[]
     correcta: number
     explicacion: string
+    tema?: string | null
 }
 type Modo = "examen" | "repaso"
 type Fase =
@@ -1242,7 +1304,7 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                         Vasco 2026.
                     </p>
                     <a
-                        href="mailto:gaindituoposiciones@gmail.com"
+                        href="mailto:info@gaindituoposiciones.com"
                         style={{
                             fontSize: "13px",
                             color: accent,
@@ -1250,7 +1312,7 @@ function SharedFooter({ dark, accent }: { dark: boolean; accent: string }) {
                             fontWeight: 600,
                         }}
                     >
-                        gaindituoposiciones@gmail.com
+                        info@gaindituoposiciones.com
                     </a>
                 </div>
                 {/* OPE 2026 */}
@@ -1492,6 +1554,9 @@ function PantallaInicio({
     accent,
     modo,
     setModo,
+    isPremium,
+    mostrarCredito = false,
+    restantesGratis = 0,
 }: {
     titulo: string
     total: number
@@ -1500,6 +1565,9 @@ function PantallaInicio({
     accent: string
     modo: Modo
     setModo: (m: Modo) => void
+    isPremium: boolean
+    mostrarCredito?: boolean
+    restantesGratis?: number
 }) {
     const { dark } = useTheme()
     const c = getC(dark)
@@ -1566,11 +1634,45 @@ function PantallaInicio({
                     style={{
                         color: c.muted,
                         fontSize: "14px",
-                        marginBottom: "28px",
+                        marginBottom: mostrarCredito ? "14px" : "28px",
                     }}
                 >
                     {total} preguntas
                 </p>
+                {mostrarCredito && (
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            gap: "10px",
+                            background: restantesGratis > 0 ? `${accent}12` : `${c.error}12`,
+                            border: `1px solid ${restantesGratis > 0 ? accent + "35" : c.error + "35"}`,
+                            borderRadius: "12px",
+                            padding: "10px 14px",
+                            marginBottom: "24px",
+                            fontSize: "13px",
+                        }}
+                    >
+                        <span style={{ color: c.text }}>
+                            {restantesGratis > 0 ? (
+                                <>
+                                    Te quedan{" "}
+                                    <strong style={{ color: accent }}>{restantesGratis}</strong>{" "}
+                                    preguntas gratis
+                                </>
+                            ) : (
+                                <>Has agotado tus preguntas gratis</>
+                            )}
+                        </span>
+                        <a
+                            href="/payment"
+                            style={{ color: accent, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}
+                        >
+                            {restantesGratis > 0 ? "Acceso completo →" : "Desbloquear →"}
+                        </a>
+                    </div>
+                )}
                 <div
                     style={{
                         display: "grid",
@@ -1609,9 +1711,29 @@ function PantallaInicio({
                                     fontWeight: 700,
                                     color: modo === m ? accent : c.text,
                                     marginBottom: "4px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "6px",
+                                    flexWrap: "wrap",
                                 }}
                             >
                                 {m === "repaso" ? "Modo Repaso" : "Modo Examen"}
+                                {m === "examen" && !isPremium && (
+                                    <span
+                                        style={{
+                                            fontSize: "9px",
+                                            fontWeight: 800,
+                                            letterSpacing: "0.5px",
+                                            textTransform: "uppercase",
+                                            color: "#fff",
+                                            background: accent,
+                                            padding: "2px 6px",
+                                            borderRadius: "100px",
+                                        }}
+                                    >
+                                        Premium
+                                    </span>
+                                )}
                             </div>
                             <div
                                 style={{
@@ -1622,6 +1744,8 @@ function PantallaInicio({
                             >
                                 {m === "repaso"
                                     ? "Feedback por pregunta. Sin penalización. Aprende de los errores."
+                                    : m === "examen" && !isPremium
+                                    ? "Como el examen real, con penalización. Incluido en Premium."
                                     : "Sin feedback hasta el final. Elige si penaliza o no."}
                             </div>
                         </motion.div>
@@ -1901,16 +2025,42 @@ function ModalImpugnar({
     dark,
     accent,
     onClose,
-    onConfirm,
 }: {
     pregunta: Pregunta
     dark: boolean
     accent: string
     onClose: () => void
-    onConfirm: () => void
 }) {
     const t = getTheme(dark)
-    const c = getC(dark)
+    const [motivo, setMotivo] = useState("")
+    const [estado, setEstado] = useState<"idle" | "enviando" | "ok" | "error">("idle")
+
+    async function enviar() {
+        setEstado("enviando")
+        const testId =
+            new URLSearchParams(window.location.search).get("id") || "desconocido"
+        try {
+            let email = ""
+            try { const { data: u } = await supabase.auth.getUser(); email = u.user?.email || "" } catch { /* invitado */ }
+            const { data, error } = await supabase.functions.invoke("impugnar-pregunta", {
+                body: {
+                    test_id: testId,
+                    pregunta_id: String(pregunta.id),
+                    enunciado: pregunta.enunciado,
+                    opciones: pregunta.opciones,
+                    correcta: pregunta.correcta,
+                    explicacion: pregunta.explicacion || "",
+                    motivo: motivo.trim(),
+                    url: window.location.href,
+                    email,
+                },
+            })
+            setEstado(!error && (data as { ok?: boolean })?.ok ? "ok" : "error")
+        } catch {
+            setEstado("error")
+        }
+    }
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -1943,100 +2093,87 @@ function ModalImpugnar({
                     width: "100%",
                 }}
             >
-                <div
-                    style={{
-                        fontSize: "28px",
-                        marginBottom: "10px",
-                        textAlign: "center",
-                    }}
-                >
-                    ⚑
-                </div>
-                <h3
-                    style={{
-                        fontSize: "16px",
-                        fontWeight: 800,
-                        color: t.textMain,
-                        margin: "0 0 8px",
-                        textAlign: "center",
-                    }}
-                >
-                    ¿Impugnar esta pregunta?
-                </h3>
-                <p
-                    style={{
-                        fontSize: "13px",
-                        color: t.textMuted,
-                        lineHeight: 1.6,
-                        margin: "0 0 16px",
-                        textAlign: "center",
-                    }}
-                >
-                    Se enviará un email para revisarla. Solo hazlo si crees que
-                    hay un error real en la pregunta o la respuesta correcta.
-                </p>
-                <div
-                    style={{
-                        background: dark
-                            ? "rgba(255,255,255,0.06)"
-                            : "rgba(0,0,0,0.05)",
-                        border: `1px solid ${t.border}`,
-                        borderRadius: "10px",
-                        padding: "12px",
-                        marginBottom: "20px",
-                    }}
-                >
-                    <div
-                        style={{
-                            fontSize: "12px",
-                            color: t.textMain,
-                            lineHeight: 1.6,
-                            overflow: "hidden",
-                            display: "-webkit-box",
-                            WebkitLineClamp: 4,
-                            WebkitBoxOrient: "vertical",
-                        }}
-                    >
-                        {pregunta.enunciado}
-                    </div>
-                </div>
-                <div style={{ display: "flex", gap: "10px" }}>
-                    <button
-                        onClick={onClose}
-                        style={{
-                            flex: 1,
-                            padding: "12px",
-                            borderRadius: "10px",
-                            background: "transparent",
-                            border: `1px solid ${t.border}`,
-                            color: t.textMuted,
-                            cursor: "pointer",
-                            fontSize: "14px",
-                            fontWeight: 600,
-                            fontFamily: "var(--font-manrope), system-ui, sans-serif",
-                        }}
-                    >
-                        Cancelar
-                    </button>
-                    <motion.button
-                        whileTap={{ scale: 0.97 }}
-                        onClick={onConfirm}
-                        style={{
-                            flex: 1,
-                            padding: "12px",
-                            borderRadius: "10px",
-                            background: "#EF4444",
-                            color: "#fff",
-                            border: "none",
-                            cursor: "pointer",
-                            fontSize: "14px",
-                            fontWeight: 700,
-                            fontFamily: "var(--font-manrope), system-ui, sans-serif",
-                        }}
-                    >
-                        Sí, impugnar
-                    </motion.button>
-                </div>
+                {estado === "ok" ? (
+                    <>
+                        <div style={{ fontSize: "28px", marginBottom: "10px", textAlign: "center", color: accent }}>✓</div>
+                        <h3 style={{ fontSize: "16px", fontWeight: 800, color: t.textMain, margin: "0 0 8px", textAlign: "center" }}>
+                            ¡Gracias! La revisaremos
+                        </h3>
+                        <p style={{ fontSize: "13px", color: t.textMuted, lineHeight: 1.6, margin: "0 0 20px", textAlign: "center" }}>
+                            Hemos recibido tu impugnación. Si hay un error en la pregunta, lo corregiremos.
+                        </p>
+                        <motion.button
+                            whileTap={{ scale: 0.97 }}
+                            onClick={onClose}
+                            style={{ width: "100%", padding: "12px", borderRadius: "10px", background: accent, color: "#fff", border: "none", cursor: "pointer", fontSize: "14px", fontWeight: 700, fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+                        >
+                            Cerrar
+                        </motion.button>
+                    </>
+                ) : (
+                    <>
+                        <div style={{ fontSize: "28px", marginBottom: "10px", textAlign: "center" }}>⚑</div>
+                        <h3 style={{ fontSize: "16px", fontWeight: 800, color: t.textMain, margin: "0 0 8px", textAlign: "center" }}>
+                            ¿Impugnar esta pregunta?
+                        </h3>
+                        <p style={{ fontSize: "13px", color: t.textMuted, lineHeight: 1.6, margin: "0 0 14px", textAlign: "center" }}>
+                            Solo si crees que hay un error real en la pregunta o en la respuesta correcta. La revisaremos.
+                        </p>
+                        <div
+                            style={{
+                                background: dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)",
+                                border: `1px solid ${t.border}`,
+                                borderRadius: "10px",
+                                padding: "12px",
+                                marginBottom: "14px",
+                            }}
+                        >
+                            <div style={{ fontSize: "12px", color: t.textMain, lineHeight: 1.6, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical" }}>
+                                {pregunta.enunciado}
+                            </div>
+                        </div>
+                        <textarea
+                            value={motivo}
+                            onChange={(e) => setMotivo(e.target.value)}
+                            rows={3}
+                            placeholder="¿Qué está mal? (opcional)"
+                            style={{
+                                width: "100%",
+                                resize: "vertical",
+                                padding: "10px 12px",
+                                borderRadius: "10px",
+                                border: `1px solid ${t.border}`,
+                                background: dark ? "#101018" : "#FFFFFF",
+                                color: t.textMain,
+                                fontSize: "13px",
+                                fontFamily: "var(--font-manrope), system-ui, sans-serif",
+                                outline: "none",
+                                marginBottom: estado === "error" ? "8px" : "16px",
+                            }}
+                        />
+                        {estado === "error" && (
+                            <p style={{ fontSize: "12px", color: "#EF4444", margin: "0 0 12px" }}>
+                                No se ha podido enviar. Inténtalo de nuevo.
+                            </p>
+                        )}
+                        <div style={{ display: "flex", gap: "10px" }}>
+                            <button
+                                onClick={onClose}
+                                style={{ flex: 1, padding: "12px", borderRadius: "10px", background: "transparent", border: `1px solid ${t.border}`, color: t.textMuted, cursor: "pointer", fontSize: "14px", fontWeight: 600, fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+                            >
+                                Cancelar
+                            </button>
+                            <motion.button
+                                whileTap={{ scale: 0.97 }}
+                                onClick={enviar}
+                                disabled={estado === "enviando"}
+                                style={{ flex: 1, padding: "12px", borderRadius: "10px", background: "#EF4444", color: "#fff", border: "none", cursor: estado === "enviando" ? "default" : "pointer", opacity: estado === "enviando" ? 0.7 : 1, fontSize: "14px", fontWeight: 700, fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+                            >
+                                {estado === "enviando" ? "Enviando…" : "Enviar"}
+                            </motion.button>
+                        </div>
+                    </>
+                )}
             </motion.div>
         </motion.div>
     )
@@ -2046,6 +2183,7 @@ function PantallaPregunta({
     pregunta,
     numero,
     total,
+    titulo,
     modo,
     respuesta,
     onRespuesta,
@@ -2059,6 +2197,7 @@ function PantallaPregunta({
     pregunta: Pregunta
     numero: number
     total: number
+    titulo: string
     modo: Modo
     respuesta: number | null
     onRespuesta: (i: number) => void
@@ -2074,6 +2213,39 @@ function PantallaPregunta({
     const respondida = respuesta !== null
     const mostrarFeedback = modo === "repaso" && respondida
     const fallo = mostrarFeedback && respuesta !== pregunta.correcta
+
+    // "Explicación con IA": gesto de razonamiento antes de mostrar la explicación
+    // (que ya está escrita) para que se sienta como un profesor / una IA.
+    const [pensando, setPensando] = useState(false)
+    const [typed, setTyped] = useState("")
+    useEffect(() => {
+        if (!verExp) {
+            setPensando(false)
+            return
+        }
+        setPensando(true)
+        const t = setTimeout(() => setPensando(false), 2200)
+        return () => clearTimeout(t)
+    }, [verExp, pregunta])
+    // Efecto de escritura progresiva (como una IA escribiendo) al terminar de "pensar".
+    useEffect(() => {
+        if (!verExp || pensando) {
+            setTyped("")
+            return
+        }
+        const full = pregunta.explicacion || ""
+        let i = 0
+        setTyped("")
+        const id = setInterval(() => {
+            i += 2
+            setTyped(full.slice(0, i))
+            if (i >= full.length) {
+                setTyped(full)
+                clearInterval(id)
+            }
+        }, 18)
+        return () => clearInterval(id)
+    }, [verExp, pensando, pregunta])
 
     function bg(i: number) {
         if (!mostrarFeedback)
@@ -2115,6 +2287,20 @@ function PantallaPregunta({
             }}
         >
             <div style={{ marginBottom: "20px" }}>
+                <div
+                    title={titulo}
+                    style={{
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        color: c.muted,
+                        marginBottom: "8px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                    }}
+                >
+                    {titulo.replace(/^E?\.?T\.\d+\s*—\s*/, "")}
+                </div>
                 <div
                     style={{
                         display: "flex",
@@ -2256,7 +2442,7 @@ function PantallaPregunta({
             </div>
 
             <AnimatePresence>
-                {fallo && (
+                {fallo && !!pregunta.explicacion && (
                     <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
@@ -2286,7 +2472,7 @@ function PantallaPregunta({
                                         color: c.warning,
                                     }}
                                 >
-                                    Explicación
+                                    Explicación con IA
                                 </span>
                                 <button
                                     onClick={onToggleExp}
@@ -2304,9 +2490,34 @@ function PantallaPregunta({
                                     {verExp ? "Ocultar" : "Ver"}
                                 </button>
                             </div>
-                            <AnimatePresence>
-                                {verExp && (
+                            <AnimatePresence mode="wait">
+                                {verExp && pensando && (
+                                    <motion.div
+                                        key="pensando"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "8px",
+                                            fontSize: "12px",
+                                            color: c.warning,
+                                            fontStyle: "italic",
+                                            fontFamily: READ_FONT,
+                                        }}
+                                    >
+                                        <motion.span
+                                            animate={{ opacity: [0.3, 1, 0.3] }}
+                                            transition={{ duration: 1, repeat: Infinity }}
+                                        >
+                                            El profe lo está razonando…
+                                        </motion.span>
+                                    </motion.div>
+                                )}
+                                {verExp && !pensando && (
                                     <motion.p
+                                        key="texto"
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
@@ -2319,7 +2530,22 @@ function PantallaPregunta({
                                             fontFamily: READ_FONT,
                                         }}
                                     >
-                                        {pregunta.explicacion}
+                                        {typed}
+                                        {typed.length < (pregunta.explicacion || "").length && (
+                                            <motion.span
+                                                aria-hidden
+                                                animate={{ opacity: [1, 0.15, 1] }}
+                                                transition={{ duration: 0.8, repeat: Infinity }}
+                                                style={{
+                                                    display: "inline-block",
+                                                    width: "2px",
+                                                    height: "1em",
+                                                    marginLeft: "1px",
+                                                    verticalAlign: "text-bottom",
+                                                    background: accent,
+                                                }}
+                                            />
+                                        )}
                                     </motion.p>
                                 )}
                             </AnimatePresence>
@@ -2398,6 +2624,10 @@ function PantallaExamen({
     const c = getC(dark)
     const total = preguntas.length
     const respondidas = respuestas.filter((r) => r !== null).length
+    // En modo examen la opción marcada NO debe parecer "correcta": se usa un
+    // gris/pizarra neutro (no el verde de acierto), solo para indicar que está elegida.
+    const markBorder = dark ? "#94A3B8" : "#475569"
+    const markFill = dark ? "rgba(148,163,184,0.16)" : "rgba(71,85,105,0.08)"
 
     return (
         <div
@@ -2556,11 +2786,9 @@ function PantallaExamen({
                                     style={{
                                         padding: "12px 16px",
                                         borderRadius: "10px",
-                                        border: `1.5px solid ${resp === j ? accent : c.border}`,
+                                        border: `1.5px solid ${resp === j ? markBorder : c.border}`,
                                         background:
-                                            resp === j
-                                                ? `${accent}15`
-                                                : "transparent",
+                                            resp === j ? markFill : "transparent",
                                         cursor: "pointer",
                                         display: "flex",
                                         alignItems: "center",
@@ -2574,7 +2802,7 @@ function PantallaExamen({
                                             width: "24px",
                                             height: "24px",
                                             borderRadius: "50%",
-                                            border: `1.5px solid ${resp === j ? accent : c.border}`,
+                                            border: `1.5px solid ${resp === j ? markBorder : c.border}`,
                                             display: "flex",
                                             alignItems: "center",
                                             justifyContent: "center",
@@ -2582,11 +2810,9 @@ function PantallaExamen({
                                             fontWeight: 700,
                                             flexShrink: 0,
                                             color:
-                                                resp === j ? accent : c.muted,
+                                                resp === j ? markBorder : c.muted,
                                             background:
-                                                resp === j
-                                                    ? `${accent}20`
-                                                    : "transparent",
+                                                resp === j ? markFill : "transparent",
                                         }}
                                     >
                                         {["A", "B", "C", "D"][j]}
@@ -3580,7 +3806,7 @@ function PremiumPopup({
                                 textDecoration: "line-through",
                             }}
                         >
-                            59,99€
+                            195€
                         </span>
                         <span
                             style={{
@@ -3594,16 +3820,16 @@ function PremiumPopup({
                         </span>
                     </div>
                     <div style={{ fontSize: "12px", color: "#8B8D98" }}>
-                        Acceso completo · Pago único · Sin suscripción
+                        Acceso completo · Pago único · Sin suscripción · Hasta tu examen
                     </div>
                 </div>
                 <div style={{ textAlign: "left", marginBottom: "22px" }}>
                     {[
+                        " Plan de estudio personalizado hasta tu examen",
                         " Exámenes oficiales de convocatorias anteriores",
                         " Simulacros cronometrados con penalización real del examen",
-                        " Técnicas de estudio y memorización",
-                        " Actualizaciones gratuitas hasta el examen",
-                        " Comunidad privada de opositores vascos",
+                        " Explicación con IA en cada pregunta",
+                        " Estadísticas y seguimiento de tu progreso",
                     ].map((item, i) => (
                         <div
                             key={i}
@@ -3773,6 +3999,27 @@ export default function TestScreen(props: {
     const limiteFree = PREMIUM_TESTS[testId] ?? null // null = sin límite
     // Simulacros (sim_*) y exámenes oficiales de convocatorias reales (ex_*) = solo premium
     const esSimulacro = testId.startsWith("sim_") || testId.startsWith("ex_")
+    // EXCEPCIÓN — embudo del simulacro gratis: solo se activa con ?funnel=1 (lo
+    // enlaza la landing). El resto de tests NO cambian nada de su comportamiento.
+    const funnel = getUrlParam("funnel") === "1"
+
+    // Anti-copia: en simulacros (sim_*) y exámenes oficiales (ex_*) no se puede
+    // seleccionar ni copiar el texto de las preguntas. Medida silenciosa (sin aviso)
+    // para evitar que se copien todos los exámenes de golpe.
+    useEffect(() => {
+        if (!esSimulacro) return
+        const bloquear = (e: Event) => e.preventDefault()
+        document.addEventListener("copy", bloquear)
+        document.addEventListener("cut", bloquear)
+        document.addEventListener("contextmenu", bloquear)
+        document.body.classList.add("no-copy")
+        return () => {
+            document.removeEventListener("copy", bloquear)
+            document.removeEventListener("cut", bloquear)
+            document.removeEventListener("contextmenu", bloquear)
+            document.body.classList.remove("no-copy")
+        }
+    }, [esSimulacro])
 
     const { dark } = useTheme()
     const c = getC(dark)
@@ -3794,37 +4041,9 @@ export default function TestScreen(props: {
     const [regError, setRegError] = useState("")
     const [regSuccess, setRegSuccess] = useState("")
     const [impugnarPregunta, setImpugnarPregunta] = useState<any>(null)
-    const [impugnarEnviado, setImpugnarEnviado] = useState(false)
 
     function handleImpugnar(pregunta: any) {
         setImpugnarPregunta(pregunta)
-        setImpugnarEnviado(false)
-    }
-
-    function confirmarImpugnacion() {
-        if (!impugnarPregunta) return
-        const p = impugnarPregunta
-        const testId =
-            new URLSearchParams(window.location.search).get("id") ||
-            "desconocido"
-        const asunto = encodeURIComponent(
-            `[Gainditu] Impugnación pregunta ${p.id} — Test ${testId}`
-        )
-        const cuerpo = encodeURIComponent(
-            `IMPUGNACIÓN DE PREGUNTA\n` +
-                `========================\n\n` +
-                `ID pregunta: ${p.id}\n` +
-                `Test: ${testId}\n` +
-                `URL: ${window.location.href}\n\n` +
-                `ENUNCIADO:\n${p.enunciado}\n\n` +
-                `OPCIONES:\n${p.opciones.map((o: string, i: number) => `${i === p.correcta ? "✓" : " "} ${String.fromCharCode(65 + i)}) ${o}`).join("\n")}\n\n` +
-                `RESPUESTA MARCADA COMO CORRECTA: ${String.fromCharCode(65 + p.correcta)}) ${p.opciones[p.correcta]}\n\n` +
-                `EXPLICACIÓN ACTUAL:\n${p.explicacion}\n\n` +
-                `MOTIVO DE LA IMPUGNACIÓN:\n[El usuario no ha especificado — contactar si es necesario]\n`
-        )
-        window.location.href = `mailto:gaindituoposiciones@gmail.com?subject=${asunto}&body=${cuerpo}`
-        setImpugnarEnviado(true)
-        setImpugnarPregunta(null)
     }
 
     const [fase, setFase] = useState<Fase>("cargando")
@@ -3837,6 +4056,11 @@ export default function TestScreen(props: {
     const [showPremium, setShowPremium] = useState(false)
     const [showRegister, setShowRegister] = useState(false)
     const [isPremium, setIsPremium] = useState(false)
+    // Crédito gratis vitalicio: preguntas de temario que un usuario registrado
+    // (no premium) puede responder antes de tener que pasar a Objetivo Plaza.
+    const [gratisUsadas, setGratisUsadas] = useState(0)
+    const [creditoCargado, setCreditoCargado] = useState(false)
+    const creditoContado = useRef(false)
     // Estados subidos de AvatarDropdown (Framer no acepta useState en subcomponentes)
     const [avatarOpen, setAvatarOpen] = useState(false)
     const avatarRef = useRef<HTMLDivElement>(null)
@@ -3859,9 +4083,56 @@ export default function TestScreen(props: {
 
     useEffect(() => {
         setFase("cargando")
+        // Embudo: si ya hiciste el examen en esta sesión (lo guardamos al finalizar),
+        // al volver a esta página (botón atrás del navegador, tras Google, etc.) se
+        // muestran los resultados en vez de re-empezar. Solo se arranca de cero si
+        // vienes de un enlace "Empezar" (?nuevo=1) o le das a "Repetir".
+        if (funnel) {
+            const nuevo = getUrlParam("nuevo") === "1"
+            if (nuevo) {
+                try {
+                    sessionStorage.removeItem("gainditu_sim_done")
+                    sessionStorage.removeItem("gainditu_sim_captured")
+                    const u = new URL(window.location.href)
+                    u.searchParams.delete("nuevo")
+                    window.history.replaceState({}, "", u.toString())
+                } catch {}
+            } else {
+                try {
+                    const raw = sessionStorage.getItem("gainditu_sim_done")
+                    if (raw) {
+                        const p = JSON.parse(raw)
+                        if (
+                            p &&
+                            p.testId === testId &&
+                            Array.isArray(p.preguntas) &&
+                            Array.isArray(p.respuestas)
+                        ) {
+                            setPreguntas(p.preguntas)
+                            setRespuestas(p.respuestas)
+                            setNumPreguntas(0)
+                            setModo("examen")
+                            setModoPantalla("examen")
+                            setPenalizacion(0.33)
+                            setFase("resultados")
+                            return
+                        }
+                    }
+                } catch {}
+            }
+        }
         const cargar = bloqueBase
             ? fetchPreguntasBloque(bloqueBase, bloqueIdx, bloqueTotal)
-            : fetchPreguntas(testId, LIMITE_TESTS[testId] ?? null)
+            : testId.startsWith("ex_") && !funnel
+            ? // Exámenes oficiales: todas las preguntas, en el orden real del examen.
+              fetchPreguntasOficial(testId)
+            : fetchPreguntas(
+                  testId,
+                  // Simulacro del embudo: Administrativo (free_sim_adm) son 30 (mejor tasa de
+                  // finalización); el resto del embudo 60. Fuera del embudo: 30 aleatorias, y los
+                  // simulacros normales su tamaño completo.
+                  funnel ? (testId === "free_sim_adm" ? 30 : 60) : LIMITE_TESTS[testId] ?? (esSimulacro ? null : 30)
+              )
         cargar.then((rows) => {
             if (!rows || rows.length === 0) {
                 setFase("sin_preguntas")
@@ -3878,14 +4149,37 @@ export default function TestScreen(props: {
                     opciones: mezclada.opciones,
                     correcta: mezclada.correcta,
                     explicacion: r.explicacion,
+                    tema: r.tema ?? null,
                 }
             })
             // Ya viene barajado del servidor (RPC get_test_preguntas).
             setPreguntas(parsed)
             setRespuestas(Array(parsed.length).fill(null))
-            setFase("inicio")
+            if (funnel) {
+                // Embudo: se arranca directo el simulacro (estilo examen, con
+                // penalización), sin pantalla de inicio ni gating premium.
+                setModo("examen")
+                setModoPantalla("examen")
+                setPenalizacion(0.33)
+                setNumPreguntas(0)
+                tiempoRef.current = Date.now()
+                setFase("examen")
+                void logFunnelEvent("test_started", { test_id: testId })
+            } else {
+                setFase("inicio")
+            }
         })
     }, [testId])
+
+    // Embudo: sesión ANÓNIMA de Supabase para poder guardar el intento sin login
+    // (historial en el mismo dispositivo). Al meter el email NO se envía ningún
+    // correo: solo se guarda el lead en `leads_simulacro`.
+    useEffect(() => {
+        if (!funnel) return
+        supabase.auth.getSession().then(({ data }) => {
+            if (!data.session) supabase.auth.signInAnonymously()
+        })
+    }, [funnel])
 
     function handleStart(m: Modo) {
         // Los simulacros son solo para usuarios premium
@@ -3893,6 +4187,25 @@ export default function TestScreen(props: {
             setShowPremium(true)
             return
         }
+        // El Modo Examen (penalización real, tipo oficial) es solo premium.
+        // El free se queda con el Modo Repaso.
+        if (m === "examen" && !isPremium) {
+            setShowPremium(true)
+            return
+        }
+        // Crédito gratis agotado: registrado no premium que ya gastó sus 350
+        // preguntas de temario → a Objetivo Plaza.
+        if (
+            m === "repaso" &&
+            !isPremium &&
+            !!sessionUser?.id &&
+            creditoCargado &&
+            LIMITE_GRATIS - gratisUsadas <= 0
+        ) {
+            setShowPremium(true)
+            return
+        }
+        creditoContado.current = false
         setModo(m)
         setModoPantalla(m)
         if (m === "repaso") {
@@ -3917,14 +4230,28 @@ export default function TestScreen(props: {
     }
 
     function handleRespuesta(i: number) {
+        const yaRespondida = respuestas[idx] != null
         const n = [...respuestas]
         n[idx] = i
         setRespuestas(n)
         setVerExp(false)
+        // Consumo del crédito gratis: +1 por pregunta NUEVA respondida en temario
+        // (repaso), usuario registrado no premium. Se refleja al momento y se avisa
+        // a la navbar para que el indicador suba en vivo.
+        if (!yaRespondida && modo === "repaso" && !isPremium && !funnel && !!sessionUser?.id) {
+            setGratisUsadas((v) => {
+                const nv = v + 1
+                try {
+                    window.dispatchEvent(new CustomEvent("gainditu-credito", { detail: nv }))
+                } catch {}
+                return nv
+            })
+            supabase.rpc("incrementar_preguntas_gratis", { n: 1 })
+        }
         const token = getSessionToken()
-        if (!token) {
+        if (!token && !funnel) {
             respuestasDesdeUltimoPopup.current += 1
-            if (respuestasDesdeUltimoPopup.current >= 3) {
+            if (respuestasDesdeUltimoPopup.current >= 2) {
                 respuestasDesdeUltimoPopup.current = 0
                 // Si es el examen de muestra premium → mostrar modal de pago, no de registro
                 if (testId === "premium_demo") {
@@ -3942,9 +4269,9 @@ export default function TestScreen(props: {
         n[preguntaIdx] = opcion
         setRespuestas(n)
         const token = getSessionToken()
-        if (!token) {
+        if (!token && !funnel) {
             respuestasDesdeUltimoPopup.current += 1
-            if (respuestasDesdeUltimoPopup.current >= 3) {
+            if (respuestasDesdeUltimoPopup.current >= 2) {
                 respuestasDesdeUltimoPopup.current = 0
                 window.setTimeout(() => setShowRegister(true), 350)
             }
@@ -3953,14 +4280,40 @@ export default function TestScreen(props: {
     function handleFinalizar() {
         setTiempoFinal(Math.round((Date.now() - tiempoRef.current) / 1000))
         setFase("resultados")
+        if (funnel) {
+            void logFunnelEvent("test_finished", { test_id: testId })
+            // Guarda el examen hecho para que al volver a la página (atrás, tras Google…)
+            // se muestren los resultados en vez de re-empezar.
+            try {
+                sessionStorage.setItem(
+                    "gainditu_sim_done",
+                    JSON.stringify({ testId, preguntas, respuestas })
+                )
+            } catch {}
+        }
     }
     function handleRepetir() {
-        setPreguntas((prev) => shuffleArray([...prev]))
+        // "Repetir" empieza un examen nuevo: borra el guardado del embudo.
+        try {
+            sessionStorage.removeItem("gainditu_sim_done")
+            sessionStorage.removeItem("gainditu_sim_captured")
+        } catch {}
+        creditoContado.current = false
+        const barajadas = shuffleArray([...preguntas])
+        setPreguntas(barajadas)
         setIdx(0)
         setNumPreguntas(0)
-        setRespuestas(Array(preguntas.length).fill(null))
+        setRespuestas(Array(barajadas.length).fill(null))
         setVerExp(false)
-        setFase("inicio")
+        if (funnel) {
+            setModo("examen")
+            setModoPantalla("examen")
+            setPenalizacion(0.33)
+            tiempoRef.current = Date.now()
+            setFase("examen")
+        } else {
+            setFase("inicio")
+        }
     }
     function handleVolver() {
         if (props.onBack) {
@@ -4052,11 +4405,14 @@ export default function TestScreen(props: {
         let cancelled = false
         supabase
             .from("profiles")
-            .select("is_premium")
+            .select("is_premium, preguntas_gratis_usadas")
             .eq("id", uid)
             .single()
-            .then(({ data }: { data: { is_premium?: boolean } | null }) => {
-                if (!cancelled) setIsPremium(!!data?.is_premium)
+            .then(({ data }: { data: { is_premium?: boolean; preguntas_gratis_usadas?: number } | null }) => {
+                if (cancelled) return
+                setIsPremium(!!data?.is_premium)
+                setGratisUsadas(data?.preguntas_gratis_usadas ?? 0)
+                setCreditoCargado(true)
             })
         return () => {
             cancelled = true
@@ -4097,6 +4453,7 @@ export default function TestScreen(props: {
             token
         )
         upsertProgress(user.id, testId, pct, token)
+        // (El crédito gratis se cuenta por pregunta en handleRespuesta, no aquí.)
     }, [fase]) // eslint-disable-line
 
     // handleSignOut
@@ -4249,6 +4606,9 @@ export default function TestScreen(props: {
                         accent={accentColor}
                         modo={modoPantalla}
                         setModo={setModoPantalla}
+                        isPremium={isPremium}
+                        mostrarCredito={!isPremium && !!sessionUser?.id && !esSimulacro && !funnel}
+                        restantesGratis={Math.max(0, LIMITE_GRATIS - gratisUsadas)}
                     />
                 )}
                 {fase === "config_examen" && (
@@ -4271,6 +4631,7 @@ export default function TestScreen(props: {
                         pregunta={preguntas[idx]}
                         numero={idx + 1}
                         total={totalVisible}
+                        titulo={titulo}
                         modo={modo}
                         respuesta={respuestas[idx]}
                         onRespuesta={handleRespuesta}
@@ -4293,7 +4654,27 @@ export default function TestScreen(props: {
                         penalizacion={penalizacion}
                     />
                 )}
-                {fase === "resultados" && (
+                {fase === "resultados" && funnel && (
+                    <FunnelWall
+                        key="funnel-wall"
+                        testId={testId}
+                        preguntas={
+                            preguntasExamen.length > 0
+                                ? preguntasExamen
+                                : preguntas
+                        }
+                        respuestas={
+                            respuestasExamen.length > 0
+                                ? respuestasExamen
+                                : respuestas
+                        }
+                        accent={accentColor}
+                        dark={dark}
+                        onRepetir={handleRepetir}
+                        onVolver={handleVolver}
+                    />
+                )}
+                {fase === "resultados" && !funnel && (
                     <PantallaResultados
                         key="resultados"
                         testId={testId}
@@ -4374,7 +4755,6 @@ export default function TestScreen(props: {
                         dark={dark}
                         accent={accentColor}
                         onClose={() => setImpugnarPregunta(null)}
-                        onConfirm={confirmarImpugnacion}
                     />
                 )}
             </AnimatePresence>

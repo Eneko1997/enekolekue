@@ -5,10 +5,13 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { createClient } from "@/lib/supabase/client"
 import { BRAND_ACCENT } from "@/lib/theme"
+import { logFunnelEvent } from "@/lib/funnel"
 
 export default function PaymentSuccessClient() {
     const [premium, setPremium] = useState(false)
     const [checking, setChecking] = useState(true)
+    // Destino tras pagar: si venías de un simulacro bloqueado, vuelves ahí.
+    const [next, setNext] = useState<string | null>(null)
 
     useEffect(() => {
         const supabase = createClient()
@@ -31,6 +34,7 @@ export default function PaymentSuccessClient() {
                 if (data?.is_premium) {
                     setPremium(true)
                     setChecking(false)
+                    void logFunnelEvent("purchase", {})
                     return
                 }
             }
@@ -60,12 +64,28 @@ export default function PaymentSuccessClient() {
             poll()
         }
 
+        try {
+            setNext(sessionStorage.getItem("gainditu_post_pay_next"))
+        } catch {}
+
         activar()
         return () => {
             cancelled = true
             clearTimeout(timer)
         }
     }, [])
+
+    // Una vez confirmado el premium, si venías de un simulacro bloqueado, vuelves ahí.
+    useEffect(() => {
+        if (!premium || !next) return
+        try {
+            sessionStorage.removeItem("gainditu_post_pay_next")
+        } catch {}
+        const t = setTimeout(() => {
+            window.location.href = next
+        }, 1400)
+        return () => clearTimeout(t)
+    }, [premium, next])
 
     return (
         <main className="flex flex-1 flex-col items-center justify-center px-5 py-16 text-center">
@@ -88,16 +108,26 @@ export default function PaymentSuccessClient() {
                     {checking
                         ? "Estamos activando tu acceso Premium… esto puede tardar unos segundos."
                         : premium
-                          ? "Tu acceso Premium ya está activo. ¡A por la OPE!"
-                          : "Tu pago se ha registrado. Si el acceso Premium no aparece en unos minutos, escríbenos a gaindituoposiciones@gmail.com."}
+                          ? next
+                            ? "Tu acceso Premium ya está activo. Te llevamos a tu simulacro…"
+                            : "Tu acceso Premium ya está activo. ¡A por la OPE!"
+                          : "Tu pago se ha registrado. Si el acceso Premium no aparece en unos minutos, escríbenos a info@gaindituoposiciones.com."}
                 </p>
                 <Link
-                    href="/"
+                    href={premium && next ? next : "/"}
                     className="inline-block rounded-[10px] px-6 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
                     style={{ backgroundColor: BRAND_ACCENT }}
                 >
-                    Ir a mi panel →
+                    {premium && next ? "Ir a mi simulacro →" : "Ir a mi panel →"}
                 </Link>
+                {premium && !next && (
+                    <Link
+                        href="/mi-plan"
+                        className="mt-3 block text-sm font-semibold text-white/70 transition-colors hover:text-white"
+                    >
+                        Crea tu plan de estudio personalizado →
+                    </Link>
+                )}
             </motion.div>
         </main>
     )

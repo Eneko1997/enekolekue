@@ -25,6 +25,7 @@ export default function TemarioShell({ n }: { n: Normativa }) {
                 accent={ACCENT}
                 ctaHref="#estructura"
                 ctaLabel="Ver el temario →"
+                breadcrumb={{ href: "/temario", label: "← Temario" }}
                 stats={[
                     { n: String(n.puntosClave.length), label: "puntos clave" },
                     { n: String(n.estructura.length), label: "apartados" },
@@ -87,6 +88,22 @@ export default function TemarioShell({ n }: { n: Normativa }) {
                         />
                     </section>
 
+                    {n.errorTipico && (
+                        <section>
+                            <div className="rounded-2xl border border-amber-300/60 bg-amber-50 px-5 py-4 dark:border-amber-500/30 dark:bg-amber-500/10">
+                                <div className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-wide text-amber-700 dark:text-amber-400">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+                                        <path d="M12 9v4M12 17h.01M10.3 3.9 2.4 18a1.7 1.7 0 0 0 1.5 2.5h16.2a1.7 1.7 0 0 0 1.5-2.5L13.7 3.9a1.7 1.7 0 0 0-3 0Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                    Error típico de examen
+                                </div>
+                                <p className="mt-1.5 text-[14px] leading-relaxed text-amber-900/90 dark:text-amber-100/90">
+                                    {n.errorTipico}
+                                </p>
+                            </div>
+                        </section>
+                    )}
+
                     {n.relacionadas.length > 0 && (
                         <section>
                             <h2 className="text-xl font-bold text-zinc-950 dark:text-zinc-50">
@@ -102,6 +119,12 @@ export default function TemarioShell({ n }: { n: Normativa }) {
                                         → {r.label}
                                     </Link>
                                 ))}
+                                <Link
+                                    href="/guias"
+                                    className="hover:text-zinc-950 dark:hover:text-white hover:underline"
+                                >
+                                    → Guías para opositar
+                                </Link>
                             </div>
                         </section>
                     )}

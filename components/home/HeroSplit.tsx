@@ -95,8 +95,8 @@ export default function HeroSplit() {
     })
 
     return (
-        <section className="relative overflow-hidden bg-[#EAEFF5]">
-            <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-6 pb-14 pt-8 sm:gap-10 sm:py-14 lg:grid-cols-2 lg:gap-6 lg:py-20">
+        <section className="relative overflow-hidden bg-[#EAEFF5] px-5">
+            <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-8 pb-14 pt-8 sm:gap-10 sm:py-14 lg:grid-cols-2 lg:gap-6 lg:py-20">
                 {/* ── Columna izquierda ── */}
                 <motion.div
                     className="relative z-10 order-1 lg:order-1"
@@ -109,7 +109,7 @@ export default function HeroSplit() {
                         className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[13px] font-semibold text-zinc-600 shadow-sm ring-1 ring-black/[0.04]"
                     >
                         <GraduationCap size={15} className="text-emerald-500" aria-hidden />
-                        Oposiciones · País Vasco
+                        Tu portal de oposiciones en Euskadi
                     </motion.span>
 
                     <motion.h1
@@ -125,28 +125,39 @@ export default function HeroSplit() {
                         variants={itemVariants}
                         className="mt-6 max-w-md text-base leading-relaxed text-zinc-500 sm:text-lg"
                     >
-                        Tests, simulacros y seguimiento de tu progreso para
-                        preparar tu oposición en Euskadi. Empieza por donde
-                        quieras, a tu ritmo, aunque hace años que no estudias.
+                        Tests por temario oficial, simulacros y seguimiento de
+                        tu progreso para tu oposición en Euskadi. A tu ritmo,
+                        tanto si empiezas de cero como si te sientes preparado.
                     </motion.p>
 
                     <motion.div
                         variants={itemVariants}
                         className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-5"
                     >
-                        <Link
-                            href="/signup"
-                            aria-label="Crear cuenta gratis en Gainditu"
-                            className="group inline-flex items-center gap-3 rounded-full bg-zinc-950 py-2 pl-2 pr-6 text-[15px] font-semibold text-white shadow-lg shadow-zinc-900/15 transition-transform hover:scale-[1.03]"
-                        >
-                            <span
-                                className="flex h-10 w-10 items-center justify-center rounded-full text-zinc-950 transition-transform group-hover:translate-x-0.5"
-                                style={{ backgroundColor: ACCENT }}
+                        <div className="flex flex-wrap items-center gap-3">
+                            <Link
+                                href="/simulacro-administrativo-gobierno-vasco"
+                                aria-label="Hacer un simulacro gratis del Gobierno Vasco, sin registro"
+                                className="group inline-flex items-center gap-3 rounded-full bg-zinc-950 py-2 pl-2 pr-6 text-[15px] font-semibold text-white shadow-lg shadow-zinc-900/15 transition-transform hover:scale-[1.03]"
                             >
-                                <ArrowRight size={18} className="text-white" aria-hidden />
-                            </span>
-                            Empieza gratis
-                        </Link>
+                                <span
+                                    className="flex h-10 w-10 items-center justify-center rounded-full text-zinc-950 transition-transform group-hover:translate-x-0.5"
+                                    style={{ backgroundColor: ACCENT }}
+                                >
+                                    <ArrowRight size={18} className="text-white" aria-hidden />
+                                </span>
+                                Simulacro gratis del Gobierno Vasco
+                            </Link>
+
+                            <Link
+                                href="/herramientas/que-oposicion-elegir"
+                                aria-label="Descubrir qué oposición de Euskadi te encaja"
+                                className="inline-flex items-center gap-2 rounded-full border border-zinc-300 bg-white px-5 py-3 text-[15px] font-semibold text-zinc-900 shadow-sm transition-transform hover:scale-[1.03]"
+                            >
+                                ¿Qué oposición elegir?
+                                <ArrowRight size={16} className="text-emerald-500" aria-hidden />
+                            </Link>
+                        </div>
 
                         <div className="flex items-center gap-3">
                             <div className="flex -space-x-2.5">

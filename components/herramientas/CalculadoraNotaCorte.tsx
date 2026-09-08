@@ -53,7 +53,24 @@ export default function CalculadoraNotaCorte() {
         return { blancos, netos, nota, apto, margen }
     }, [total, aciertos, fallos, pen, escala, corte])
 
+    // ── Objetivo inverso: cuántos aciertos hacen falta para el corte ──────────
+    const objetivo = useMemo(() => {
+        if (total <= 0 || escala <= 0) return null
+        // Netos necesarios para alcanzar el corte.
+        const netosNec = (corte / escala) * total
+        if (netosNec > total) return { imposible: true, netosNec, sinFallar: 0, conTusFallos: 0, faltan: 0 }
+        // Aciertos si NO fallas ninguna más (netos = aciertos).
+        const sinFallar = Math.max(0, Math.ceil(netosNec - 1e-9))
+        // Aciertos si mantienes tus fallos actuales (netos = aciertos − fallos/pen).
+        const penaliz = pen > 0 ? fallos / pen : 0
+        const conTusFallos = Math.max(0, Math.ceil(netosNec + penaliz - 1e-9))
+        const faltan = Math.max(0, conTusFallos - aciertos)
+        return { imposible: false, netosNec, sinFallar, conTusFallos, faltan }
+    }, [total, escala, corte, pen, fallos, aciertos])
+
     const excede = aciertos + fallos > total
+    const notaPct = escala > 0 ? Math.min(100, (nota / escala) * 100) : 0
+    const cortePct = escala > 0 ? Math.min(100, (corte / escala) * 100) : 0
 
     return (
         <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6">
@@ -133,6 +150,68 @@ export default function CalculadoraNotaCorte() {
                     </div>
                 </div>
             </div>
+
+            {/* Barra visual con el corte marcado */}
+            <div className="mt-4">
+                <div className="relative h-3 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+                    <div
+                        className="h-full rounded-full transition-all"
+                        style={{ width: `${notaPct}%`, background: apto ? ACCENT : "#ef4444" }}
+                    />
+                    {/* Marca de la nota de corte */}
+                    <div
+                        className="absolute top-[-3px] h-[18px] w-[2px] bg-zinc-500 dark:bg-zinc-300"
+                        style={{ left: `calc(${cortePct}% - 1px)` }}
+                        aria-hidden
+                    />
+                </div>
+                <div className="mt-1 flex justify-between text-[11px] text-zinc-400">
+                    <span>0</span>
+                    <span>corte {corte.toLocaleString("es-ES")}</span>
+                    <span>{escala}</span>
+                </div>
+            </div>
+
+            {/* Objetivo inverso: cuántos aciertos hacen falta */}
+            {objetivo && (
+                <div className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50/60 px-5 py-4 dark:border-emerald-900/40 dark:bg-emerald-950/20">
+                    <div className="text-[13px] font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-400">
+                        Para llegar al corte
+                    </div>
+                    {objetivo.imposible ? (
+                        <p className="mt-1 text-[14px] text-zinc-700 dark:text-zinc-300">
+                            Con esta escala y esta penalización, el corte que has puesto no es alcanzable
+                            ni acertándolas todas. Revisa los datos de tu convocatoria.
+                        </p>
+                    ) : (
+                        <div className="mt-2 grid gap-3 sm:grid-cols-2">
+                            <div className="rounded-lg bg-white/70 px-4 py-3 dark:bg-zinc-900/40">
+                                <div className="text-[12px] text-zinc-500 dark:text-zinc-400">
+                                    Si no fallas ninguna
+                                </div>
+                                <div className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-50">
+                                    {objetivo.sinFallar} <span className="text-[13px] font-medium text-zinc-500">aciertos</span>
+                                </div>
+                            </div>
+                            <div className="rounded-lg bg-white/70 px-4 py-3 dark:bg-zinc-900/40">
+                                <div className="text-[12px] text-zinc-500 dark:text-zinc-400">
+                                    Con tus {fallos} fallos actuales
+                                </div>
+                                <div className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-50">
+                                    {objetivo.conTusFallos} <span className="text-[13px] font-medium text-zinc-500">aciertos</span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    {!objetivo.imposible && (
+                        <p className="mt-3 text-[13px] font-semibold" style={{ color: objetivo.faltan > 0 ? "#b45309" : "#047857" }}>
+                            {objetivo.faltan > 0
+                                ? `Te faltan ${objetivo.faltan} aciertos para el corte (manteniendo tus fallos).`
+                                : "Con tus aciertos actuales ya superas el corte."}
+                        </p>
+                    )}
+                </div>
+            )}
 
             <p className="mt-4 text-[12px] text-zinc-500 dark:text-zinc-400">
                 Método: <em>netos = aciertos − (fallos ÷ divisor de penalización)</em>, y{" "}

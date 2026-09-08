@@ -10,6 +10,8 @@ export interface Herramienta {
     descripcion: string
     /** Uso libre, sin necesidad de cuenta (imán SEO). El resto exige registro. */
     libre?: boolean
+    /** Herramienta estrella: se muestra como banner destacado en el índice. */
+    destacada?: boolean
 }
 
 export const HERRAMIENTAS: Herramienta[] = [
@@ -22,25 +24,20 @@ export const HERRAMIENTAS: Herramienta[] = [
         libre: true,
     },
     {
-        slug: "ratio-aspirantes-plaza",
-        titulo: "Ratio aspirantes por plaza",
-        subtitulo: "Cómo de competida está tu oposición.",
+        slug: "calculadora-meritos-gobierno-vasco",
+        titulo: "Calculadora de méritos del Gobierno Vasco",
+        subtitulo: "Tu puntuación de la fase de concurso: experiencia, titulaciones y euskera.",
         descripcion:
-            "Calcula el ratio de aspirantes por plaza de una oposición y descubre cómo de competida está de verdad. Con tu cuenta gratis de Gainditu.",
-    },
-    {
-        slug: "equivalencias-perfil-linguistico",
-        titulo: "Equivalencias de perfil lingüístico",
-        subtitulo: "PL1-PL4 ↔ MCER ↔ EGA / HABE / EOI.",
-        descripcion:
-            "Tabla y conversor de perfiles lingüísticos de euskera (PL1-PL4) con sus equivalencias en el MCER (B1-C2), EGA, HABE y EOI. Qué perfil pide cada oposición.",
+            "Calcula los puntos de la fase de concurso de la OPE del Gobierno Vasco 2026 (Administrativo y Personal de Apoyo): experiencia, titulaciones y euskera, según el baremo oficial del BOPV. Gratis y al instante.",
+        libre: true,
     },
     {
         slug: "que-oposicion-elegir",
         titulo: "¿Qué oposición elegir?",
-        subtitulo: "Encuentra la oposición de Euskadi que encaja contigo.",
+        subtitulo: "Análisis personalizado: la oposición de Euskadi que encaja contigo.",
         descripcion:
-            "Test rápido para descubrir qué oposición de Euskadi encaja con tu titulación, tu nivel de euskera y tu área de interés. Con tu cuenta gratis de Gainditu.",
+            "Análisis personalizado para descubrir qué oposición de Euskadi encaja con tu titulación, tu nivel de euskera y tu área de interés. Con tu cuenta gratis de Gainditu.",
+        destacada: true,
     },
 ]
 

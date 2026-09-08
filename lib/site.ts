@@ -7,10 +7,13 @@ export const SITE_URL =
 export const SITE_NAME = "Gainditu"
 
 export const SITE_DESCRIPTION =
-    "El portal de las oposiciones de Euskadi: tests, convocatorias, temario y herramientas. Gobierno Vasco, Osakidetza, Ertzaintza, Educación y más, por temario oficial."
+    "Tests por temario oficial, simulacros y seguimiento de tu progreso para tu oposición en Euskadi. A tu ritmo, tanto si empiezas de cero como si te sientes preparado."
 
-export const CONTACT_EMAIL = "gaindituoposiciones@gmail.com"
+export const CONTACT_EMAIL = "info@gaindituoposiciones.com"
 
 export const SOCIAL = {
-    instagram: "https://instagram.com/gainditu",
+    instagram: "https://www.instagram.com/gaindituoposiciones/",
+    tiktok: "https://www.tiktok.com/@gaindituoposiciones",
+    twitter: "https://x.com/gaindituopo",
+    linkedin: "https://www.linkedin.com/company/gainditu-oposiciones/",
 }

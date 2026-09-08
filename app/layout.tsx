@@ -2,6 +2,10 @@ import type { Metadata } from "next"
 import { Manrope, Inter } from "next/font/google"
 import "./globals.css"
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/site"
+import CookieBanner from "@/components/site/CookieBanner"
+import PostAuthRedirect from "@/components/auth/PostAuthRedirect"
+import PasswordRecoveryGate from "@/components/auth/PasswordRecoveryGate"
+import PresenceTracker from "@/components/presence/PresenceTracker"
 
 const manrope = Manrope({
     variable: "--font-manrope",
@@ -75,7 +79,13 @@ export default function RootLayout({
                     }}
                 />
             </head>
-            <body className="min-h-full flex flex-col">{children}</body>
+            <body className="flex min-h-full flex-col overflow-x-clip">
+                {children}
+                <PostAuthRedirect />
+                <PasswordRecoveryGate />
+                <PresenceTracker />
+                <CookieBanner />
+            </body>
         </html>
     )
 }

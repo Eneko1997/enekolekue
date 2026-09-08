@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
@@ -21,7 +21,7 @@ const NAV_LINKS = [
     { label: "Temario", href: "/temario" },
     { label: "Convocatorias", href: "/convocatorias" },
     { label: "Herramientas", href: "/herramientas" },
-    { label: "Profesores", href: "/profesores" },
+    { label: "Guías", href: "/guias" },
 ]
 
 const CUENTA_ITEMS = [
@@ -29,6 +29,9 @@ const CUENTA_ITEMS = [
     { label: "Mis exámenes", href: "/perfil?tab=examenes" },
     { label: "Ajustes", href: "/perfil?tab=ajustes" },
 ]
+
+// Equipo Gainditu: ven el panel de captación en el menú de cuenta.
+const ADMIN_EMAILS = ["enekolekue16@gmail.com", "info@gaindituoposiciones.com"]
 
 function SunIcon() {
     return (
@@ -91,6 +94,42 @@ export default function LightNavbar() {
     const [mobileTestsOpen, setMobileTestsOpen] = useState(false)
     const [acctOpen, setAcctOpen] = useState(false)
 
+    // Crédito gratis (para el indicador tipo IA junto al avatar).
+    const LIMITE_GRATIS = 350
+    const [credito, setCredito] = useState<{ premium: boolean; usadas: number } | null>(null)
+    useEffect(() => {
+        if (!user?.id) {
+            setCredito(null)
+            return
+        }
+        let cancel = false
+        const supabase = createClient()
+        supabase
+            .from("profiles")
+            .select("is_premium, preguntas_gratis_usadas")
+            .eq("id", user.id)
+            .single()
+            .then(({ data }: { data: { is_premium?: boolean; preguntas_gratis_usadas?: number } | null }) => {
+                if (cancel) return
+                setCredito({ premium: !!data?.is_premium, usadas: data?.preguntas_gratis_usadas ?? 0 })
+            })
+        return () => {
+            cancel = true
+        }
+    }, [user?.id])
+    // Actualización en vivo: TestClient emite 'gainditu-credito' con el nuevo total
+    // de preguntas usadas al responder, para que el indicador suba sin recargar.
+    useEffect(() => {
+        function onCredito(e: Event) {
+            const d = (e as CustomEvent).detail
+            if (typeof d === "number") setCredito((c) => (c ? { ...c, usadas: d } : c))
+        }
+        window.addEventListener("gainditu-credito", onCredito)
+        return () => window.removeEventListener("gainditu-credito", onCredito)
+    }, [])
+    const pctUsado = credito ? Math.min(100, Math.round((credito.usadas / LIMITE_GRATIS) * 100)) : 0
+    const mostrarCredito = !!user && !!credito && !credito.premium
+
     async function handleSignOut() {
         const supabase = createClient()
         await supabase.auth.signOut()
@@ -101,10 +140,14 @@ export default function LightNavbar() {
     }
 
     const initial = (user?.email?.[0] || "U").toUpperCase()
+    const isAdmin = !!user && ADMIN_EMAILS.includes((user.email || "").toLowerCase())
+    const cuentaItems = isAdmin
+        ? [{ label: "Captación", href: "/admin/captacion" }, { label: "Redes sociales", href: "/admin/redes" }, ...CUENTA_ITEMS]
+        : CUENTA_ITEMS
 
     return (
-        <nav className="sticky top-0 z-50 bg-white/55 backdrop-blur-md dark:bg-zinc-950/55">
-            <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-5">
+        <nav className="sticky top-0 z-50 bg-white/55 px-5 backdrop-blur-md dark:bg-zinc-950/55">
+            <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3">
                 <Link
                     href="/"
                     className="shrink-0 text-xl font-extrabold tracking-tight text-zinc-950 dark:text-white"
@@ -140,6 +183,14 @@ export default function LightNavbar() {
                                         transition={{ duration: 0.15 }}
                                         className="absolute left-1/2 top-full z-50 mt-2 w-64 -translate-x-1/2 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-xl shadow-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900"
                                     >
+                                        <Link
+                                            href="/simulacro-administrativo-gobierno-vasco"
+                                            onClick={() => setTestsOpen(false)}
+                                            className="mb-1 flex items-center justify-between rounded-xl bg-emerald-50 px-3 py-2 text-[14px] font-semibold text-emerald-700 transition-colors hover:bg-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:hover:bg-emerald-500/20"
+                                        >
+                                            Simulacro gratis · GV
+                                            <span aria-hidden>→</span>
+                                        </Link>
                                         {TESTS_LINKS.map((l) => (
                                             <Link
                                                 key={l.href}
@@ -176,20 +227,36 @@ export default function LightNavbar() {
                     >
                         {dark ? <MoonIcon /> : <SunIcon />}
                     </button>
+                    {mostrarCredito && (
+                        <div
+                            title={`Has usado ${credito!.usadas} de ${LIMITE_GRATIS} preguntas`}
+                            className="flex h-9 items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 dark:border-zinc-800 dark:bg-zinc-900"
+                        >
+                            <span className="relative h-1.5 w-10 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
+                                <span
+                                    className="absolute inset-y-0 left-0 rounded-full"
+                                    style={{ width: `${pctUsado}%`, backgroundColor: pctUsado >= 100 ? "#EF4444" : "#10B981" }}
+                                />
+                            </span>
+                            <span className="text-[11px] font-bold" style={{ color: pctUsado >= 100 ? "#EF4444" : "#10B981" }}>
+                                {pctUsado}%
+                            </span>
+                        </div>
+                    )}
                     {!loading && user ? (
                         <div
                             className="relative"
                             onMouseEnter={() => setAcctOpen(true)}
                             onMouseLeave={() => setAcctOpen(false)}
                         >
-                            <button
-                                type="button"
-                                aria-expanded={acctOpen}
-                                onClick={() => setAcctOpen((v) => !v)}
+                            <Link
+                                href="/perfil?tab=stats"
+                                aria-label="Mi progreso"
+                                onClick={() => setAcctOpen(false)}
                                 className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-zinc-900 text-[14px] font-bold text-white dark:bg-zinc-100 dark:text-zinc-900"
                             >
                                 {initial}
-                            </button>
+                            </Link>
                             <AnimatePresence>
                                 {acctOpen && (
                                     <motion.div
@@ -202,7 +269,7 @@ export default function LightNavbar() {
                                         <div className="truncate px-3 py-2 text-[12px] text-zinc-400 dark:text-zinc-500">
                                             {user.email}
                                         </div>
-                                        {CUENTA_ITEMS.map((it) => (
+                                        {cuentaItems.map((it) => (
                                             <Link
                                                 key={it.href}
                                                 href={it.href}
@@ -242,6 +309,22 @@ export default function LightNavbar() {
 
                 {/* Toggle + botón móvil */}
                 <div className="flex items-center gap-2 md:hidden">
+                    {mostrarCredito && (
+                        <div
+                            aria-label={`Has usado ${credito!.usadas} de ${LIMITE_GRATIS} preguntas`}
+                            className="flex h-9 items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 dark:border-zinc-800 dark:bg-zinc-900"
+                        >
+                            <span className="relative h-1.5 w-8 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
+                                <span
+                                    className="absolute inset-y-0 left-0 rounded-full"
+                                    style={{ width: `${pctUsado}%`, backgroundColor: pctUsado >= 100 ? "#EF4444" : "#10B981" }}
+                                />
+                            </span>
+                            <span className="text-[11px] font-bold" style={{ color: pctUsado >= 100 ? "#EF4444" : "#10B981" }}>
+                                {pctUsado}%
+                            </span>
+                        </div>
+                    )}
                     <button
                         type="button"
                         onClick={toggle}
@@ -272,7 +355,7 @@ export default function LightNavbar() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="overflow-hidden border-t border-zinc-200 bg-white md:hidden dark:border-zinc-800 dark:bg-zinc-950"
+                        className="-mx-5 overflow-hidden border-t border-zinc-200 bg-white md:hidden dark:border-zinc-800 dark:bg-zinc-950"
                     >
                         <div className="flex flex-col gap-1 px-5 py-3">
                             <button
@@ -284,17 +367,28 @@ export default function LightNavbar() {
                                 Tests
                                 <Chevron open={mobileTestsOpen} />
                             </button>
-                            {mobileTestsOpen &&
-                                TESTS_LINKS.map((l) => (
+                            {mobileTestsOpen && (
+                                <>
                                     <Link
-                                        key={l.href}
-                                        href={l.href}
+                                        href="/simulacro-administrativo-gobierno-vasco"
                                         onClick={() => setOpen(false)}
-                                        className="rounded-lg py-2 pl-6 pr-3 text-sm font-medium text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
+                                        className="mx-1 flex items-center justify-between rounded-lg bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
                                     >
-                                        Tests de {l.label}
+                                        Simulacro gratis · GV
+                                        <span aria-hidden>→</span>
                                     </Link>
-                                ))}
+                                    {TESTS_LINKS.map((l) => (
+                                        <Link
+                                            key={l.href}
+                                            href={l.href}
+                                            onClick={() => setOpen(false)}
+                                            className="rounded-lg py-2 pl-6 pr-3 text-sm font-medium text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
+                                        >
+                                            Tests de {l.label}
+                                        </Link>
+                                    ))}
+                                </>
+                            )}
                             {NAV_LINKS.map((l) => (
                                 <Link
                                     key={l.href}
@@ -310,7 +404,7 @@ export default function LightNavbar() {
                                     <div className="truncate px-3 pb-1 text-[12px] text-zinc-400 dark:text-zinc-500">
                                         {user.email}
                                     </div>
-                                    {CUENTA_ITEMS.map((it) => (
+                                    {cuentaItems.map((it) => (
                                         <Link
                                             key={it.href}
                                             href={it.href}

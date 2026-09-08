@@ -4,11 +4,16 @@ import LightNavbar from "@/components/site/LightNavbar"
 import HeroSplit from "@/components/home/HeroSplit"
 import Reveal from "@/components/home/Reveal"
 import PremiumSection from "@/components/home/PremiumSection"
+import TestsPopulares from "@/components/home/TestsPopulares"
+import SectionHeading from "@/components/home/SectionHeading"
+import SuscripcionConvocatorias from "@/components/convocatorias/SuscripcionConvocatorias"
 import FinalCTA from "@/components/home/FinalCTA"
 import Testimonios from "@/components/home/Testimonios"
 import BackToTop from "@/components/site/BackToTop"
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site"
-import { ORGANISMOS_NOMBRES } from "@/lib/data/organismos"
+import QueOposicionNudge from "@/components/site/QueOposicionNudge"
+import NotebookBg from "@/components/home/NotebookBg"
+import SiteFooter from "@/components/site/SiteFooter"
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SOCIAL } from "@/lib/site"
 
 export const metadata: Metadata = {
     title: { absolute: "Gainditu — Oposiciones de Euskadi: tests, convocatorias y temario" },
@@ -26,15 +31,6 @@ const ESCALAS = [
     { label: "Técnico Superior", grupo: "A", href: "/oposiciones/tecnico-superior" },
 ]
 
-const FEATURES = [
-    { t: "Temario oficial de la convocatoria", d: "Cada test sigue el temario real de la convocatoria: bloque común (T.1–14) y específicos de tu escala.", icon: "/icons3d/notebook-front.png" },
-    { t: "Dos vistas de estudio", d: "Practica por bloques temáticos transversales o sigue el temario oficial tema a tema, marcando tu avance.", icon: "/icons3d/copy-front.png" },
-    { t: "30 preguntas por tema", d: "Preguntas estilo examen con explicación elaborada de por qué cada opción es correcta o falla.", icon: "/icons3d/tick-front.png" },
-    { t: "Simulacros con penalización real", d: "Exámenes oficiales de convocatorias anteriores y simulacros con la penalización oficial.", icon: "/icons3d/pencil-front.png" },
-    { t: "Tu progreso, medido", d: "Mejor porcentaje por tema, racha de estudio y estadísticas para saber exactamente qué repasar.", icon: "/icons3d/folder-new-front.png" },
-    { t: "Recursos clave", d: "Páginas dedicadas a la Constitución, la Ley 39/2015 y el calendario de las OPEs 2026.", icon: "/icons3d/calender-front.png" },
-]
-
 const TESTIMONIOS = [
     { n: "María G.", e: "Administrativo C1", t: "Por fin un sitio que sigue el temario oficial de verdad. Las explicaciones de cada pregunta valen oro." },
     { n: "Iker A.", e: "Técnico Superior", t: "Los simulacros con penalización real me prepararon para el examen mucho mejor que cualquier PDF." },
@@ -44,107 +40,206 @@ const TESTIMONIOS = [
     { n: "Unai B.", e: "Personal de Apoyo", t: "Empecé gratis para probar y me quedé. Es justo lo que necesitaba para la OPE del Gobierno Vasco." },
 ]
 
-// Profesores de ejemplo (MVP: fichas ilustrativas hasta tener altas reales)
-const PROFES = [
-    { n: "Ane M.", mat: "Derecho administrativo · Ley 39/2015", zona: "Bilbao · online", ini: "A" },
-    { n: "Gorka L.", mat: "Constitución y organización del Estado", zona: "Vitoria-Gasteiz", ini: "G" },
-    { n: "Leire S.", mat: "Euskera para oposiciones (perfil lingüístico)", zona: "Donostia · online", ini: "L" },
-]
-
-const FAQS = [
-    { q: "¿Qué es Gainditu?", a: "El portal de las oposiciones de Euskadi (Gobierno Vasco, Osakidetza, Ertzaintza, Educación…): tests por temario oficial, convocatorias con sus fechas, temario y herramientas, todo en un mismo sitio." },
-    { q: "¿Los tests son gratis?", a: "Sí. Creas una cuenta gratis y empiezas a practicar. El acceso Premium añade exámenes oficiales de convocatorias anteriores, simulacros con penalización real del examen y estadísticas avanzadas." },
-    { q: "¿Qué organismos y cuerpos cubrís?", a: `Nos centramos en las oposiciones del País Vasco: ${ORGANISMOS_NOMBRES.join(", ")}. Ahora mismo tienes el temario completo del Gobierno Vasco (Personal de Apoyo, Administrativo, Técnico de Gestión y Superior) y la normativa vasca común, que también sirve para el resto de organismos. Vamos ampliando.` },
-    { q: "¿Incluye la Constitución y la Ley 39/2015?", a: "Sí, además de tests específicos tienes páginas dedicadas a la Constitución Española y a la Ley 39/2015 del Procedimiento Administrativo Común." },
-]
-/* ── Tira marquee de academias: sticky abajo, acompaña dentro de su contenedor ── */
-const MARQUEE_ITEMS = [
-    "¿Tienes una academia de oposiciones?",
-    "Anúnciate en Gainditu y llega a opositores del País Vasco",
-    "Justo donde estudian: tests, simulacros y exámenes oficiales",
-    "Cuéntanos qué necesitas y lo montamos",
-]
-function MarqueeGroup() {
-    return (
-        <div className="flex shrink-0 items-center">
-            {MARQUEE_ITEMS.map((t, i) => (
-                <span key={i} className="flex items-center whitespace-nowrap text-[13px] font-semibold">
-                    {t}
-                    <span className="mx-6" style={{ color: ACCENT }}>
-                        ●
-                    </span>
-                </span>
-            ))}
-        </div>
-    )
-}
-function AcademiaMarquee() {
-    return (
-        <div className="sticky bottom-0 z-40 px-4 pb-4 sm:px-5">
-            <a
-                href="mailto:gaindituoposiciones@gmail.com?subject=Publicidad%20para%20academias"
-                className="marquee-group mx-auto flex max-w-5xl items-center gap-3 rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white/85 dark:bg-zinc-900/85 px-3 py-2 text-zinc-600 dark:text-zinc-300 shadow-lg shadow-zinc-900/5 backdrop-blur-md transition-colors hover:border-zinc-300 dark:hover:border-zinc-700"
-            >
-                <span
-                    className="hidden shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide sm:inline"
-                    style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}
-                >
-                    Academias
-                </span>
-                <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)]">
-                    <div className="animate-marquee flex w-max items-center">
-                        <MarqueeGroup />
-                        <MarqueeGroup />
-                    </div>
-                </div>
-                <span
-                    className="shrink-0 rounded-full px-3.5 py-1.5 text-[12px] font-semibold text-white"
-                    style={{ background: ACCENT }}
-                >
-                    Anúnciate →
-                </span>
-            </a>
-        </div>
-    )
-}
-
 export default function HomePage() {
     return (
-        <div className="min-h-dvh bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50">
+        <div className="relative min-h-dvh text-zinc-950 dark:text-zinc-50">
+            {/* Fondo con profundidad: base + glows emerald muy suaves + rejilla tenue.
+                Fijo detrás de todo; las secciones transparentes lo dejan ver. */}
+            <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-white dark:bg-zinc-950">
+                <div className="absolute -top-40 right-[-12%] h-[560px] w-[560px] rounded-full bg-emerald-400/[0.10] blur-[130px] dark:bg-emerald-500/[0.10]" />
+                <div className="absolute top-1/3 left-[-16%] h-[520px] w-[520px] rounded-full bg-emerald-300/[0.08] blur-[130px] dark:bg-emerald-500/[0.07]" />
+                <div className="absolute bottom-[-12%] right-[8%] h-[520px] w-[520px] rounded-full bg-teal-300/[0.07] blur-[130px] dark:bg-teal-500/[0.06]" />
+                <div className="absolute inset-0 text-zinc-900 opacity-[0.035] dark:text-zinc-100 dark:opacity-[0.05] [background-image:linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [background-size:46px_46px]" />
+            </div>
+
             <LightNavbar />
 
-            {/* CONTENEDOR STICKY: hero + premium + tests. El marquee acompaña abajo hasta el final de esta zona */}
+            {/* CONTENEDOR STICKY: hero + simulacro + orientación + premium. El marquee de
+                academias flota abajo y se aparca al final de esta zona (antes de "Por escala"). */}
             <div className="relative">
 
-            {/* ───────────── HERO (split: texto + foto con stats) ───────────── */}
+            {/* ───────────── HERO ───────────── */}
             <HeroSplit />
 
-            {/* ───────────── STAT STRIP (oculto en móvil) ───────────── */}
-            <section className="hidden sm:block border-y border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40">
-                <div className="mx-auto grid max-w-5xl grid-cols-2 gap-px sm:grid-cols-4">
-                    {[
-                        { n: "4", l: "escalas" },
-                        { n: "30", l: "preguntas/tema" },
-                        { n: "100%", l: "temario oficial" },
-                        { n: "2026", l: "convocatoria" },
-                    ].map((s, i) => (
-                        <Reveal key={s.l} className="px-5 py-7 text-center" delay={i * 80}>
-                            <div className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">{s.n}</div>
-                            <div className="mt-1 text-[13px] font-medium text-zinc-500 dark:text-zinc-400">{s.l}</div>
+            {/* ───────────── SIMULACRO GRATIS (embudo de captación) ───────────── */}
+            <section className="px-5 py-12 sm:py-16">
+                <div className="mx-auto max-w-5xl">
+                    <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+                        {/* Copy + CTA */}
+                        <Reveal>
+                            <SectionHeading
+                                kicker="Simulacro gratis"
+                                title="Mídete gratis y descubre tu nota"
+                                subtitle="Un simulacro real de Administrativo del Gobierno Vasco. Sin registro para empezar."
+                            />
+                            <ul className="mt-6 space-y-2.5">
+                                {[
+                                    "30 preguntas tipo examen, con penalización",
+                                    "Corrección y nota al instante",
+                                    "Desglose por áreas: sabes qué repasar",
+                                ].map((t) => (
+                                    <li key={t} className="flex items-center gap-3 text-[15px] text-zinc-700 dark:text-zinc-200">
+                                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-white" style={{ backgroundColor: ACCENT }}>
+                                            <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden><path d="M2 6.5 5 9l5-6" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        </span>
+                                        {t}
+                                    </li>
+                                ))}
+                            </ul>
+                            <Link
+                                href="/simulacro-administrativo-gobierno-vasco"
+                                className="mt-8 inline-flex items-center gap-2 rounded-full px-7 py-4 text-[15px] font-bold text-white shadow-lg transition-transform hover:scale-[1.03]"
+                                style={{ backgroundColor: ACCENT, boxShadow: "0 10px 25px -5px rgba(16,185,129,0.4)" }}
+                            >
+                                Empezar el simulacro →
+                            </Link>
                         </Reveal>
-                    ))}
+
+                        {/* Mock del muro de resultados (difuminado) — solo en 2 columnas (oculto en móvil) */}
+                        <Reveal delay={120} className="hidden lg:block">
+                          <div className="relative mx-auto w-full max-w-sm">
+                            <div aria-hidden className="absolute inset-3 rounded-[2.5rem] bg-emerald-400/25 blur-2xl dark:bg-emerald-500/20" />
+                            <div className="relative overflow-hidden rounded-3xl border border-zinc-200 bg-white p-7 shadow-xl shadow-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900">
+                                <div>
+                                    <div className="mb-4 flex justify-center">
+                                        <span className="rounded-full bg-zinc-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">Ejemplo de resultado</span>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-[11px] font-semibold uppercase tracking-wide text-zinc-400">Tu nota</div>
+                                        <div className="text-6xl font-black leading-none" style={{ color: ACCENT }}>7,2</div>
+                                        <span className="mt-2 inline-block rounded-full px-3 py-1 text-xs font-bold text-white" style={{ backgroundColor: ACCENT }}>APTO</span>
+                                    </div>
+                                    <div className="mt-6 space-y-3.5">
+                                        {[
+                                            { l: "Constitución y derechos", p: 78 },
+                                            { l: "Procedimiento administrativo", p: 64 },
+                                            { l: "Empleo público", p: 41 },
+                                            { l: "Institucional vasco y UE", p: 70 },
+                                        ].map((a) => (
+                                            <div key={a.l}>
+                                                <div className="mb-1 flex justify-between text-[12px] text-zinc-500 dark:text-zinc-400">
+                                                    <span>{a.l}</span><span>{a.p}%</span>
+                                                </div>
+                                                <div className="h-2 rounded-full bg-zinc-100 dark:bg-zinc-800">
+                                                    <div className="h-full rounded-full" style={{ width: `${a.p}%`, backgroundColor: a.p >= 50 ? ACCENT : "#EF4444" }} />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="mt-6 text-center text-[12px] text-zinc-500 dark:text-zinc-400">
+                                        Corregido al momento, con tu nota y el desglose por áreas.
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </Reveal>
+                    </div>
                 </div>
             </section>
 
+            {/* ───────────── ORIENTACIÓN (embudo para indecisos) ───────────── */}
+            <section className="border-y border-emerald-100/70 bg-gradient-to-b from-emerald-50/70 to-transparent px-5 py-12 dark:border-emerald-900/30 dark:from-emerald-950/25 sm:py-16">
+                <div className="mx-auto max-w-5xl">
+                    <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+                        {/* Preview de las preguntas */}
+                        <Reveal className="order-2 lg:order-1">
+                            <div className="mx-auto w-full max-w-sm rounded-3xl border border-zinc-200 bg-white p-6 shadow-xl shadow-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900">
+                                {[
+                                    { n: "1", t: "¿Qué titulación tienes?" },
+                                    { n: "2", t: "¿Qué nivel de euskera?" },
+                                    { n: "3", t: "¿Qué área te interesa?" },
+                                    { n: "4", t: "¿Cuánto tiempo tienes?" },
+                                ].map((q) => (
+                                    <div key={q.n} className="flex items-center gap-3 border-b border-zinc-100 py-3 last:border-0 dark:border-zinc-800">
+                                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white" style={{ backgroundColor: ACCENT }}>
+                                            {q.n}
+                                        </span>
+                                        <span className="text-[14px] font-medium text-zinc-700 dark:text-zinc-200">{q.t}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </Reveal>
+
+                        {/* Copy + CTA */}
+                        <Reveal className="order-1 lg:order-2">
+                            <SectionHeading
+                                kicker="¿Indeciso?"
+                                title="¿No sabes qué oposición elegir?"
+                                subtitle="Responde 4 preguntas y te decimos cuál encaja contigo. Gratis."
+                            />
+                            <Link
+                                href="/herramientas/que-oposicion-elegir"
+                                className="mt-8 inline-flex items-center gap-2 rounded-full px-7 py-4 text-[15px] font-bold text-white shadow-lg transition-transform hover:scale-[1.03]"
+                                style={{ backgroundColor: ACCENT, boxShadow: "0 10px 25px -5px rgba(16,185,129,0.4)" }}
+                            >
+                                Descúbrelo gratis →
+                            </Link>
+                        </Reveal>
+                    </div>
+                </div>
+            </section>
+
+            {/* ───────────── TESTS MÁS POPULARES (prueba social · conteo real) ───────────── */}
+            <TestsPopulares />
+
             {/* ───────────── PREMIUM / COMUNIDAD (oculta la venta a quien ya es premium) ───────────── */}
             <PremiumSection />
+            </div>
+            {/* fin contenedor sticky */}
 
-            {/* ───────────── POR ESCALA ───────────── */}
-            <section className="px-5 py-12 sm:py-20">
-                <div className="mx-auto max-w-5xl">
+            {/* ───────────── CONVOCATORIAS (seguimiento + alertas) — cuaderno 1/2 ───────────── */}
+            <section className="relative overflow-hidden border-t border-zinc-100 dark:border-zinc-800/70 px-5 py-12 sm:py-16">
+                <NotebookBg />
+                <div className="relative z-10 mx-auto max-w-5xl">
+                    <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2">
+                            <Reveal>
+                                <SectionHeading
+                                    kicker="Convocatorias"
+                                    title="Sigue tu convocatoria de cerca"
+                                    subtitle="Plazas, fechas y enlaces oficiales. Te avisamos el día que salga en el BOPV."
+                                />
+                                <Link
+                                    href="/convocatorias"
+                                    className="mt-7 inline-flex items-center gap-2 rounded-full px-6 py-3 text-[15px] font-bold text-white transition-transform hover:scale-[1.03]"
+                                    style={{ backgroundColor: ACCENT }}
+                                >
+                                    Ver convocatorias →
+                                </Link>
+                            </Reveal>
+                            <Reveal delay={120}>
+                                <div className="flex flex-col gap-3">
+                                    {[
+                                        { o: "Gobierno Vasco", d: "Administrativo, Técnico, Personal de Apoyo" },
+                                        { o: "Osakidetza", d: "Categorías sanitarias" },
+                                        { o: "Ertzaintza y ayuntamientos", d: "Seguridad y administración local" },
+                                    ].map((c) => (
+                                        <div key={c.o} className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white px-5 py-4 dark:border-zinc-800 dark:bg-zinc-900">
+                                            <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: ACCENT }} />
+                                            <div>
+                                                <div className="text-[14px] font-bold text-zinc-950 dark:text-zinc-50">{c.o}</div>
+                                                <div className="text-[12px] text-zinc-500 dark:text-zinc-400">{c.d}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </Reveal>
+                        </div>
+                        <Reveal delay={200}>
+                            <SuscripcionConvocatorias />
+                        </Reveal>
+                    </div>
+            </section>
+
+            {/* ───────────── POR ESCALA — cuaderno 2/2 ───────────── */}
+            <section className="relative overflow-hidden border-b border-zinc-100 dark:border-zinc-800/70 px-5 py-12 sm:py-16">
+                <NotebookBg fade />
+                <div className="relative z-10 mx-auto max-w-5xl">
                     <Reveal>
-                        <h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Elige tu escala</h2>
-                        <p className="mt-3 max-w-2xl text-zinc-500 dark:text-zinc-400">Cada escala con su temario completo: bloque común y específicos, en vista por bloques o temario oficial.</p>
+                        <SectionHeading
+                            kicker="Temario"
+                            title="Elige tu escala"
+                            subtitle="Temario completo de cada escala: común y específico."
+                        />
                     </Reveal>
                     <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
                         {ESCALAS.map((e, i) => (
@@ -152,7 +247,7 @@ export default function HomePage() {
                                 <Link href={e.href} className="group flex items-center justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-xl hover:shadow-zinc-900/5">
                                     <div>
                                         <div className="text-lg font-bold text-zinc-950 dark:text-zinc-50">{e.label}</div>
-                                        <div className="mt-1 text-[13px] text-zinc-500 dark:text-zinc-400">OPE Gobierno Vasco · Grupo {e.grupo}</div>
+                                        <div className="mt-1 text-[13px] text-zinc-500 dark:text-zinc-400">Oposiciones de Euskadi · Grupo {e.grupo}</div>
                                     </div>
                                     <span className="flex h-10 w-10 items-center justify-center rounded-full text-lg transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-500/10" style={{ color: ACCENT }}>→</span>
                                 </Link>
@@ -162,106 +257,11 @@ export default function HomePage() {
                 </div>
             </section>
 
-                {/* Tira de academias: pegada abajo, acompaña hasta aquí y se aparca */}
-                <AcademiaMarquee />
-            </div>
-            {/* fin contenedor sticky */}
-
-            {/* ───────────── FEATURES ───────────── */}
-            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-12 sm:py-20">
-                <div className="mx-auto max-w-5xl">
-                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Todo lo que necesitas para aprobar</h2></Reveal>
-                    <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {FEATURES.map((f, i) => (
-                            <Reveal key={f.t} delay={(i % 3) * 80} className={i >= 3 ? "hidden sm:block" : undefined}>
-                                <div className="h-full rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6">
-                                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: "linear-gradient(145deg, rgba(16,185,129,0.20), rgba(16,185,129,0.06))" }}>
-                                        <img src={f.icon} alt="" aria-hidden width={44} height={44} className="h-11 w-11 object-contain" loading="lazy" />
-                                    </div>
-                                    <h3 className="text-base font-bold text-zinc-950 dark:text-zinc-50">{f.t}</h3>
-                                    <p className="mt-2 text-[14px] leading-relaxed text-zinc-500 dark:text-zinc-400">{f.d}</p>
-                                </div>
-                            </Reveal>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* ───────────── OPINIONES (carrusel manual con flechas) ───────────── */}
-            <section className="py-12 sm:py-20">
+            <section className="border-y border-zinc-100 bg-zinc-50/60 py-12 dark:border-zinc-800/70 dark:bg-zinc-900/40 sm:py-16">
                 <div className="mx-auto max-w-5xl px-5">
                     <Reveal>
                         <Testimonios items={TESTIMONIOS} />
-                    </Reveal>
-                </div>
-            </section>
-
-            {/* ───────────── PROFESORES ───────────── */}
-            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-12 sm:py-20">
-                <div className="mx-auto max-w-5xl">
-                    <Reveal>
-                        <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Clases particulares</span>
-                        <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Profesores para tu oposición</h2>
-                        <p className="mt-3 max-w-2xl text-zinc-500 dark:text-zinc-400">¿Necesitas un empujón con algún bloque? Profesores particulares especializados en oposiciones del País Vasco. Y si eres profe, anúnciate y llega a nuevos alumnos.</p>
-                    </Reveal>
-                    <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        {PROFES.map((p, i) => (
-                            <Reveal key={p.n} delay={i * 70}>
-                                <div className="flex h-full flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6">
-                                    <div className="flex items-center gap-3">
-                                        <span className="flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-bold text-white" style={{ background: `linear-gradient(145deg, #34D399, ${ACCENT})` }}>{p.ini}</span>
-                                        <div>
-                                            <div className="text-[15px] font-bold text-zinc-950 dark:text-zinc-50">{p.n}</div>
-                                            <div className="text-[12px] text-zinc-400 dark:text-zinc-500">{p.zona}</div>
-                                        </div>
-                                    </div>
-                                    <p className="mt-4 text-[14px] leading-relaxed text-zinc-600 dark:text-zinc-300">{p.mat}</p>
-                                </div>
-                            </Reveal>
-                        ))}
-                    </div>
-                    <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                        <Link href="/profesores" className="inline-flex items-center justify-center rounded-full bg-zinc-950 dark:bg-white dark:text-zinc-950 px-6 py-3 text-[14px] font-semibold text-white transition-transform hover:scale-[1.03]">Ver profesores →</Link>
-                        <a href="mailto:gaindituoposiciones@gmail.com?subject=Quiero%20anunciarme%20como%20profesor" className="inline-flex items-center justify-center rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-3 text-[14px] font-semibold text-zinc-900 dark:text-zinc-100 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/60">Anúnciate como profesor</a>
-                    </div>
-                </div>
-            </section>
-
-            {/* ───────────── RECURSOS ───────────── */}
-            <section className="px-5 py-12 sm:py-20">
-                <div className="mx-auto max-w-5xl">
-                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Recursos destacados</h2></Reveal>
-                    <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        {[
-                            { t: "Constitución Española", d: "Test y teoría del bloque común.", href: "/constitucion" },
-                            { t: "Ley 39/2015", d: "Procedimiento Administrativo Común.", href: "/ley-39-2015" },
-                            { t: "Convocatorias de Euskadi", d: "Estado, plazas y fechas de cada oposición, con enlaces oficiales.", href: "/convocatorias" },
-                        ].map((r, i) => (
-                            <Reveal key={r.href} delay={i * 70}>
-                                <Link href={r.href} className="group block h-full rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 transition-all hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-xl hover:shadow-zinc-900/5">
-                                    <h3 className="text-base font-bold text-zinc-950 dark:text-zinc-50 group-hover:underline">{r.t}</h3>
-                                    <p className="mt-2 text-[14px] text-zinc-500 dark:text-zinc-400">{r.d}</p>
-                                </Link>
-                            </Reveal>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ───────────── FAQ ───────────── */}
-            <section className="border-t border-zinc-100 dark:border-zinc-800/70 bg-zinc-50/60 dark:bg-zinc-900/40 px-5 py-12 sm:py-20">
-                <div className="mx-auto max-w-3xl">
-                    <Reveal><h2 className="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">Preguntas frecuentes</h2></Reveal>
-                    <Reveal delay={80} className="mt-8 divide-y divide-zinc-200 dark:divide-zinc-800 overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-                        {FAQS.map((f) => (
-                            <details key={f.q} className="group px-6">
-                                <summary className="flex cursor-pointer list-none items-center justify-between py-5 text-[15px] font-semibold text-zinc-950 dark:text-zinc-50">
-                                    {f.q}
-                                    <span className="ml-4 text-zinc-400 dark:text-zinc-500 transition-transform group-open:rotate-45">+</span>
-                                </summary>
-                                <p className="pb-5 text-[14px] leading-relaxed text-zinc-500 dark:text-zinc-400">{f.a}</p>
-                            </details>
-                        ))}
                     </Reveal>
                 </div>
             </section>
@@ -270,42 +270,37 @@ export default function HomePage() {
             <FinalCTA />
 
             {/* ───────────── FOOTER ───────────── */}
-            <footer className="border-t border-zinc-200 dark:border-zinc-800 px-5 py-12">
-                <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-8 sm:flex-row">
-                    <div>
-                        <div className="text-xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">gain<span style={{ color: ACCENT }}>ditu</span>.</div>
-                        <p className="mt-2 max-w-xs text-[13px] text-zinc-500 dark:text-zinc-400">El portal de las oposiciones de Euskadi: tests, convocatorias, temario y herramientas.</p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-x-12 gap-y-2 text-[14px] sm:grid-cols-3">
-                        {[
-                            ["Personal de Apoyo", "/oposiciones/personal-de-apoyo"],
-                            ["Administrativo", "/oposiciones/administrativo"],
-                            ["Técnico de Gestión", "/oposiciones/tecnico-gestion"],
-                            ["Técnico Superior", "/oposiciones/tecnico-superior"],
-                            ["Temario", "/temario"],
-                            ["Convocatorias", "/convocatorias"],
-                            ["Herramientas", "/herramientas"],
-                            ["Constitución", "/constitucion"],
-                            ["Ley 39/2015", "/ley-39-2015"],
-                            ["Aviso legal", "/aviso-legal"],
-                            ["Privacidad", "/privacidad"],
-                        ].map(([l, h]) => (
-                            <Link key={h} href={h} className="text-zinc-500 dark:text-zinc-400 transition-colors hover:text-zinc-950 dark:hover:text-white">{l}</Link>
-                        ))}
-                    </div>
-                </div>
-                <div className="mx-auto mt-10 max-w-5xl border-t border-zinc-100 dark:border-zinc-800/70 pt-6 text-[12px] text-zinc-400 dark:text-zinc-500">© {new Date().getFullYear()} {SITE_NAME}. No oficial; sin relación con las administraciones convocantes.</div>
-            </footer>
+            <SiteFooter />
 
+            <QueOposicionNudge />
             <BackToTop />
 
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify([
-                        { "@context": "https://schema.org", "@type": "WebSite", name: SITE_NAME, url: SITE_URL, description: SITE_DESCRIPTION },
-                        { "@context": "https://schema.org", "@type": "Organization", name: SITE_NAME, url: SITE_URL, description: "Tests para preparar las oposiciones de Euskadi por temario oficial." },
-                        { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+                        { "@context": "https://schema.org", "@type": "WebSite", name: SITE_NAME, url: SITE_URL, inLanguage: "es", description: SITE_DESCRIPTION },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "Organization",
+                            name: SITE_NAME,
+                            url: SITE_URL,
+                            logo: `${SITE_URL}/icon.png`,
+                            description: "Tests, temario, convocatorias y herramientas para preparar las oposiciones de Euskadi.",
+                            sameAs: [SOCIAL.instagram, SOCIAL.tiktok, SOCIAL.twitter],
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "SiteNavigationElement",
+                            name: ["Tests", "Temario", "Convocatorias", "Herramientas", "Profesores"],
+                            url: [
+                                `${SITE_URL}/`,
+                                `${SITE_URL}/temario`,
+                                `${SITE_URL}/convocatorias`,
+                                `${SITE_URL}/herramientas`,
+                                `${SITE_URL}/profesores`,
+                            ],
+                        },
                     ]),
                 }}
             />

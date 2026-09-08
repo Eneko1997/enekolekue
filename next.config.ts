@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        // Herramienta "Ratio aspirantes por plaza" retirada (poco útil): al índice.
+        source: "/herramientas/ratio-aspirantes-plaza",
+        destination: "/herramientas",
+        permanent: true,
+      },
+      {
         // /fechas-opes se sustituye por /convocatorias (redirección permanente 308).
         source: "/fechas-opes",
         destination: "/convocatorias",

@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import TestClient from "@/components/test/TestClient"
 
 export const metadata: Metadata = {
-    title: "Test",
+    title: { absolute: "Test Gainditu Oposiciones" },
     description:
         "Responde el test por tema oficial y mide tu progreso para la OPE del Gobierno Vasco 2026.",
     robots: { index: false, follow: true },

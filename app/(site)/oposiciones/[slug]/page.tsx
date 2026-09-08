@@ -8,6 +8,9 @@ import FaqLeccion, { type Faq } from "@/components/lecciones/FaqLeccion"
 import EscalaTests from "@/components/escala/EscalaTests"
 import { SCALE_COLORS } from "@/lib/theme"
 import { SITE_URL } from "@/lib/site"
+import { ESTADOS, type Convocatoria } from "@/lib/data/convocatorias"
+import { getConvocatorias } from "@/lib/data/convocatorias-db"
+import { getOrganismo } from "@/lib/data/organismos"
 
 interface EscalaData {
     escala: "auxiliares" | "administrativos" | "gestion" | "superiores"
@@ -32,7 +35,7 @@ const ESCALAS: Record<string, EscalaData> = {
         color: SCALE_COLORS.auxiliares,
         convocatoria: "Septiembre 2026",
         prueba: "Enero 2027",
-        title: "Oposiciones Personal de Apoyo Gobierno Vasco 2026 — Tests OPE",
+        title: "Oposiciones Personal de Apoyo del Gobierno Vasco — Temario y tests",
         description:
             "Prepara la oposición de la Agrupación Profesional de Personal de Apoyo del Gobierno Vasco 2026 con tests por tema del temario oficial de la convocatoria. Parte general (temas 1–14) y específicos de la agrupación.",
         keywords: [
@@ -41,7 +44,7 @@ const ESCALAS: Record<string, EscalaData> = {
             "test personal de apoyo",
             "OPE personal de apoyo Eusko Jaurlaritza",
         ],
-        intro: "La Agrupación Profesional de Personal de Apoyo (grupo E) es la puerta de entrada al empleo público vasco. Practica el temario oficial de la convocatoria tema a tema, a tu ritmo y sin agobios aunque hace años que no estudias.",
+        intro: "Personal de Apoyo (grupo E), la puerta de entrada al empleo público vasco. Temario oficial, tema a tema y a tu ritmo.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización del Estado y de Euskadi, empleo público, protección de datos y prevención de riesgos." },
             { t: "Atención a la ciudadanía", d: "Derechos de la ciudadanía, comunicación escrita y oral, y atención al público." },
@@ -61,7 +64,7 @@ const ESCALAS: Record<string, EscalaData> = {
         color: SCALE_COLORS.administrativos,
         convocatoria: "Septiembre 2026",
         prueba: "Enero 2027",
-        title: "Oposiciones Administrativo Gobierno Vasco 2026 — Tests OPE",
+        title: "Oposiciones Administrativo del Gobierno Vasco — Temario y tests",
         description:
             "Prepara la oposición de Administrativo del Gobierno Vasco 2026 con tests por tema oficial: parte general (temas 1–14), procedimiento administrativo y específicos de la escala administrativa.",
         keywords: [
@@ -70,7 +73,7 @@ const ESCALAS: Record<string, EscalaData> = {
             "test administrativo",
             "OPE administrativo Eusko Jaurlaritza",
         ],
-        intro: "La escala Administrativa (subgrupo C1) amplía las funciones del auxiliar con más procedimiento y gestión. Practica con el temario oficial de la convocatoria, tema a tema y sabiendo siempre por dónde vas.",
+        intro: "Escala Administrativa (C1): más procedimiento y gestión. Temario oficial, tema a tema.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización de Euskadi, empleo público, protección de datos y prevención de riesgos." },
             { t: "Procedimiento administrativo", d: "Ley 39/2015: acto administrativo, fases, recursos y responsabilidad." },
@@ -90,7 +93,7 @@ const ESCALAS: Record<string, EscalaData> = {
         color: SCALE_COLORS.gestion,
         convocatoria: "Octubre 2026",
         prueba: "Abril 2027",
-        title: "Oposiciones Técnico de Gestión Gobierno Vasco 2026 — Tests OPE",
+        title: "Oposiciones Técnico de Gestión del Gobierno Vasco — Temario y tests",
         description:
             "Prepara la oposición de Técnico de Gestión Administrativa del Gobierno Vasco 2026 con tests del temario oficial de la convocatoria: parte general, procedimiento y gestión administrativa.",
         keywords: [
@@ -98,7 +101,7 @@ const ESCALAS: Record<string, EscalaData> = {
             "gestión administrativa Euskadi 2026",
             "test técnico gestión",
         ],
-        intro: "La escala de Gestión Administrativa (grupo B) requiere un perfil técnico-administrativo. Practica el temario oficial de la convocatoria por temas, con todo ordenado para no perderte aunque retomes el estudio ahora.",
+        intro: "Gestión Administrativa (grupo B), perfil técnico-administrativo. Temario oficial por temas, todo ordenado.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización de Euskadi, empleo público y protección de datos." },
             { t: "Procedimiento administrativo", d: "Ley 39/2015 y régimen jurídico del sector público." },
@@ -118,7 +121,7 @@ const ESCALAS: Record<string, EscalaData> = {
         color: SCALE_COLORS.superiores,
         convocatoria: "Octubre 2026",
         prueba: "Abril 2027",
-        title: "Oposiciones Técnico Superior de Administración Gobierno Vasco 2026 — Tests OPE",
+        title: "Oposiciones Técnico Superior del Gobierno Vasco — Temario y tests",
         description:
             "Prepara la oposición de la Escala Superior de Administración del Gobierno Vasco 2026 con tests del temario oficial de la convocatoria: parte general, procedimiento avanzado y régimen jurídico.",
         keywords: [
@@ -126,7 +129,7 @@ const ESCALAS: Record<string, EscalaData> = {
             "escala superior administración Euskadi",
             "test técnico superior",
         ],
-        intro: "La Escala Superior de Administración (grupo A) es el nivel más alto del cuerpo general. Practica el temario oficial de la convocatoria a base de tests, paso a paso y con tu progreso a la vista.",
+        intro: "Escala Superior (grupo A), el nivel más alto del cuerpo general. Temario oficial a base de tests.",
         puntos: [
             { t: "Parte general (T.1–14)", d: "Constitución, organización de Euskadi, empleo público y protección de datos." },
             { t: "Procedimiento avanzado", d: "Ley 39/2015 en profundidad: actos, fases, recursos y responsabilidad patrimonial." },
@@ -142,7 +145,35 @@ const ESCALAS: Record<string, EscalaData> = {
 }
 
 const ACCENT = "#10B981"
+
+// Landing del simulacro gratis por escala (las que tienen uno montado).
+const SIM_LANDING: Record<string, string> = {
+    administrativo: "/simulacro-administrativo-gobierno-vasco",
+    "personal-de-apoyo": "/simulacro-personal-apoyo-gobierno-vasco",
+    "tecnico-gestion": "/simulacro-tecnico-gestion-gobierno-vasco",
+    "tecnico-superior": "/simulacro-tecnico-superior-gobierno-vasco",
+}
+
+// Se regenera cada hora para recoger convocatorias auto-ingeridas de esta escala.
+export const revalidate = 3600
 const SLUGS = Object.keys(ESCALAS)
+
+// El hub de escala es EVERGREEN y de toda Euskadi. Lista todas las convocatorias de
+// esa escala (Gobierno Vasco, Diputaciones, ayuntamientos…) por grupo + palabra clave.
+const ESCALA_MATCH: Record<string, { grupo: string; kw: RegExp }> = {
+    "personal-de-apoyo": { grupo: "E", kw: /apoyo|subalterno|servicios/i },
+    administrativo: { grupo: "C1", kw: /administrativ/i },
+    "tecnico-gestion": { grupo: "B", kw: /gesti[oó]n/i },
+    "tecnico-superior": { grupo: "A", kw: /superior/i },
+}
+
+function convocatoriasDeEscala(slug: string, all: Convocatoria[]): Convocatoria[] {
+    const m = ESCALA_MATCH[slug]
+    if (!m) return []
+    return all
+        .filter((c) => c.grupo === m.grupo && m.kw.test(`${c.nombre} ${c.cuerpoOCategoria.join(" ")}`))
+        .sort((a, b) => ESTADOS[a.estado].orden - ESTADOS[b.estado].orden)
+}
 
 export function generateStaticParams() {
     return SLUGS.map((slug) => ({ slug }))
@@ -173,22 +204,83 @@ export default async function OposicionPage({
     const d = ESCALAS[slug]
     if (!d) notFound()
 
+    const convs = convocatoriasDeEscala(slug, await getConvocatorias())
+    // Convocatoria destacada: abierta primero y, entre esas, la de más plazas.
+    const flagship = convs.slice().sort((a, b) => {
+        const ao = a.estado === "inscripcion-abierta" ? 0 : 1
+        const bo = b.estado === "inscripcion-abierta" ? 0 : 1
+        return ao !== bo ? ao - bo : (b.plazas ?? 0) - (a.plazas ?? 0)
+    })[0]
+    const flagEstado = flagship ? ESTADOS[flagship.estado] : null
+    const flagPlazo = (() => {
+        const fc = flagship?.fechasClave || []
+        const ini = fc.find((f) => /inicio/i.test(f.etiqueta) && f.fecha)
+        const fin = fc.find((f) => /fin/i.test(f.etiqueta) && f.fecha)
+        const insc = fc.find((f) => /^inscrip|solicitud/i.test(f.etiqueta) && f.fecha)
+        if (ini && fin) return `${ini.fecha} – ${fin.fecha}`
+        if (insc?.fecha) return insc.fecha
+        if (fin?.fecha) return `hasta el ${fin.fecha}`
+        if (ini?.fecha) return `desde el ${ini.fecha}`
+        return fc.find((f) => /plazo/i.test(f.etiqueta) && f.fecha)?.fecha
+    })()
+    const flagOrg = flagship ? getOrganismo(flagship.organismo)?.corto : null
+    const simPath = SIM_LANDING[slug]
+    const simPreguntas = slug === "administrativo" ? 30 : 60 // Administrativo se redujo a 30
+
     return (
         <main className="flex flex-1 flex-col">
             <LeccionHero
-                eyebrow="OPE Gobierno Vasco 2026"
+                eyebrow="Oposiciones de Euskadi"
                 title={`Oposiciones ${d.nombre}`}
                 subtitle={d.intro}
                 accent={ACCENT}
                 ctaHref="#tests-escala"
                 ctaLabel={`Ver tests de ${d.nombre} →`}
-                stats={[
-                    { n: d.grupo, label: "grupo" },
-                    { n: d.convocatoria.split(" ")[0], label: "convocatoria" },
-                    { n: d.prueba.split(" ")[0], label: "1ª prueba" },
-                    { n: "Oficial", label: "temario" },
-                ]}
             />
+
+            {/* Convocatoria destacada de esta escala (la abierta con más plazas) + ver todas */}
+            {flagship && flagEstado && (
+                <div className="mx-auto -mt-2 mb-2 w-full max-w-4xl px-5">
+                    <Link
+                        href={`/convocatorias/${flagship.slug}`}
+                        className="group relative block overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-emerald-900/10 dark:border-emerald-900/40 dark:from-emerald-950/30 dark:to-zinc-900"
+                    >
+                        <div aria-hidden className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full opacity-60 blur-3xl" style={{ background: "rgba(16,185,129,0.18)" }} />
+                        <div className="relative flex items-center gap-4">
+                            {flagship.plazas != null && (
+                                <div className="shrink-0 text-center">
+                                    <div className="text-3xl font-extrabold leading-none sm:text-4xl" style={{ color: ACCENT }}>
+                                        {flagship.plazas}
+                                    </div>
+                                    <div className="mt-1 text-[10px] font-bold uppercase tracking-wide text-zinc-400 dark:text-zinc-500">plazas</div>
+                                </div>
+                            )}
+                            <div className="min-w-0 flex-1">
+                                <span
+                                    className="inline-block rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide"
+                                    style={{ color: flagEstado.color, background: `${flagEstado.color}1f` }}
+                                >
+                                    {flagEstado.label}
+                                </span>
+                                <div className="mt-1 text-[15px] font-bold leading-snug text-zinc-950 dark:text-zinc-50">
+                                    {flagOrg ? `${flagOrg} · ` : ""}{d.nombre}
+                                </div>
+                                {flagPlazo && (
+                                    <div className="mt-0.5 text-[12.5px] text-zinc-500 dark:text-zinc-400">
+                                        Plazo: <span className="font-semibold text-zinc-700 dark:text-zinc-200">{flagPlazo}</span>
+                                    </div>
+                                )}
+                            </div>
+                            <span className="shrink-0 text-lg font-semibold transition-transform group-hover:translate-x-0.5" style={{ color: ACCENT }}>→</span>
+                        </div>
+                    </Link>
+                    <div className="mt-2 text-right">
+                        <Link href="/convocatorias" className="text-[13px] font-semibold transition-transform hover:translate-x-0.5" style={{ color: ACCENT }}>
+                            Ver todas las convocatorias de {d.nombre} →
+                        </Link>
+                    </div>
+                </div>
+            )}
 
             <PuntosExamen
                 titulo="Qué entra en el temario"
@@ -197,6 +289,39 @@ export default async function OposicionPage({
             />
 
             <EscalaTests escala={d.escala} nombre={d.nombre} />
+
+            {/* Simulacro gratis de la escala: se pone a prueba tras ver los tests */}
+            {simPath && (
+                <div className="mx-auto w-full max-w-4xl px-5 py-4">
+                    <Link
+                        href={simPath}
+                        className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-emerald-900/10 dark:border-emerald-900/40 dark:from-emerald-950/30 dark:to-zinc-900"
+                    >
+                        <div aria-hidden className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full opacity-60 blur-3xl" style={{ background: "rgba(16,185,129,0.18)" }} />
+                        <span
+                            className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white"
+                            style={{ backgroundColor: ACCENT }}
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+                                <path d="M9 11l3 3 8-8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </span>
+                        <div className="relative min-w-0 flex-1">
+                            <span className="inline-block rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white" style={{ backgroundColor: ACCENT }}>
+                                Simulacro gratis
+                            </span>
+                            <div className="mt-1 text-[15px] font-bold leading-snug text-zinc-950 dark:text-zinc-50">
+                                Ponte a prueba: simulacro de {d.nombre}
+                            </div>
+                            <div className="mt-0.5 text-[12.5px] text-zinc-500 dark:text-zinc-400">
+                                {simPreguntas} preguntas tipo examen, con corrección al momento. Sin registro para empezar.
+                            </div>
+                        </div>
+                        <span className="relative shrink-0 text-lg font-semibold transition-transform group-hover:translate-x-0.5" style={{ color: ACCENT }}>→</span>
+                    </Link>
+                </div>
+            )}
 
             <FaqLeccion faqs={d.faqs} accent={ACCENT} />
 
@@ -208,23 +333,6 @@ export default async function OposicionPage({
                 cta="Ver acceso Premium →"
             />
 
-            <div className="mx-auto mb-12 max-w-4xl px-5">
-                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
-                    {SLUGS.filter((s) => s !== slug).map((s) => (
-                        <Link
-                            key={s}
-                            href={`/oposiciones/${s}`}
-                            className="hover:text-zinc-950 dark:hover:text-white hover:underline"
-                        >
-                            → Oposiciones {ESCALAS[s].nombre}
-                        </Link>
-                    ))}
-                    <Link href="/convocatorias" className="hover:text-zinc-950 dark:hover:text-white hover:underline">
-                        → Convocatorias de Euskadi
-                    </Link>
-                </div>
-            </div>
-
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
@@ -232,7 +340,7 @@ export default async function OposicionPage({
                         {
                             "@context": "https://schema.org",
                             "@type": "Course",
-                            name: `Oposiciones ${d.nombre} — Gobierno Vasco 2026`,
+                            name: `Oposiciones ${d.nombre} en Euskadi — temario y tests`,
                             description: d.description,
                             provider: { "@type": "Organization", name: "Gainditu", url: SITE_URL },
                         },

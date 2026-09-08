@@ -30,7 +30,9 @@ export default function Reveal({
                     }
                 }
             },
-            { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+            // Se dispara ANTES de que la sección entre del todo (margen inferior
+            // positivo), para que la entrada se vea suave y no "caiga" ya visible.
+            { threshold: 0, rootMargin: "0px 0px 12% 0px" }
         )
         io.observe(el)
         return () => io.disconnect()

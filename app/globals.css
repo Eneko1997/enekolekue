@@ -17,6 +17,26 @@ html {
   color-scheme: light;
   scroll-behavior: smooth;
 }
+/* Evita el scroll horizontal en todas las pantallas (un decorativo/animación
+   que se desborda no debe crear barra lateral). clip no rompe position:sticky. */
+html,
+body {
+  overflow-x: clip;
+}
+/* Anti-copia en simulacros y exámenes oficiales: bloquea la selección de texto
+   (los inputs/textarea siguen funcionando). Lo activa TestClient con .no-copy. */
+body.no-copy,
+body.no-copy *:not(input):not(textarea) {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+body.no-copy input,
+body.no-copy textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
 html.dark {
   background: #0a0a0b;
   color-scheme: dark;
@@ -233,9 +253,9 @@ html.dark body {
 /* Reveal al hacer scroll (IntersectionObserver añade .in) */
 .reveal {
   opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(16px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 .reveal.in {
