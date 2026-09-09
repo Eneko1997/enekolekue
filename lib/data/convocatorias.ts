@@ -501,6 +501,35 @@ export const CONVOCATORIAS: Convocatoria[] = [
             "El servicio de bomberos de Bizkaia convocó 39 plazas de bombero/a conductor/a (además de plazas de cabo), con las primeras pruebas previstas para el primer semestre de 2026.",
         testsRelacionados: [{ etiqueta: "Constitución", url: "/constitucion" }],
     },
+    // Bidegi (Agencia Guipuzcoana de Infraestructuras). El feed de Open Data Euskadi tituló mal
+    // esta plaza ("obra civil"); el anuncio real de Bidegi/BOG es Protección Civil. Curada con el
+    // MISMO slug que la fila automática para que mande sobre ella y no se sobrescriba en la reingesta.
+    {
+        slug: "eus-empleo_publico_1788775617539",
+        organismo: "administracion-local",
+        nombre: "Técnico/a de Gestión de Emergencias y Protección Civil en Bidegi",
+        cuerpoOCategoria: ["Técnico/a de Gestión de Emergencias y Protección Civil"],
+        grupo: "A2",
+        estado: "inscripcion-abierta",
+        plazas: 1,
+        plazasDetalle: [],
+        fechasClave: [
+            { etiqueta: "Inicio de inscripción", fecha: "7 de septiembre de 2026", iso: "2026-09-07" },
+            { etiqueta: "Fin de inscripción", fecha: "28 de septiembre de 2026", iso: "2026-09-28", nota: "Según las bases publicadas en www.bidegi.eus." },
+        ],
+        perfilLinguistico: null,
+        enlacesOficiales: [
+            { etiqueta: "Empleo público · Bidegi", url: "https://www.bidegi.eus/es/oferta-de-empleo" },
+            { etiqueta: "Bases de la convocatoria", url: "https://www.bidegi.eus/documents/42696171/89922668/Bases+de+la+convocatoria+EMER.pdf/503963d1-35db-e618-bf0c-c9d9f8ed5fa9?t=1788520324878" },
+            { etiqueta: "Anuncio en el BOG", url: "https://egoitza.gipuzkoa.eus/gao-bog/castell/bog/2026/08/31/c2605700.pdf" },
+            { etiqueta: "Ficha en Euskadi.eus", url: "https://www.gazteaukera.euskadi.eus/webgaz00-tramite3/es/contenidos/empleo_publico/empleo_publico_1788775617539/es_def/index.shtml" },
+        ],
+        boletin: "Boletín Oficial de Gipuzkoa (BOG), 31 de agosto de 2026",
+        ultimaActualizacion: "2026-09-09",
+        resumen:
+            "1 plaza de Técnico/a de Gestión de Emergencias y Protección Civil (ámbito de infraestructuras viarias) en Bidegi, la agencia guipuzcoana de infraestructuras, con sede en Zarautz. Incorporación en plantilla con contrato de relevo indefinido. Plazo hasta el 28 de septiembre de 2026.",
+        testsRelacionados: [],
+    },
 ]
 
 export function getConvocatoria(slug: string): Convocatoria | undefined {
