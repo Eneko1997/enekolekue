@@ -601,6 +601,11 @@ export const dbAdministrativos: Bloque[] = [
                 preguntas: 85,
             },
             {
+                id: "ex_vitoria_admin_2019",
+                titulo: "Examen Administración General — Ayuntamiento de Vitoria-Gasteiz, 2019 · preguntas verificadas",
+                preguntas: 105,
+            },
+            {
                 id: "ex_zamudio_adm_2024",
                 titulo: "Examen Administrativo — Ayuntamiento de Zamudio, 2024",
                 preguntas: 100,
