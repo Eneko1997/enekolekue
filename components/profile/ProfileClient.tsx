@@ -361,6 +361,20 @@ const EXAMENES_OFICIALES = [
         escala: "administrativos",
         badge: "OFICIAL",
     },
+    {
+        id: "ex_admin_bilbao_2024",
+        titulo: "Examen Administrativo — Ayto. Bilbao 2024 (derecho general)",
+        preguntas: 61,
+        escala: "administrativos",
+        badge: "OFICIAL",
+    },
+    {
+        id: "ex_vitoria_admin_2019",
+        titulo: "Examen Admón. General — Ayto. Vitoria-Gasteiz 2019 (verificadas)",
+        preguntas: 105,
+        escala: "administrativos",
+        badge: "OFICIAL",
+    },
 ]
 
 const SIMULACROS_GAINDITU = [
