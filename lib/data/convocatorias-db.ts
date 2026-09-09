@@ -17,15 +17,44 @@ const KEY =
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
     "sb_publishable_lfcfMDSYpIDWzy2CWufT_A_NfJbTimc"
 
+// Pista del boletín/origen a partir de la URL, para distinguir enlaces con etiqueta repetida.
+function pistaOrigen(url: string): string | null {
+    const u = String(url || "").toLowerCase()
+    if (/gao-bog|gipuzkoa\.eus/.test(u)) return "BOG"
+    if (/bopv|euskadi\.eus|\/eli\//.test(u)) return "BOPV"
+    if (/bizkaia\.eus/.test(u)) return "BOB"
+    if (/araba\.eus/.test(u)) return "BOTHA"
+    if (/boe\.es/.test(u)) return "BOE"
+    return null
+}
+
+// Una misma convocatoria a veces publica las bases por dos vías (la entidad y el boletín),
+// y ambas llegan con la MISMA etiqueta ("Bases de la convocatoria"). Mostrar la etiqueta
+// idéntica dos veces confunde: al repetido se le añade su origen (BOG, BOPV…) para diferenciarlo.
+function distinguirEtiquetas<T extends { etiqueta: string; url: string }>(enlaces: T[]): T[] {
+    const total = new Map<string, number>()
+    for (const e of enlaces) total.set(e.etiqueta, (total.get(e.etiqueta) ?? 0) + 1)
+    const vistos = new Map<string, number>()
+    return enlaces.map((e) => {
+        if ((total.get(e.etiqueta) ?? 0) <= 1) return e
+        const n = (vistos.get(e.etiqueta) ?? 0) + 1
+        vistos.set(e.etiqueta, n)
+        if (n === 1) return e // el primero se queda tal cual
+        const pista = pistaOrigen(e.url)
+        return { ...e, etiqueta: pista ? `${e.etiqueta} (${pista})` : `${e.etiqueta} (${n})` }
+    })
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function mapRow(r: any): Convocatoria {
     // Enlace de empleo de la entidad (verificado a mano) como principal, si lo hay.
     const enlacesBase: any[] = r.enlaces_oficiales ?? []
     const emp = empleoEntidad(r.nombre, r.resumen, r.organismo)
-    const enlacesOficiales =
+    const enlacesOficiales = distinguirEtiquetas(
         emp && !enlacesBase.some((e) => e?.url === emp.url)
             ? [{ etiqueta: emp.etiqueta, url: emp.url }, ...enlacesBase]
             : enlacesBase
+    )
     return {
         slug: r.slug,
         organismo: r.organismo,

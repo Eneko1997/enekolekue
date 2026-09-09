@@ -86,6 +86,12 @@ export const ENTIDADES_EMPLEO: EntidadEmpleo[] = [
         url: "https://www.cristinaenea.eus/es/noticias/11733-tecnico-a-de-proyectos-culturales-y-expositivos",
     },
     {
+        // Bidegi (Agencia Guipuzcoana de Infraestructuras). Portal de empleo verificado 2026-09-09.
+        match: ["bidegi", "agencia guipuzcoana de infraestructuras"],
+        etiqueta: "Empleo público · Bidegi",
+        url: "https://www.bidegi.eus/es/oferta-de-empleo",
+    },
+    {
         match: ["urretxu"],
         etiqueta: "Empleo público · Ayuntamiento de Urretxu",
         url: "https://urretxu.eus/es/ayuntamiento/empleo/",
