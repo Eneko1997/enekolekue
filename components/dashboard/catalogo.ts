@@ -602,7 +602,7 @@ export const dbAdministrativos: Bloque[] = [
             },
             {
                 id: "ex_vitoria_admin_2019",
-                titulo: "Examen Administración General — Ayuntamiento de Vitoria-Gasteiz, 2019 · preguntas verificadas",
+                titulo: "Examen Administración General — Ayuntamiento de Vitoria-Gasteiz, 2019",
                 preguntas: 105,
             },
             {
@@ -622,7 +622,7 @@ export const dbAdministrativos: Bloque[] = [
             },
             {
                 id: "ex_admin_bilbao_2024",
-                titulo: "Examen Administrativo — Ayuntamiento de Bilbao, 2024 · Bloque de derecho general",
+                titulo: "Examen Administrativo — Ayuntamiento de Bilbao, 2024",
                 preguntas: 61,
             },
         ],

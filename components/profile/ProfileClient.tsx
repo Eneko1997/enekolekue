@@ -305,76 +305,94 @@ function nombreCorto(id: string): string {
 }
 
 const EXAMENES_OFICIALES = [
+    // ── Gobierno Vasco ──
     {
         id: "ex_admin_ope_gv_2010",
-        titulo: "Examen Administrativo — OPE Gobierno Vasco 2010 · Prueba 1ª (teórico)",
+        titulo: "Administrativo — OPE Gobierno Vasco 2010 · Prueba 1ª",
         preguntas: 114,
         escala: "administrativos",
+        entidad: "gv",
         badge: "OFICIAL",
     },
     {
         id: "ex_admin_ope_gv_2010_p2",
-        titulo: "Examen Administrativo — OPE Gobierno Vasco 2010 · Prueba 2ª (supuestos prácticos)",
+        titulo: "Administrativo — OPE Gobierno Vasco 2010 · Prueba 2ª",
         preguntas: 52,
         escala: "administrativos",
+        entidad: "gv",
         badge: "OFICIAL",
     },
     {
         id: "ex_admin_bolsa_gv_2017",
-        titulo: "Examen Administrativo — Bolsa Gobierno Vasco 2017",
+        titulo: "Administrativo — Bolsa Gobierno Vasco 2017",
         preguntas: 57,
         escala: "administrativos",
+        entidad: "gv",
         badge: "OFICIAL",
     },
     {
         id: "ex_supe_bolsa_gv_2015",
-        titulo: "Examen Técnico Superior — Bolsa Gobierno Vasco 2015",
+        titulo: "Técnico Superior — Bolsa Gobierno Vasco 2015",
         preguntas: 68,
         escala: "superiores",
+        entidad: "gv",
         badge: "OFICIAL",
     },
+    // ── Ayuntamientos ──
     {
         id: "ex_vitoria_tsag_2026",
-        titulo: "Examen Técnico Superior de Admón. General — Ayto. Vitoria-Gasteiz",
+        titulo: "Técnico Superior de Admón. General — Ayto. Vitoria-Gasteiz 2024",
         preguntas: 85,
         escala: "superiores",
-        badge: "OFICIAL",
-    },
-    {
-        id: "ex_zamudio_adm_2024",
-        titulo: "Examen Administrativo — Ayto. Zamudio 2024 (partes A y B)",
-        preguntas: 100,
-        escala: "administrativos",
-        badge: "OFICIAL",
-    },
-    {
-        id: "ex_erandio_adm_2024",
-        titulo: "Examen Administrativo — Ayto. Erandio 2024 (parte A)",
-        preguntas: 45,
-        escala: "administrativos",
-        badge: "OFICIAL",
-    },
-    {
-        id: "ex_muskiz_adm_2023",
-        titulo: "Examen Administrativo — Ayto. Muskiz 2023",
-        preguntas: 60,
-        escala: "administrativos",
-        badge: "OFICIAL",
-    },
-    {
-        id: "ex_admin_bilbao_2024",
-        titulo: "Examen Administrativo — Ayto. Bilbao 2024 (derecho general)",
-        preguntas: 61,
-        escala: "administrativos",
+        entidad: "ayto",
         badge: "OFICIAL",
     },
     {
         id: "ex_vitoria_admin_2019",
-        titulo: "Examen Admón. General — Ayto. Vitoria-Gasteiz 2019 (verificadas)",
+        titulo: "Admón. General — Ayto. Vitoria-Gasteiz 2019",
         preguntas: 105,
         escala: "administrativos",
+        entidad: "ayto",
         badge: "OFICIAL",
     },
+    {
+        id: "ex_admin_bilbao_2024",
+        titulo: "Administrativo — Ayto. Bilbao 2024",
+        preguntas: 61,
+        escala: "administrativos",
+        entidad: "ayto",
+        badge: "OFICIAL",
+    },
+    {
+        id: "ex_zamudio_adm_2024",
+        titulo: "Administrativo — Ayto. Zamudio 2024",
+        preguntas: 100,
+        escala: "administrativos",
+        entidad: "ayto",
+        badge: "OFICIAL",
+    },
+    {
+        id: "ex_erandio_adm_2024",
+        titulo: "Administrativo — Ayto. Erandio 2024",
+        preguntas: 45,
+        escala: "administrativos",
+        entidad: "ayto",
+        badge: "OFICIAL",
+    },
+    {
+        id: "ex_muskiz_adm_2023",
+        titulo: "Administrativo — Ayto. Muskiz 2023",
+        preguntas: 60,
+        escala: "administrativos",
+        entidad: "ayto",
+        badge: "OFICIAL",
+    },
+]
+
+// Grupos de exámenes oficiales por entidad convocante (para no mostrarlos "tirados").
+const GRUPOS_OFICIALES: { key: string; label: string }[] = [
+    { key: "gv", label: "Gobierno Vasco" },
+    { key: "ayto", label: "Ayuntamientos" },
 ]
 
 const SIMULACROS_GAINDITU = [
@@ -3938,25 +3956,30 @@ export default function PerfilOPE({
                                             automáticamente.
                                         </p>
                                     </div>
-                                    <div
-                                        style={{
-                                            display: "grid",
-                                            gridTemplateColumns:
-                                                "repeat(auto-fill, minmax(260px, 1fr))",
-                                            gap: "12px",
-                                            marginBottom: "28px",
-                                        }}
-                                    >
-                                        {EXAMENES_OFICIALES.map((ex) => (
-                                            <ExamCard
-                                                key={ex.id}
-                                                ex={ex}
-                                                t={t}
-                                                accentColor={accentColor}
-                                                progress={progress}
-                                                testPageUrl={testPageUrl}
-                                            />
-                                        ))}
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "18px", marginBottom: "28px" }}>
+                                        {GRUPOS_OFICIALES.map((g) => {
+                                            const items = EXAMENES_OFICIALES.filter((e) => e.entidad === g.key)
+                                            if (!items.length) return null
+                                            return (
+                                                <div key={g.key}>
+                                                    <div style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.6px", color: t.textMuted, marginBottom: "8px" }}>
+                                                        {g.label}
+                                                    </div>
+                                                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" }}>
+                                                        {items.map((ex) => (
+                                                            <ExamCard
+                                                                key={ex.id}
+                                                                ex={ex}
+                                                                t={t}
+                                                                accentColor={accentColor}
+                                                                progress={progress}
+                                                                testPageUrl={testPageUrl}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
                                     </div>
                                     <div style={{ marginBottom: "12px" }}>
                                         <h3
