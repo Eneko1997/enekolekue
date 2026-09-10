@@ -5,6 +5,7 @@ import Image from "next/image"
 import { ArrowRight, GraduationCap } from "lucide-react"
 import { motion, useReducedMotion, type Variants } from "framer-motion"
 import { useEffect, useState } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 // Hero a dos columnas: izquierda con eyebrow + titular + subtítulo + CTA + prueba
 // social; derecha la foto de la opositora con tarjetas de stats flotantes.
@@ -79,6 +80,19 @@ const itemVariants: Variants = {
 
 export default function HeroSplit() {
     const reduce = useReducedMotion()
+
+    // Prueba social en vivo (real, de pageviews últimos 7 días). Fallback si es bajo.
+    const [activos, setActivos] = useState<number | null>(null)
+    useEffect(() => {
+        const supabase = createClient()
+        supabase.rpc("actividad_publica").then(
+            ({ data }) => {
+                const n = (data as { sesiones_7d?: number } | null)?.sesiones_7d
+                if (typeof n === "number") setActivos(n)
+            },
+            () => {}
+        )
+    }, [])
 
     // Bucle de flotación de las tarjetas (se anula con reduced-motion).
     const float = (dy: number, rot: [number, number]) =>
@@ -176,11 +190,26 @@ export default function HeroSplit() {
                                     />
                                 ))}
                             </div>
-                            <span className="text-[13px] font-medium leading-tight text-zinc-500">
-                                +500 opositores ya
-                                <br />
-                                preparan su examen aquí
-                            </span>
+                            {activos && activos >= 20 ? (
+                                <span className="flex items-center gap-2 text-[13px] font-medium leading-tight text-zinc-500">
+                                    <span className="relative flex h-2.5 w-2.5 shrink-0">
+                                        <span className="absolute inset-0 rounded-full bg-emerald-500 opacity-60" style={{ animation: "gd-ping 1.8s cubic-bezier(0,0,0.2,1) infinite" }} />
+                                        <span className="relative h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                                    </span>
+                                    <span>
+                                        <strong className="font-bold text-zinc-800">{activos}</strong> opositores
+                                        <br />
+                                        estudiando esta semana
+                                    </span>
+                                    <style>{`@keyframes gd-ping{75%,100%{transform:scale(2.2);opacity:0}}`}</style>
+                                </span>
+                            ) : (
+                                <span className="text-[13px] font-medium leading-tight text-zinc-500">
+                                    +500 opositores ya
+                                    <br />
+                                    preparan su examen aquí
+                                </span>
+                            )}
                         </div>
                     </motion.div>
 

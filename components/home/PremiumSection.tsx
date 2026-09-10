@@ -173,9 +173,8 @@ export default function PremiumSection() {
                                     Sin suscripción · hasta tu examen
                                 </div>
                                 {precio.nextStr && precio.nextDate && (
-                                    <div className="mt-2 text-[12px] font-medium" style={{ color: ACCENT }}>
-                                        Sube a {precio.nextStr}€ el {precio.nextDate}: cada mes añadimos contenido y el
-                                        precio sube con él. Cuanto antes entres, menos pagas.
+                                    <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold dark:bg-emerald-950/40" style={{ color: ACCENT }}>
+                                        Sube a {precio.nextStr}€ el {precio.nextDate}
                                     </div>
                                 )}
                                 <Link
@@ -186,10 +185,7 @@ export default function PremiumSection() {
                                     Consigue tu acceso
                                 </Link>
                                 <div className="mt-3 text-center text-[12px] text-zinc-500 dark:text-zinc-400">
-                                    <span className="font-bold text-zinc-700 dark:text-zinc-200">Apruebas o sigues gratis</span>: si te presentas y no apruebas, mantienes el acceso hasta la siguiente convocatoria. Y 7 días de devolución.
-                                    <span className="mt-0.5 block text-[11px] opacity-80">
-                                        *Prórroga sujeta a acreditar la inscripción y el no apto, y un uso mínimo de la plataforma. Una por persona y convocatoria.
-                                    </span>
+                                    <span className="font-bold text-zinc-700 dark:text-zinc-200">Apruebas o sigues gratis</span> · 7 días de devolución
                                 </div>
                             </div>
                             <Link
