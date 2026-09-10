@@ -15,7 +15,10 @@ const CHECKOUT_FN = process.env.NEXT_PUBLIC_CHECKOUT_FN_NAME || "create-embedded
 const ACCENT = "#10B981"
 
 // Oferta única: pago único, acceso completo hasta el examen (mínimo 12 meses).
-const OFFER = { price: "39,99", valorTotal: "195" }
+// Precio escalonado: sube +5€ el día 1 de cada mes (según se añade contenido) hasta el tope.
+// El importe real lo fija Stripe en el servidor; estos campos son solo para mostrar y crear urgencia,
+// así que deben actualizarse a la vez que se sube el precio en Stripe.
+const OFFER = { price: "39,99", nextPrice: "44,99", nextDate: "1 de octubre", priceCap: "59,99", valorTotal: "195" }
 
 // Lo que entra, con su valor de referencia (deliverables reales del producto).
 const INCLUYE = [
@@ -28,7 +31,10 @@ const INCLUYE = [
 
 // Bono real y exclusivo del acceso (las herramientas, avisos de convocatoria y
 // demás son gratis para todos, así que NO cuentan aquí como valor de pago).
-const BONOS = [{ t: "Plan de estudio personalizado hasta tu examen", v: "49€" }]
+const BONOS = [
+    { t: "Plan de estudio personalizado hasta tu examen", v: "49€" },
+    { t: "Tus impugnaciones, revisadas y respondidas por un experto", v: "19€" },
+]
 
 export default function PaymentClient() {
     const rootRef = React.useRef<HTMLDivElement>(null)
@@ -234,25 +240,30 @@ export default function PaymentClient() {
                         </div>
                     </div>
 
-                    {/* Garantía */}
+                    {/* Garantía audaz: apruebas o sigues gratis */}
                     <div style={{ background: `${ACCENT}10`, border: `1px solid ${ACCENT}35`, borderRadius: "12px", padding: "12px 14px", display: "flex", gap: "10px", alignItems: "flex-start" }}>
                         <span style={{ marginTop: "1px" }}><CheckIcon color={ACCENT} /></span>
                         <div>
-                            <div style={{ fontSize: "13px", fontWeight: 800, color: textMain }}>Garantía de 7 días*</div>
+                            <div style={{ fontSize: "13px", fontWeight: 800, color: textMain }}>Apruebas o sigues gratis</div>
                             <div style={{ fontSize: "12px", color: textMuted, lineHeight: 1.55 }}>
-                                Si no es para ti, te devolvemos el dinero. Sin preguntas.
-                                <span style={{ display: "block", marginTop: "4px", fontSize: "11px", opacity: 0.85 }}>
-                                    *No aplicable en compras a menos de un mes de un examen ya convocado.
+                                Si te presentas al examen y no lo apruebas, mantienes el acceso gratis hasta la
+                                siguiente convocatoria. Y si al empezar ves que no es para ti, te devolvemos el
+                                dinero en los primeros 7 días.
+                                <span style={{ display: "block", marginTop: "4px", fontSize: "11px", opacity: 0.8 }}>
+                                    *Prórroga sujeta a acreditar la inscripción y el resultado oficial de no apto, y
+                                    haber usado la plataforma de forma efectiva (mínimo 10 simulacros o tests
+                                    completos y 30 días de actividad). Una prórroga por persona y convocatoria.
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Urgencia honesta + reason why (breve) */}
+                    {/* Urgencia honesta: precio escalonado por más contenido */}
                     <div style={{ fontSize: "11px", color: textMuted, lineHeight: 1.6 }}>
-                        <strong style={{ color: textMain }}>Precio de lanzamiento</strong>, subirá cuando
-                        publiquen las fechas de examen. Pago único, sin suscripción, con acceso hasta tu
-                        examen (mínimo 12 meses).
+                        <strong style={{ color: textMain }}>Precio de lanzamiento €{OFFER.price}</strong>. Sube a
+                        €{OFFER.nextPrice} el {OFFER.nextDate}: cada mes añadimos contenido y el precio sube con él
+                        (hasta €{OFFER.priceCap}). Cuanto antes entres, menos pagas. Pago único, sin suscripción,
+                        con acceso hasta tu examen (mínimo 12 meses).
                     </div>
                 </motion.div>
 
