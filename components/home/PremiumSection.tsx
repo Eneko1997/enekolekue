@@ -1,10 +1,11 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Reveal from "@/components/home/Reveal"
 import SectionHeading from "@/components/home/SectionHeading"
 import { createClient } from "@/lib/supabase/client"
+import { precioActualCent, precioSiguienteCent, fechaSiguienteSubida, euros, fechaLegible, PRECIO_TOPE_CENT } from "@/lib/precio"
 
 const ACCENT = "#10B981"
 
@@ -41,6 +42,19 @@ export default function PremiumSection() {
         })()
         return () => {
             cancelled = true
+        }
+    }, [])
+
+    // Precio en vivo desde el calendario (lib/precio.ts): mismo que cobra Stripe.
+    const precio = useMemo(() => {
+        const now = new Date()
+        const sig = precioSiguienteCent(now)
+        const fSig = fechaSiguienteSubida(now)
+        return {
+            str: euros(precioActualCent(now)),
+            nextStr: sig != null ? euros(sig) : null,
+            nextDate: fSig ? fechaLegible(fSig) : null,
+            capStr: euros(PRECIO_TOPE_CENT),
         }
     }, [])
 
@@ -146,7 +160,7 @@ export default function PremiumSection() {
                                 </div>
                                 <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                                     <span className="text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">
-                                        39,99€
+                                        {precio.str}€
                                     </span>
                                     <span className="text-[15px] text-zinc-400 line-through dark:text-zinc-500">
                                         195€
@@ -158,6 +172,12 @@ export default function PremiumSection() {
                                 <div className="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400">
                                     Sin suscripción · hasta tu examen
                                 </div>
+                                {precio.nextStr && precio.nextDate && (
+                                    <div className="mt-2 text-[12px] font-medium" style={{ color: ACCENT }}>
+                                        Sube a {precio.nextStr}€ el {precio.nextDate}: cada mes añadimos contenido y el
+                                        precio sube con él. Cuanto antes entres, menos pagas.
+                                    </div>
+                                )}
                                 <Link
                                     href="/payment"
                                     className="mt-5 inline-flex w-full items-center justify-center rounded-full px-6 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.02]"
@@ -166,9 +186,9 @@ export default function PremiumSection() {
                                     Consigue tu acceso
                                 </Link>
                                 <div className="mt-3 text-center text-[12px] text-zinc-500 dark:text-zinc-400">
-                                    Garantía de 7 días*, te devolvemos el dinero
+                                    <span className="font-bold text-zinc-700 dark:text-zinc-200">Apruebas o sigues gratis</span>: si te presentas y no apruebas, mantienes el acceso hasta la siguiente convocatoria. Y 7 días de devolución.
                                     <span className="mt-0.5 block text-[11px] opacity-80">
-                                        *Salvo compras a menos de un mes de un examen ya convocado.
+                                        *Prórroga sujeta a acreditar la inscripción y el no apto, y un uso mínimo de la plataforma. Una por persona y convocatoria.
                                     </span>
                                 </div>
                             </div>
