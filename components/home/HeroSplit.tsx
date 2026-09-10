@@ -199,7 +199,7 @@ export default function HeroSplit() {
                                     <span>
                                         <strong className="font-bold text-zinc-800">{activos}</strong> opositores
                                         <br />
-                                        estudiando esta semana
+                                        preparándose para su examen
                                     </span>
                                     <style>{`@keyframes gd-ping{75%,100%{transform:scale(2.2);opacity:0}}`}</style>
                                 </span>
