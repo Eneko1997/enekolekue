@@ -59,9 +59,8 @@ export default function ActividadSemana() {
                     <span style={{ position: "relative", width: "8px", height: "8px", borderRadius: "999px", background: ACCENT }} />
                 </span>
                 <span>
-                    <strong style={{ fontWeight: 800 }}>{data.sesiones_7d.toLocaleString("es-ES")}</strong> opositores han
-                    entrado esta semana
-                    {data.ciudades_7d >= 5 ? ` · desde ${data.ciudades_7d} localidades` : ""}
+                    <strong style={{ fontWeight: 800 }}>{data.sesiones_7d.toLocaleString("es-ES")}</strong> opositores
+                    están haciendo los test en Gainditu
                 </span>
                 <style>{`@keyframes gd-ping{75%,100%{transform:scale(2.2);opacity:0}}`}</style>
             </div>
