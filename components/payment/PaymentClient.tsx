@@ -9,16 +9,16 @@ import { CheckIcon } from "@/components/icons"
 import LightNavbar from "@/components/site/LightNavbar"
 import { useTheme } from "@/lib/use-theme"
 import SiteFooter from "@/components/site/SiteFooter"
+import { precioActualCent, precioSiguienteCent, fechaSiguienteSubida, euros, fechaLegible, PRECIO_TOPE_CENT } from "@/lib/precio"
 
 const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_live_51TjFCiJMIRLdIAQNCE42HQtsnlfvPkFsBNqovT0ayide74xAphiDiJOY2SlI8NrR6A6uL1yWK2nvjCMu7na7dENq00dizBLEaF"
 const CHECKOUT_FN = process.env.NEXT_PUBLIC_CHECKOUT_FN_NAME || "create-embedded-checkout"
 const ACCENT = "#10B981"
 
 // Oferta única: pago único, acceso completo hasta el examen (mínimo 12 meses).
-// Precio escalonado: sube +5€ el día 1 de cada mes (según se añade contenido) hasta el tope.
-// El importe real lo fija Stripe en el servidor; estos campos son solo para mostrar y crear urgencia,
-// así que deben actualizarse a la vez que se sube el precio en Stripe.
-const OFFER = { price: "39,99", nextPrice: "44,99", nextDate: "1 de octubre", priceCap: "59,99", valorTotal: "195" }
+// El precio (mostrado aquí y cobrado por Stripe) sale de lib/precio.ts, replicado en la edge
+// function create-embedded-checkout: sube +5€ el día 1 de cada mes hasta el tope, automático.
+const OFFER = { valorTotal: "195" }
 
 // Lo que entra, con su valor de referencia (deliverables reales del producto).
 const INCLUYE = [
@@ -40,6 +40,19 @@ export default function PaymentClient() {
     const rootRef = React.useRef<HTMLDivElement>(null)
     const isMobile = useIsMobile(rootRef)
     const { dark } = useTheme()
+
+    // Precio en vivo desde el calendario (lib/precio.ts): mismo cálculo que cobra Stripe.
+    const precio = React.useMemo(() => {
+        const now = new Date()
+        const sig = precioSiguienteCent(now)
+        const fSig = fechaSiguienteSubida(now)
+        return {
+            str: euros(precioActualCent(now)),
+            nextStr: sig != null ? euros(sig) : null,
+            nextDate: fSig ? fechaLegible(fSig) : null,
+            capStr: euros(PRECIO_TOPE_CENT),
+        }
+    }, [])
 
     const [authChecked, setAuthChecked] = React.useState(false)
     const [user, setUser] = React.useState<any>(null)
@@ -236,7 +249,7 @@ export default function PaymentClient() {
                         </div>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
                             <span style={{ fontSize: "15px", fontWeight: 800, color: textMain }}>Hoy, pago único</span>
-                            <span style={{ fontSize: "30px", fontWeight: 900, color: ACCENT, letterSpacing: "-1px" }}>€{OFFER.price}</span>
+                            <span style={{ fontSize: "30px", fontWeight: 900, color: ACCENT, letterSpacing: "-1px" }}>€{precio.str}</span>
                         </div>
                     </div>
 
@@ -260,10 +273,18 @@ export default function PaymentClient() {
 
                     {/* Urgencia honesta: precio escalonado por más contenido */}
                     <div style={{ fontSize: "11px", color: textMuted, lineHeight: 1.6 }}>
-                        <strong style={{ color: textMain }}>Precio de lanzamiento €{OFFER.price}</strong>. Sube a
-                        €{OFFER.nextPrice} el {OFFER.nextDate}: cada mes añadimos contenido y el precio sube con él
-                        (hasta €{OFFER.priceCap}). Cuanto antes entres, menos pagas. Pago único, sin suscripción,
-                        con acceso hasta tu examen (mínimo 12 meses).
+                        {precio.nextStr && precio.nextDate ? (
+                            <>
+                                <strong style={{ color: textMain }}>Precio de lanzamiento €{precio.str}</strong>. Sube a
+                                €{precio.nextStr} el {precio.nextDate}: cada mes añadimos contenido y el precio sube
+                                con él (hasta €{precio.capStr}). Cuanto antes entres, menos pagas.{" "}
+                            </>
+                        ) : (
+                            <>
+                                <strong style={{ color: textMain }}>€{precio.str}, pago único.</strong>{" "}
+                            </>
+                        )}
+                        Sin suscripción, con acceso hasta tu examen (mínimo 12 meses).
                     </div>
                 </motion.div>
 
@@ -302,7 +323,7 @@ export default function PaymentClient() {
                                 <div style={{ padding: "16px 24px", borderBottom: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                     <span style={{ fontSize: "12px", color: textMuted }}>Pago seguro vía Stripe · SSL</span>
                                     <span style={{ fontSize: "13px", fontWeight: 800, color: textMain }}>
-                                        €{OFFER.price}
+                                        €{precio.str}
                                         <span style={{ fontSize: "11px", fontWeight: 600, color: textMuted }}> pago único</span>
                                     </span>
                                 </div>
