@@ -2,6 +2,7 @@ import Link from "next/link"
 import type { Metadata } from "next"
 import LightNavbar from "@/components/site/LightNavbar"
 import HeroSplit from "@/components/home/HeroSplit"
+import ActividadSemana from "@/components/home/ActividadSemana"
 import Reveal from "@/components/home/Reveal"
 import PremiumSection from "@/components/home/PremiumSection"
 import TestsPopulares from "@/components/home/TestsPopulares"
@@ -60,6 +61,7 @@ export default function HomePage() {
 
             {/* ───────────── HERO ───────────── */}
             <HeroSplit />
+            <ActividadSemana />
 
             {/* ───────────── SIMULACRO GRATIS (embudo de captación) ───────────── */}
             <section className="px-5 py-12 sm:py-16">
