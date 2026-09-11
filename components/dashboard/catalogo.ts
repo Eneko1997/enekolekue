@@ -655,6 +655,21 @@ export const dbAdministrativos: Bloque[] = [
                 titulo: "Casos Prácticos Gainditu — Administrativo · Administración electrónica y datos",
                 preguntas: 20,
             },
+            {
+                id: "ex_practico_admin_proc_8",
+                titulo: "Casos Prácticos Gainditu — Administrativo · Procedimiento y notificaciones",
+                preguntas: 20,
+            },
+            {
+                id: "ex_practico_admin_local_9",
+                titulo: "Casos Prácticos Gainditu — Administrativo · Administración electrónica y régimen local",
+                preguntas: 20,
+            },
+            {
+                id: "ex_practico_admin_sancionador_10",
+                titulo: "Casos Prácticos Gainditu — Administrativo · Procedimiento sancionador",
+                preguntas: 20,
+            },
         ],
     },
     {

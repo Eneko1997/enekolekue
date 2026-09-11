@@ -403,7 +403,7 @@ type Drop = { id: string; titulo: string; fecha: string; fechaLabel: string; exa
 const DROPS: Drop[] = [
     {
         id: "drop-ayto-1",
-        titulo: "Pack Ayuntamientos",
+        titulo: "Exámenes oficiales de Ayuntamientos",
         fecha: "2026-09-16",
         fechaLabel: "miércoles 16 de septiembre",
         exams: [
@@ -3963,10 +3963,10 @@ export default function PerfilOPE({
                                         <div style={{ marginBottom: "28px" }}>
                                             <div style={{ marginBottom: "12px" }}>
                                                 <h3 style={{ fontSize: "16px", fontWeight: 800, color: t.textMain, margin: "0 0 6px", letterSpacing: "-0.3px" }}>
-                                                    Próximos drops
+                                                    Próximos exámenes oficiales
                                                 </h3>
                                                 <p style={{ fontSize: "13px", color: t.textMuted, margin: 0 }}>
-                                                    Cada semana desbloqueamos material nuevo, ya reservado en tu cuenta. Esto es lo que viene.
+                                                    Cada semana incorporamos nuevos exámenes oficiales a tu cuenta. Esto es lo que llega.
                                                 </p>
                                             </div>
                                             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" }}>
