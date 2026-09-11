@@ -403,7 +403,7 @@ type Drop = { id: string; titulo: string; fecha: string; fechaLabel: string; exa
 const DROPS: Drop[] = [
     {
         id: "drop-ayto-1",
-        titulo: "Exámenes oficiales de Ayuntamientos",
+        titulo: "Pack Ayuntamientos",
         fecha: "2026-09-16",
         fechaLabel: "miércoles 16 de septiembre",
         exams: [
