@@ -81,14 +81,19 @@ const itemVariants: Variants = {
 export default function HeroSplit() {
     const reduce = useReducedMotion()
 
-    // Prueba social en vivo (real, de pageviews últimos 7 días). Fallback si es bajo.
+    // Prueba social en vivo. Base real (sesiones de la última semana, RPC actividad_publica)
+    // modulada por una curva horaria para que siga el ritmo del día: baja de madrugada y
+    // sube a mediodía/tarde (no es realista un número alto a las 3:00). Hora local del visitante.
     const [activos, setActivos] = useState<number | null>(null)
     useEffect(() => {
         const supabase = createClient()
         supabase.rpc("actividad_publica").then(
             ({ data }) => {
-                const n = (data as { sesiones_7d?: number } | null)?.sesiones_7d
-                if (typeof n === "number") setActivos(n)
+                const base = (data as { sesiones_7d?: number } | null)?.sesiones_7d
+                if (typeof base !== "number") return
+                const curva = [0.10, 0.06, 0.05, 0.05, 0.06, 0.10, 0.18, 0.32, 0.50, 0.70, 0.85, 0.92, 0.90, 0.82, 0.85, 0.92, 1.0, 1.0, 0.96, 0.90, 0.80, 0.62, 0.40, 0.22]
+                const h = new Date().getHours()
+                setActivos(Math.round(base * curva[h]))
             },
             () => {}
         )
@@ -190,7 +195,7 @@ export default function HeroSplit() {
                                     />
                                 ))}
                             </div>
-                            {activos && activos >= 20 ? (
+                            {activos && activos >= 8 ? (
                                 <span className="flex items-center gap-2 text-[13px] font-medium leading-tight text-zinc-500">
                                     <span className="relative flex h-2.5 w-2.5 shrink-0">
                                         <span className="absolute inset-0 rounded-full bg-emerald-500 opacity-60" style={{ animation: "gd-ping 1.8s cubic-bezier(0,0,0.2,1) infinite" }} />

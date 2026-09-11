@@ -40,12 +40,12 @@ export default function HerramientasIndex() {
                         Empieza hoy en 3 pasos
                     </div>
                     <p className="mt-1 text-[13.5px] text-zinc-500 dark:text-zinc-400">
-                        Sin pagar nada: orienta tu oposición, monta un plan y haz tu primer test. Hoy.
+                        Sin pagar nada: orienta tu oposición, calcula tu nota y haz tu primer test. Hoy.
                     </p>
                     <div className="mt-4 grid gap-3 sm:grid-cols-3">
                         {[
                             ["1", "Descubre tu oposición", "El análisis te dice qué encaja contigo.", "/herramientas/que-oposicion-elegir"],
-                            ["2", "Monta tu plan", "Un plan de estudio a tu ritmo y tu tiempo.", "/mi-plan"],
+                            ["2", "Calcula tu nota de corte", "Mira qué nota necesitas para tu plaza.", "/herramientas/calculadora-nota-corte"],
                             ["3", "Haz tu primer test", "Un simulacro gratis del Gobierno Vasco.", "/simulacro-administrativo-gobierno-vasco"],
                         ].map(([n, t, d, href]) => (
                             <Link

@@ -18,7 +18,8 @@ const ACCENT = "#10B981"
 // Oferta única: pago único, acceso completo hasta el examen (mínimo 12 meses).
 // El precio (mostrado aquí y cobrado por Stripe) sale de lib/precio.ts, replicado en la edge
 // function create-embedded-checkout: sube +5€ el día 1 de cada mes hasta el tope, automático.
-const OFFER = { valorTotal: "195" }
+// valorTotal = suma de todos los valores mostrados: INCLUYE (59+49+39+29+19=195) + BONOS (49+19=68).
+const OFFER = { valorTotal: "263" }
 
 // Lo que entra, con su valor de referencia (deliverables reales del producto).
 const INCLUYE = [
@@ -264,8 +265,8 @@ export default function PaymentClient() {
                                 dinero en los primeros 7 días.
                                 <span style={{ display: "block", marginTop: "4px", fontSize: "11px", opacity: 0.8 }}>
                                     *Prórroga sujeta a acreditar la inscripción y el resultado oficial de no apto, y
-                                    haber usado la plataforma de forma efectiva (mínimo 10 simulacros o tests
-                                    completos y 30 días de actividad). Una prórroga por persona y convocatoria.
+                                    haber usado la plataforma de forma efectiva (mínimo 10 tests completos y 30 días
+                                    de actividad). Una prórroga por persona y convocatoria.
                                 </span>
                             </div>
                         </div>
@@ -277,7 +278,7 @@ export default function PaymentClient() {
                             <>
                                 <strong style={{ color: textMain }}>Precio de lanzamiento €{precio.str}</strong>. Sube a
                                 €{precio.nextStr} el {precio.nextDate}: cada mes añadimos contenido y el precio sube
-                                con él (hasta €{precio.capStr}). Cuanto antes entres, menos pagas.{" "}
+                                con él. Cuanto antes entres, menos pagas.{" "}
                             </>
                         ) : (
                             <>
@@ -288,11 +289,13 @@ export default function PaymentClient() {
                     </div>
                 </motion.div>
 
-                {/* DERECHA — Gate de login o Checkout */}
+                {/* DERECHA — Gate de login o Checkout. En móvil va ARRIBA (order -1) para
+                    que al entrar se vea el pago y no haya que bajar hasta el footer. */}
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35, delay: 0.08 }}
+                    style={{ order: isMobile ? -1 : undefined }}
                 >
                     <div style={{ background: surface, border: `1px solid ${border}`, borderRadius: "20px", overflow: "hidden" }}>
                         {/* Sin sesión → obligamos a identificarse antes de pagar */}

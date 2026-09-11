@@ -163,7 +163,7 @@ export default function PremiumSection() {
                                         {precio.str}€
                                     </span>
                                     <span className="text-[15px] text-zinc-400 line-through dark:text-zinc-500">
-                                        195€
+                                        263€
                                     </span>
                                     <span className="whitespace-nowrap text-[13px] font-semibold" style={{ color: ACCENT }}>
                                         pago único
