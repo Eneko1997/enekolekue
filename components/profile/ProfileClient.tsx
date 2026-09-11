@@ -395,6 +395,34 @@ const GRUPOS_OFICIALES: { key: string; label: string }[] = [
     { key: "ayto", label: "Ayuntamientos" },
 ]
 
+// Drops de contenido: packs que se desbloquean en una fecha. Antes se muestran BLOQUEADOS
+// (con cuenta atrás) en "Mis exámenes"; llegada la fecha, sus exámenes pasan solos a la lista
+// normal agrupada por entidad, sin tocar código. Cadencia semanal (miércoles).
+type DropExam = { id: string; titulo: string; preguntas: number; escala: string; entidad: string; badge: string }
+type Drop = { id: string; titulo: string; fecha: string; fechaLabel: string; exams: DropExam[] }
+const DROPS: Drop[] = [
+    {
+        id: "drop-ayto-1",
+        titulo: "Pack Ayuntamientos",
+        fecha: "2026-09-16",
+        fechaLabel: "miércoles 16 de septiembre",
+        exams: [
+            { id: "ex_donostia_admin_2021", titulo: "Administrativo — Ayto. San Sebastián 2021", preguntas: 100, escala: "administrativos", entidad: "ayto", badge: "OFICIAL" },
+            { id: "ex_vitoria_gestion_2026", titulo: "Técnico de Gestión — Ayto. Vitoria-Gasteiz 2026", preguntas: 45, escala: "gestion", entidad: "ayto", badge: "OFICIAL" },
+        ],
+    },
+]
+function diasHastaDrop(fechaIso: string): number {
+    const hoy = new Date(); hoy.setHours(0, 0, 0, 0)
+    const f = new Date(fechaIso + "T00:00:00")
+    return Math.ceil((f.getTime() - hoy.getTime()) / 86400000)
+}
+function dropDesbloqueado(d: Drop): boolean { return diasHastaDrop(d.fecha) <= 0 }
+// Lista de oficiales visibles = base + exámenes de drops ya desbloqueados (por fecha).
+function examenesOficialesVisibles(): DropExam[] {
+    return [...EXAMENES_OFICIALES, ...DROPS.filter(dropDesbloqueado).flatMap((d) => d.exams)]
+}
+
 const SIMULACROS_GAINDITU = [
     {
         id: "sim_adm1",
@@ -3931,6 +3959,47 @@ export default function PerfilOPE({
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0 }}
                                 >
+                                    {DROPS.filter((d) => !dropDesbloqueado(d)).length > 0 && (
+                                        <div style={{ marginBottom: "28px" }}>
+                                            <div style={{ marginBottom: "12px" }}>
+                                                <h3 style={{ fontSize: "16px", fontWeight: 800, color: t.textMain, margin: "0 0 6px", letterSpacing: "-0.3px" }}>
+                                                    Próximos drops
+                                                </h3>
+                                                <p style={{ fontSize: "13px", color: t.textMuted, margin: 0 }}>
+                                                    Cada semana desbloqueamos material nuevo, ya reservado en tu cuenta. Esto es lo que viene.
+                                                </p>
+                                            </div>
+                                            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" }}>
+                                                {DROPS.filter((d) => !dropDesbloqueado(d)).map((d) => {
+                                                    const dias = diasHastaDrop(d.fecha)
+                                                    return (
+                                                        <div key={d.id} style={{ borderRadius: "14px", border: `1px dashed ${t.border}`, background: "transparent", padding: "16px", opacity: 0.9 }}>
+                                                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", marginBottom: "8px" }}>
+                                                                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px", color: t.textMuted }}>
+                                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
+                                                                        <path d="M7 10V8a5 5 0 0 1 10 0v2M5 10h14v10H5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                                    </svg>
+                                                                    Bloqueado
+                                                                </span>
+                                                                <span style={{ fontSize: "11px", fontWeight: 700, color: accentColor }}>
+                                                                    {dias <= 1 ? "se desbloquea mañana" : `en ${dias} días`}
+                                                                </span>
+                                                            </div>
+                                                            <div style={{ fontSize: "14px", fontWeight: 800, color: t.textMain }}>{d.titulo}</div>
+                                                            <div style={{ fontSize: "12px", color: t.textMuted, marginTop: "2px" }}>Se desbloquea el {d.fechaLabel}</div>
+                                                            <ul style={{ listStyle: "none", padding: 0, margin: "10px 0 0" }}>
+                                                                {d.exams.map((e) => (
+                                                                    <li key={e.id} style={{ fontSize: "12.5px", color: t.textMuted, padding: "2px 0" }}>
+                                                                        {e.titulo} · {e.preguntas} preg.
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
                                     <div style={{ marginBottom: "12px" }}>
                                         <h3
                                             style={{
@@ -3958,7 +4027,7 @@ export default function PerfilOPE({
                                     </div>
                                     <div style={{ display: "flex", flexDirection: "column", gap: "18px", marginBottom: "28px" }}>
                                         {GRUPOS_OFICIALES.map((g) => {
-                                            const items = EXAMENES_OFICIALES.filter((e) => e.entidad === g.key)
+                                            const items = examenesOficialesVisibles().filter((e) => e.entidad === g.key)
                                             if (!items.length) return null
                                             return (
                                                 <div key={g.key}>
