@@ -38,6 +38,15 @@ async function fetchPreguntas(
     testId: string,
     limite: number | null = null
 ): Promise<any[]> {
+    // Micro-test del día: id virtual servido por su propia RPC (materia rotatoria
+    // por fecha, misma para todos ese día). Se carga solo, sin test_id real.
+    if (testId === "microtest_dia") {
+        const { data, error } = await supabase.rpc("get_microtest_dia", {
+            p_limite: 6,
+        })
+        if (error || !Array.isArray(data)) return []
+        return data
+    }
     // El examen se monta en el servidor: la RPC filtra por test_id, baraja
     // (order by random()) y opcionalmente limita. El cliente recibe el examen listo.
     const { data, error } = await supabase.rpc("get_test_preguntas", {
@@ -4249,7 +4258,7 @@ export default function TestScreen(props: {
             supabase.rpc("incrementar_preguntas_gratis", { n: 1 })
         }
         const token = getSessionToken()
-        if (!token && !funnel) {
+        if (!token && !funnel && testId !== "microtest_dia") {
             respuestasDesdeUltimoPopup.current += 1
             if (respuestasDesdeUltimoPopup.current >= 2) {
                 respuestasDesdeUltimoPopup.current = 0
@@ -4269,7 +4278,7 @@ export default function TestScreen(props: {
         n[preguntaIdx] = opcion
         setRespuestas(n)
         const token = getSessionToken()
-        if (!token && !funnel) {
+        if (!token && !funnel && testId !== "microtest_dia") {
             respuestasDesdeUltimoPopup.current += 1
             if (respuestasDesdeUltimoPopup.current >= 2) {
                 respuestasDesdeUltimoPopup.current = 0
@@ -4280,7 +4289,7 @@ export default function TestScreen(props: {
     function handleFinalizar() {
         setTiempoFinal(Math.round((Date.now() - tiempoRef.current) / 1000))
         setFase("resultados")
-        if (funnel) {
+        if (funnel || (testId === "microtest_dia" && !sessionUser)) {
             void logFunnelEvent("test_finished", { test_id: testId })
             // Guarda el examen hecho para que al volver a la página (atrás, tras Google…)
             // se muestren los resultados en vez de re-empezar.
@@ -4654,10 +4663,11 @@ export default function TestScreen(props: {
                         penalizacion={penalizacion}
                     />
                 )}
-                {fase === "resultados" && funnel && (
+                {fase === "resultados" && (funnel || (testId === "microtest_dia" && !sessionUser)) && (
                     <FunnelWall
                         key="funnel-wall"
                         testId={testId}
+                        variant={testId === "microtest_dia" ? "microtest" : "simulacro"}
                         preguntas={
                             preguntasExamen.length > 0
                                 ? preguntasExamen
@@ -4674,7 +4684,7 @@ export default function TestScreen(props: {
                         onVolver={handleVolver}
                     />
                 )}
-                {fase === "resultados" && !funnel && (
+                {fase === "resultados" && !funnel && !(testId === "microtest_dia" && !sessionUser) && (
                     <PantallaResultados
                         key="resultados"
                         testId={testId}

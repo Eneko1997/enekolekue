@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import LeccionHero from "@/components/lecciones/LeccionHero"
+import MicrotestDiaCard from "@/components/home/MicrotestDiaCard"
 import { HERRAMIENTAS } from "@/lib/data/herramientas"
 import { SITE_URL } from "@/lib/site"
 
@@ -32,6 +33,13 @@ export default function HerramientasIndex() {
                 ctaHref="#empieza"
                 ctaLabel="Empezar ahora →"
             />
+
+            {/* Micro-test del día: gancho diario gratis, materia rotatoria */}
+            <section className="px-5 pt-6">
+                <div className="mx-auto max-w-4xl">
+                    <MicrotestDiaCard />
+                </div>
+            </section>
 
             {/* Onboarding: primer valor inmediato en 3 pasos */}
             <section id="empieza" className="scroll-mt-20 px-5 pt-4">

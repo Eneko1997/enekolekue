@@ -82,6 +82,7 @@ export default function FunnelWall({
     dark,
     onRepetir,
     onVolver,
+    variant = "simulacro",
 }: {
     testId: string
     preguntas: Preg[]
@@ -90,7 +91,17 @@ export default function FunnelWall({
     dark: boolean
     onRepetir: () => void
     onVolver: () => void
+    variant?: "simulacro" | "microtest"
 }) {
+    const esMicro = variant === "microtest"
+    const wallTitle = esMicro ? "Tu micro-test está corregido" : "Tu examen está corregido"
+    const upsellHeading = esMicro
+        ? "Esto es solo el calentamiento"
+        : "Tienes más simulacros de esta convocatoria en Gainditu"
+    const upsellText = esMicro
+        ? "Da el salto con el Método Gainditu: tests por tema, exámenes oficiales, casos prácticos y simulacros con penalización real, con un plan hasta tu examen."
+        : "Simulacros completos, exámenes oficiales reales y seguimiento de tu progreso. Desbloquéalo todo."
+    const repetirLabel = esMicro ? "Repetir micro-test" : "Repetir simulacro"
     const [captured, setCaptured] = useState(false)
     const [email, setEmail] = useState("")
     const [consent, setConsent] = useState(false)
@@ -352,10 +363,10 @@ export default function FunnelWall({
                         }}
                     >
                         <div style={{ fontWeight: 900, fontSize: 18, marginBottom: 6 }}>
-                            Tienes más simulacros de esta convocatoria en Gainditu
+                            {upsellHeading}
                         </div>
                         <div style={{ fontSize: 14, color: textMuted, marginBottom: 16 }}>
-                            Simulacros completos, exámenes oficiales reales y seguimiento de tu progreso. Desbloquéalo todo.
+                            {upsellText}
                         </div>
                         <button
                             onClick={irAPremium}
@@ -379,7 +390,7 @@ export default function FunnelWall({
                             {verRepaso ? "Ocultar repaso" : "Repasar mis respuestas"}
                         </button>
                         <button onClick={onRepetir} style={btnGhost(border, textMain)}>
-                            Repetir simulacro
+                            {repetirLabel}
                         </button>
                         <button onClick={onVolver} style={btnGhost(border, textMain)}>
                             Volver al inicio
@@ -476,7 +487,7 @@ export default function FunnelWall({
                             </svg>
                         </div>
                         <h2 style={{ fontSize: 22, fontWeight: 900, marginBottom: 8, letterSpacing: "-0.4px" }}>
-                            Tu examen está corregido
+                            {wallTitle}
                         </h2>
                         <p style={{ fontSize: 14, color: textMuted, marginBottom: 20, lineHeight: 1.5 }}>
                             Introduce tu correo para ver tu nota, el veredicto y el desglose por áreas.
