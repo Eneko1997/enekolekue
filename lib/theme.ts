@@ -17,6 +17,16 @@ export const BRAND_ACCENT = "#10B981" // esmeralda
 // Acento del header (fijo, no cambia con la escala)
 export const HEADER_ACCENT = "#E8E6E1"
 
+// ── Botón de acción principal (CTA) ──────────────────────────────────────────
+// Patrón: el verde BRAND_ACCENT es el ACENTO (resaltados, enlaces, badges,
+// bordes). El CTA de conversión IMPORTANTE (el de "Consigue tu acceso",
+// "Simulacro gratis" del hero, etc.) va en TINTA (negro zinc-950) para que
+// destaque y no compita con los verdes. NO se aplica a todos los botones, solo
+// a los principales. Referencia: el botón del hero (bg-zinc-950 text-white).
+// Tailwind: bg-zinc-950 text-white. Inline: background CTA_INK, color #fff.
+export const CTA_INK = "#09090B" // zinc-950
+export const CTA_INK_TEXT = "#FFFFFF"
+
 export interface Theme {
     bg: string
     surface: string

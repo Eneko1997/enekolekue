@@ -6,8 +6,6 @@ import Reveal from "@/components/home/Reveal"
 import AnimatedGlowBg from "@/components/home/AnimatedGlowBg"
 import { createClient } from "@/lib/supabase/client"
 
-const ACCENT = "#10B981"
-
 // CTA final de la home, adaptado a la sesión:
 //  - invitado (sin sesión): "Crea tu cuenta gratis" → /signup
 //  - registrado gratis:     "Sigue preparando tu plaza" → /perfil
@@ -80,8 +78,7 @@ export default function FinalCTA() {
                         <p className="mx-auto mt-4 max-w-xl text-zinc-400">{contenido.texto}</p>
                         <Link
                             href={contenido.href}
-                            className="mt-8 inline-flex items-center justify-center rounded-full px-7 py-3.5 text-[15px] font-semibold text-zinc-950 transition-transform hover:scale-[1.03]"
-                            style={{ backgroundColor: ACCENT }}
+                            className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-7 py-3.5 text-[15px] font-semibold text-zinc-950 transition-transform hover:scale-[1.03]"
                         >
                             {contenido.cta}
                         </Link>

@@ -310,7 +310,7 @@ export default function PaymentClient() {
                                 </p>
                                 <Link
                                     href={`/signup?redirect=${encodeURIComponent(authRedirect)}`}
-                                    style={{ marginTop: "4px", padding: "13px", borderRadius: "12px", background: ACCENT, color: "#fff", fontSize: "15px", fontWeight: 700, textDecoration: "none" }}
+                                    style={{ marginTop: "4px", padding: "13px", borderRadius: "12px", background: dark ? "#FFFFFF" : "#09090B", color: dark ? "#09090B" : "#FFFFFF", fontSize: "15px", fontWeight: 700, textDecoration: "none" }}
                                 >
                                     Crear cuenta gratis
                                 </Link>

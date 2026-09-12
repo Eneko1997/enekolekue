@@ -179,8 +179,7 @@ export default function PremiumSection() {
                                 )}
                                 <Link
                                     href="/payment"
-                                    className="mt-5 inline-flex w-full items-center justify-center rounded-full px-6 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.02]"
-                                    style={{ backgroundColor: ACCENT }}
+                                    className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-zinc-950 px-6 py-3.5 text-[15px] font-semibold text-white transition-transform hover:scale-[1.02] dark:bg-white dark:text-zinc-950"
                                 >
                                     Consigue tu acceso
                                 </Link>
