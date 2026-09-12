@@ -153,7 +153,7 @@ export default function HeroSplit() {
                         variants={itemVariants}
                         className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-5"
                     >
-                        <div className="flex flex-wrap items-center gap-3">
+                        <div className="flex flex-col items-start gap-3">
                             <Link
                                 href="/simulacro-administrativo-gobierno-vasco"
                                 aria-label="Hacer un simulacro gratis del Gobierno Vasco, sin registro"

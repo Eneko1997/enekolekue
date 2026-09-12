@@ -34,6 +34,22 @@ if (typeof window !== "undefined") {
     })
 }
 
+// Etiqueta de materia para el título del Test rápido del día (según el `tema`).
+const MICRO_LABELS: Record<string, string> = {
+    constitucion: "Constitución",
+    "ley-39-2015": "Ley 39/2015",
+    "ley-40-2015": "Ley 40/2015",
+    "empleo-publico": "Empleo público",
+    "instituciones-vascas": "Instituciones vascas",
+    "hacienda-contratacion": "Hacienda y contratación",
+    "transparencia-datos": "Transparencia y datos",
+    igualdad: "Igualdad",
+    ue: "Unión Europea",
+    "admin-electronica-ofimatica": "Administración electrónica",
+    "atencion-archivo": "Atención y archivo",
+    "prevencion-medioambiente": "Prevención y medioambiente",
+}
+
 async function fetchPreguntas(
     testId: string,
     limite: number | null = null
@@ -4001,7 +4017,10 @@ export default function TestScreen(props: {
         bloqueMatch && BLOQUES_POOL[bloqueMatch[1]] ? bloqueMatch[1] : null
     const bloqueIdx = bloqueBase ? parseInt(bloqueMatch![2], 10) : 0
     const bloqueTotal = bloqueBase ? BLOQUES_POOL[bloqueBase] : 0
-    const titulo = bloqueBase
+    const [microMateria, setMicroMateria] = useState<string | null>(null)
+    const titulo = testId === "microtest_dia"
+        ? (microMateria ? `Test rápido · ${microMateria}` : "Test rápido del día")
+        : bloqueBase
         ? `${BLOQUES_TITULO[bloqueBase] ?? bloqueBase} — Bloque ${bloqueIdx} de ${bloqueTotal}`
         : TITULOS[testId] || TITULOS_CATALOGO[testId] || `Test ${testId}`
     const accentColor = getAccent(testId)
@@ -4164,12 +4183,26 @@ export default function TestScreen(props: {
             // Ya viene barajado del servidor (RPC get_test_preguntas).
             setPreguntas(parsed)
             setRespuestas(Array(parsed.length).fill(null))
+            if (testId === "microtest_dia") {
+                const tema = parsed[0]?.tema
+                setMicroMateria(tema ? MICRO_LABELS[tema] ?? null : null)
+            }
             if (funnel) {
                 // Embudo: se arranca directo el simulacro (estilo examen, con
                 // penalización), sin pantalla de inicio ni gating premium.
                 setModo("examen")
                 setModoPantalla("examen")
                 setPenalizacion(0.33)
+                setNumPreguntas(0)
+                tiempoRef.current = Date.now()
+                setFase("examen")
+                void logFunnelEvent("test_started", { test_id: testId })
+            } else if (testId === "microtest_dia") {
+                // Test rápido del día: arranca directo, sin pantalla de config ni
+                // gating. 6 preguntas, estilo examen, sin penalización (calentamiento).
+                setModo("examen")
+                setModoPantalla("examen")
+                setPenalizacion(0)
                 setNumPreguntas(0)
                 tiempoRef.current = Date.now()
                 setFase("examen")
