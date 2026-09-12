@@ -4854,7 +4854,7 @@ export default function PerfilOPE({
                                                 {isPremium
                                                     ? premiumType === "admin"
                                                         ? "Cuenta Admin"
-                                                        : "Objetivo Plaza"
+                                                        : "Método Gainditu"
                                                     : "Plan gratuito"}
                                             </div>
                                             <div

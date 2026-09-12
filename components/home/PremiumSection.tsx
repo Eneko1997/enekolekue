@@ -22,16 +22,16 @@ const VENTAJAS = [
 // producto y bonos, solo el posicionamiento).
 const FASES = [
     {
-        t: "Domina el temario",
-        d: "Tests por tema de toda la convocatoria, con corrección al momento y seguimiento de tu progreso.",
+        t: "Prepara el terreno",
+        d: "Descubre a qué oposición presentarte, sigue tu convocatoria y ordena el temario oficial. Empiezas sabiendo a dónde vas.",
     },
     {
-        t: "Entrena el examen real",
-        d: "Exámenes oficiales de años anteriores, los Casos Prácticos Gainditu y simulacros con la penalización del examen.",
+        t: "Entrena con los tests",
+        d: "Practica el temario tema a tema, con corrección al momento y tu progreso siempre a la vista.",
     },
     {
-        t: "Plan y seguimiento",
-        d: "Un plan personalizado hasta tu fecha y estadísticas por tema para saber qué reforzar cada semana.",
+        t: "Da el salto al examen",
+        d: "Exámenes oficiales y Casos Prácticos Gainditu, con simulacros y un seguimiento personalizado hasta tu fecha.",
     },
 ]
 
@@ -83,7 +83,7 @@ export default function PremiumSection() {
                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                         <Reveal>
                             <SectionHeading
-                                kicker="✓ Objetivo Plaza · activo"
+                                kicker="✓ Método Gainditu · activo"
                                 title="Ya tienes acceso completo"
                                 subtitle="Tienes desbloqueado todo el material avanzado. A por la plaza."
                             />
@@ -111,8 +111,8 @@ export default function PremiumSection() {
                                 </div>
                                 <div className="mt-2 text-2xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">
                                     {plan === "lifetime"
-                                        ? "Objetivo Plaza · de por vida"
-                                        : "Objetivo Plaza · hasta tu examen"}
+                                        ? "Método Gainditu · de por vida"
+                                        : "Método Gainditu · hasta tu examen"}
                                 </div>
                                 <Link
                                     href="/perfil?tab=examenes"
@@ -180,7 +180,7 @@ export default function PremiumSection() {
                                 style={{ borderColor: ACCENT }}
                             >
                                 <div className="text-[13px] font-semibold uppercase tracking-wide text-zinc-400 dark:text-zinc-500">
-                                    Objetivo Plaza · acceso hasta tu examen
+                                    Método Gainditu · acceso hasta tu examen
                                 </div>
                                 <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                                     <span className="text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">

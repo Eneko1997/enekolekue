@@ -221,7 +221,7 @@ function buildPlanHTML(plan: ReturnType<typeof generarPlan>) {
   footer{margin-top:30px;padding-top:14px;border-top:1px solid #e4e4e7;font-size:12px;color:#a1a1aa}
   @media print{body{padding:0}.fase,.card,ul.hitos li,section{page-break-inside:avoid}}
 </style></head><body>
-<header><div class="brand">Gainditu · Objetivo Plaza</div><h1>Tu plan de estudio</h1></header>
+<header><div class="brand">Gainditu · Método Gainditu</div><h1>Tu plan de estudio</h1></header>
 <section><h2>Tu plan de un vistazo</h2><p class="lead">${esc(plan.diagnostico)}</p></section>
 <section><h2>Cómo organizarte, fase a fase</h2>${fases}</section>
 <section><h2>${plan.tecnicas.length > 1 ? "Tus técnicas de estudio" : "Tu técnica de estudio"}</h2>${tecnicas}</section>
@@ -388,7 +388,7 @@ export default function MiPlanClient() {
         return (
             <Gate
                 titulo="El plan de estudio personalizado es un extra del acceso completo"
-                texto="Responde unas preguntas y te montamos un plan a medida hasta tu examen: cómo organizarte por fases, tu técnica de estudio y tus hitos. Incluido con Objetivo Plaza."
+                texto="Responde unas preguntas y te montamos un plan a medida hasta tu examen: cómo organizarte por fases, tu técnica de estudio y tus hitos. Incluido con el Método Gainditu."
                 cta="Conseguir mi acceso →"
                 href="/payment"
             />

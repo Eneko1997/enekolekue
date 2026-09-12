@@ -169,11 +169,11 @@ export default function HeroSplit() {
                             </Link>
 
                             <Link
-                                href="/herramientas/que-oposicion-elegir"
-                                aria-label="Descubrir qué oposición de Euskadi te encaja"
+                                href="/test?id=microtest_dia"
+                                aria-label="Hacer el test del día, rápido y gratis"
                                 className="inline-flex items-center gap-2 rounded-full border border-zinc-300 bg-white px-5 py-3 text-[15px] font-semibold text-zinc-900 shadow-sm transition-transform hover:scale-[1.03]"
                             >
-                                ¿Qué oposición elegir?
+                                Test del día
                                 <ArrowRight size={16} className="text-emerald-500" aria-hidden />
                             </Link>
                         </div>

@@ -94,14 +94,14 @@ export default function FunnelWall({
     variant?: "simulacro" | "microtest"
 }) {
     const esMicro = variant === "microtest"
-    const wallTitle = esMicro ? "Tu micro-test está corregido" : "Tu examen está corregido"
+    const wallTitle = esMicro ? "Tu test del día está corregido" : "Tu examen está corregido"
     const upsellHeading = esMicro
         ? "Esto es solo el calentamiento"
         : "Tienes más simulacros de esta convocatoria en Gainditu"
     const upsellText = esMicro
         ? "Da el salto con el Método Gainditu: tests por tema, exámenes oficiales, casos prácticos y simulacros con penalización real, con un plan hasta tu examen."
         : "Simulacros completos, exámenes oficiales reales y seguimiento de tu progreso. Desbloquéalo todo."
-    const repetirLabel = esMicro ? "Repetir micro-test" : "Repetir simulacro"
+    const repetirLabel = esMicro ? "Repetir test" : "Repetir simulacro"
     const [captured, setCaptured] = useState(false)
     const [email, setEmail] = useState("")
     const [consent, setConsent] = useState(false)

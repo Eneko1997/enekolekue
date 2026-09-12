@@ -217,7 +217,7 @@ export default function PaymentClient() {
                             El método que te lleva a la <span style={{ color: ACCENT }}>plaza.</span>
                         </h1>
                         <p style={{ fontSize: "13px", color: textMuted, margin: 0, lineHeight: 1.6 }}>
-                            Tres fases: domina el temario, entrena el examen real y sigue tu plan. Un único pago, acceso completo hasta el día de tu examen.
+                            Tres fases: prepara el terreno, entrena con los tests y da el salto al examen, con seguimiento hasta tu fecha. Un único pago.
                         </p>
                     </div>
 
@@ -260,13 +260,11 @@ export default function PaymentClient() {
                         <div>
                             <div style={{ fontSize: "13px", fontWeight: 800, color: textMain }}>Apruebas o sigues gratis</div>
                             <div style={{ fontSize: "12px", color: textMuted, lineHeight: 1.55 }}>
-                                Si te presentas al examen y no lo apruebas, mantienes el acceso gratis hasta la
-                                siguiente convocatoria. Y si al empezar ves que no es para ti, te devolvemos el
-                                dinero en los primeros 7 días.
+                                Te presentas y no apruebas: sigues gratis hasta la próxima convocatoria. Y 7 días de
+                                devolución si no es para ti.
                                 <span style={{ display: "block", marginTop: "4px", fontSize: "11px", opacity: 0.8 }}>
-                                    *Prórroga sujeta a acreditar la inscripción y el resultado oficial de no apto, y
-                                    haber usado la plataforma de forma efectiva (mínimo 10 tests completos y 30 días
-                                    de actividad). Una prórroga por persona y convocatoria.
+                                    *Requiere acreditar inscripción y no apto oficial, y uso efectivo (10 tests y 30
+                                    días). Una prórroga por persona y convocatoria.
                                 </span>
                             </div>
                         </div>
@@ -277,15 +275,14 @@ export default function PaymentClient() {
                         {precio.nextStr && precio.nextDate ? (
                             <>
                                 <strong style={{ color: textMain }}>Precio de lanzamiento €{precio.str}</strong>. Sube a
-                                €{precio.nextStr} el {precio.nextDate}: cada mes añadimos contenido y el precio sube
-                                con él. Cuanto antes entres, menos pagas.{" "}
+                                €{precio.nextStr} el {precio.nextDate}.{" "}
                             </>
                         ) : (
                             <>
                                 <strong style={{ color: textMain }}>€{precio.str}, pago único.</strong>{" "}
                             </>
                         )}
-                        Sin suscripción, con acceso hasta tu examen (mínimo 12 meses).
+                        Sin suscripción, acceso hasta tu examen (mín. 12 meses).
                     </div>
                 </motion.div>
 
