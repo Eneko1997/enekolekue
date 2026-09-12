@@ -2637,6 +2637,7 @@ function PantallaExamen({
     onFinalizar,
     accent,
     penalizacion,
+    titulo,
 }: {
     preguntas: Pregunta[]
     respuestas: (number | null)[]
@@ -2644,6 +2645,7 @@ function PantallaExamen({
     onFinalizar: () => void
     accent: string
     penalizacion: number
+    titulo?: string
 }) {
     const { dark } = useTheme()
     const c = getC(dark)
@@ -2662,6 +2664,19 @@ function PantallaExamen({
                 padding: "20px 20px 40px",
             }}
         >
+            {titulo && (
+                <h1
+                    style={{
+                        fontSize: "20px",
+                        fontWeight: 800,
+                        letterSpacing: "-0.4px",
+                        color: c.text,
+                        margin: "0 0 16px",
+                    }}
+                >
+                    {titulo}
+                </h1>
+            )}
             {/* Banner modo examen */}
             <div
                 style={{
@@ -4694,6 +4709,7 @@ export default function TestScreen(props: {
                         onFinalizar={handleFinalizar}
                         accent={accentColor}
                         penalizacion={penalizacion}
+                        titulo={titulo}
                     />
                 )}
                 {fase === "resultados" && (funnel || (testId === "microtest_dia" && !sessionUser)) && (
