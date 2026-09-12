@@ -498,6 +498,30 @@ const CASOS_PRACTICOS = [
         badge: "GAINDITU",
     },
     {
+        id: "ex_practico_admin_proc_8",
+        titulo: "Casos Prácticos Gainditu — Administrativo · Procedimiento y notificaciones",
+        preguntas: 20,
+        escala: "administrativos",
+        badge: "GAINDITU",
+        nuevo: true,
+    },
+    {
+        id: "ex_practico_admin_local_9",
+        titulo: "Casos Prácticos Gainditu — Administrativo · Administración electrónica y régimen local",
+        preguntas: 20,
+        escala: "administrativos",
+        badge: "GAINDITU",
+        nuevo: true,
+    },
+    {
+        id: "ex_practico_admin_sancionador_10",
+        titulo: "Casos Prácticos Gainditu — Administrativo · Procedimiento sancionador",
+        preguntas: 20,
+        escala: "administrativos",
+        badge: "GAINDITU",
+        nuevo: true,
+    },
+    {
         id: "ex_practico_ges_mix_6",
         titulo: "Casos Prácticos Gainditu — Técnico de Gestión",
         preguntas: 20,
@@ -548,19 +572,36 @@ function ExamCard({ ex, t, accentColor, progress, testPageUrl }: any) {
                 }}
             />
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", paddingTop: "4px" }}>
-                <span
-                    style={{
-                        fontSize: "9px",
-                        fontWeight: 800,
-                        color: exColor,
-                        letterSpacing: "0.5px",
-                        background: `${exColor}18`,
-                        padding: "2px 7px",
-                        borderRadius: "100px",
-                    }}
-                >
-                    {ex.badge}
-                </span>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span
+                        style={{
+                            fontSize: "9px",
+                            fontWeight: 800,
+                            color: exColor,
+                            letterSpacing: "0.5px",
+                            background: `${exColor}18`,
+                            padding: "2px 7px",
+                            borderRadius: "100px",
+                        }}
+                    >
+                        {ex.badge}
+                    </span>
+                    {ex.nuevo && (
+                        <span
+                            style={{
+                                fontSize: "9px",
+                                fontWeight: 800,
+                                color: "#fff",
+                                letterSpacing: "0.5px",
+                                background: exColor,
+                                padding: "2px 7px",
+                                borderRadius: "100px",
+                            }}
+                        >
+                            NUEVO
+                        </span>
+                    )}
+                </div>
                 {pct !== null && (
                     <span
                         style={{
@@ -2686,8 +2727,8 @@ export default function PerfilOPE({
                                             padding: "12px 16px",
                                             borderRadius: "12px",
                                             background:
-                                                "linear-gradient(135deg, rgba(139,92,246,0.12), rgba(59,130,246,0.08))",
-                                            border: "1px solid rgba(139,92,246,0.3)",
+                                                "linear-gradient(135deg, rgba(16,185,129,0.12), rgba(16,185,129,0.05))",
+                                            border: "1px solid rgba(16,185,129,0.3)",
                                             display: "flex",
                                             alignItems: "center",
                                             justifyContent: "space-between",
@@ -2700,7 +2741,7 @@ export default function PerfilOPE({
                                                 style={{
                                                     fontSize: "12px",
                                                     fontWeight: 700,
-                                                    color: "#8B5CF6",
+                                                    color: "#10B981",
                                                     marginBottom: "2px",
                                                 }}
                                             >
@@ -2721,7 +2762,7 @@ export default function PerfilOPE({
                                             style={{
                                                 padding: "7px 14px",
                                                 borderRadius: "8px",
-                                                background: "#8B5CF6",
+                                                background: "#10B981",
                                                 color: "#fff",
                                                 fontSize: "12px",
                                                 fontWeight: 700,
@@ -3981,7 +4022,7 @@ export default function PerfilOPE({
                                                                     </svg>
                                                                     Bloqueado
                                                                 </span>
-                                                                <span style={{ fontSize: "11px", fontWeight: 700, color: accentColor }}>
+                                                                <span style={{ fontSize: "11px", fontWeight: 700, color: accentColor, textTransform: "uppercase", letterSpacing: "0.5px" }}>
                                                                     {dias <= 1 ? "se desbloquea mañana" : `en ${dias} días`}
                                                                 </span>
                                                             </div>
@@ -4280,8 +4321,8 @@ export default function PerfilOPE({
                                                 padding: "12px 16px",
                                                 borderRadius: "10px",
                                                 background:
-                                                    "rgba(139,92,246,0.08)",
-                                                border: "1px solid rgba(139,92,246,0.2)",
+                                                    "rgba(16,185,129,0.08)",
+                                                border: "1px solid rgba(16,185,129,0.2)",
                                                 fontSize: "12px",
                                                 color: t.textMuted,
                                             }}
@@ -4291,7 +4332,7 @@ export default function PerfilOPE({
                                             <a
                                                 href="/payment"
                                                 style={{
-                                                    color: "#8B5CF6",
+                                                    color: "#10B981",
                                                     fontWeight: 700,
                                                     textDecoration: "none",
                                                 }}
@@ -4864,7 +4905,7 @@ export default function PerfilOPE({
                                                         marginTop: "10px",
                                                         padding: "6px 14px",
                                                         borderRadius: "8px",
-                                                        background: "#8B5CF6",
+                                                        background: "#10B981",
                                                         color: "#fff",
                                                         fontSize: "12px",
                                                         fontWeight: 700,
