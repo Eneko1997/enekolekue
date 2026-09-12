@@ -173,7 +173,7 @@ export default function HeroSplit() {
                                 aria-label="Hacer el test rápido del día, gratis"
                                 className="inline-flex items-center gap-2 rounded-full border border-zinc-300 bg-white px-5 py-3 text-[15px] font-semibold text-zinc-900 shadow-sm transition-transform hover:scale-[1.03]"
                             >
-                                Test rápido
+                                Test rápido del día
                                 <ArrowRight size={16} className="text-emerald-500" aria-hidden />
                             </Link>
                         </div>
