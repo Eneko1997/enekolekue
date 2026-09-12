@@ -53,7 +53,7 @@ export default function MicrotestDiaCard() {
                     className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide"
                     style={{ background: "rgba(16,185,129,0.14)", color: "#047857" }}
                 >
-                    Test del día · gratis
+                    Test rápido del día · gratis
                 </span>
                 <h2 className="mt-3 text-xl font-extrabold text-zinc-950 dark:text-zinc-50">
                     {materia ? `Hoy toca: ${materia}` : "Tu test rápido de hoy"}
@@ -66,7 +66,7 @@ export default function MicrotestDiaCard() {
                     className="mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[14px] font-semibold text-white transition-transform group-hover:scale-[1.02]"
                     style={{ background: ACCENT }}
                 >
-                    Hacer el test de hoy →
+                    Hacer el test rápido →
                 </span>
             </div>
         </Link>

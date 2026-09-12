@@ -48,13 +48,13 @@ export default function HerramientasIndex() {
                         Empieza hoy en 3 pasos
                     </div>
                     <p className="mt-1 text-[13.5px] text-zinc-500 dark:text-zinc-400">
-                        Sin pagar nada: orienta tu oposición, calcula tu nota y haz tu primer test. Hoy.
+                        Sin pagar nada: es el Método Gainditu en pequeño. Prepara el terreno, entrena y da el salto. Hoy.
                     </p>
                     <div className="mt-4 grid gap-3 sm:grid-cols-3">
                         {[
-                            ["1", "Descubre tu oposición", "El análisis te dice qué encaja contigo.", "/herramientas/que-oposicion-elegir"],
-                            ["2", "Calcula tu nota de corte", "Mira qué nota necesitas para tu plaza.", "/herramientas/calculadora-nota-corte"],
-                            ["3", "Haz tu primer test", "Un simulacro gratis del Gobierno Vasco.", "/simulacro-administrativo-gobierno-vasco"],
+                            ["1", "Prepara el terreno", "Descubre a qué oposición te presentas.", "/herramientas/que-oposicion-elegir"],
+                            ["2", "Entrena", "Haz tu primer test rápido y mide tu nivel.", "/test?id=microtest_dia"],
+                            ["3", "Da el salto", "Un simulacro real del Gobierno Vasco.", "/simulacro-administrativo-gobierno-vasco"],
                         ].map(([n, t, d, href]) => (
                             <Link
                                 key={n}

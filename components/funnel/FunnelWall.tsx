@@ -94,7 +94,7 @@ export default function FunnelWall({
     variant?: "simulacro" | "microtest"
 }) {
     const esMicro = variant === "microtest"
-    const wallTitle = esMicro ? "Tu test del día está corregido" : "Tu examen está corregido"
+    const wallTitle = esMicro ? "Tu test rápido está corregido" : "Tu examen está corregido"
     const upsellHeading = esMicro
         ? "Esto es solo el calentamiento"
         : "Tienes más simulacros de esta convocatoria en Gainditu"

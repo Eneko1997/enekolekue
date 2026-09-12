@@ -1302,6 +1302,6 @@ export const TITULOS_CATALOGO: Record<string, string> = (() => {
             if (!map[t.id]) map[t.id] = t.titulo
         }
     }
-    map["microtest_dia"] = "Test del día"
+    map["microtest_dia"] = "Test rápido del día"
     return map
 })()
