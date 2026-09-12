@@ -63,6 +63,7 @@ function useIsMobile(containerRef: React.RefObject<HTMLElement | null>) {
 
 import { createClient } from "@/lib/supabase/client"
 import RankingSemanal from "@/components/dashboard/RankingSemanal"
+import MicrotestDiaCard from "@/components/home/MicrotestDiaCard"
 import { useTheme } from "@/lib/use-theme"
 import { translateAuthError } from "@/lib/auth-errors"
 
@@ -2656,6 +2657,11 @@ export default function DashboardOPE(props: {
                         </div>
                     </motion.div>
                 </section>
+
+                {/* MICRO-TEST DEL DÍA (hábito diario) */}
+                <div style={{ marginBottom: "24px" }}>
+                    <MicrotestDiaCard />
+                </div>
 
                 {/* BUSCADOR */}
                 <div style={{ position: "relative", marginBottom: "20px" }}>

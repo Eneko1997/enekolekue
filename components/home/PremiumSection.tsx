@@ -18,6 +18,23 @@ const VENTAJAS = [
     "Estadísticas avanzadas y seguimiento por tema",
 ]
 
+// El Método Gainditu: el premium contado como un camino en 3 fases (mismo
+// producto y bonos, solo el posicionamiento).
+const FASES = [
+    {
+        t: "Domina el temario",
+        d: "Tests por tema de toda la convocatoria, con corrección al momento y seguimiento de tu progreso.",
+    },
+    {
+        t: "Entrena el examen real",
+        d: "Exámenes oficiales de años anteriores, los Casos Prácticos Gainditu y simulacros con la penalización del examen.",
+    },
+    {
+        t: "Plan y seguimiento",
+        d: "Un plan personalizado hasta tu fecha y estadísticas por tema para saber qué reforzar cada semana.",
+    },
+]
+
 export default function PremiumSection() {
     const [isPremium, setIsPremium] = useState(false)
     const [plan, setPlan] = useState<string | null>(null)
@@ -128,26 +145,33 @@ export default function PremiumSection() {
                 <div className="relative grid grid-cols-1 gap-6 lg:grid-cols-2">
                     <Reveal>
                         <SectionHeading
-                            kicker="Objetivo Plaza"
-                            title="Todo para aprobar, en un solo pago"
-                            subtitle="Empieza gratis y desbloquéalo todo con un pago único, sin suscripción."
+                            kicker="El Método Gainditu"
+                            title="El método que te lleva a la plaza"
+                            subtitle="No es contenido suelto: es un camino en tres fases, con todo lo que necesitas hasta el día del examen."
                         />
-                        <ul className="mt-6 space-y-3">
-                            {VENTAJAS.map((b) => (
-                                <li
-                                    key={b}
-                                    className="flex items-start gap-3 text-[15px] text-zinc-700 dark:text-zinc-300"
-                                >
+                        <div className="mt-6 space-y-4">
+                            {FASES.map((f, i) => (
+                                <div key={f.t} className="flex gap-3.5">
                                     <span
-                                        className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[12px] font-bold text-white"
+                                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold text-white"
                                         style={{ backgroundColor: ACCENT }}
                                     >
-                                        ✓
+                                        {i + 1}
                                     </span>
-                                    {b}
-                                </li>
+                                    <div>
+                                        <div className="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">
+                                            {f.t}
+                                        </div>
+                                        <p className="mt-0.5 text-[13.5px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+                                            {f.d}
+                                        </p>
+                                    </div>
+                                </div>
                             ))}
-                        </ul>
+                        </div>
+                        <p className="mt-4 text-[13px] text-zinc-500 dark:text-zinc-400">
+                            <span className="font-semibold text-zinc-700 dark:text-zinc-200">Y de regalo:</span> tus impugnaciones respondidas una a una y contenido nuevo cada semana.
+                        </p>
                     </Reveal>
                     <Reveal delay={120}>
                         <div className="flex flex-col gap-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 sm:p-8">

@@ -210,14 +210,14 @@ export default function PaymentClient() {
                     <div>
                         {!isMobile && (
                             <div style={{ fontSize: "11px", fontWeight: 700, color: ACCENT, letterSpacing: "1px", textTransform: "uppercase", marginBottom: "12px" }}>
-                                Objetivo Plaza · OPE Gobierno Vasco 2026
+                                El Método Gainditu · OPE Gobierno Vasco 2026
                             </div>
                         )}
                         <h1 style={{ fontSize: isMobile ? "22px" : "30px", fontWeight: 800, letterSpacing: "-0.6px", lineHeight: 1.2, margin: "0 0 6px", color: textMain }}>
-                            Todo hecho por ti para <span style={{ color: ACCENT }}>aprobar.</span>
+                            El método que te lleva a la <span style={{ color: ACCENT }}>plaza.</span>
                         </h1>
                         <p style={{ fontSize: "13px", color: textMuted, margin: 0, lineHeight: 1.6 }}>
-                            Un único pago. Acceso completo hasta el día de tu examen.
+                            Tres fases: domina el temario, entrena el examen real y sigue tu plan. Un único pago, acceso completo hasta el día de tu examen.
                         </p>
                     </div>
 

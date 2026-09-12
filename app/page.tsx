@@ -4,6 +4,7 @@ import LightNavbar from "@/components/site/LightNavbar"
 import HeroSplit from "@/components/home/HeroSplit"
 import Reveal from "@/components/home/Reveal"
 import PremiumSection from "@/components/home/PremiumSection"
+import MicrotestDiaCard from "@/components/home/MicrotestDiaCard"
 import TestsPopulares from "@/components/home/TestsPopulares"
 import SectionHeading from "@/components/home/SectionHeading"
 import SuscripcionConvocatorias from "@/components/convocatorias/SuscripcionConvocatorias"
@@ -134,6 +135,15 @@ export default function HomePage() {
                           </div>
                         </Reveal>
                     </div>
+                </div>
+            </section>
+
+            {/* ───────────── MICRO-TEST DEL DÍA (hábito diario, gratis) ───────────── */}
+            <section className="px-5 pb-4">
+                <div className="mx-auto max-w-3xl">
+                    <Reveal>
+                        <MicrotestDiaCard />
+                    </Reveal>
                 </div>
             </section>
 
