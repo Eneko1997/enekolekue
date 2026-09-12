@@ -4014,7 +4014,7 @@ export default function PerfilOPE({
                                                 {DROPS.filter((d) => !dropDesbloqueado(d)).map((d) => {
                                                     const dias = diasHastaDrop(d.fecha)
                                                     return (
-                                                        <div key={d.id} style={{ borderRadius: "14px", border: `1px dashed ${t.border}`, background: "transparent", padding: "16px", opacity: 0.9 }}>
+                                                        <div key={d.id} style={{ borderRadius: "14px", border: `1px dashed ${t.borderStrong}`, background: t.surfaceHover, padding: "16px" }}>
                                                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", marginBottom: "8px" }}>
                                                                 <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px", color: t.textMuted }}>
                                                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
