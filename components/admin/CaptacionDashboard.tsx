@@ -104,6 +104,10 @@ export default function CaptacionDashboard() {
     const [refrescando, setRefrescando] = useState(false)
     const [visitas, setVisitas] = useState<Visitas | null>(null)
     const [tickets, setTickets] = useState<Ticket[]>([])
+    const [emails, setEmails] = useState<{ email: string; tipo: string; nombre: string | null; fecha: string }[]>([])
+    const [emailsOffset, setEmailsOffset] = useState(0)
+    const [emailsMas, setEmailsMas] = useState(false)
+    const [emailsCargando, setEmailsCargando] = useState(false)
     // Responder impugnación por email
     const [resp, setResp] = useState<Ticket | null>(null)
     const [respAsunto, setRespAsunto] = useState("")
@@ -161,11 +165,30 @@ export default function CaptacionDashboard() {
             setVisitas((v as Visitas) || null)
             const { data: tk } = await supabase.rpc("lista_impugnaciones")
             setTickets(Array.isArray(tk) ? (tk as Ticket[]) : [])
+            const { data: em } = await supabase.rpc("emails_enviados", { p_limite: 15, p_offset: 0 })
+            const arrEm = Array.isArray(em) ? (em as typeof emails) : []
+            setEmails(arrEm)
+            setEmailsOffset(arrEm.length)
+            setEmailsMas(arrEm.length === 15)
             setEstado("ok")
         } catch {
             setEstado("error")
         } finally {
             setRefrescando(false)
+        }
+    }
+
+    async function verMasEmails() {
+        setEmailsCargando(true)
+        try {
+            const supabase = createClient()
+            const { data } = await supabase.rpc("emails_enviados", { p_limite: 15, p_offset: emailsOffset })
+            const arr = Array.isArray(data) ? (data as typeof emails) : []
+            setEmails((prev) => [...prev, ...arr])
+            setEmailsOffset((o) => o + arr.length)
+            setEmailsMas(arr.length === 15)
+        } finally {
+            setEmailsCargando(false)
         }
     }
 
@@ -398,6 +421,57 @@ export default function CaptacionDashboard() {
                     </div>
                 </section>
             )}
+
+            {/* Emails enviados (log de envíos, más reciente arriba) */}
+            <section className="mt-10">
+                <div>
+                    <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Emails enviados</h2>
+                    <p className="mt-1 text-[13px] text-zinc-500">
+                        Los correos que hemos enviado a usuarios, del más reciente al más antiguo.
+                    </p>
+                </div>
+                {emails.length === 0 ? (
+                    <p className="mt-4 text-[13px] text-zinc-500">Aún no se ha enviado ningún email.</p>
+                ) : (
+                    <>
+                        <div className="mt-4 overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+                            <table className="w-full min-w-[560px] border-collapse text-left text-[13px]">
+                                <thead>
+                                    <tr className="border-b border-zinc-200 bg-zinc-50 text-[11px] uppercase tracking-wide text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/60">
+                                        <th className="px-3 py-2.5 font-semibold">#</th>
+                                        <th className="px-3 py-2.5 font-semibold">Destinatario</th>
+                                        <th className="px-3 py-2.5 font-semibold">Correo enviado</th>
+                                        <th className="px-3 py-2.5 font-semibold">Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {emails.map((e, i) => (
+                                        <tr key={`${e.email}-${e.fecha}-${i}`} className="border-b border-zinc-100 last:border-0 dark:border-zinc-800/60">
+                                            <td className="px-3 py-2.5 tabular-nums text-zinc-400">{i + 1}</td>
+                                            <td className="px-3 py-2.5 font-medium text-zinc-900 dark:text-zinc-100">{e.email}</td>
+                                            <td className="px-3 py-2.5 text-zinc-600 dark:text-zinc-300">{e.tipo}</td>
+                                            <td className="px-3 py-2.5 whitespace-nowrap text-zinc-500">
+                                                {new Date(e.fecha).toLocaleString("es-ES", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        {emailsMas && (
+                            <div className="mt-3 text-center">
+                                <button
+                                    onClick={verMasEmails}
+                                    disabled={emailsCargando}
+                                    className="rounded-lg border border-zinc-200 bg-white px-4 py-2 text-[13px] font-semibold text-zinc-700 disabled:opacity-60 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
+                                >
+                                    {emailsCargando ? "Cargando…" : "Ver más"}
+                                </button>
+                            </div>
+                        )}
+                    </>
+                )}
+            </section>
 
             {/* Lista de emails captados */}
             <section className="mt-10">
