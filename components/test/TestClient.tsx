@@ -57,11 +57,21 @@ async function fetchPreguntas(
     // Micro-test del día: id virtual servido por su propia RPC (materia rotatoria
     // por fecha, misma para todos ese día). Se carga solo, sin test_id real.
     if (testId === "microtest_dia") {
-        const { data, error } = await supabase.rpc("get_microtest_dia", {
-            p_limite: 6,
-        })
-        if (error || !Array.isArray(data)) return []
-        return data
+        // fetch directo al endpoint REST (evita posibles bloqueos de sesión de
+        // supabase-js que dejaban la carga colgada). La RPC es pública.
+        try {
+            const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ougvtcmqmcutrexxrxvz.supabase.co"
+            const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_lfcfMDSYpIDWzy2CWufT_A_NfJbTimc"
+            const r = await fetch(`${url}/rest/v1/rpc/get_microtest_dia`, {
+                method: "POST",
+                headers: { apikey: anon, Authorization: `Bearer ${anon}`, "Content-Type": "application/json" },
+                body: JSON.stringify({ p_limite: 6 }),
+            })
+            const data = await r.json()
+            return Array.isArray(data) ? data : []
+        } catch {
+            return []
+        }
     }
     // El examen se monta en el servidor: la RPC filtra por test_id, baraja
     // (order by random()) y opcionalmente limita. El cliente recibe el examen listo.
@@ -4225,7 +4235,7 @@ export default function TestScreen(props: {
             } else {
                 setFase("inicio")
             }
-        })
+        }).catch(() => setFase("sin_preguntas"))
     }, [testId])
 
     // Embudo: sesión ANÓNIMA de Supabase para poder guardar el intento sin login
