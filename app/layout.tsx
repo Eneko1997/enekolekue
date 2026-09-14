@@ -6,6 +6,7 @@ import CookieBanner from "@/components/site/CookieBanner"
 import PostAuthRedirect from "@/components/auth/PostAuthRedirect"
 import PasswordRecoveryGate from "@/components/auth/PasswordRecoveryGate"
 import PresenceTracker from "@/components/presence/PresenceTracker"
+import PwaSetup from "@/components/pwa/PwaSetup"
 
 const manrope = Manrope({
     variable: "--font-manrope",
@@ -78,12 +79,21 @@ export default function RootLayout({
                         __html: `try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}`,
                     }}
                 />
+                {/* PWA: manifest, color de barra e iconos de app */}
+                <link rel="manifest" href="/manifest.webmanifest" />
+                <meta name="theme-color" content="#0B0C10" />
+                <meta name="mobile-web-app-capable" content="yes" />
+                <meta name="apple-mobile-web-app-capable" content="yes" />
+                <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+                <meta name="apple-mobile-web-app-title" content="Gainditu" />
+                <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
             </head>
             <body className="flex min-h-full flex-col overflow-x-clip">
                 {children}
                 <PostAuthRedirect />
                 <PasswordRecoveryGate />
                 <PresenceTracker />
+                <PwaSetup />
                 <CookieBanner />
             </body>
         </html>
