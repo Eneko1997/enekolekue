@@ -36,6 +36,11 @@ export default function PwaSetup() {
             window.navigator.standalone === true
         if (standalone) return
 
+        // Solo en móvil: en PC/escritorio no mostramos el aviso de instalar la app.
+        const ua = window.navigator.userAgent || ""
+        const isMobile = /android|iphone|ipad|ipod|mobile/i.test(ua) || window.matchMedia?.("(pointer: coarse)").matches
+        if (!isMobile) return
+
         const onBIP = (e: Event) => {
             e.preventDefault()
             setDeferred(e as BIPEvent)
@@ -44,7 +49,6 @@ export default function PwaSetup() {
         window.addEventListener("beforeinstallprompt", onBIP)
 
         // iOS Safari: no hay beforeinstallprompt -> instrucción manual.
-        const ua = window.navigator.userAgent || ""
         const isIOS = /iphone|ipad|ipod/i.test(ua)
         const isSafari = /safari/i.test(ua) && !/crios|fxios|edgios/i.test(ua)
         if (isIOS && isSafari) {

@@ -12,6 +12,22 @@ import { SITE_URL } from "@/lib/site"
 
 const ACCENT = "#10B981"
 
+// El resumen de las auto-ingeridas es un texto corrido ("... Convocada por X.
+// Territorio: Y. Plazo de inscripción del ... hasta ...") que queda como un
+// parrafazo. Lo troceamos en líneas ordenadas y quitamos el plazo (ya se ve
+// destacado abajo). Las curadas (prosa cuidada) se dejan tal cual.
+function resumenFicha(resumen: string): { prosa: string | null; lineas: string[] | null } {
+    const limpio = resumen.replace(/\s*Fuente:.*$/i, "").trim()
+    const esAuto = /Convocada por|Territorio:|Plazo de inscripci/i.test(limpio)
+    if (!esAuto) return { prosa: limpio, lineas: null }
+    const lineas = limpio
+        .split(/(?<=\.)\s+/)
+        .map((s) => s.trim().replace(/\.+$/, ""))
+        .filter(Boolean)
+        .filter((s) => !/^Plazo de inscripci/i.test(s)) // el plazo ya se muestra destacado abajo
+    return { prosa: null, lineas: lineas.length ? lineas : null }
+}
+
 // Se regenera cada hora; las auto-ingeridas del BOE (slugs no prerenderizados) se
 // generan bajo demanda (dynamicParams por defecto).
 export const revalidate = 3600
@@ -238,9 +254,26 @@ export default async function ConvocatoriaFicha({
                     <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">
                         {c.nombre}
                     </h1>
-                    <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300">
-                        {c.resumen.replace(/\s*Fuente:.*$/i, "").trim()}
-                    </p>
+                    {(() => {
+                        const { prosa, lineas } = resumenFicha(c.resumen)
+                        if (lineas) {
+                            return (
+                                <ul className="mt-4 max-w-2xl space-y-1.5">
+                                    {lineas.map((l, i) => (
+                                        <li key={i} className="flex gap-2.5 text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300">
+                                            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: ACCENT }} />
+                                            <span>{l}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )
+                        }
+                        return (
+                            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300">
+                                {prosa}
+                            </p>
+                        )
+                    })()}
 
                     {abierta && inscripcionUrl && (
                         <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 dark:border-emerald-900/40 dark:from-emerald-950/30 dark:to-zinc-900 sm:flex-row sm:items-center sm:justify-between">
