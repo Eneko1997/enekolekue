@@ -91,9 +91,15 @@ export default function HeroSplit() {
             ({ data }) => {
                 const base = (data as { sesiones_7d?: number } | null)?.sesiones_7d
                 if (typeof base !== "number") return
-                const curva = [0.10, 0.06, 0.05, 0.05, 0.06, 0.10, 0.18, 0.32, 0.50, 0.70, 0.85, 0.92, 0.90, 0.82, 0.85, 0.92, 1.0, 1.0, 0.96, 0.90, 0.80, 0.62, 0.40, 0.22]
+                // `base` = sesiones de los últimos 7 días. Usarla tal cual como "ahora
+                // mismo" infla el número (294/semana ≠ 294 a la vez). Lo convertimos a un
+                // pico concurrente creíble (~1/6 de la base) y lo modulamos por la curva
+                // horaria. De madrugada cae por debajo del umbral y se muestra el mensaje
+                // permanente en vez de un "3 opositores ahora" que queda pobre.
+                const pico = Math.min(80, Math.max(10, Math.round(base / 6)))
+                const curva = [0.08, 0.05, 0.04, 0.04, 0.05, 0.08, 0.14, 0.28, 0.48, 0.68, 0.84, 0.92, 0.88, 0.80, 0.84, 0.92, 1.0, 1.0, 0.95, 0.88, 0.78, 0.60, 0.38, 0.20]
                 const h = new Date().getHours()
-                setActivos(Math.round(base * curva[h]))
+                setActivos(Math.round(pico * curva[h]))
             },
             () => {}
         )
@@ -180,7 +186,13 @@ export default function HeroSplit() {
 
                         <div className="flex items-center gap-3">
                             <div className="flex -space-x-2.5">
-                                {AVATARS.map((src, i) => (
+                                {AVATARS.map((_, i) => {
+                                    // Rotación diaria del orden: cambian de un día a otro
+                                    // (determinista → sin desajuste de hidratación). Para
+                                    // variedad real de caras, añadir más fotos a AVATARS.
+                                    const rot = Math.floor(Date.now() / 86400000) % AVATARS.length
+                                    const src = AVATARS[(i + rot) % AVATARS.length]
+                                    return (
                                     <motion.img
                                         key={src}
                                         src={src}
@@ -193,7 +205,8 @@ export default function HeroSplit() {
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ delay: 0.75 + i * 0.09, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                                     />
-                                ))}
+                                    )
+                                })}
                             </div>
                             {activos && activos >= 8 ? (
                                 <span className="flex items-center gap-2 text-[13px] font-medium leading-tight text-zinc-500">
