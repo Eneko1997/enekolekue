@@ -136,6 +136,37 @@ function mismoCupo(a: Convocatoria, b: Convocatoria): boolean {
     return !!fa && fa === fb
 }
 
+// Fusiona una curada (base: contenido rico, enlaces a nuestros tests, desglose de
+// plazas, perfil lingüístico) con su fila auto correspondiente, de la que toma lo
+// que SE ACTUALIZA solo: estado, fechas de inscripción y enlaces oficiales nuevos.
+// Así la ficha se mantiene fresca (scraper diario) sin perder la conversión.
+function esFechaInscripcion(etiqueta: string): boolean {
+    return /inscrip|plazo|solicitud/i.test(etiqueta || "")
+}
+function fusionar(curada: Convocatoria, auto: Convocatoria): Convocatoria {
+    // Fechas: conservamos las NO de inscripción de la curada (p.ej. "Primera prueba
+    // (previsión)") y tomamos las de inscripción/plazo FRESCAS de la auto.
+    const fechasAutoInscr = (auto.fechasClave || []).filter((f) => esFechaInscripcion(f.etiqueta))
+    const fechasCuradaResto = (curada.fechasClave || []).filter((f) => !esFechaInscripcion(f.etiqueta))
+    const fechasClave = fechasAutoInscr.length ? [...fechasAutoInscr, ...fechasCuradaResto] : curada.fechasClave
+    // Enlaces: los de la curada (verificados a mano) + los nuevos de la auto que no estén ya.
+    const urls = new Set((curada.enlacesOficiales || []).map((e) => e.url))
+    const enlacesOficiales = distinguirEtiquetas([
+        ...(curada.enlacesOficiales || []),
+        ...(auto.enlacesOficiales || []).filter((e) => e?.url && !urls.has(e.url)),
+    ])
+    const uas = [curada.ultimaActualizacion, auto.ultimaActualizacion].filter(Boolean).sort() as string[]
+    return {
+        ...curada,
+        estado: auto.estado || curada.estado,
+        plazas: curada.plazas ?? auto.plazas,
+        fechasClave,
+        enlacesOficiales,
+        ultimaActualizacion: uas.length ? uas[uas.length - 1] : curada.ultimaActualizacion,
+        creadaEn: curada.creadaEn ?? auto.creadaEn,
+    }
+}
+
 function hoyIso(): string { return new Date().toISOString().slice(0, 10) }
 
 // Fecha de FIN de inscripción: la iso más tardía de las fechas de inscripción/plazo/solicitud.
@@ -183,11 +214,17 @@ export async function getConvocatorias(): Promise<Convocatoria[]> {
             .order("ultima_actualizacion", { ascending: false })
         if (error || !data) return CONVOCATORIAS.map(estadoEfectivo).filter(vigente).map(conPlazasEnTitulo)
         const curadas = new Set(CONVOCATORIAS.map((c) => c.slug))
-        const auto = data
-            .filter((r: any) => !curadas.has(r.slug))
-            .map(mapRow)
-            .filter((a) => !CONVOCATORIAS.some((c) => mismaConv(c, a) || mismoCupo(c, a)))
-        return [...CONVOCATORIAS, ...auto].map(estadoEfectivo).filter(vigente).map(conPlazasEnTitulo)
+        const autoRows = data.filter((r: any) => !curadas.has(r.slug)).map(mapRow)
+        const esLaMisma = (c: Convocatoria, a: Convocatoria) => mismaConv(c, a) || mismoCupo(c, a)
+        // Curadas: si hay una fila auto que es la misma convocatoria, se fusiona
+        // (base curada + frescura de la auto). Si no, se deja tal cual.
+        const curadasMerged = CONVOCATORIAS.map((c) => {
+            const m = autoRows.find((a: Convocatoria) => esLaMisma(c, a))
+            return m ? fusionar(c, m) : c
+        })
+        // Auto sueltas: las que NO coinciden con ninguna curada (evita la ficha doble).
+        const auto = autoRows.filter((a: Convocatoria) => !CONVOCATORIAS.some((c) => esLaMisma(c, a)))
+        return [...curadasMerged, ...auto].map(estadoEfectivo).filter(vigente).map(conPlazasEnTitulo)
     } catch {
         return CONVOCATORIAS.map(estadoEfectivo).filter(vigente).map(conPlazasEnTitulo)
     }
@@ -214,8 +251,12 @@ export async function getConvocatoriasOrdenadas(): Promise<Convocatoria[]> {
 }
 
 export async function getConvocatoriaBySlug(slug: string): Promise<Convocatoria | undefined> {
-    const curada = CONVOCATORIAS.find((c) => c.slug === slug)
-    if (curada) return conPlazasEnTitulo(estadoEfectivo(curada))
+    // Usa la lista ya FUSIONADA (curada + frescura de la auto) para que la ficha
+    // individual también refleje estado/fechas/enlaces actualizados.
     const all = await getConvocatorias()
-    return all.find((c) => c.slug === slug)
+    const found = all.find((c) => c.slug === slug)
+    if (found) return found
+    // Respaldo: una curada oculta del listado (p.ej. cerrada hace >1 mes) sigue accesible por URL.
+    const curada = CONVOCATORIAS.find((c) => c.slug === slug)
+    return curada ? conPlazasEnTitulo(estadoEfectivo(curada)) : undefined
 }

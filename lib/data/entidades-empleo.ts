@@ -111,6 +111,20 @@ export const ENTIDADES_EMPLEO: EntidadEmpleo[] = [
         etiqueta: "Convocatoria · Ayuntamiento de Abanto-Zierbena",
         url: "https://www.abanto-zierbena.eus/es-ES/Servicios/Trabajo/Paginas/OP_bibliotecario.aspx",
     },
+    {
+        // Viviendas Municipales de Bilbao: portal propio de OPE en plazo (SPA JS;
+        // el usuario confirma que ahí se ve la convocatoria actual). Verificado 2026-09-14.
+        match: ["viviendas municipales de bilbao", "viviendas municipales", "opevvmm"],
+        etiqueta: "Convocatorias en plazo · Viviendas Municipales de Bilbao",
+        url: "https://opevvmm.bilbao.eus/open/es/convo-plazo",
+    },
+    {
+        // Debabe (Mancomunidad de Euskaltegis Municipales). Ficha oficial de la
+        // convocatoria en su web, aportada y verificada por el usuario 2026-09-14.
+        match: ["debabe", "debabarrena"],
+        etiqueta: "Convocatoria · Euskaltegis Debabe",
+        url: "https://www.debabe.eus/es/-/30363020-25",
+    },
     // Bergara EXCLUIDO: su web carga pero la sección de empleo enseña una convocatoria del
     // Euskaltegi no relacionada -> se queda con las bases (no engañar al usuario).
     // Balmaseda EXCLUIDO: la web del ayuntamiento no responde (enlace roto) -> bases.
