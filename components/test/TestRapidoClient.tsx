@@ -180,8 +180,8 @@ export default function TestRapidoClient() {
                                                     bg = "bg-red-50 dark:bg-red-950/20"
                                                 }
                                             } else if (elegido) {
-                                                border = "border-emerald-500"
-                                                bg = "bg-emerald-50 dark:bg-emerald-950/30"
+                                                border = "border-zinc-900 dark:border-zinc-300"
+                                                bg = "bg-zinc-100 dark:bg-zinc-800"
                                             }
                                             return (
                                                 <button
