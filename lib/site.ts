@@ -7,7 +7,7 @@ export const SITE_URL =
 export const SITE_NAME = "Gainditu"
 
 export const SITE_DESCRIPTION =
-    "Tests por temario oficial, simulacros y seguimiento de tu progreso para tu oposición en Euskadi. A tu ritmo, tanto si empiezas de cero como si te sientes preparado."
+    "Prepara tu oposición en Euskadi: tests por temario oficial, exámenes de convocatorias anteriores, simulacros y seguimiento de tu progreso. A tu ritmo, empieces de cero o ya lleves tiempo."
 
 export const CONTACT_EMAIL = "info@gaindituoposiciones.com"
 
