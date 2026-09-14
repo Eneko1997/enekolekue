@@ -123,6 +123,19 @@ function mismaConv(a: Convocatoria, b: Convocatoria): boolean {
     return false
 }
 
+// Dedup por CUPO: la firma de contenido no reconcilia una ficha curada llamada
+// "OPE Gobierno Vasco 2026 · Administrativo" con la auto "305 plazas de
+// Administrativa del Cuerpo Administrativo…" (nombres muy distintos, misma OPE).
+// Pero mismo organismo + mismas plazas + misma fecha de fin de inscripción es
+// una identidad prácticamente infalsificable: son la misma convocatoria.
+function mismoCupo(a: Convocatoria, b: Convocatoria): boolean {
+    if (!a.plazas || !b.plazas || a.plazas !== b.plazas) return false
+    if (!a.organismo || normTxt(a.organismo) !== normTxt(b.organismo)) return false
+    const fa = finInscripcionIso(a)
+    const fb = finInscripcionIso(b)
+    return !!fa && fa === fb
+}
+
 function hoyIso(): string { return new Date().toISOString().slice(0, 10) }
 
 // Fecha de FIN de inscripción: la iso más tardía de las fechas de inscripción/plazo/solicitud.
@@ -173,7 +186,7 @@ export async function getConvocatorias(): Promise<Convocatoria[]> {
         const auto = data
             .filter((r: any) => !curadas.has(r.slug))
             .map(mapRow)
-            .filter((a) => !CONVOCATORIAS.some((c) => mismaConv(c, a)))
+            .filter((a) => !CONVOCATORIAS.some((c) => mismaConv(c, a) || mismoCupo(c, a)))
         return [...CONVOCATORIAS, ...auto].map(estadoEfectivo).filter(vigente).map(conPlazasEnTitulo)
     } catch {
         return CONVOCATORIAS.map(estadoEfectivo).filter(vigente).map(conPlazasEnTitulo)
