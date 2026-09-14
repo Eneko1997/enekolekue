@@ -40,7 +40,7 @@ export default function MicrotestDiaCard() {
 
     return (
         <Link
-            href="/test?id=microtest_dia"
+            href="/test-rapido"
             className="group relative flex flex-col overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-emerald-900/5 dark:border-emerald-900/40 dark:from-emerald-950/30 dark:to-zinc-900 sm:p-7"
         >
             <div

@@ -4136,7 +4136,6 @@ export default function TestScreen(props: {
 
     useEffect(() => {
         setFase("cargando")
-        if (testId === "microtest_dia") console.log("[micro] effect run", { testId, funnel, bloqueBase })
         // Embudo: si ya hiciste el examen en esta sesión (lo guardamos al finalizar),
         // al volver a esta página (botón atrás del navegador, tras Google, etc.) se
         // muestran los resultados en vez de re-empezar. Solo se arranca de cero si
@@ -4188,7 +4187,6 @@ export default function TestScreen(props: {
                   funnel ? (testId === "free_sim_adm" ? 30 : 60) : LIMITE_TESTS[testId] ?? (esSimulacro ? null : 30)
               )
         cargar.then((rows) => {
-            if (testId === "microtest_dia") console.log("[micro] rows", rows && rows.length)
             if (!rows || rows.length === 0) {
                 setFase("sin_preguntas")
                 return
@@ -4225,7 +4223,6 @@ export default function TestScreen(props: {
                 setFase("examen")
                 void logFunnelEvent("test_started", { test_id: testId })
             } else if (testId === "microtest_dia") {
-                console.log("[micro] -> examen directo", parsed.length)
                 // Test rápido del día: arranca directo, sin pantalla de config ni
                 // gating. 6 preguntas, estilo examen, sin penalización (calentamiento).
                 setModo("examen")

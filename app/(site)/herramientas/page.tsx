@@ -53,7 +53,7 @@ export default function HerramientasIndex() {
                     <div className="mt-4 grid gap-3 sm:grid-cols-3">
                         {[
                             ["1", "Prepara el terreno", "Descubre a qué oposición te presentas.", "/herramientas/que-oposicion-elegir"],
-                            ["2", "Entrena", "Haz tu primer test rápido y mide tu nivel.", "/test?id=microtest_dia"],
+                            ["2", "Entrena", "Haz tu primer test rápido y mide tu nivel.", "/test-rapido"],
                             ["3", "Da el salto", "Un simulacro real del Gobierno Vasco.", "/simulacro-administrativo-gobierno-vasco"],
                         ].map(([n, t, d, href]) => (
                             <Link
