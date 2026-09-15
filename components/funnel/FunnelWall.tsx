@@ -173,17 +173,32 @@ export default function FunnelWall({
         }
         setLoading(true)
         const supabase = createClient()
-        // 1) Guardar el lead. NO se envía ningún correo (ni Supabase Auth ni Resend):
-        //    solo se almacena el email para poder contactarle a mano cuando toque.
+        // 1) Guardar el lead y quedarnos con su id para mandar el resultado.
+        let leadId: string | null = null
         try {
-            await supabase.from("leads_simulacro").insert({
-                email: mail,
-                test_id: testId,
-                nota: stats.nota,
-                marketing_consent: true,
-            })
+            const { data: ins } = await supabase
+                .from("leads_simulacro")
+                .insert({
+                    email: mail,
+                    test_id: testId,
+                    nota: stats.nota,
+                    marketing_consent: true,
+                })
+                .select("id")
+                .single()
+            leadId = (ins as { id?: string } | null)?.id ?? null
         } catch {
             /* si falla, la nota se muestra igual */
+        }
+        // 1b) RESULTADO del simulacro (transaccional): se le envía su nota al momento.
+        //     Solo simulacro (no microtest); los upsells de promo NO salen (van con
+        //     promo:true, que está en pausa). Si falla, el cron de seguridad reintenta.
+        if (leadId && !esMicro) {
+            try {
+                await supabase.functions.invoke("nurture-embudo", { body: { lead_id: leadId } })
+            } catch {
+                /* red de seguridad: el cron solo-resultados lo reintentará */
+            }
         }
         // 2) Registrar el consentimiento en el perfil si hay sesión (anónima).
         try {
