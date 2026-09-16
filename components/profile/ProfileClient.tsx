@@ -393,6 +393,7 @@ const EXAMENES_OFICIALES = [
 const GRUPOS_OFICIALES: { key: string; label: string }[] = [
     { key: "gv", label: "Gobierno Vasco" },
     { key: "ayto", label: "Ayuntamientos" },
+    { key: "parlamento", label: "Parlamento Vasco" },
 ]
 
 // Drops de contenido: packs que se desbloquean en una fecha. Antes se muestran BLOQUEADOS
@@ -411,6 +412,16 @@ const DROPS: Drop[] = [
             { id: "ex_vitoria_gestion_2026", titulo: "Técnico de Gestión — Ayto. Vitoria-Gasteiz 2026", preguntas: 45, escala: "gestion", entidad: "ayto", badge: "OFICIAL" },
         ],
     },
+    {
+        id: "drop-parlamento-1",
+        titulo: "Pack Parlamento Vasco",
+        fecha: "2026-09-23",
+        fechaLabel: "miércoles 23 de septiembre",
+        exams: [
+            { id: "ex_parlamento_vasco_admin_2019_e1", titulo: "Técnico Administrativo — Parlamento Vasco 2019 · Ejercicio 1", preguntas: 35, escala: "administrativos", entidad: "parlamento", badge: "OFICIAL" },
+            { id: "ex_parlamento_vasco_admin_2019_e2", titulo: "Técnico Administrativo — Parlamento Vasco 2019 · Ejercicio 2", preguntas: 55, escala: "administrativos", entidad: "parlamento", badge: "OFICIAL" },
+        ],
+    },
 ]
 function diasHastaDrop(fechaIso: string): number {
     const hoy = new Date(); hoy.setHours(0, 0, 0, 0)
@@ -418,9 +429,59 @@ function diasHastaDrop(fechaIso: string): number {
     return Math.ceil((f.getTime() - hoy.getTime()) / 86400000)
 }
 function dropDesbloqueado(d: Drop): boolean { return diasHastaDrop(d.fecha) <= 0 }
+// Milisegundos exactos hasta el desbloqueo (medianoche de la fecha). Para la cuenta
+// atrás por horas del último día.
+function msHastaDrop(fechaIso: string): number {
+    return new Date(fechaIso + "T00:00:00").getTime() - Date.now()
+}
 // Lista de oficiales visibles = base + exámenes de drops ya desbloqueados (por fecha).
 function examenesOficialesVisibles(): DropExam[] {
     return [...EXAMENES_OFICIALES, ...DROPS.filter(dropDesbloqueado).flatMap((d) => d.exams)]
+}
+
+// Tarjeta de un examen aún bloqueado, con cuenta atrás. El último día (falta <= 1 día)
+// muestra cuenta atrás por horas/minutos en vivo, en vez de "queda un día".
+function DropLockedCard({ d, t, accentColor }: { d: Drop; t: any; accentColor: string }) {
+    const dias = diasHastaDrop(d.fecha)
+    const [, setTick] = useState(0)
+    useEffect(() => {
+        if (dias > 1) return
+        const iv = setInterval(() => setTick((n) => n + 1), 30000)
+        return () => clearInterval(iv)
+    }, [dias])
+    let cuenta: string
+    if (dias > 1) {
+        cuenta = `en ${dias} días`
+    } else {
+        const totalMin = Math.max(0, Math.floor(msHastaDrop(d.fecha) / 60000))
+        const h = Math.floor(totalMin / 60)
+        const m = totalMin % 60
+        cuenta = h > 0 ? `faltan ${h} h ${m} min` : `faltan ${m} min`
+    }
+    return (
+        <div style={{ borderRadius: "14px", border: `1px dashed ${t.borderStrong}`, background: t.navSurface, padding: "16px" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", marginBottom: "8px" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px", color: t.textMuted }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <path d="M7 10V8a5 5 0 0 1 10 0v2M5 10h14v10H5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    Bloqueado
+                </span>
+                <span style={{ fontSize: "11px", fontWeight: 700, color: accentColor, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                    {cuenta}
+                </span>
+            </div>
+            <div style={{ fontSize: "14px", fontWeight: 800, color: t.textMain }}>{d.titulo}</div>
+            <div style={{ fontSize: "12px", color: t.textMuted, marginTop: "2px" }}>Se desbloquea el {d.fechaLabel}</div>
+            <ul style={{ listStyle: "none", padding: 0, margin: "10px 0 0" }}>
+                {d.exams.map((e) => (
+                    <li key={e.id} style={{ fontSize: "12.5px", color: t.textMuted, padding: "2px 0" }}>
+                        {e.titulo} · {e.preguntas} preg.
+                    </li>
+                ))}
+            </ul>
+        </div>
+    )
 }
 
 const SIMULACROS_GAINDITU = [
@@ -4011,33 +4072,9 @@ export default function PerfilOPE({
                                                 </p>
                                             </div>
                                             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" }}>
-                                                {DROPS.filter((d) => !dropDesbloqueado(d)).map((d) => {
-                                                    const dias = diasHastaDrop(d.fecha)
-                                                    return (
-                                                        <div key={d.id} style={{ borderRadius: "14px", border: `1px dashed ${t.borderStrong}`, background: t.navSurface, padding: "16px" }}>
-                                                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", marginBottom: "8px" }}>
-                                                                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px", color: t.textMuted }}>
-                                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
-                                                                        <path d="M7 10V8a5 5 0 0 1 10 0v2M5 10h14v10H5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                                    </svg>
-                                                                    Bloqueado
-                                                                </span>
-                                                                <span style={{ fontSize: "11px", fontWeight: 700, color: accentColor, textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                                                                    {dias <= 1 ? "se desbloquea mañana" : `en ${dias} días`}
-                                                                </span>
-                                                            </div>
-                                                            <div style={{ fontSize: "14px", fontWeight: 800, color: t.textMain }}>{d.titulo}</div>
-                                                            <div style={{ fontSize: "12px", color: t.textMuted, marginTop: "2px" }}>Se desbloquea el {d.fechaLabel}</div>
-                                                            <ul style={{ listStyle: "none", padding: 0, margin: "10px 0 0" }}>
-                                                                {d.exams.map((e) => (
-                                                                    <li key={e.id} style={{ fontSize: "12.5px", color: t.textMuted, padding: "2px 0" }}>
-                                                                        {e.titulo} · {e.preguntas} preg.
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        </div>
-                                                    )
-                                                })}
+                                                {DROPS.filter((d) => !dropDesbloqueado(d)).map((d) => (
+                                                    <DropLockedCard key={d.id} d={d} t={t} accentColor={accentColor} />
+                                                ))}
                                             </div>
                                         </div>
                                     )}
