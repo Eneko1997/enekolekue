@@ -125,6 +125,36 @@ export const ENTIDADES_EMPLEO: EntidadEmpleo[] = [
         etiqueta: "Convocatoria · Euskaltegis Debabe",
         url: "https://www.debabe.eus/es/-/30363020-25",
     },
+    {
+        // IZFE (Informatika Zerbitzuen Foru Elkartea, empresa foral de informática de
+        // Gipuzkoa). Página oficial del proceso de selección con bases e inscripción.
+        // Aportada por el usuario; verificada 2026-09-16.
+        match: ["izfe", "informatika zerbitzuen foru elkartea"],
+        etiqueta: "Empleo público · IZFE",
+        url: "https://www.izfe.eus/es/oferta-de-empleo-2026",
+    },
+    {
+        // Ayuntamiento de Lezo: listado de todas las ofertas de empleo.
+        // Aportado por el usuario; verificado 2026-09-16.
+        match: ["lezo"],
+        etiqueta: "Empleo público · Ayuntamiento de Lezo",
+        url: "https://www.lezo.eus/es/tramites/ofertas-empleo/todas-ofertas-empleo",
+    },
+    {
+        // Cuadrilla de la Llanada Alavesa (Arabako Lautadako Kuadrilla): su portal de OPE
+        // lista las plazas en curso (Técnico/a de Igualdad, Arquitecto/a, Técnico/a de
+        // Medio Ambiente). Verificado 2026-09-16.
+        match: ["cuadrilla de la llanada alavesa", "llanada alavesa", "arabako lautada", "lautadako kuadrilla"],
+        etiqueta: "Empleo público · Cuadrilla de la Llanada Alavesa",
+        url: "https://www.arabakolautada.eus/previa/56/OFERTAS-DE-EMPLEO-PUBLICO",
+    },
+    {
+        // Instituto Foral de la Juventud (Álava): ficha de Administrativo/a de albergue y
+        // juventud en el portal Gazteria de la Diputación de Álava. Verificado 2026-09-16.
+        match: ["instituto foral de la juventud", "albergue y juventud"],
+        etiqueta: "Convocatoria · Administrativo/a de albergue y juventud (Álava)",
+        url: "https://gazteria.araba.eus/es/-/administrativo-de-albergue-y-juventud-2026",
+    },
     // Bergara EXCLUIDO: su web carga pero la sección de empleo enseña una convocatoria del
     // Euskaltegi no relacionada -> se queda con las bases (no engañar al usuario).
     // Balmaseda EXCLUIDO: la web del ayuntamiento no responde (enlace roto) -> bases.
