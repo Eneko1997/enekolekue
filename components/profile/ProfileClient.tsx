@@ -414,12 +414,12 @@ const DROPS: Drop[] = [
     },
     {
         id: "drop-parlamento-1",
-        titulo: "Pack Parlamento Vasco",
+        titulo: "Pack Parlamento Vasco 2019",
         fecha: "2026-09-23",
         fechaLabel: "miércoles 23 de septiembre",
         exams: [
-            { id: "ex_parlamento_vasco_admin_2019_e1", titulo: "Técnico Administrativo — Parlamento Vasco 2019 · Ejercicio 1", preguntas: 35, escala: "administrativos", entidad: "parlamento", badge: "OFICIAL" },
-            { id: "ex_parlamento_vasco_admin_2019_e2", titulo: "Técnico Administrativo — Parlamento Vasco 2019 · Ejercicio 2", preguntas: 55, escala: "administrativos", entidad: "parlamento", badge: "OFICIAL" },
+            { id: "ex_parlamento_vasco_admin_2019_e1", titulo: "Administrativo — Parlamento Vasco — Ejercicio 1", preguntas: 35, escala: "administrativos", entidad: "parlamento", badge: "OFICIAL" },
+            { id: "ex_parlamento_vasco_admin_2019_e2", titulo: "Administrativo — Parlamento Vasco — Ejercicio 2", preguntas: 55, escala: "administrativos", entidad: "parlamento", badge: "OFICIAL" },
         ],
     },
 ]

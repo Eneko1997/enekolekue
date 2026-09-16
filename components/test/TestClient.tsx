@@ -419,8 +419,8 @@ const TITULOS: Record<string, string> = {
     random: "Test Aleatorio — OPE Gobierno Vasco 2026",
     premium_demo: "Examen Sopela — Administrativos 2023",
     // ── EXÁMENES OFICIALES (drops) ────────────────────────────────────────────
-    ex_parlamento_vasco_admin_2019_e1: "Técnico Administrativo — Parlamento Vasco 2019 · Ejercicio 1",
-    ex_parlamento_vasco_admin_2019_e2: "Técnico Administrativo — Parlamento Vasco 2019 · Ejercicio 2",
+    ex_parlamento_vasco_admin_2019_e1: "Administrativo — Parlamento Vasco 2019 · Ejercicio 1",
+    ex_parlamento_vasco_admin_2019_e2: "Administrativo — Parlamento Vasco 2019 · Ejercicio 2",
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
