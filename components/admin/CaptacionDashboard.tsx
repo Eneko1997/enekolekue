@@ -91,6 +91,9 @@ function Dato({ k, v }: { k: string; v: string }) {
 
 type Visitas = { total7: number; total_prev: number; top: { pantalla: string; n: number }[]; ubicaciones: { lugar: string; n: number }[] }
 type Ticket = { id: number; test_id: string; pregunta_id: string; enunciado: string; motivo: string; email: string | null; estado: string; url: string | null; created_at: string }
+type Premium = { email: string; nombre: string; desde: string | null; plan: string; estado: string; pago: string; interno: boolean }
+type PremiumData = { generado: string; total: number; ventas_reales: number; internos: number; lista: Premium[] }
+const PAGO_LABEL: Record<string, string> = { stripe_live: "Stripe", stripe_test: "Stripe test", stripe: "Stripe", manual: "Manual" }
 
 export default function CaptacionDashboard() {
     const [data, setData] = useState<Metricas | null>(null)
@@ -103,6 +106,7 @@ export default function CaptacionDashboard() {
     const [fichaCargando, setFichaCargando] = useState(false)
     const [refrescando, setRefrescando] = useState(false)
     const [visitas, setVisitas] = useState<Visitas | null>(null)
+    const [premium, setPremium] = useState<PremiumData | null>(null)
     const [tickets, setTickets] = useState<Ticket[]>([])
     const [emails, setEmails] = useState<{ email: string; tipo: string; nombre: string | null; fecha: string }[]>([])
     const [emailsOffset, setEmailsOffset] = useState(0)
@@ -163,6 +167,8 @@ export default function CaptacionDashboard() {
             setLista(Array.isArray(l) ? (l as Lead[]) : [])
             const { data: v } = await supabase.rpc("visitas_resumen")
             setVisitas((v as Visitas) || null)
+            const { data: pr } = await supabase.rpc("clientes_premium")
+            setPremium((pr as PremiumData) || null)
             const { data: tk } = await supabase.rpc("lista_impugnaciones")
             setTickets(Array.isArray(tk) ? (tk as Ticket[]) : [])
             const { data: em } = await supabase.rpc("emails_enviados", { p_limite: 15, p_offset: 0 })
@@ -250,6 +256,75 @@ export default function CaptacionDashboard() {
 
             {/* Quién está online y en qué pantalla (tiempo real) */}
             <OnlineAhora />
+
+            {/* Clientes premium (ventas reales) */}
+            {premium && (
+                <section className="mt-8 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+                    <div className="flex flex-wrap items-end justify-between gap-2">
+                        <h2 className="text-xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">Clientes premium</h2>
+                        <div className="flex items-center gap-2">
+                            <span className="rounded-full px-3 py-1 text-[13px] font-bold text-white" style={{ backgroundColor: ACCENT }}>
+                                {premium.ventas_reales} venta{premium.ventas_reales === 1 ? "" : "s"} real{premium.ventas_reales === 1 ? "" : "es"}
+                            </span>
+                            <span className="rounded-full px-3 py-1 text-[13px] font-semibold text-zinc-500 dark:text-zinc-400" style={{ background: `${ACCENT}12` }}>
+                                {premium.total} premium en total
+                            </span>
+                        </div>
+                    </div>
+                    <p className="mt-2 text-[12.5px] text-zinc-400">
+                        Cuentas con acceso completo. Las marcadas como “interna” (tu cuenta y cuentas de prueba) no cuentan como venta.
+                    </p>
+                    {premium.lista.length === 0 ? (
+                        <p className="mt-4 text-[14px] text-zinc-500">Aún no hay clientes premium.</p>
+                    ) : (
+                        <div className="mt-4 overflow-x-auto">
+                            <table className="w-full border-collapse text-left text-[13.5px]">
+                                <thead>
+                                    <tr className="text-[11px] uppercase tracking-wide text-zinc-400">
+                                        <th className="pb-2 pr-3 font-bold">Cliente</th>
+                                        <th className="pb-2 pr-3 font-bold">Desde</th>
+                                        <th className="pb-2 pr-3 font-bold">Plan</th>
+                                        <th className="pb-2 pr-3 font-bold">Pago</th>
+                                        <th className="pb-2 font-bold">Tipo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {premium.lista.map((c) => (
+                                        <tr
+                                            key={c.email}
+                                            onClick={() => abrirFicha(c.email)}
+                                            className="cursor-pointer border-t border-zinc-100 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/40"
+                                        >
+                                            <td className="py-2.5 pr-3">
+                                                <div className="font-semibold text-zinc-800 dark:text-zinc-200">{c.nombre}</div>
+                                                <div className="text-[12px] text-zinc-400">{c.email}</div>
+                                            </td>
+                                            <td className="py-2.5 pr-3 text-zinc-600 dark:text-zinc-300">
+                                                {c.desde ? new Date(c.desde).toLocaleDateString("es-ES") : "—"}
+                                            </td>
+                                            <td className="py-2.5 pr-3 text-zinc-600 dark:text-zinc-300">
+                                                {c.plan}{c.estado && c.estado !== "active" ? ` · ${c.estado}` : ""}
+                                            </td>
+                                            <td className="py-2.5 pr-3">
+                                                <span className="rounded-full px-2 py-0.5 text-[11px] font-bold" style={c.pago === "manual" ? { background: "rgba(113,113,122,0.15)", color: "#71717a" } : { background: `${ACCENT}1a`, color: ACCENT }}>
+                                                    {PAGO_LABEL[c.pago] ?? c.pago}
+                                                </span>
+                                            </td>
+                                            <td className="py-2.5">
+                                                {c.interno ? (
+                                                    <span className="rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: "rgba(245,158,11,0.15)", color: "#b45309" }}>Interna</span>
+                                                ) : (
+                                                    <span className="rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: "rgba(16,185,129,0.15)", color: "#059669" }}>Cliente</span>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </section>
+            )}
 
             {/* Impugnaciones de preguntas (tickets) */}
             <section className="mt-8 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
