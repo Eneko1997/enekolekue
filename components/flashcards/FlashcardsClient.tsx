@@ -169,7 +169,7 @@ export default function FlashcardsClient() {
             )
         }
         return (
-            <div className="flex flex-col gap-4">
+            <div className="mx-auto flex max-w-xl flex-col gap-4">
                 <div className="flex items-center justify-between gap-3">
                     <button onClick={() => setVista("materias")} className="text-[13px] font-semibold text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200">
                         ← Materias
@@ -185,26 +185,28 @@ export default function FlashcardsClient() {
                 <button
                     type="button"
                     onClick={() => !flipped && setFlipped(true)}
-                    className="min-h-[280px] w-full rounded-2xl border bg-white p-6 text-left transition-colors dark:bg-zinc-900 sm:p-8"
-                    style={{ borderColor: flipped ? `${ACCENT}55` : "rgba(120,120,130,0.2)", cursor: flipped ? "default" : "pointer" }}
+                    className="flex min-h-[320px] w-full flex-col items-center justify-center rounded-3xl border bg-gradient-to-b from-white to-zinc-50 p-7 text-center shadow-lg shadow-zinc-900/5 transition-all dark:from-zinc-900 dark:to-zinc-900/60 dark:shadow-black/20 sm:p-9"
+                    style={{ borderColor: flipped ? `${ACCENT}66` : "rgba(120,120,130,0.18)", cursor: flipped ? "default" : "pointer" }}
                 >
-                    <div className="text-[11px] font-bold uppercase tracking-wide" style={{ color: flipped ? ACCENT : "#a1a1aa" }}>
+                    <div className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: flipped ? ACCENT : "#a1a1aa" }}>
                         {flipped ? "Respuesta" : "Pregunta"}
                     </div>
-                    <p className="mt-2 text-[17px] font-semibold leading-relaxed text-zinc-950 dark:text-zinc-50">{card.frente}</p>
+                    <p className="mt-3 text-[18px] font-semibold leading-relaxed text-zinc-950 dark:text-zinc-50">{card.frente}</p>
                     {flipped && (
-                        <div className="mt-4 border-t border-zinc-100 pt-4 dark:border-zinc-800">
+                        <div className="mt-5 w-full border-t border-zinc-100 pt-5 dark:border-zinc-800">
                             <p className="text-[16px] font-bold leading-relaxed" style={{ color: ACCENT }}>{card.dorso}</p>
                             <p className="mt-2 text-[14px] leading-relaxed text-zinc-600 dark:text-zinc-300">{card.explicacion}</p>
                         </div>
                     )}
-                    {!flipped && <div className="mt-4 text-[13px] text-zinc-400">Piénsalo y toca para ver la respuesta</div>}
+                    {!flipped && <div className="mt-5 text-[12.5px] text-zinc-400">Piénsalo y gírala para ver la respuesta</div>}
                 </button>
 
                 {!flipped ? (
-                    <button onClick={() => setFlipped(true)} className="rounded-full px-6 py-3.5 text-[15px] font-semibold text-white" style={{ background: ACCENT }}>
-                        Ver respuesta
-                    </button>
+                    <div className="flex justify-center">
+                        <button onClick={() => setFlipped(true)} className="rounded-full px-8 py-3 text-[15px] font-semibold text-white shadow-sm transition-transform hover:scale-[1.02]" style={{ background: ACCENT }}>
+                            Girar tarjeta
+                        </button>
+                    </div>
                 ) : (
                     <div className="grid grid-cols-3 gap-2">
                         <CalifBtn label="Otra vez" sub="< 1 día" color="#DC2626" onClick={() => calificar("otra_vez")} />
@@ -212,7 +214,7 @@ export default function FlashcardsClient() {
                         <CalifBtn label="Fácil" sub="+ tiempo" color={ACCENT} onClick={() => calificar("facil")} />
                     </div>
                 )}
-                <p className="text-center text-[11px] text-zinc-400">En el ordenador: espacio para ver la respuesta · 1/2/3 para calificar</p>
+                <p className="text-center text-[11px] text-zinc-400">En el ordenador: espacio para girar · 1/2/3 para calificar</p>
             </div>
         )
     }
@@ -266,7 +268,7 @@ export default function FlashcardsClient() {
                                 <span className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold text-zinc-500" style={{ background: "rgba(120,120,130,0.12)" }}>Al día</span>
                             )}
                         </div>
-                        <div className="mt-0.5 text-[12.5px] text-zinc-500">{m.total} tarjetas · {m.dominadas} dominadas</div>
+                        <div className="mt-0.5 text-[12.5px] text-zinc-500">{m.dominadas > 0 ? `${m.dominadas} dominadas` : "Sin empezar"}</div>
                         <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
                             <div className="h-full rounded-full" style={{ width: `${pct}%`, background: ACCENT }} />
                         </div>
