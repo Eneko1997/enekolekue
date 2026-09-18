@@ -28,6 +28,11 @@ const LABELS: Record<string, string> = {
 function labelMateria(tema: string): string {
     return LABELS[tema] ?? tema.replace(/-/g, " ").replace(/^\w/, (c) => c.toUpperCase())
 }
+const GLOBAL = "__global__"
+function tituloTema(t: string | null): string {
+    if (t === GLOBAL) return "Todo lo vencido"
+    return t ? labelMateria(t) : ""
+}
 
 type Materia = { tema: string; total: number; dominadas: number; vencidas: number; nuevas: number }
 type Card = { id: string; frente: string; dorso: string; explicacion: string; caja: number }
@@ -83,6 +88,22 @@ export default function FlashcardsClient() {
         setTemaActivo(tema)
         try {
             const { data } = await sb().rpc("flashcards_sesion", { p_tema: tema, p_limite: 20 })
+            const arr = Array.isArray(data) ? (data as Card[]) : []
+            setCards(arr)
+            setIdx(0)
+            setFlipped(false)
+            setStats({ bien: 0, otra: 0 })
+            setVista("sesion")
+        } finally {
+            setCargandoSesion(false)
+        }
+    }
+
+    async function empezarGlobal() {
+        setCargandoSesion(true)
+        setTemaActivo(GLOBAL)
+        try {
+            const { data } = await sb().rpc("flashcards_sesion_global", { p_limite: 30 })
             const arr = Array.isArray(data) ? (data as Card[]) : []
             setCards(arr)
             setIdx(0)
@@ -158,9 +179,11 @@ export default function FlashcardsClient() {
         if (!card) {
             return (
                 <div className="rounded-2xl border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900">
-                    <div className="text-[15px] font-bold text-zinc-950 dark:text-zinc-50">¡Al día en esta materia!</div>
+                    <div className="text-[15px] font-bold text-zinc-950 dark:text-zinc-50">{temaActivo === GLOBAL ? "¡Todo al día!" : "¡Al día en esta materia!"}</div>
                     <p className="mx-auto mt-2 max-w-md text-[14px] text-zinc-500">
-                        No tienes tarjetas pendientes de {temaActivo ? labelMateria(temaActivo) : "esta materia"} para hoy. Vuelve mañana o elige otra materia.
+                        {temaActivo === GLOBAL
+                            ? "No te queda ninguna tarjeta pendiente de repaso para hoy. Puedes empezar tarjetas nuevas de una materia."
+                            : `No tienes tarjetas pendientes de ${temaActivo ? labelMateria(temaActivo) : "esta materia"} para hoy. Vuelve mañana o elige otra materia.`}
                     </p>
                     <button onClick={() => setVista("materias")} className="mt-5 rounded-full px-6 py-3 text-[14px] font-semibold text-white" style={{ background: ACCENT }}>
                         Elegir materia
@@ -175,7 +198,7 @@ export default function FlashcardsClient() {
                         ← Materias
                     </button>
                     <div className="text-[13px] font-semibold text-zinc-500">
-                        {temaActivo ? labelMateria(temaActivo) : ""} · {idx + 1}/{cards.length}
+                        {tituloTema(temaActivo)} · {idx + 1}/{cards.length}
                     </div>
                 </div>
                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
@@ -227,7 +250,7 @@ export default function FlashcardsClient() {
                     {stats.bien} las llevabas bien · {stats.otra} a reforzar. Las que fallaste vuelven pronto; las que dominas, más adelante.
                 </p>
                 <div className="mt-5 flex flex-wrap justify-center gap-3">
-                    <button onClick={() => temaActivo && empezar(temaActivo)} disabled={cargandoSesion} className="rounded-full px-6 py-3 text-[14px] font-semibold text-white disabled:opacity-60" style={{ background: ACCENT }}>
+                    <button onClick={() => (temaActivo === GLOBAL ? empezarGlobal() : temaActivo && empezar(temaActivo))} disabled={cargandoSesion} className="rounded-full px-6 py-3 text-[14px] font-semibold text-white disabled:opacity-60" style={{ background: ACCENT }}>
                         {cargandoSesion ? "Cargando…" : "Seguir estudiando"}
                     </button>
                     <button onClick={() => setVista("materias")} className="rounded-full border border-zinc-200 px-6 py-3 text-[14px] font-semibold text-zinc-600 dark:border-zinc-800 dark:text-zinc-300">
@@ -243,8 +266,24 @@ export default function FlashcardsClient() {
     if (materias.length === 0) {
         return <div className="rounded-2xl border border-zinc-200 bg-white p-8 text-center text-[14px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900">Aún no hay flashcards disponibles.</div>
     }
+    const totalVencidas = materias.reduce((s, m) => s + m.vencidas, 0)
     return (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="flex flex-col gap-4">
+            {totalVencidas > 0 && (
+                <button
+                    onClick={empezarGlobal}
+                    disabled={cargandoSesion}
+                    className="flex items-center justify-between gap-3 rounded-2xl px-5 py-4 text-left text-white shadow-sm transition-transform hover:scale-[1.005] disabled:opacity-60"
+                    style={{ background: ACCENT }}
+                >
+                    <div>
+                        <div className="text-[15px] font-extrabold">Repasar todo lo vencido</div>
+                        <div className="text-[12.5px] opacity-90">Tarjetas de todas las materias que tocan hoy.</div>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-white/20 px-3 py-1 text-[14px] font-bold">{totalVencidas}</span>
+                </button>
+            )}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {materias.map((m) => {
                 const paraHoy = m.vencidas + Math.min(m.nuevas, 20 - Math.min(m.vencidas, 20))
                 const empezadas = m.total - m.nuevas
@@ -275,6 +314,7 @@ export default function FlashcardsClient() {
                     </button>
                 )
             })}
+            </div>
         </div>
     )
 }

@@ -2056,10 +2056,19 @@ export default function PerfilOPE({
     const [nombre, setNombre] = useState("")
     const [escala, setEscala] = useState("administrativos")
     const [isPremium, setIsPremium] = useState(false)
+    const [flashPend, setFlashPend] = useState(0)
     const [premiumType, setPremiumType] = useState("free")
     const [premiumPlan, setPremiumPlan] = useState<string | null>(null)
     const [portalLoading, setPortalLoading] = useState(false)
     const [guardando, setGuardando] = useState(false)
+
+    // Contador de flashcards pendientes (badge de la pestaña); se refresca al cambiar de tab.
+    useEffect(() => {
+        if (!isPremium) return
+        supabase.rpc("flashcards_pendientes").then(({ data }) => {
+            if (typeof data === "number") setFlashPend(data)
+        })
+    }, [isPremium, tab])
     const [guardado, setGuardado] = useState(false)
     const [nuevaPass, setNuevaPass] = useState("")
     const [savingPass, setSavingPass] = useState(false)
@@ -2509,7 +2518,7 @@ export default function PerfilOPE({
     const tabs = [
         { id: "stats", label: "Progreso" },
         ...(isPremium ? [{ id: "examenes", label: "Mis Exámenes" }] : []),
-        ...(isPremium ? [{ id: "flashcards", label: "Flashcards" }] : []),
+        ...(isPremium ? [{ id: "flashcards", label: flashPend > 0 ? `Flashcards · ${flashPend}` : "Flashcards" }] : []),
         { id: "historial", label: "Historial" },
         { id: "ajustes", label: "Ajustes" },
     ] as const
