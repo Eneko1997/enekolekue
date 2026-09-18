@@ -214,25 +214,23 @@ export default function LightNavbar() {
                                 {l.label}
                             </Link>
                         ))}
-                        <a
-                            href="https://t.me/gobiernovascooposiciones"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={segCls(false)}
-                            style={{ color: "#229ED9" }}
-                        >
-                            <span className="inline-flex items-center gap-1.5">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                                    <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" />
-                                </svg>
-                                Gobierno Vasco
-                            </span>
-                        </a>
                     </div>
                 </div>
 
                 {/* CTA escritorio */}
                 <div className="hidden shrink-0 items-center gap-2 md:flex">
+                    <a
+                        href="https://t.me/gobiernovascooposiciones"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Canal de Telegram del Gobierno Vasco"
+                        title="Gobierno Vasco en Telegram"
+                        className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-600 transition-colors hover:text-zinc-950 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                            <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" />
+                        </svg>
+                    </a>
                     <button
                         type="button"
                         onClick={toggle}
@@ -418,13 +416,12 @@ export default function LightNavbar() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => setOpen(false)}
-                                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                                style={{ color: "#229ED9" }}
+                                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white"
                             >
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden className="text-zinc-400">
                                     <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" />
                                 </svg>
-                                Gobierno Vasco
+                                Telegram · Gobierno Vasco
                             </a>
                             {!loading && user ? (
                                 <div className="mt-2 border-t border-zinc-200 pt-2 dark:border-zinc-800">
