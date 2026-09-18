@@ -295,7 +295,7 @@ export default function FlashcardsClient() {
                     <div className="text-[12px] font-bold uppercase tracking-wide" style={{ color: ACCENT }}>Próximamente</div>
                     <div className="mt-1 text-[16px] font-extrabold text-zinc-950 dark:text-zinc-50">Se desbloquea el lunes a las 12:00</div>
                     <p className="mx-auto mt-1 max-w-md text-[13.5px] text-zinc-600 dark:text-zinc-300">
-                        Ya está todo listo: 13 materias para memorizar el temario con repetición espaciada. Faltan {faltaTexto(DESBLOQUEO - Date.now())}.
+                        Ya está todo listo: 13 materias para memorizar el temario con repetición espaciada.
                     </p>
                 </div>
             )}

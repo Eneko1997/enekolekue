@@ -14,6 +14,7 @@ const VENTAJAS = [
     "Exámenes oficiales de convocatorias anteriores",
     "Casos Prácticos Gainditu: la parte que marca la diferencia",
     "Simulacros con penalización real del examen",
+    "Flashcards con repetición espaciada para memorizar el temario",
     "Explicación con IA en cada pregunta",
     "Estadísticas avanzadas y seguimiento por tema",
 ]

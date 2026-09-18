@@ -26,6 +26,7 @@ const INCLUYE = [
     { t: "Exámenes oficiales de convocatorias anteriores", v: "59€" },
     { t: "Casos Prácticos Gainditu, exclusivos", v: "49€" },
     { t: "Simulacros con penalización real", v: "39€" },
+    { t: "Flashcards con repetición espaciada", v: "29€" },
     { t: "Explicación con IA en cada pregunta", v: "29€" },
     { t: "Estadísticas y progreso por escala", v: "19€" },
 ]
