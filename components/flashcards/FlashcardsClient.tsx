@@ -34,6 +34,18 @@ function tituloTema(t: string | null): string {
     return t ? labelMateria(t) : ""
 }
 
+// Bloqueo de lanzamiento: se ve pero en gris, sin interacción, hasta el lunes 21 a las 12:00 (España).
+const DESBLOQUEO = new Date("2026-09-21T12:00:00+02:00").getTime()
+function faltaTexto(ms: number): string {
+    const s = Math.max(0, Math.floor(ms / 1000))
+    const d = Math.floor(s / 86400)
+    const h = Math.floor((s % 86400) / 3600)
+    const m = Math.floor((s % 3600) / 60)
+    if (d > 0) return `${d} d ${h} h`
+    if (h > 0) return `${h} h ${m} min`
+    return `${m} min`
+}
+
 type Materia = { tema: string; total: number; dominadas: number; vencidas: number; nuevas: number }
 type Card = { id: string; frente: string; dorso: string; explicacion: string; caja: number }
 type Resultado = "otra_vez" | "bien" | "facil"
@@ -51,6 +63,8 @@ export default function FlashcardsClient() {
     const [flipped, setFlipped] = useState(false)
     const [cargandoSesion, setCargandoSesion] = useState(false)
     const [stats, setStats] = useState({ bien: 0, otra: 0 })
+    const [, setTick] = useState(0)
+    const bloqueado = Date.now() < DESBLOQUEO
     const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null)
     function sb() {
         if (!supabaseRef.current) supabaseRef.current = createClient()
@@ -149,6 +163,13 @@ export default function FlashcardsClient() {
         window.addEventListener("keydown", onKey)
         return () => window.removeEventListener("keydown", onKey)
     }, [vista, flipped, calificar])
+
+    // Cuenta atrás del bloqueo de lanzamiento (refresca el "faltan…" y desbloquea en vivo).
+    useEffect(() => {
+        if (!bloqueado) return
+        const iv = setInterval(() => setTick((t) => t + 1), 30000)
+        return () => clearInterval(iv)
+    }, [bloqueado])
 
     if (loading) return <div className="py-20 text-center text-zinc-400">Cargando…</div>
 
@@ -269,7 +290,16 @@ export default function FlashcardsClient() {
     const totalVencidas = materias.reduce((s, m) => s + m.vencidas, 0)
     return (
         <div className="flex flex-col gap-4">
-            {totalVencidas > 0 && (
+            {bloqueado && (
+                <div className="rounded-2xl border border-dashed p-5 text-center" style={{ borderColor: `${ACCENT}66`, background: `${ACCENT}0d` }}>
+                    <div className="text-[12px] font-bold uppercase tracking-wide" style={{ color: ACCENT }}>Próximamente</div>
+                    <div className="mt-1 text-[16px] font-extrabold text-zinc-950 dark:text-zinc-50">Se desbloquea el lunes a las 12:00</div>
+                    <p className="mx-auto mt-1 max-w-md text-[13.5px] text-zinc-600 dark:text-zinc-300">
+                        Ya está todo listo: 13 materias para memorizar el temario con repetición espaciada. Faltan {faltaTexto(DESBLOQUEO - Date.now())}.
+                    </p>
+                </div>
+            )}
+            {totalVencidas > 0 && !bloqueado && (
                 <button
                     onClick={empezarGlobal}
                     disabled={cargandoSesion}
@@ -283,7 +313,7 @@ export default function FlashcardsClient() {
                     <span className="shrink-0 rounded-full bg-white/20 px-3 py-1 text-[14px] font-bold">{totalVencidas}</span>
                 </button>
             )}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className={`grid grid-cols-1 gap-3 sm:grid-cols-2 ${bloqueado ? "pointer-events-none select-none opacity-50" : ""}`}>
             {materias.map((m) => {
                 const paraHoy = m.vencidas + Math.min(m.nuevas, 20 - Math.min(m.vencidas, 20))
                 const empezadas = m.total - m.nuevas
@@ -294,7 +324,7 @@ export default function FlashcardsClient() {
                     <button
                         key={m.tema}
                         onClick={() => empezar(m.tema)}
-                        disabled={cargandoSesion || paraHoy === 0}
+                        disabled={cargandoSesion || paraHoy === 0 || bloqueado}
                         className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-4 text-left transition-transform hover:scale-[1.01] disabled:cursor-default disabled:opacity-70 dark:border-zinc-800 dark:bg-zinc-900 sm:p-5"
                     >
                         <div className="flex items-start justify-between gap-2">
