@@ -247,8 +247,10 @@ export default function FlashcardsClient() {
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {materias.map((m) => {
                 const paraHoy = m.vencidas + Math.min(m.nuevas, 20 - Math.min(m.vencidas, 20))
-                const pct = m.total ? Math.round((m.dominadas / m.total) * 100) : 0
+                const empezadas = m.total - m.nuevas
+                const pct = m.total ? Math.round((empezadas / m.total) * 100) : 0
                 const dominada = m.total > 0 && m.dominadas === m.total
+                const sub = m.dominadas > 0 ? `${m.dominadas} dominadas` : empezadas > 0 ? "En progreso" : "Sin empezar"
                 return (
                     <button
                         key={m.tema}
@@ -266,7 +268,7 @@ export default function FlashcardsClient() {
                                 <span className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold text-zinc-500" style={{ background: "rgba(120,120,130,0.12)" }}>Al día</span>
                             )}
                         </div>
-                        <div className="mt-0.5 text-[12.5px] text-zinc-500">{m.dominadas > 0 ? `${m.dominadas} dominadas` : "Sin empezar"}</div>
+                        <div className="mt-0.5 text-[12.5px] text-zinc-500">{sub}</div>
                         <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
                             <div className="h-full rounded-full" style={{ width: `${pct}%`, background: ACCENT }} />
                         </div>
