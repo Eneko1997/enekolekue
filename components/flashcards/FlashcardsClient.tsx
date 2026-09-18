@@ -214,7 +214,6 @@ export default function FlashcardsClient() {
                         <CalifBtn label="Fácil" sub="+ tiempo" color={ACCENT} onClick={() => calificar("facil")} />
                     </div>
                 )}
-                <p className="text-center text-[11px] text-zinc-400">En el ordenador: espacio para girar · 1/2/3 para calificar</p>
             </div>
         )
     }
