@@ -46,7 +46,7 @@ function faltaTexto(ms: number): string {
     return `${m} min`
 }
 
-type Materia = { tema: string; total: number; dominadas: number; vencidas: number; nuevas: number }
+type Materia = { tema: string; total: number; dominadas: number; vencidas: number; nuevas: number; cupo_nuevas: number }
 type Card = { id: string; frente: string; dorso: string; explicacion: string; caja: number }
 type Resultado = "otra_vez" | "bien" | "facil"
 
@@ -228,9 +228,9 @@ export default function FlashcardsClient() {
 
                 <button
                     type="button"
-                    onClick={() => !flipped && setFlipped(true)}
+                    onClick={() => setFlipped((f) => !f)}
                     className="flex min-h-[320px] w-full flex-col items-center justify-center rounded-3xl border bg-gradient-to-b from-white to-zinc-50 p-7 text-center shadow-lg shadow-zinc-900/5 transition-all dark:from-zinc-900 dark:to-zinc-900/60 dark:shadow-black/20 sm:p-9"
-                    style={{ borderColor: flipped ? `${ACCENT}66` : "rgba(120,120,130,0.18)", cursor: flipped ? "default" : "pointer" }}
+                    style={{ borderColor: flipped ? `${ACCENT}66` : "rgba(120,120,130,0.18)", cursor: "pointer" }}
                 >
                     <div className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: flipped ? ACCENT : "#a1a1aa" }}>
                         {flipped ? "Respuesta" : "Pregunta"}
@@ -239,6 +239,7 @@ export default function FlashcardsClient() {
                     {flipped && (
                         <div className="mt-5 w-full border-t border-zinc-100 pt-5 dark:border-zinc-800">
                             <p className="text-[18px] font-bold leading-relaxed" style={{ color: ACCENT }}>{card.dorso}</p>
+                            <div className="mt-4 text-[12px] text-zinc-400">Toca la tarjeta para volver a la pregunta</div>
                         </div>
                     )}
                     {!flipped && <div className="mt-5 text-[12.5px] text-zinc-400">Piénsalo y gírala para ver la respuesta</div>}
@@ -315,7 +316,7 @@ export default function FlashcardsClient() {
             )}
             <div className={`grid grid-cols-1 gap-3 sm:grid-cols-2 ${bloqueado ? "pointer-events-none select-none opacity-50" : ""}`}>
             {materias.map((m) => {
-                const paraHoy = m.vencidas + Math.min(m.nuevas, 20 - Math.min(m.vencidas, 20))
+                const paraHoy = Math.min(20, m.vencidas + Math.min(m.nuevas, m.cupo_nuevas ?? 0))
                 const empezadas = m.total - m.nuevas
                 const pct = m.total ? Math.round((empezadas / m.total) * 100) : 0
                 const dominada = m.total > 0 && m.dominadas === m.total
