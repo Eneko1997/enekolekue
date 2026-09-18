@@ -214,6 +214,20 @@ export default function LightNavbar() {
                                 {l.label}
                             </Link>
                         ))}
+                        <a
+                            href="https://t.me/gobiernovascooposiciones"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={segCls(false)}
+                            style={{ color: "#229ED9" }}
+                        >
+                            <span className="inline-flex items-center gap-1.5">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                                    <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" />
+                                </svg>
+                                Gobierno Vasco
+                            </span>
+                        </a>
                     </div>
                 </div>
 
@@ -399,6 +413,19 @@ export default function LightNavbar() {
                                     {l.label}
                                 </Link>
                             ))}
+                            <a
+                                href="https://t.me/gobiernovascooposiciones"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setOpen(false)}
+                                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                                style={{ color: "#229ED9" }}
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                                    <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" />
+                                </svg>
+                                Gobierno Vasco
+                            </a>
                             {!loading && user ? (
                                 <div className="mt-2 border-t border-zinc-200 pt-2 dark:border-zinc-800">
                                     <div className="truncate px-3 pb-1 text-[12px] text-zinc-400 dark:text-zinc-500">
