@@ -67,39 +67,6 @@ export default function HerramientasIndex() {
                 </div>
             </section>
 
-            {/* Flashcards (premium) */}
-            <section className="px-5 pt-4">
-                <div className="mx-auto max-w-4xl">
-                    <Link
-                        href="/flashcards"
-                        className="group block overflow-hidden rounded-2xl border border-zinc-200 bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-900/5 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-700 sm:p-6"
-                    >
-                        <div className="flex items-center justify-between gap-4">
-                            <div>
-                                <span
-                                    className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide"
-                                    style={{ background: "rgba(16,185,129,0.14)", color: "#047857" }}
-                                >
-                                    Premium · Novedad
-                                </span>
-                                <h2 className="mt-2 text-[18px] font-extrabold text-zinc-950 dark:text-zinc-50">
-                                    Flashcards con repetición espaciada
-                                </h2>
-                                <p className="mt-1 text-[13.5px] leading-relaxed text-zinc-600 dark:text-zinc-300">
-                                    Memoriza el temario tarjeta a tarjeta, ordenado por materia. Cada día repasas solo lo que toca.
-                                </p>
-                            </div>
-                            <span
-                                className="hidden shrink-0 items-center rounded-full px-5 py-2.5 text-[14px] font-semibold text-white transition-transform group-hover:scale-[1.02] sm:inline-flex"
-                                style={{ background: ACCENT }}
-                            >
-                                Estudiar →
-                            </span>
-                        </div>
-                    </Link>
-                </div>
-            </section>
-
             <section id="lista" className="scroll-mt-20 px-5 py-10">
                 <div className="mx-auto max-w-4xl">
                     {destacada && (
@@ -171,6 +138,34 @@ export default function HerramientasIndex() {
                             </div>
                         </Link>
                     )}
+                    {/* Flashcards (premium) — debajo de la herramienta estrella */}
+                    <Link
+                        href="/flashcards"
+                        className="group mb-4 block overflow-hidden rounded-2xl border border-zinc-200 bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-900/5 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-700 sm:p-6"
+                    >
+                        <div className="flex items-center justify-between gap-4">
+                            <div>
+                                <span
+                                    className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide"
+                                    style={{ background: "rgba(16,185,129,0.14)", color: "#047857" }}
+                                >
+                                    Premium · Novedad
+                                </span>
+                                <h2 className="mt-2 text-[18px] font-extrabold text-zinc-950 dark:text-zinc-50">
+                                    Flashcards con repetición espaciada
+                                </h2>
+                                <p className="mt-1 text-[13.5px] leading-relaxed text-zinc-600 dark:text-zinc-300">
+                                    Memoriza el temario tarjeta a tarjeta, ordenado por materia. Cada día repasas solo lo que toca.
+                                </p>
+                            </div>
+                            <span
+                                className="hidden shrink-0 items-center rounded-full px-5 py-2.5 text-[14px] font-semibold text-white transition-transform group-hover:scale-[1.02] sm:inline-flex"
+                                style={{ background: ACCENT }}
+                            >
+                                Estudiar →
+                            </span>
+                        </div>
+                    </Link>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         {resto.map((h) => (
                             <Link
