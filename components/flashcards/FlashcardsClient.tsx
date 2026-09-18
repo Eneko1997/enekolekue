@@ -194,8 +194,10 @@ export default function FlashcardsClient() {
                     <p className="mt-3 text-[18px] font-semibold leading-relaxed text-zinc-950 dark:text-zinc-50">{card.frente}</p>
                     {flipped && (
                         <div className="mt-5 w-full border-t border-zinc-100 pt-5 dark:border-zinc-800">
-                            <p className="text-[16px] font-bold leading-relaxed" style={{ color: ACCENT }}>{card.dorso}</p>
-                            <p className="mt-2 text-[14px] leading-relaxed text-zinc-600 dark:text-zinc-300">{card.explicacion}</p>
+                            <p className="text-[17px] font-bold leading-relaxed" style={{ color: ACCENT }}>{card.dorso}</p>
+                            {card.explicacion && (
+                                <p className="mt-2 text-[13px] leading-relaxed text-zinc-400 dark:text-zinc-500">{card.explicacion}</p>
+                            )}
                         </div>
                     )}
                     {!flipped && <div className="mt-5 text-[12.5px] text-zinc-400">Piénsalo y gírala para ver la respuesta</div>}
