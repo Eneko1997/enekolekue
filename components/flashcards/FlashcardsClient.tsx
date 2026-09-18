@@ -1,0 +1,299 @@
+"use client"
+
+import { useCallback, useEffect, useRef, useState } from "react"
+import Link from "next/link"
+import { createClient } from "@/lib/supabase/client"
+
+const ACCENT = "#10B981"
+
+const LABELS: Record<string, string> = {
+    constitucion: "Constitución",
+    "ley-39-2015": "Ley 39/2015 · Procedimiento",
+    "ley-40-2015": "Ley 40/2015 · Sector público",
+    "empleo-publico": "Empleo público",
+    "instituciones-vascas": "Instituciones vascas",
+    "hacienda-contratacion": "Hacienda y contratación",
+    "transparencia-datos": "Transparencia y datos",
+    igualdad: "Igualdad",
+    ue: "Unión Europea",
+    "admin-electronica-ofimatica": "Administración electrónica",
+    "atencion-archivo": "Atención y archivo",
+    "prevencion-medioambiente": "Prevención y medioambiente",
+    sancionador: "Potestad sancionadora",
+    "procedimiento-notificaciones": "Notificaciones",
+    "hacienda-regimen-local": "Hacienda local",
+    "Régimen local": "Régimen local",
+    recursos: "Recursos administrativos",
+}
+function labelMateria(tema: string): string {
+    return LABELS[tema] ?? tema.replace(/-/g, " ").replace(/^\w/, (c) => c.toUpperCase())
+}
+
+type Materia = { tema: string; total: number; dominadas: number; vencidas: number; nuevas: number }
+type Card = { id: string; frente: string; dorso: string; explicacion: string; caja: number }
+type Resultado = "otra_vez" | "bien" | "facil"
+
+export default function FlashcardsClient() {
+    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState<any>(null)
+    const [isPremium, setIsPremium] = useState(false)
+    const [materias, setMaterias] = useState<Materia[] | null>(null)
+
+    const [vista, setVista] = useState<"materias" | "sesion" | "fin">("materias")
+    const [temaActivo, setTemaActivo] = useState<string | null>(null)
+    const [cards, setCards] = useState<Card[]>([])
+    const [idx, setIdx] = useState(0)
+    const [flipped, setFlipped] = useState(false)
+    const [cargandoSesion, setCargandoSesion] = useState(false)
+    const [stats, setStats] = useState({ bien: 0, otra: 0 })
+    const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null)
+    function sb() {
+        if (!supabaseRef.current) supabaseRef.current = createClient()
+        return supabaseRef.current
+    }
+
+    const cargarMaterias = useCallback(async () => {
+        const { data } = await sb().rpc("flashcards_materias")
+        setMaterias(Array.isArray(data) ? (data as Materia[]) : [])
+    }, [])
+
+    useEffect(() => {
+        let cancel = false
+        sb()
+            .auth.getUser()
+            .then(async ({ data }) => {
+                if (cancel) return
+                const u = data.user ?? null
+                setUser(u)
+                if (u) {
+                    const { data: prof } = await sb().from("profiles").select("is_premium").eq("id", u.id).single()
+                    const premium = !!prof?.is_premium
+                    setIsPremium(premium)
+                    if (premium) await cargarMaterias()
+                }
+                if (!cancel) setLoading(false)
+            })
+        return () => {
+            cancel = true
+        }
+    }, [cargarMaterias])
+
+    async function empezar(tema: string) {
+        setCargandoSesion(true)
+        setTemaActivo(tema)
+        try {
+            const { data } = await sb().rpc("flashcards_sesion", { p_tema: tema, p_limite: 20 })
+            const arr = Array.isArray(data) ? (data as Card[]) : []
+            setCards(arr)
+            setIdx(0)
+            setFlipped(false)
+            setStats({ bien: 0, otra: 0 })
+            setVista("sesion")
+        } finally {
+            setCargandoSesion(false)
+        }
+    }
+
+    const calificar = useCallback(
+        (r: Resultado) => {
+            const card = cards[idx]
+            if (!card) return
+            // Optimista: guardamos en segundo plano y avanzamos.
+            sb().rpc("flashcards_calificar", { p_pregunta_id: card.id, p_resultado: r })
+            setStats((s) => (r === "otra_vez" ? { ...s, otra: s.otra + 1 } : { ...s, bien: s.bien + 1 }))
+            if (idx + 1 >= cards.length) {
+                setVista("fin")
+                cargarMaterias()
+            } else {
+                setIdx((i) => i + 1)
+                setFlipped(false)
+            }
+        },
+        [cards, idx, cargarMaterias],
+    )
+
+    // Atajos de teclado (PC): espacio/enter voltea; 1/2/3 califican.
+    useEffect(() => {
+        if (vista !== "sesion") return
+        function onKey(e: KeyboardEvent) {
+            if (e.key === " " || e.key === "Enter") {
+                e.preventDefault()
+                if (!flipped) setFlipped(true)
+            } else if (flipped) {
+                if (e.key === "1") calificar("otra_vez")
+                else if (e.key === "2") calificar("bien")
+                else if (e.key === "3") calificar("facil")
+            }
+        }
+        window.addEventListener("keydown", onKey)
+        return () => window.removeEventListener("keydown", onKey)
+    }, [vista, flipped, calificar])
+
+    if (loading) return <div className="py-20 text-center text-zinc-400">Cargando…</div>
+
+    if (!user) {
+        return (
+            <Gate
+                titulo="Tus flashcards te esperan"
+                texto="Inicia sesión con la cuenta con la que compraste tu acceso para estudiar con flashcards."
+                cta="Iniciar sesión"
+                href="/login?redirect=/flashcards"
+            />
+        )
+    }
+    if (!isPremium) {
+        return (
+            <Gate
+                titulo="Las flashcards son un extra del acceso completo"
+                texto="Memoriza el temario con repetición espaciada: cada día repasas solo lo que toca y ves qué materias dominas. Incluido con el Método Gainditu."
+                cta="Conseguir mi acceso →"
+                href="/payment"
+            />
+        )
+    }
+
+    // ── Sesión de estudio ────────────────────────────────────────────────────
+    if (vista === "sesion") {
+        const card = cards[idx]
+        if (!card) {
+            return (
+                <div className="rounded-2xl border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900">
+                    <div className="text-[15px] font-bold text-zinc-950 dark:text-zinc-50">¡Al día en esta materia!</div>
+                    <p className="mx-auto mt-2 max-w-md text-[14px] text-zinc-500">
+                        No tienes tarjetas pendientes de {temaActivo ? labelMateria(temaActivo) : "esta materia"} para hoy. Vuelve mañana o elige otra materia.
+                    </p>
+                    <button onClick={() => setVista("materias")} className="mt-5 rounded-full px-6 py-3 text-[14px] font-semibold text-white" style={{ background: ACCENT }}>
+                        Elegir materia
+                    </button>
+                </div>
+            )
+        }
+        return (
+            <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between gap-3">
+                    <button onClick={() => setVista("materias")} className="text-[13px] font-semibold text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200">
+                        ← Materias
+                    </button>
+                    <div className="text-[13px] font-semibold text-zinc-500">
+                        {temaActivo ? labelMateria(temaActivo) : ""} · {idx + 1}/{cards.length}
+                    </div>
+                </div>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+                    <div className="h-full rounded-full transition-all" style={{ width: `${Math.round((idx / cards.length) * 100)}%`, background: ACCENT }} />
+                </div>
+
+                <button
+                    type="button"
+                    onClick={() => !flipped && setFlipped(true)}
+                    className="min-h-[280px] w-full rounded-2xl border bg-white p-6 text-left transition-colors dark:bg-zinc-900 sm:p-8"
+                    style={{ borderColor: flipped ? `${ACCENT}55` : "rgba(120,120,130,0.2)", cursor: flipped ? "default" : "pointer" }}
+                >
+                    <div className="text-[11px] font-bold uppercase tracking-wide" style={{ color: flipped ? ACCENT : "#a1a1aa" }}>
+                        {flipped ? "Respuesta" : "Pregunta"}
+                    </div>
+                    <p className="mt-2 text-[17px] font-semibold leading-relaxed text-zinc-950 dark:text-zinc-50">{card.frente}</p>
+                    {flipped && (
+                        <div className="mt-4 border-t border-zinc-100 pt-4 dark:border-zinc-800">
+                            <p className="text-[16px] font-bold leading-relaxed" style={{ color: ACCENT }}>{card.dorso}</p>
+                            <p className="mt-2 text-[14px] leading-relaxed text-zinc-600 dark:text-zinc-300">{card.explicacion}</p>
+                        </div>
+                    )}
+                    {!flipped && <div className="mt-4 text-[13px] text-zinc-400">Piénsalo y toca para ver la respuesta</div>}
+                </button>
+
+                {!flipped ? (
+                    <button onClick={() => setFlipped(true)} className="rounded-full px-6 py-3.5 text-[15px] font-semibold text-white" style={{ background: ACCENT }}>
+                        Ver respuesta
+                    </button>
+                ) : (
+                    <div className="grid grid-cols-3 gap-2">
+                        <CalifBtn label="Otra vez" sub="< 1 día" color="#DC2626" onClick={() => calificar("otra_vez")} />
+                        <CalifBtn label="Bien" sub="repaso" color="#2563EB" onClick={() => calificar("bien")} />
+                        <CalifBtn label="Fácil" sub="+ tiempo" color={ACCENT} onClick={() => calificar("facil")} />
+                    </div>
+                )}
+                <p className="text-center text-[11px] text-zinc-400">En el ordenador: espacio para ver la respuesta · 1/2/3 para calificar</p>
+            </div>
+        )
+    }
+
+    // ── Fin de sesión ────────────────────────────────────────────────────────
+    if (vista === "fin") {
+        return (
+            <div className="rounded-2xl border p-8 text-center" style={{ borderColor: `${ACCENT}55`, background: `${ACCENT}0d` }}>
+                <div className="text-[13px] font-bold uppercase tracking-wide" style={{ color: ACCENT }}>Sesión completada</div>
+                <div className="mt-2 text-2xl font-extrabold text-zinc-950 dark:text-zinc-50">{stats.bien + stats.otra} tarjetas repasadas</div>
+                <p className="mt-1 text-[14px] text-zinc-600 dark:text-zinc-300">
+                    {stats.bien} las llevabas bien · {stats.otra} a reforzar. Las que fallaste vuelven pronto; las que dominas, más adelante.
+                </p>
+                <div className="mt-5 flex flex-wrap justify-center gap-3">
+                    <button onClick={() => temaActivo && empezar(temaActivo)} disabled={cargandoSesion} className="rounded-full px-6 py-3 text-[14px] font-semibold text-white disabled:opacity-60" style={{ background: ACCENT }}>
+                        {cargandoSesion ? "Cargando…" : "Seguir estudiando"}
+                    </button>
+                    <button onClick={() => setVista("materias")} className="rounded-full border border-zinc-200 px-6 py-3 text-[14px] font-semibold text-zinc-600 dark:border-zinc-800 dark:text-zinc-300">
+                        Elegir otra materia
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
+    // ── Selector de materias ─────────────────────────────────────────────────
+    if (!materias) return <div className="py-20 text-center text-zinc-400">Cargando materias…</div>
+    if (materias.length === 0) {
+        return <div className="rounded-2xl border border-zinc-200 bg-white p-8 text-center text-[14px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900">Aún no hay flashcards disponibles.</div>
+    }
+    return (
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {materias.map((m) => {
+                const paraHoy = m.vencidas + Math.min(m.nuevas, 20 - Math.min(m.vencidas, 20))
+                const pct = m.total ? Math.round((m.dominadas / m.total) * 100) : 0
+                const dominada = m.total > 0 && m.dominadas === m.total
+                return (
+                    <button
+                        key={m.tema}
+                        onClick={() => empezar(m.tema)}
+                        disabled={cargandoSesion || paraHoy === 0}
+                        className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-4 text-left transition-transform hover:scale-[1.01] disabled:cursor-default disabled:opacity-70 dark:border-zinc-800 dark:bg-zinc-900 sm:p-5"
+                    >
+                        <div className="flex items-start justify-between gap-2">
+                            <div className="text-[15px] font-bold text-zinc-950 dark:text-zinc-50">{labelMateria(m.tema)}</div>
+                            {dominada ? (
+                                <span className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: `${ACCENT}18`, color: ACCENT }}>Dominada</span>
+                            ) : paraHoy > 0 ? (
+                                <span className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold text-white" style={{ background: ACCENT }}>{paraHoy} para hoy</span>
+                            ) : (
+                                <span className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold text-zinc-500" style={{ background: "rgba(120,120,130,0.12)" }}>Al día</span>
+                            )}
+                        </div>
+                        <div className="mt-0.5 text-[12.5px] text-zinc-500">{m.total} tarjetas · {m.dominadas} dominadas</div>
+                        <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+                            <div className="h-full rounded-full" style={{ width: `${pct}%`, background: ACCENT }} />
+                        </div>
+                    </button>
+                )
+            })}
+        </div>
+    )
+}
+
+function CalifBtn({ label, sub, color, onClick }: { label: string; sub: string; color: string; onClick: () => void }) {
+    return (
+        <button onClick={onClick} className="flex flex-col items-center rounded-xl border py-3 font-semibold transition-colors" style={{ borderColor: `${color}55`, color }}>
+            <span className="text-[14px]">{label}</span>
+            <span className="text-[11px] opacity-70">{sub}</span>
+        </button>
+    )
+}
+
+function Gate({ titulo, texto, cta, href }: { titulo: string; texto: string; cta: string; href: string }) {
+    return (
+        <div className="mx-auto max-w-lg rounded-2xl border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900">
+            <h2 className="text-xl font-extrabold text-zinc-950 dark:text-zinc-50">{titulo}</h2>
+            <p className="mt-2 text-[14px] leading-relaxed text-zinc-600 dark:text-zinc-400">{texto}</p>
+            <Link href={href} className="mt-5 inline-flex items-center justify-center rounded-full px-6 py-3 text-[15px] font-semibold text-white" style={{ background: ACCENT }}>
+                {cta}
+            </Link>
+        </div>
+    )
+}
