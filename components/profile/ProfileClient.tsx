@@ -10,6 +10,7 @@ import { TITULOS_CATALOGO } from "@/components/dashboard/catalogo"
 import LightNavbar from "@/components/site/LightNavbar"
 import { useTheme } from "@/lib/use-theme"
 import SiteFooter from "@/components/site/SiteFooter"
+import FlashcardsClient from "@/components/flashcards/FlashcardsClient"
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ougvtcmqmcutrexxrxvz.supabase.co")
 const SUPABASE_ANON_KEY = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_lfcfMDSYpIDWzy2CWufT_A_NfJbTimc")
@@ -1089,6 +1090,7 @@ function AvatarDropdown({
     const items = [
         { label: "Mi progreso", href: "/perfil?tab=stats" },
         { label: "Mis exámenes", href: "/perfil?tab=examenes" },
+        { label: "Flashcards", href: "/perfil?tab=flashcards" },
         { label: "Mi historial", href: "/perfil?tab=historial" },
         { label: "Ajustes", href: "/perfil?tab=ajustes" },
     ]
@@ -2020,6 +2022,7 @@ export default function PerfilOPE({
             if (
                 p === "stats" ||
                 p === "examenes" ||
+                p === "flashcards" ||
                 p === "historial" ||
                 p === "ajustes"
             )
@@ -2028,7 +2031,7 @@ export default function PerfilOPE({
         return "stats"
     })()
     const [tab, setTab] = useState<
-        "stats" | "examenes" | "historial" | "ajustes"
+        "stats" | "examenes" | "flashcards" | "historial" | "ajustes"
     >(initialTab as any)
 
     // Sincroniza la pestaña con ?tab= de la URL. Necesario porque el menú del
@@ -2040,6 +2043,7 @@ export default function PerfilOPE({
         if (
             p === "stats" ||
             p === "examenes" ||
+            p === "flashcards" ||
             p === "historial" ||
             p === "ajustes"
         )
@@ -2505,6 +2509,7 @@ export default function PerfilOPE({
     const tabs = [
         { id: "stats", label: "Progreso" },
         ...(isPremium ? [{ id: "examenes", label: "Mis Exámenes" }] : []),
+        ...(isPremium ? [{ id: "flashcards", label: "Flashcards" }] : []),
         { id: "historial", label: "Historial" },
         { id: "ajustes", label: "Ajustes" },
     ] as const
@@ -4340,6 +4345,18 @@ export default function PerfilOPE({
                                             )
                                         })}
                                     </div>
+                                </motion.div>
+                            )}
+
+                            {/* ── TAB: FLASHCARDS ── */}
+                            {tab === "flashcards" && isPremium && (
+                                <motion.div
+                                    key="flashcards"
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0 }}
+                                >
+                                    <FlashcardsClient />
                                 </motion.div>
                             )}
 
