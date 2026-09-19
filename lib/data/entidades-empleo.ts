@@ -155,6 +155,13 @@ export const ENTIDADES_EMPLEO: EntidadEmpleo[] = [
         etiqueta: "Convocatoria · Administrativo/a de albergue y juventud (Álava)",
         url: "https://gazteria.araba.eus/es/-/administrativo-de-albergue-y-juventud-2026",
     },
+    {
+        // Ayuntamiento de Basauri: buscador de OPE con las convocatorias en plazo/activas.
+        // Aportado por el usuario; verificado 2026-09-19 (58 procesos, es el listado real).
+        match: ["ayuntamiento de basauri", "basauriko udala", "basauri"],
+        etiqueta: "Empleo público · Ayuntamiento de Basauri",
+        url: "https://www.basauri.eus/es/oferta-publica-de-empleo",
+    },
     // Bergara EXCLUIDO: su web carga pero la sección de empleo enseña una convocatoria del
     // Euskaltegi no relacionada -> se queda con las bases (no engañar al usuario).
     // Balmaseda EXCLUIDO: la web del ayuntamiento no responde (enlace roto) -> bases.
