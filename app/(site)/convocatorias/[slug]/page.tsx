@@ -16,15 +16,31 @@ const ACCENT = "#10B981"
 // Territorio: Y. Plazo de inscripción del ... hasta ...") que queda como un
 // parrafazo. Lo troceamos en líneas ordenadas y quitamos el plazo (ya se ve
 // destacado abajo). Las curadas (prosa cuidada) se dejan tal cual.
-function resumenFicha(resumen: string): { prosa: string | null; lineas: string[] | null } {
+function normTxt(s: string): string {
+    return String(s || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .replace(/[^\w\s]/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+}
+
+function resumenFicha(resumen: string, titulo: string): { prosa: string | null; lineas: string[] | null } {
     const limpio = resumen.replace(/\s*Fuente:.*$/i, "").trim()
+    const tituloNorm = normTxt(titulo)
     const esAuto = /Convocada por|Territorio:|Plazo de inscripci/i.test(limpio)
-    if (!esAuto) return { prosa: limpio, lineas: null }
+    if (!esAuto) {
+        // Prosa curada: si solo repite el título, no mostramos subtítulo.
+        return { prosa: normTxt(limpio) === tituloNorm ? null : limpio, lineas: null }
+    }
     const lineas = limpio
         .split(/(?<=\.)\s+/)
         .map((s) => s.trim().replace(/\.+$/, ""))
         .filter(Boolean)
         .filter((s) => !/^Plazo de inscripci/i.test(s)) // el plazo ya se muestra destacado abajo
+        .filter((s) => !/^Convocada por/i.test(s)) // la entidad ya se ve en la etiqueta de arriba
+        .filter((s) => normTxt(s) !== tituloNorm) // no repetir el título
     return { prosa: null, lineas: lineas.length ? lineas : null }
 }
 
@@ -255,7 +271,7 @@ export default async function ConvocatoriaFicha({
                         {c.nombre}
                     </h1>
                     {(() => {
-                        const { prosa, lineas } = resumenFicha(c.resumen)
+                        const { prosa, lineas } = resumenFicha(c.resumen, c.nombre)
                         if (lineas) {
                             return (
                                 <ul className="mt-4 max-w-2xl space-y-1.5">
@@ -268,6 +284,7 @@ export default async function ConvocatoriaFicha({
                                 </ul>
                             )
                         }
+                        if (!prosa) return null
                         return (
                             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300">
                                 {prosa}
