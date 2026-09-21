@@ -42,6 +42,27 @@ const GUIAS: { slug: string; titulo: string; resumen: string; etiqueta: string }
             "De la convocatoria a la toma de posesión: qué ocurre en cada paso del proceso selectivo y qué tienes que hacer.",
         etiqueta: "Proceso selectivo",
     },
+    {
+        slug: "administrativo-gobierno-vasco-como-prepararlo",
+        titulo: "Administrativo del Gobierno Vasco: qué estudiar y cómo prepararlo",
+        resumen:
+            "Requisitos (C1), cómo es el concurso-oposición, los grandes bloques del temario y por dónde empezar a prepararla.",
+        etiqueta: "Gobierno Vasco",
+    },
+    {
+        slug: "personal-de-apoyo-gobierno-vasco-sin-titulacion",
+        titulo: "Personal de Apoyo del Gobierno Vasco: opositar sin titulación",
+        resumen:
+            "Una de las vías de entrada más accesibles: sin titulación académica. Requisitos, cómo es el proceso y cómo prepararla.",
+        etiqueta: "Gobierno Vasco",
+    },
+    {
+        slug: "euskera-perfiles-linguisticos-oposiciones",
+        titulo: "El euskera en las oposiciones: los perfiles lingüísticos",
+        resumen:
+            "Qué son los perfiles PL1-PL4, cuándo el euskera es mérito y cuándo requisito (fecha de preceptividad) y cómo se acredita.",
+        etiqueta: "Euskera",
+    },
 ]
 
 export default function GuiasIndexPage() {
