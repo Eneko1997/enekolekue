@@ -1,5 +1,7 @@
 // Generadores de borradores para redes sociales.
-// CONVOCATORIAS en X: formato con título en MAYÚSCULAS + 📢/💶/📚/✅/🔗 (validado por el usuario).
+// CONVOCATORIAS en X: título en MAYÚSCULAS + 📢/🏛️/📝/📚/🔗. SIN salario ni dificultad
+// explícita (decisión del usuario 2026-09): se enfoca en la oportunidad (plaza, entidad,
+// nº de plazas), la estabilidad de una plaza pública y la llamada a prepararla con tiempo.
 // ORGÁNICOS en X: tono natural y CERCANO (no agresivo), con gancho suave y frases cortas.
 // LinkedIn (todo): voz de ACADEMIA/marca (Gainditu), institucional e informativa. Nunca primera persona.
 import { CONVOCATORIAS } from "@/lib/data/convocatorias"
@@ -8,7 +10,6 @@ export const DOMINIO = "https://gaindituoposiciones.com"
 
 export type Conv = { slug: string; nombre: string; plazas: number | null; organismo: string | null }
 
-const SUELDO: Record<string, string> = { A1: "~2.800 €/mes", A2: "~2.400 €/mes", B: "~2.100 €/mes", C1: "~1.900 €/mes", C2: "~1.700 €/mes", E: "~1.500 €/mes" }
 const ORG_LABEL: Record<string, string> = {
     "gobierno-vasco": "Gobierno Vasco",
     "osakidetza": "Osakidetza",
@@ -18,21 +19,12 @@ const ORG_LABEL: Record<string, string> = {
     "educacion": "Educación",
 }
 
-function grupoDe(nombre: string): string {
-    const s = nombre.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
-    if (/(peon|operario|limpieza|ayudante de oficios|personal de apoyo|subalterno|sepulturer|enterrador|conserje|ordenanza)/.test(s)) return "E"
-    if (/(auxiliar|cuidador|conductor|notificador|vigilante|oficial|celador)/.test(s)) return "C2"
-    if (/administrativ/.test(s)) return "C1"
-    if (/(arquitecto tecnic|ingenier[oa] tecnic|tecnic[oa] medi|enfermer|trabajador social|educador|graduad|diplomad|fisioterapeuta|tecnic[oa] de gestion|delineante|bibliotecari)/.test(s)) return "A2"
-    if (/(arquitecto|ingenier|medico|veterinari|tecnic[oa] superior|letrad|abogad|psicolog|economista|licenciad|inspector|jefe|director|tecnic[oa] de administracion general|analista)/.test(s)) return "A1"
-    return "C1"
-}
-function esfuerzoDe(g: string, plazas: number | null): { nivel: string; motivo: string } {
-    let nivel = (g === "A1") ? "alto" : (g === "A2" || g === "B") ? "medio-alto" : (g === "C1") ? "medio" : "bajo"
-    let motivo = (g === "A1" || g === "A2") ? "requiere titulación y temario amplio" : (g === "C1") ? "temario asequible con constancia" : "sin titulación alta, muy accesible"
-    if (plazas && plazas >= 20) { motivo = "muchas plazas, buenas opciones de entrar"; if (nivel === "alto") nivel = "medio-alto"; else if (nivel === "medio") nivel = "medio-bajo" }
-    else if (plazas === 1) { motivo = "1 sola plaza, alta competencia" }
-    return { nivel, motivo }
+// Línea de meta para X/LinkedIn: entidad convocante y, si se conoce, nº de plazas.
+// Nada de sueldo ni de nivel de dificultad.
+function metaEntidad(c: Conv): string {
+    const org = ORG_LABEL[c.organismo || ""] || "Administración vasca"
+    if (c.plazas && c.plazas > 0) return `${org} · ${c.plazas} plaza${c.plazas === 1 ? "" : "s"}`
+    return org
 }
 function nombreCorto(nombre: string): string {
     let n = String(nombre || "Convocatoria").replace(/\s*\([^)]*\)\s*/g, " ").replace(/\s+/g, " ").trim()
@@ -47,32 +39,28 @@ function hashSlug(slug: string): number {
 function tituloMayus(nombre: string): string {
     return nombreCorto(nombre).toUpperCase().replace(/\b(PLAZAS?)\s+DE\s+/, "$1 de ")
 }
-// ── Borrador para X (CONVOCATORIAS): formato validado ──────────────────────
+// ── Borrador para X (CONVOCATORIAS): oportunidad, sin sueldo ni dificultad ──
 export function borradorX(c: Conv): string {
-    const g = grupoDe(String(c.nombre || ""))
-    const e = esfuerzoDe(g, c.plazas ?? null)
     const link = `${DOMINIO}/convocatorias/${c.slug}`
-    return `📢 ${tituloMayus(c.nombre)}\n💶 Sueldo aprox. ${SUELDO[g]} (grupo ${g})\n📚 Esfuerzo: ${e.nivel} · ${e.motivo}\n✅ Inscripción ABIERTA\n🔗 ${link}`
+    return `📢 ${tituloMayus(c.nombre)}\n🏛️ ${metaEntidad(c)}\n📝 Inscripción abierta\n📚 Prepárala paso a paso en Gainditu\n🔗 ${link}`
 }
 
-// ── Borrador para LinkedIn (CONVOCATORIAS): voz de academia ────────────────
+// ── Borrador para LinkedIn (CONVOCATORIAS): voz de academia, sin sueldo ni dificultad ──
 export function borradorLinkedIn(c: Conv): string {
-    const g = grupoDe(String(c.nombre || ""))
-    const e = esfuerzoDe(g, c.plazas ?? null)
     const link = `${DOMINIO}/convocatorias/${c.slug}`
     const org = ORG_LABEL[c.organismo || ""] || "la Administración vasca"
     const titulo = nombreCorto(c.nombre)
-    const cierre = e.nivel === "bajo" || e.nivel === "medio-bajo"
-        ? "Es una oposición accesible: con orden y constancia, está al alcance de mucha gente."
-        : "Es exigente, pero con un buen plan de estudio y constancia es una meta totalmente alcanzable."
+    const plazasLinea = c.plazas && c.plazas > 0
+        ? `• ${c.plazas} plaza${c.plazas === 1 ? "" : "s"} convocada${c.plazas === 1 ? "" : "s"}.`
+        : `• Nueva oferta de empleo público.`
     return [
         `📋 Nueva convocatoria de empleo público en Euskadi: ${titulo} (${org}).`,
         ``,
-        `• Grupo ${g} · sueldo aproximado de ${SUELDO[g]}.`,
-        `• Nivel de exigencia: ${e.nivel} — ${e.motivo}.`,
-        `• Supone una plaza pública estable y con las condiciones del sector público.`,
+        plazasLinea,
+        `• Una plaza pública estable, con las condiciones del sector público.`,
+        `• Inscripción abierta: conviene revisar las bases y empezar a prepararla con tiempo.`,
         ``,
-        cierre,
+        `Con un buen plan de estudio y constancia, es una meta al alcance de quien se organiza desde el principio.`,
         ``,
         `En Gainditu tienes el temario, tests y simulacros para prepararla paso a paso 👉 ${link}`,
         ``,
@@ -142,8 +130,8 @@ export const POSTS_ORGANICOS: PostOrganico[] = [
     },
     {
         id: "org-plaza-fija", tema: "Por qué merece la pena",
-        x: `Una plaza pública no es solo el sueldo.\n\nEs conciliar, planificar tu vida con calma y no depender de cómo le vaya a la empresa.\n\nCuesta sacarla, pero da una tranquilidad difícil de igualar.`,
-        linkedin: `Se habla mucho del esfuerzo que exige una oposición y poco de lo que aporta conseguir la plaza.\n\nUna plaza pública supone estabilidad real: continuidad laboral, posibilidad de conciliar y capacidad de planificar a largo plazo sin depender de la situación de una empresa.\n\nRequiere meses de dedicación, sí. Pero pocas decisiones tienen un impacto tan duradero en la tranquilidad del día a día.\n\nEn Gainditu ayudamos a recorrer ese camino con método.\n\n#oposiciones #empleopúblico #Euskadi`,
+        x: `Una plaza pública es mucho más que un trabajo.\n\nEs conciliar, planificar tu vida con calma y no depender de cómo le vaya a la empresa.\n\nUna tranquilidad difícil de igualar.`,
+        linkedin: `Se habla mucho del camino de una oposición y poco de lo que aporta conseguir la plaza.\n\nUna plaza pública supone estabilidad real: continuidad laboral, posibilidad de conciliar y capacidad de planificar a largo plazo sin depender de la situación de una empresa.\n\nPocas decisiones tienen un impacto tan duradero en la tranquilidad del día a día.\n\nEn Gainditu ayudamos a recorrer ese camino con método.\n\n#oposiciones #empleopúblico #Euskadi`,
     },
     {
         id: "org-repaso-espaciado", tema: "Repaso espaciado",
@@ -222,8 +210,8 @@ export const POSTS_ORGANICOS: PostOrganico[] = [
     },
     {
         id: "org-ertzaintza", tema: "Ertzaintza / seguridad",
-        x: `La Ertzaintza es una de las salidas más buscadas en Euskadi, y se entiende: estabilidad y buenas condiciones.\n\nEs exigente, también en lo físico.\n\nCuanto antes empieces a prepararte, mejor llegarás.`,
-        linkedin: `La Ertzaintza es una de las oposiciones con más demanda en Euskadi, por la estabilidad y las condiciones que ofrece el puesto.\n\nEs también un proceso exigente, que combina la parte de conocimientos con pruebas físicas y otras fases. Por eso, una preparación temprana y bien planificada marca la diferencia frente a quien empieza con el plazo encima.\n\nInformarse de los requisitos y organizar el estudio con tiempo es el primer paso para afrontarla con garantías.\n\n#oposiciones #Ertzaintza #Euskadi`,
+        x: `La Ertzaintza es una de las salidas más buscadas en Euskadi, y se entiende: estabilidad y buenas condiciones.\n\nEl proceso tiene varias fases, incluidas las pruebas físicas.\n\nCuanto antes empieces a prepararte, mejor llegarás.`,
+        linkedin: `La Ertzaintza es una de las oposiciones con más demanda en Euskadi, por la estabilidad y las condiciones que ofrece el puesto.\n\nEs un proceso con varias fases, que combina la parte de conocimientos con pruebas físicas. Por eso, una preparación temprana y bien planificada marca la diferencia frente a quien empieza con el plazo encima.\n\nInformarse de los requisitos y organizar el estudio con tiempo es el primer paso para afrontarla con garantías.\n\n#oposiciones #Ertzaintza #Euskadi`,
     },
     {
         id: "org-por-donde-empezar", tema: "Por dónde empezar",
