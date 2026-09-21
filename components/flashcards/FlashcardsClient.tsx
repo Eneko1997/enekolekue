@@ -34,18 +34,6 @@ function tituloTema(t: string | null): string {
     return t ? labelMateria(t) : ""
 }
 
-// Bloqueo de lanzamiento: se ve pero en gris, sin interacción, hasta el lunes 21 a las 12:00 (España).
-const DESBLOQUEO = new Date("2026-09-21T12:00:00+02:00").getTime()
-function faltaTexto(ms: number): string {
-    const s = Math.max(0, Math.floor(ms / 1000))
-    const d = Math.floor(s / 86400)
-    const h = Math.floor((s % 86400) / 3600)
-    const m = Math.floor((s % 3600) / 60)
-    if (d > 0) return `${d} d ${h} h`
-    if (h > 0) return `${h} h ${m} min`
-    return `${m} min`
-}
-
 type Materia = { tema: string; total: number; dominadas: number; vencidas: number; nuevas: number; cupo_nuevas: number }
 type Card = { id: string; frente: string; dorso: string; explicacion: string; caja: number }
 type Resultado = "otra_vez" | "bien" | "facil"
@@ -63,8 +51,7 @@ export default function FlashcardsClient() {
     const [flipped, setFlipped] = useState(false)
     const [cargandoSesion, setCargandoSesion] = useState(false)
     const [stats, setStats] = useState({ bien: 0, otra: 0 })
-    const [, setTick] = useState(0)
-    const bloqueado = Date.now() < DESBLOQUEO
+    const [resumen, setResumen] = useState<{ racha: number; hoy: number }>({ racha: 0, hoy: 0 })
     const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null)
     function sb() {
         if (!supabaseRef.current) supabaseRef.current = createClient()
@@ -72,8 +59,14 @@ export default function FlashcardsClient() {
     }
 
     const cargarMaterias = useCallback(async () => {
-        const { data } = await sb().rpc("flashcards_materias")
+        const [{ data }, { data: res }] = await Promise.all([
+            sb().rpc("flashcards_materias"),
+            sb().rpc("flashcards_resumen"),
+        ])
         setMaterias(Array.isArray(data) ? (data as Materia[]) : [])
+        if (res && typeof res === "object") {
+            setResumen({ racha: (res as any).racha ?? 0, hoy: (res as any).hoy ?? 0 })
+        }
     }, [])
 
     useEffect(() => {
@@ -172,13 +165,6 @@ export default function FlashcardsClient() {
         window.addEventListener("keydown", onKey)
         return () => window.removeEventListener("keydown", onKey)
     }, [vista, flipped, calificar])
-
-    // Cuenta atrás del bloqueo de lanzamiento (refresca el "faltan…" y desbloquea en vivo).
-    useEffect(() => {
-        if (!bloqueado) return
-        const iv = setInterval(() => setTick((t) => t + 1), 30000)
-        return () => clearInterval(iv)
-    }, [bloqueado])
 
     if (loading) return <div className="py-20 text-center text-zinc-400">Cargando…</div>
 
@@ -300,16 +286,20 @@ export default function FlashcardsClient() {
     const totalVencidas = materias.reduce((s, m) => s + m.vencidas, 0)
     return (
         <div className="flex flex-col gap-4">
-            {bloqueado && (
-                <div className="rounded-2xl border border-dashed p-5 text-center" style={{ borderColor: `${ACCENT}66`, background: `${ACCENT}0d` }}>
-                    <div className="text-[12px] font-bold uppercase tracking-wide" style={{ color: ACCENT }}>Próximamente</div>
-                    <div className="mt-1 text-[16px] font-extrabold text-zinc-950 dark:text-zinc-50">Se desbloquea el lunes a las 12:00</div>
-                    <p className="mx-auto mt-1 max-w-md text-[13.5px] text-zinc-600 dark:text-zinc-300">
-                        Ya está todo listo: 13 materias para memorizar el temario con repetición espaciada.
-                    </p>
-                </div>
-            )}
-            {totalVencidas > 0 && !bloqueado && (
+            {/* Racha diaria y tarjetas repasadas hoy */}
+            <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 py-1 text-[12.5px] font-semibold text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+                    <Flama activo={resumen.racha > 0} />
+                    {resumen.racha > 0 ? `${resumen.racha} ${resumen.racha === 1 ? "día" : "días"} de racha` : "Empieza tu racha hoy"}
+                </span>
+                {resumen.hoy > 0 && (
+                    <span className="inline-flex items-center rounded-full px-3 py-1 text-[12.5px] font-semibold" style={{ color: ACCENT, background: `${ACCENT}14` }}>
+                        {resumen.hoy} {resumen.hoy === 1 ? "tarjeta" : "tarjetas"} hoy
+                    </span>
+                )}
+            </div>
+
+            {totalVencidas > 0 && (
                 <button
                     onClick={empezarGlobal}
                     disabled={cargandoSesion}
@@ -323,24 +313,27 @@ export default function FlashcardsClient() {
                     <span className="shrink-0 rounded-full bg-white/20 px-3 py-1 text-[14px] font-bold">{totalVencidas}</span>
                 </button>
             )}
-            <div className={`grid grid-cols-1 gap-3 sm:grid-cols-2 ${bloqueado ? "pointer-events-none select-none opacity-50" : ""}`}>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {materias.map((m) => {
                 const paraHoy = Math.min(20, m.vencidas + Math.min(m.nuevas, m.cupo_nuevas ?? 0))
                 const empezadas = m.total - m.nuevas
-                const pct = m.total ? Math.round((empezadas / m.total) * 100) : 0
+                const pctEmp = m.total ? (empezadas / m.total) * 100 : 0
+                const pctDom = m.total ? (m.dominadas / m.total) * 100 : 0
                 const dominada = m.total > 0 && m.dominadas === m.total
-                const sub = m.dominadas > 0 ? `${m.dominadas} dominadas` : empezadas > 0 ? "En progreso" : "Sin empezar"
+                const sub = m.dominadas > 0 ? `${m.dominadas}/${m.total} dominadas` : empezadas > 0 ? "En progreso" : "Sin empezar"
                 return (
                     <button
                         key={m.tema}
                         onClick={() => empezar(m.tema)}
-                        disabled={cargandoSesion || paraHoy === 0 || bloqueado}
+                        disabled={cargandoSesion || paraHoy === 0}
                         className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-4 text-left transition-transform hover:scale-[1.01] disabled:cursor-default disabled:opacity-70 dark:border-zinc-800 dark:bg-zinc-900 sm:p-5"
                     >
                         <div className="flex items-start justify-between gap-2">
                             <div className="text-[15px] font-bold text-zinc-950 dark:text-zinc-50">{labelMateria(m.tema)}</div>
                             {dominada ? (
-                                <span className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: `${ACCENT}18`, color: ACCENT }}>Dominada</span>
+                                <span className="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: `${ACCENT}18`, color: ACCENT }}>
+                                    <Check /> Dominada
+                                </span>
                             ) : paraHoy > 0 ? (
                                 <span className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold text-white" style={{ background: ACCENT }}>{paraHoy} para hoy</span>
                             ) : (
@@ -348,14 +341,31 @@ export default function FlashcardsClient() {
                             )}
                         </div>
                         <div className="mt-0.5 text-[12.5px] text-zinc-500">{sub}</div>
-                        <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-                            <div className="h-full rounded-full" style={{ width: `${pct}%`, background: ACCENT }} />
+                        <div className="relative mt-3 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+                            <div className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${pctEmp}%`, background: `${ACCENT}40` }} />
+                            <div className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${pctDom}%`, background: ACCENT }} />
                         </div>
                     </button>
                 )
             })}
             </div>
         </div>
+    )
+}
+
+function Flama({ activo }: { activo: boolean }) {
+    return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill={activo ? ACCENT : "none"} stroke={activo ? ACCENT : "#a1a1aa"} strokeWidth="2" aria-hidden>
+            <path d="M12 2c1 3-1 4-2 6-1 1.5-1 3 0 4 .8.8 2 .6 2.5-.4.6 1 .5 2.3-.3 3.3C13.5 19.5 15 21 15 21c3-1 5-3.5 5-7 0-4.5-4-8-8-12z" strokeLinejoin="round" />
+        </svg>
+    )
+}
+
+function Check() {
+    return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M20 6 9 17l-5-5" />
+        </svg>
     )
 }
 
