@@ -63,6 +63,20 @@ const GUIAS: { slug: string; titulo: string; resumen: string; etiqueta: string }
             "Qué son los perfiles PL1-PL4, cuándo el euskera es mérito y cuándo requisito (fecha de preceptividad) y cómo se acredita.",
         etiqueta: "Euskera",
     },
+    {
+        slug: "requisitos-para-opositar-euskadi",
+        titulo: "Requisitos para opositar en Euskadi",
+        resumen:
+            "Nacionalidad, edad, titulación, capacidad funcional y no estar inhabilitado: lo básico que se pide para acceder al empleo público.",
+        etiqueta: "Requisitos",
+    },
+    {
+        slug: "penalizacion-examenes-tipo-test",
+        titulo: "La penalización en los tests: cómo funciona y cómo jugarla",
+        resumen:
+            "Cómo restan los errores, la fórmula habitual y cuándo conviene arriesgar o dejar en blanco. Estrategia de examen tipo test.",
+        etiqueta: "Técnica de examen",
+    },
 ]
 
 export default function GuiasIndexPage() {
