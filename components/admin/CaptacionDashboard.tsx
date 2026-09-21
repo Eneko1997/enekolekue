@@ -6,12 +6,12 @@ import OnlineAhora from "@/components/admin/OnlineAhora"
 
 const ACCENT = "#10B981"
 
-type Semana = { semana: string; desde: string; simulacro: number; convocatorias: number; academia: number }
+type Semana = { semana: string; desde: string; simulacro: number; convocatorias: number; academia: number; registros: number }
 type Metricas = {
     generado: string
-    totales: { simulacro: number; convocatorias: number; academia: number }
-    ultimos7: { simulacro: number; convocatorias: number; academia: number }
-    previos7: { simulacro: number; convocatorias: number; academia: number }
+    totales: { simulacro: number; convocatorias: number; academia: number; registros: number }
+    ultimos7: { simulacro: number; convocatorias: number; academia: number; registros: number }
+    previos7: { simulacro: number; convocatorias: number; academia: number; registros: number }
     semanas: Semana[]
     embudo: Record<string, number>
     simulacro_por_origen: { origen: string; n: number }[]
@@ -239,7 +239,7 @@ export default function CaptacionDashboard() {
         )
 
     const base = Math.max(1, data.embudo.landing_view || 0)
-    const maxSemana = Math.max(1, ...data.semanas.map((s) => s.simulacro + s.convocatorias + s.academia))
+    const maxSemana = Math.max(1, ...data.semanas.map((s) => s.simulacro + s.convocatorias + s.registros))
     const orientacion = data.embudo.orientacion_result || 0
 
     return (
@@ -433,7 +433,7 @@ export default function CaptacionDashboard() {
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <Card label="Simulacro (leads)" total={data.totales.simulacro} now={data.ultimos7.simulacro} prev={data.previos7.simulacro} />
                 <Card label="Avisos convocatoria" total={data.totales.convocatorias} now={data.ultimos7.convocatorias} prev={data.previos7.convocatorias} />
-                <Card label="Academias" total={data.totales.academia} now={data.ultimos7.academia} prev={data.previos7.academia} />
+                <Card label="Registros" total={data.totales.registros} now={data.ultimos7.registros} prev={data.previos7.registros} />
             </div>
 
             {/* Embudo del simulacro */}
@@ -465,7 +465,7 @@ export default function CaptacionDashboard() {
                 <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Leads por semana (8 últimas)</h2>
                 <div className="mt-4 space-y-2">
                     {data.semanas.map((s) => {
-                        const total = s.simulacro + s.convocatorias + s.academia
+                        const total = s.simulacro + s.convocatorias + s.registros
                         return (
                             <div key={s.semana} className="flex items-center gap-3">
                                 <div className="w-24 shrink-0 text-[12px] text-zinc-500">{s.desde}</div>
@@ -474,13 +474,13 @@ export default function CaptacionDashboard() {
                                 </div>
                                 <div className="w-32 shrink-0 text-right text-[12px] text-zinc-600 dark:text-zinc-300">
                                     <span className="font-semibold text-zinc-900 dark:text-zinc-100">{total}</span>
-                                    <span className="text-zinc-400"> ({s.simulacro}/{s.convocatorias}/{s.academia})</span>
+                                    <span className="text-zinc-400"> ({s.simulacro}/{s.convocatorias}/{s.registros})</span>
                                 </div>
                             </div>
                         )
                     })}
                 </div>
-                <p className="mt-3 text-[12px] text-zinc-400">Total por semana; entre paréntesis, simulacro / convocatoria / academia.</p>
+                <p className="mt-3 text-[12px] text-zinc-400">Total por semana; entre paréntesis, simulacro / convocatoria / registros.</p>
             </section>
 
             {/* Simulacro por origen */}
