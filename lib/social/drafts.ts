@@ -39,30 +39,28 @@ function hashSlug(slug: string): number {
 function tituloMayus(nombre: string): string {
     return nombreCorto(nombre).toUpperCase().replace(/\b(PLAZAS?)\s+DE\s+/, "$1 de ")
 }
-// ── Borrador para X (CONVOCATORIAS): oportunidad, sin sueldo ni dificultad ──
+// ── Borrador para X (CONVOCATORIAS): gancho de oportunidad, sin sueldo ni dificultad ──
 export function borradorX(c: Conv): string {
     const link = `${DOMINIO}/convocatorias/${c.slug}`
-    return `📢 ${tituloMayus(c.nombre)}\n🏛️ ${metaEntidad(c)}\n📝 Inscripción abierta\n📚 Prepárala paso a paso en Gainditu\n🔗 ${link}`
+    return `📢 ${tituloMayus(c.nombre)}\n🏛️ ${metaEntidad(c)}\n📝 Inscripción abierta\n🎯 Tu plaza fija empieza por prepararla a tiempo\n🔗 ${link}`
 }
 
-// ── Borrador para LinkedIn (CONVOCATORIAS): voz de academia, sin sueldo ni dificultad ──
+// ── Borrador para LinkedIn (CONVOCATORIAS): voz de academia, gancho emocional (estabilidad), sin sueldo ni dificultad ──
 export function borradorLinkedIn(c: Conv): string {
     const link = `${DOMINIO}/convocatorias/${c.slug}`
     const org = ORG_LABEL[c.organismo || ""] || "la Administración vasca"
     const titulo = nombreCorto(c.nombre)
-    const plazasLinea = c.plazas && c.plazas > 0
-        ? `• ${c.plazas} plaza${c.plazas === 1 ? "" : "s"} convocada${c.plazas === 1 ? "" : "s"}.`
-        : `• Nueva oferta de empleo público.`
+    const apertura = c.plazas && c.plazas > 0
+        ? `${c.plazas} plaza${c.plazas === 1 ? "" : "s"} fija${c.plazas === 1 ? "" : "s"} en juego`
+        : `Una nueva oportunidad de empleo público fijo`
     return [
         `📋 Nueva convocatoria de empleo público en Euskadi: ${titulo} (${org}).`,
         ``,
-        plazasLinea,
-        `• Una plaza pública estable, con las condiciones del sector público.`,
-        `• Inscripción abierta: conviene revisar las bases y empezar a prepararla con tiempo.`,
+        `${apertura}: la oportunidad de un trabajo estable, que no depende de cómo le vaya a ninguna empresa y que te deja planificar tu vida con calma.`,
         ``,
-        `Con un buen plan de estudio y constancia, es una meta al alcance de quien se organiza desde el principio.`,
+        `La inscripción ya está abierta, y en una oposición quien empieza a prepararla con tiempo llega con ventaja.`,
         ``,
-        `En Gainditu tienes el temario, tests y simulacros para prepararla paso a paso 👉 ${link}`,
+        `En Gainditu tienes el temario, los tests y los simulacros para hacerlo paso a paso 👉 ${link}`,
         ``,
         `#oposiciones #empleopúblico #Euskadi #Gainditu`,
     ].join("\n")
