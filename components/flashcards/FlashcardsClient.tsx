@@ -133,8 +133,17 @@ export default function FlashcardsClient() {
         (r: Resultado) => {
             const card = cards[idx]
             if (!card) return
-            // Optimista: guardamos en segundo plano y avanzamos.
-            sb().rpc("flashcards_calificar", { p_pregunta_id: card.id, p_resultado: r })
+            // Optimista: guardamos en segundo plano y avanzamos. OJO: el builder de
+            // supabase-js es "lazy" y solo dispara la petición al hacer .then()/await;
+            // sin esto la calificación NO se guardaría (por eso hay que encadenar .then).
+            sb()
+                .rpc("flashcards_calificar", { p_pregunta_id: card.id, p_resultado: r })
+                .then(
+                    ({ error }) => {
+                        if (error) console.error("flashcards_calificar:", error.message)
+                    },
+                    (e: unknown) => console.error("flashcards_calificar:", e),
+                )
             setStats((s) => (r === "otra_vez" ? { ...s, otra: s.otra + 1 } : { ...s, bien: s.bien + 1 }))
             if (idx + 1 >= cards.length) {
                 setVista("fin")
