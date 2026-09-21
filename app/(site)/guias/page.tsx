@@ -57,6 +57,13 @@ const GUIAS: { slug: string; titulo: string; resumen: string; etiqueta: string }
         etiqueta: "Gobierno Vasco",
     },
     {
+        slug: "tecnico-superior-gobierno-vasco-como-prepararlo",
+        titulo: "Técnico Superior del Gobierno Vasco: qué estudiar y cómo prepararlo",
+        resumen:
+            "La plaza de mayor nivel (A1, título universitario): requisitos, cómo es el concurso-oposición, el temario y cómo prepararla.",
+        etiqueta: "Gobierno Vasco",
+    },
+    {
         slug: "euskera-perfiles-linguisticos-oposiciones",
         titulo: "El euskera en las oposiciones: los perfiles lingüísticos",
         resumen:

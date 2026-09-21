@@ -53,6 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { path: "/guias/fases-de-una-oposicion", priority: 0.7, freq: "monthly" as const },
         { path: "/guias/administrativo-gobierno-vasco-como-prepararlo", priority: 0.8, freq: "monthly" as const },
         { path: "/guias/personal-de-apoyo-gobierno-vasco-sin-titulacion", priority: 0.8, freq: "monthly" as const },
+        { path: "/guias/tecnico-superior-gobierno-vasco-como-prepararlo", priority: 0.8, freq: "monthly" as const },
         { path: "/guias/euskera-perfiles-linguisticos-oposiciones", priority: 0.75, freq: "monthly" as const },
         { path: "/guias/requisitos-para-opositar-euskadi", priority: 0.75, freq: "monthly" as const },
         { path: "/guias/penalizacion-examenes-tipo-test", priority: 0.75, freq: "monthly" as const },
