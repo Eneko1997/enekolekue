@@ -565,7 +565,6 @@ const CASOS_PRACTICOS = [
         preguntas: 20,
         escala: "administrativos",
         badge: "GAINDITU",
-        nuevo: true,
     },
     {
         id: "ex_practico_admin_local_9",
@@ -573,7 +572,6 @@ const CASOS_PRACTICOS = [
         preguntas: 20,
         escala: "administrativos",
         badge: "GAINDITU",
-        nuevo: true,
     },
     {
         id: "ex_practico_admin_sancionador_10",
@@ -581,7 +579,6 @@ const CASOS_PRACTICOS = [
         preguntas: 20,
         escala: "administrativos",
         badge: "GAINDITU",
-        nuevo: true,
     },
     {
         id: "ex_practico_ges_mix_6",
