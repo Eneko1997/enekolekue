@@ -39,11 +39,14 @@ export default function RedesSociales() {
             if (!esAdminEmail(u.user?.email)) { setGate("denegado"); return }
             setGate("ok")
             const curadas = convocatoriasCuradas()
-            // Auto (ingeridas de la BD) ordenadas por MÁS RECIENTES primero, para que las
-            // convocatorias añadidas estos días salgan arriba y sea fácil hacerles su post.
+            // Auto (ingeridas de la BD): SOLO las añadidas en los últimos 7 días, para no
+            // arrastrar aquí convocatorias viejas (aunque sigan con plazo abierto). Las
+            // nuevas se postean cuando salen; las de hace una semana ya no interesan.
+            const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
             const { data } = await supabase
                 .from("convocatorias_auto").select("slug,nombre,plazas,organismo,created_at")
                 .eq("estado", "inscripcion-abierta")
+                .gte("created_at", cutoff)
                 .order("created_at", { ascending: false })
                 .limit(80)
             const auto = ((data as any[]) || []).map((r) => ({
@@ -129,7 +132,7 @@ export default function RedesSociales() {
 
             <p className="mt-3 text-[13px] text-zinc-500">
                 {cat === "convocatorias"
-                    ? "Un post por convocatoria abierta (datos + link a la ficha)."
+                    ? "Un post por convocatoria de los últimos 7 días (las antiguas se ocultan solas) más las OPE destacadas del GV."
                     : cat === "interaccion"
                         ? "Presentación, encuestas y preguntas para la comunidad. Empieza fijando el post de presentación."
                         : "Posts orgánicos de promo natural: herramientas, premium, exámenes oficiales, técnica de estudio y motivación."}
