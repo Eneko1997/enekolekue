@@ -18,8 +18,8 @@ const ACCENT = "#10B981"
 // Oferta única: pago único, acceso completo hasta el examen (mínimo 12 meses).
 // El precio (mostrado aquí y cobrado por Stripe) sale de lib/precio.ts, replicado en la edge
 // function create-embedded-checkout: sube +5€ el día 1 de cada mes hasta el tope, automático.
-// valorTotal = suma de todos los valores mostrados: INCLUYE (59+49+39+29+19=195) + BONOS (49+19=68).
-const OFFER = { valorTotal: "263" }
+// valorTotal = suma de todos los valores mostrados: INCLUYE (59+49+39+29+29+19=224) + BONOS (49+19=68) = 292.
+const OFFER = { valorTotal: "292" }
 
 // Lo que entra, con su valor de referencia (deliverables reales del producto).
 const INCLUYE = [
