@@ -73,8 +73,8 @@ export type PostOrganico = { id: string; tema: string; x: string; linkedin: stri
 export const POSTS_ORGANICOS: PostOrganico[] = [
     {
         id: "org-recomendador", tema: "Recomendador de oposición",
-        x: `¿Quieres opositar pero no sabes a qué?\n\nEs de lo más normal, y acertar con la elección ya es medio camino.\n\nEn 3 minutos puedes ver qué encaja contigo: tu titulación, las plazas y la dificultad.\n\nTe dejo la herramienta 👇\n${DOMINIO}/herramientas`,
-        linkedin: `Una de las decisiones más importantes al opositar es también la primera: ¿a qué te presentas?\n\nElegir sin criterio puede costar meses. Conviene valorar cuatro factores antes de empezar: tu titulación, el número de plazas, la dificultad del temario y el tiempo del que dispones.\n\nEn Gainditu hemos creado un recomendador que, a partir de unas preguntas, te orienta sobre qué oposiciones de Euskadi encajan mejor con tu perfil.\n\nSi estás en ese punto de decisión, puede ayudarte 👉 ${DOMINIO}/herramientas\n\n#oposiciones #empleopúblico #Euskadi`,
+        x: `¿Quieres opositar pero no sabes a qué?\n\nEs de lo más normal, y acertar con la elección ya es medio camino.\n\nEn 3 minutos puedes ver qué encaja contigo: tu titulación, las plazas y el temario de cada una.\n\nTe dejo la herramienta 👇\n${DOMINIO}/herramientas`,
+        linkedin: `Una de las decisiones más importantes al opositar es también la primera: ¿a qué te presentas?\n\nElegir sin criterio puede costar meses. Conviene valorar cuatro factores antes de empezar: tu titulación, el número de plazas, el volumen del temario y el tiempo del que dispones.\n\nEn Gainditu hemos creado un recomendador que, a partir de unas preguntas, te orienta sobre qué oposiciones de Euskadi encajan mejor con tu perfil.\n\nSi estás en ese punto de decisión, puede ayudarte 👉 ${DOMINIO}/herramientas\n\n#oposiciones #empleopúblico #Euskadi`,
     },
     {
         id: "org-examenes-oficiales", tema: "Exámenes oficiales con explicación",
@@ -214,7 +214,7 @@ export const POSTS_ORGANICOS: PostOrganico[] = [
     {
         id: "org-por-donde-empezar", tema: "Por dónde empezar",
         x: `Si nunca has opositado, el primer paso no es el temario.\n\nEs elegir bien la oposición y montar un plan realista.\n\nEmpieza por ahí, con calma. Lo demás llega solo cuando tienes rumbo.`,
-        linkedin: `Una duda muy común entre quienes se plantean opositar por primera vez es por dónde empezar. Y, aunque parezca lo contrario, el primer paso no es abrir el temario.\n\nLo primero es elegir bien la oposición —según titulación, plazas y dificultad— y montar un plan de estudio realista, ajustado al tiempo disponible. Con esa base, el estudio diario resulta mucho más llevadero.\n\nEn Gainditu ofrecemos herramientas para ambas cosas: un recomendador de oposición y un generador de plan 👉 ${DOMINIO}/herramientas\n\n#oposiciones #empleopúblico #Euskadi`,
+        linkedin: `Una duda muy común entre quienes se plantean opositar por primera vez es por dónde empezar. Y, aunque parezca lo contrario, el primer paso no es abrir el temario.\n\nLo primero es elegir bien la oposición —según titulación, plazas y temario— y montar un plan de estudio realista, ajustado al tiempo disponible. Con esa base, el estudio diario resulta mucho más llevadero.\n\nEn Gainditu ofrecemos herramientas para ambas cosas: un recomendador de oposición y un generador de plan 👉 ${DOMINIO}/herramientas\n\n#oposiciones #empleopúblico #Euskadi`,
     },
     {
         id: "org-pequenos-avances", tema: "Sumar pequeños avances",
