@@ -259,6 +259,8 @@ function getUrlParam(name: string): string | null {
 // MAPA DE TÍTULOS — alineado con DashboardOPE v8 (temarios oficiales)
 // ─────────────────────────────────────────────────────────────────────────────
 const TITULOS: Record<string, string> = {
+    // Repaso espaciado de fallos (cola personal; premium). Lo sirve get_test_preguntas.
+    repaso_hoy: "Repaso de hoy — tus fallos",
     // ── BLOQUE COMÚN (temas 1-14, compartidos en las 4 escalas) ──────────────
     c00: "Simulacro Parte General — Temas 1 al 14",
     free_sim_adm: "Simulacro Administrativo — Gobierno Vasco",
@@ -4525,6 +4527,21 @@ export default function TestScreen(props: {
             token
         )
         upsertProgress(user.id, testId, pct, token)
+        // Captura por pregunta (repaso espaciado de fallos + mapa de dominio). Solo las
+        // respondidas. OJO builder lazy de supabase-js: hay que consumir con .then para que
+        // la petición se envíe (si no, no guardaría nada).
+        const items = prgs
+            .map((p, i) => ({ p, r: resps[i] }))
+            .filter((x) => x.p?.id != null && x.r != null)
+            .map((x) => ({ id: x.p.id, acierto: x.r === x.p.correcta }))
+        if (items.length > 0) {
+            supabase
+                .rpc("registrar_intentos", { p_items: items })
+                .then(
+                    ({ error }) => { if (error) console.error("registrar_intentos:", error.message) },
+                    (e: unknown) => console.error("registrar_intentos:", e),
+                )
+        }
         // (El crédito gratis se cuenta por pregunta en handleRespuesta, no aquí.)
     }, [fase]) // eslint-disable-line
 

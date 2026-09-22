@@ -11,6 +11,7 @@ import LightNavbar from "@/components/site/LightNavbar"
 import { useTheme } from "@/lib/use-theme"
 import SiteFooter from "@/components/site/SiteFooter"
 import FlashcardsClient from "@/components/flashcards/FlashcardsClient"
+import ProgresoAvanzado from "@/components/profile/ProgresoAvanzado"
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ougvtcmqmcutrexxrxvz.supabase.co")
 const SUPABASE_ANON_KEY = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_lfcfMDSYpIDWzy2CWufT_A_NfJbTimc")
@@ -2935,6 +2936,8 @@ export default function PerfilOPE({
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0 }}
                                 >
+                                    {/* Premium: repaso espaciado de fallos + mapa de dominio */}
+                                    <ProgresoAvanzado t={t} isPremium={isPremium} />
                                     {/* Reto de la semana */}
                                     <div
                                         style={{
