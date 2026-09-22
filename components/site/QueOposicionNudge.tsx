@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 
 const ACCENT = "#10B981"
-const KEY = "gainditu_qo_nudge_dismissed"
+// localStorage (persiste entre visitas): se marca la PRIMERA vez que se muestra o al
+// cerrarlo; a partir de ahí no vuelve a aparecer nunca. Así solo se ve una vez en total.
+const KEY = "gainditu_qo_nudge_v2"
 
-// Nudge discreto (home): aparece tras un poco de scroll, es cerrable y recuerda el
-// cierre en la sesión. Avisa de su estado/altura por un evento para que el botón de
-// "volver arriba" se coloque encima y no se solapen.
+// Nudge discreto (home): aparece UNA sola vez (la primera visita en la que se hace scroll),
+// es cerrable y no vuelve a salir. Avisa de su estado/altura por un evento para que el botón
+// de "volver arriba" se coloque encima y no se solapen.
 export default function QueOposicionNudge() {
     const [show, setShow] = useState(false)
     const [dismissed, setDismissed] = useState(true) // oculto hasta comprobar el storage
@@ -17,7 +19,8 @@ export default function QueOposicionNudge() {
 
     useEffect(() => {
         try {
-            setDismissed(sessionStorage.getItem(KEY) === "1")
+            // Ya se mostró/cerró alguna vez (en cualquier visita anterior) → no volver a enseñarlo.
+            setDismissed(localStorage.getItem(KEY) != null)
         } catch {
             setDismissed(false)
         }
@@ -38,6 +41,9 @@ export default function QueOposicionNudge() {
         const onScroll = () => {
             if (window.scrollY > 1800) {
                 setShow(true)
+                // Marcarlo como visto la PRIMERA vez que se muestra: no volverá a aparecer
+                // en próximas visitas aunque no lo cierre.
+                try { localStorage.setItem(KEY, "shown") } catch {}
                 window.removeEventListener("scroll", onScroll)
             }
         }
@@ -60,7 +66,7 @@ export default function QueOposicionNudge() {
         setShow(false)
         setDismissed(true)
         try {
-            sessionStorage.setItem(KEY, "1")
+            localStorage.setItem(KEY, "dismissed")
         } catch {}
     }
 
