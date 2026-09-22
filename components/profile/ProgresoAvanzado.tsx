@@ -91,7 +91,7 @@ function Leg({ color, label, n, t }: { color: string; label: string; n: number; 
 type Dominio = { tema: string; practicadas: number; intentos: number; pct: number | null; dominadas: number; flojas: number; total_banco: number }
 type Pred = { shown: boolean; nota?: number; aciertos_pct?: number; percentil?: number | null; respondidas?: number; faltan?: number }
 
-const META_PRED = 50 // preguntas para desbloquear la predicción (igual que el umbral del RPC)
+const META_PRED = 40 // preguntas para desbloquear la predicción (igual que el umbral del RPC)
 
 export default function ProgresoAvanzado({ t, isPremium }: { t: any; isPremium: boolean }) {
     const [pend, setPend] = useState(0)

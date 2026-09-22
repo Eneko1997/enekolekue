@@ -297,7 +297,15 @@ const TITULOS: Record<string, string> = {
 // Nombre legible de un test: mapa local → catálogo → fallback digno (nunca el id
 // crudo en mayúsculas, que quedaba feo con ids como "FREE_SIM_ADM" o huérfanos "a12").
 function nombreTest(id: string): string {
-    return TITULOS[id] || TITULOS_CATALOGO[id] || "Otro test"
+    if (TITULOS[id]) return TITULOS[id]
+    if (TITULOS_CATALOGO[id]) return TITULOS_CATALOGO[id]
+    const s = (id || "").toLowerCase()
+    if (s.startsWith("ex_practico")) return "Casos Prácticos Gainditu"
+    if (s.startsWith("ex_")) return "Examen oficial"
+    if (s.startsWith("free_sim") || s.startsWith("sim_")) return "Simulacro"
+    if (s === "microtest_dia") return "Micro-test del día"
+    if (s === "repaso_hoy") return "Repaso de hoy"
+    return "Test de práctica"
 }
 // Versión corta para etiquetas estrechas: quita los prefijos "T.N —" / "E.T.N —".
 function nombreCorto(id: string): string {
@@ -4521,10 +4529,9 @@ export default function PerfilOPE({
                                                                     lineHeight: 1.3,
                                                                 }}
                                                             >
-                                                                {r.test_titulo ||
-                                                                    nombreTest(
-                                                                        r.test_id
-                                                                    )}
+                                                                {nombreTest(
+                                                                    r.test_id
+                                                                )}
                                                             </div>
                                                             <div
                                                                 style={{
