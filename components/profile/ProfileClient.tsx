@@ -400,7 +400,9 @@ const GRUPOS_OFICIALES: { key: string; label: string }[] = [
 // Drops de contenido: packs que se desbloquean en una fecha. Antes se muestran BLOQUEADOS
 // (con cuenta atrás) en "Mis exámenes"; llegada la fecha, sus exámenes pasan solos a la lista
 // normal agrupada por entidad, sin tocar código. Cadencia semanal (miércoles).
-type DropExam = { id: string; titulo: string; preguntas: number; escala: string; entidad: string; badge: string }
+// `nuevoHasta` (ISO yyyy-mm-dd, opcional): muestra la etiqueta NUEVO hasta esa fecha (incluida).
+// Se usa para señalar un drop recién desbloqueado durante ~1 semana; caduca solo.
+type DropExam = { id: string; titulo: string; preguntas: number; escala: string; entidad: string; badge: string; nuevoHasta?: string }
 type Drop = { id: string; titulo: string; fecha: string; fechaLabel: string; exams: DropExam[] }
 const DROPS: Drop[] = [
     {
@@ -419,8 +421,8 @@ const DROPS: Drop[] = [
         fecha: "2026-09-23",
         fechaLabel: "miércoles 23 de septiembre",
         exams: [
-            { id: "ex_parlamento_vasco_admin_2019_e1", titulo: "Administrativo — Parlamento Vasco — Ejercicio 1", preguntas: 35, escala: "administrativos", entidad: "parlamento", badge: "OFICIAL" },
-            { id: "ex_parlamento_vasco_admin_2019_e2", titulo: "Administrativo — Parlamento Vasco — Ejercicio 2", preguntas: 55, escala: "administrativos", entidad: "parlamento", badge: "OFICIAL" },
+            { id: "ex_parlamento_vasco_admin_2019_e1", titulo: "Administrativo — Parlamento Vasco — Ejercicio 1", preguntas: 35, escala: "administrativos", entidad: "parlamento", badge: "OFICIAL", nuevoHasta: "2026-09-30" },
+            { id: "ex_parlamento_vasco_admin_2019_e2", titulo: "Administrativo — Parlamento Vasco — Ejercicio 2", preguntas: 55, escala: "administrativos", entidad: "parlamento", badge: "OFICIAL", nuevoHasta: "2026-09-30" },
         ],
     },
 ]
@@ -600,6 +602,8 @@ function ExamCard({ ex, t, accentColor, progress, testPageUrl }: any) {
     const prog = progress[ex.id]
     const pct = prog ? Math.round(prog.mejor_porcentaje) : null
     const exColor = accentColor
+    // NUEVO: booleano fijo (ex.nuevo) o por fecha de caducidad (ex.nuevoHasta, incluido ese día).
+    const esNuevo = ex.nuevo === true || (typeof ex.nuevoHasta === "string" && Date.now() < new Date(ex.nuevoHasta + "T23:59:59+02:00").getTime())
     return (
         <motion.a
             href={`${testPageUrl}?id=${ex.id}&accent=${encodeURIComponent(exColor)}`}
@@ -645,7 +649,7 @@ function ExamCard({ ex, t, accentColor, progress, testPageUrl }: any) {
                     >
                         {ex.badge}
                     </span>
-                    {ex.nuevo && (
+                    {esNuevo && (
                         <span
                             style={{
                                 fontSize: "9px",
