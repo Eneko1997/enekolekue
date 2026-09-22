@@ -3076,15 +3076,6 @@ export default function PerfilOPE({
                                                 icon: "",
                                             },
                                             {
-                                                label: "Racha actual",
-                                                value: `${racha} días`,
-                                                color:
-                                                    racha >= 3
-                                                        ? "#F59E0B"
-                                                        : t.textMuted,
-                                                icon: "",
-                                            },
-                                            {
                                                 label: "Preguntas hechas",
                                                 value: totalPreguntas,
                                                 color: t.textMain,
@@ -3541,7 +3532,7 @@ export default function PerfilOPE({
                                                     },
                                                     {
                                                         n: racha,
-                                                        l: "días de racha",
+                                                        l: racha === 1 ? "día de racha" : "días de racha",
                                                     },
                                                 ].map((m, i) => (
                                                     <div
@@ -3739,8 +3730,9 @@ export default function PerfilOPE({
                                         </div>
                                     )}
 
-                                    {/* ── ESTADÍSTICAS AVANZADAS (solo premium) ── */}
-                                    {isPremium && (
+                                    {/* Temas a reforzar / puntos fuertes: sustituido por el bento de arriba
+                                        (Predicción, Repaso, Quesito y Mapa de dominio). Bloque antiguo desactivado. */}
+                                    {false && isPremium && (
                                         <div
                                             style={{
                                                 display: "grid",

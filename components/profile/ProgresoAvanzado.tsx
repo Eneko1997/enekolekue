@@ -143,6 +143,7 @@ export default function ProgresoAvanzado({ t, isPremium }: { t: any; isPremium: 
         { verde: 0, ambar: 0, rojo: 0 },
     )
     const totMat = buckets.verde + buckets.ambar + buckets.rojo
+    const flojo = mapa && mapa.length > 0 ? mapa[0] : null
 
     return (
         <div
@@ -249,6 +250,23 @@ export default function ProgresoAvanzado({ t, isPremium }: { t: any; isPremium: 
                     </div>
                 ) : (
                     <p style={{ fontSize: "12.5px", color: t.textMuted, margin: "8px 0 0", lineHeight: 1.6 }}>Haz algún test y aquí verás cómo repartes tus materias.</p>
+                )}
+            </div>
+
+            {/* ── Tu punto más flojo (3ª card de la fila) ──────────────────── */}
+            <div style={{ ...tile, display: "flex", flexDirection: "column" }}>
+                <div style={eyebrow}>Tu punto más flojo</div>
+                {flojo ? (
+                    <>
+                        <div style={{ fontSize: "15px", fontWeight: 800, color: t.textMain, marginTop: "8px", lineHeight: 1.25 }}>{labelTema(flojo.tema)}</div>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginTop: "6px" }}>
+                            <span style={{ fontSize: "26px", fontWeight: 900, color: colorPct(flojo.pct ?? 0), lineHeight: 1 }}>{flojo.pct ?? 0}%</span>
+                            <span style={{ fontSize: "12px", color: t.textMuted }}>de aciertos</span>
+                        </div>
+                        <p style={{ fontSize: "12px", color: t.textMuted, margin: "6px 0 0", lineHeight: 1.5 }}>Por aquí es donde más ganas ahora mismo.</p>
+                    </>
+                ) : (
+                    <p style={{ fontSize: "12.5px", color: t.textMuted, margin: "8px 0 0", lineHeight: 1.6 }}>Haz algún test y aquí verás tu materia más floja.</p>
                 )}
             </div>
 
