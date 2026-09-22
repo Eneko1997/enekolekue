@@ -36,6 +36,57 @@ function colorPct(pct: number): string {
 function nota1(n: number): string {
     return n.toFixed(1).replace(".", ",")
 }
+// Ranking en lenguaje de marketing (sin la palabra "percentil"). Percentil alto = top pequeño.
+function rankingTexto(percentil: number): string {
+    if (percentil >= 50) return `En el top ${Math.max(1, 100 - percentil)}% de quienes preparan tu oposición`
+    return `Mejor que el ${percentil}% de quienes preparan tu oposición`
+}
+
+// Donut ("quesito") de 3 segmentos: dominadas / en progreso / a reforzar.
+function Donut({ v, a, r }: { v: number; a: number; r: number }) {
+    const total = v + a + r || 1
+    const R = 30
+    const C = 2 * Math.PI * R
+    const segs = [
+        { val: v, c: ACCENT },
+        { val: a, c: "#F59E0B" },
+        { val: r, c: "#EF4444" },
+    ]
+    let off = 0
+    return (
+        <svg width="86" height="86" viewBox="0 0 86 86" style={{ flexShrink: 0 }} aria-hidden>
+            <circle cx="43" cy="43" r={R} fill="none" stroke="rgba(120,120,130,0.18)" strokeWidth="11" />
+            {segs.map((s, i) => {
+                const len = (s.val / total) * C
+                const node = (
+                    <circle
+                        key={i}
+                        cx="43"
+                        cy="43"
+                        r={R}
+                        fill="none"
+                        stroke={s.c}
+                        strokeWidth="11"
+                        strokeDasharray={`${len} ${C - len}`}
+                        strokeDashoffset={-off}
+                        transform="rotate(-90 43 43)"
+                    />
+                )
+                off += len
+                return node
+            })}
+        </svg>
+    )
+}
+function Leg({ color, label, n, t }: { color: string; label: string; n: number; t: any }) {
+    return (
+        <div style={{ display: "flex", alignItems: "center", gap: "7px" }}>
+            <span style={{ width: "9px", height: "9px", borderRadius: "3px", background: color, flexShrink: 0 }} />
+            <span style={{ fontSize: "12.5px", color: t.textMuted }}>{label}</span>
+            <span style={{ fontSize: "12.5px", fontWeight: 800, color: t.textMain, marginLeft: "auto" }}>{n}</span>
+        </div>
+    )
+}
 
 type Dominio = { tema: string; practicadas: number; intentos: number; pct: number | null; dominadas: number; flojas: number; total_banco: number }
 type Pred = { shown: boolean; nota?: number; aciertos_pct?: number; percentil?: number | null; respondidas?: number; faltan?: number }
@@ -80,7 +131,18 @@ export default function ProgresoAvanzado({ t, isPremium }: { t: any; isPremium: 
         padding: "18px",
     } as const
     const eyebrow = { fontSize: "10.5px", fontWeight: 800, letterSpacing: "0.6px", textTransform: "uppercase" as const, color: ACCENT }
-    const flojo = mapa && mapa.length > 0 ? mapa[0] : null
+    // Reparto de materias por estado (para el quesito): dominadas ≥70, en progreso 50-69, a reforzar <50.
+    const buckets = (mapa ?? []).reduce(
+        (acc, m) => {
+            const p = m.pct ?? 0
+            if (p >= 70) acc.verde++
+            else if (p >= 50) acc.ambar++
+            else acc.rojo++
+            return acc
+        },
+        { verde: 0, ambar: 0, rojo: 0 },
+    )
+    const totMat = buckets.verde + buckets.ambar + buckets.rojo
 
     return (
         <div
@@ -119,7 +181,7 @@ export default function ProgresoAvanzado({ t, isPremium }: { t: any; isPremium: 
                             </span>
                             {pred.percentil != null && (
                                 <span style={{ fontSize: "12.5px", fontWeight: 700, color: t.textMain, background: `${ACCENT}18`, borderRadius: "999px", padding: "6px 12px" }}>
-                                    Mejor que el {pred.percentil}% de quienes practican aquí
+                                    {rankingTexto(pred.percentil)}
                                 </span>
                             )}
                         </div>
@@ -167,22 +229,26 @@ export default function ProgresoAvanzado({ t, isPremium }: { t: any; isPremium: 
                 )}
             </div>
 
-            {/* ── Punto flojo ──────────────────────────────────────────────── */}
+            {/* ── Quesito: reparto de materias ─────────────────────────────── */}
             <div style={{ ...tile, display: "flex", flexDirection: "column" }}>
-                <div style={eyebrow}>Tu punto más flojo</div>
-                {flojo ? (
-                    <>
-                        <div style={{ fontSize: "16px", fontWeight: 800, color: t.textMain, marginTop: "8px", lineHeight: 1.25 }}>{labelTema(flojo.tema)}</div>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginTop: "6px" }}>
-                            <span style={{ fontSize: "26px", fontWeight: 900, color: colorPct(flojo.pct ?? 0), lineHeight: 1 }}>{flojo.pct ?? 0}%</span>
-                            <span style={{ fontSize: "12px", color: t.textMuted }}>de aciertos</span>
+                <div style={eyebrow}>Cómo llevas las materias</div>
+                {totMat > 0 ? (
+                    <div style={{ display: "flex", alignItems: "center", gap: "16px", marginTop: "10px" }}>
+                        <div style={{ position: "relative", width: "86px", height: "86px" }}>
+                            <Donut v={buckets.verde} a={buckets.ambar} r={buckets.rojo} />
+                            <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                                <span style={{ fontSize: "21px", fontWeight: 900, color: t.textMain, lineHeight: 1 }}>{totMat}</span>
+                                <span style={{ fontSize: "9.5px", color: t.textMuted }}>materias</span>
+                            </div>
                         </div>
-                        <p style={{ fontSize: "12px", color: t.textMuted, margin: "6px 0 0", lineHeight: 1.5 }}>
-                            Es por donde más ganas ahora mismo. {flojo.flojas > 0 ? `${flojo.flojas} preguntas a reforzar.` : ""}
-                        </p>
-                    </>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "7px", flex: 1 }}>
+                            <Leg color={ACCENT} label="Dominadas" n={buckets.verde} t={t} />
+                            <Leg color="#F59E0B" label="En progreso" n={buckets.ambar} t={t} />
+                            <Leg color="#EF4444" label="A reforzar" n={buckets.rojo} t={t} />
+                        </div>
+                    </div>
                 ) : (
-                    <p style={{ fontSize: "12.5px", color: t.textMuted, margin: "8px 0 0", lineHeight: 1.6 }}>Haz algún test y aquí verás qué materia flojea más.</p>
+                    <p style={{ fontSize: "12.5px", color: t.textMuted, margin: "8px 0 0", lineHeight: 1.6 }}>Haz algún test y aquí verás cómo repartes tus materias.</p>
                 )}
             </div>
 
