@@ -21,6 +21,8 @@ export type PreguntaCaso = {
     modelo: string
     // Pista opcional de norma (bonus informativo, no puntúa por defecto).
     ley?: string
+    // Explicación redactada ("el porqué") que se muestra en la corrección.
+    comentario?: string
 }
 
 export type Ejercicio = {
@@ -117,6 +119,7 @@ export type PreguntaResultado = {
     fallos: { label: string; puntos: number }[]
     modelo: string
     ley?: string
+    comentario?: string
     vacia: boolean
 }
 
@@ -145,7 +148,7 @@ export function corrigePregunta(respuesta: string, preg: PreguntaCaso): Pregunta
         }
     }
 
-    return { n: preg.n, enunciado: preg.enunciado, puntos, max, aciertos, fallos, modelo: preg.modelo, ley: preg.ley, vacia }
+    return { n: preg.n, enunciado: preg.enunciado, puntos, max, aciertos, fallos, modelo: preg.modelo, ley: preg.ley, comentario: preg.comentario, vacia }
 }
 
 export type CasoResultado = {

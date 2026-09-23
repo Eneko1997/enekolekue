@@ -162,6 +162,11 @@ export default function ExamenEscritoClient({ caso }: { caso: CasoEscrito }) {
                                             <span style={{ color: "#EF4444", fontWeight: 800 }}>✗</span> Te faltó: {f.label}
                                         </div>
                                     ))}
+                                    {pr.comentario && (
+                                        <div style={{ fontSize: "12.5px", color: textMuted, lineHeight: 1.55, marginTop: "10px", paddingLeft: "10px", borderLeft: `2px solid ${border}` }}>
+                                            <span style={{ fontWeight: 800, color: textMain }}>Por qué. </span>{pr.comentario}
+                                        </div>
+                                    )}
                                     <div style={{ marginTop: "8px", padding: "8px 10px", borderRadius: "8px", background: `${ACCENT}12`, border: `1px solid ${ACCENT}30` }}>
                                         <span style={{ fontSize: "11px", fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: "0.5px" }}>Respuesta modelo</span>
                                         <div style={{ fontSize: "12.5px", color: textMain, lineHeight: 1.5, marginTop: "3px" }}>{pr.modelo}</div>
