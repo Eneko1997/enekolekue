@@ -3,9 +3,9 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
-// Aviso de cookies poco intrusivo (abajo a la izquierda). Solo usamos cookies
-// técnicas (sesión) y de pago (Stripe), no de marketing, así que es informativo:
-// se guarda la aceptación en localStorage para no volver a mostrarlo.
+// Aviso de cookies poco intrusivo (abajo a la izquierda). Cookies técnicas
+// (sesión), de pago (Stripe) y el píxel de Meta para medición de anuncios. Es
+// informativo: se guarda la aceptación en localStorage para no repetirlo.
 
 const KEY = "gainditu-cookie-consent"
 
@@ -36,8 +36,8 @@ export default function CookieBanner() {
             <div className="rounded-2xl border border-zinc-200 bg-white/95 p-4 shadow-xl shadow-zinc-900/10 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/95">
                 <p className="text-[13px] leading-relaxed text-zinc-600 dark:text-zinc-300">
                     Usamos cookies propias necesarias para mantener tu sesión y
-                    procesar los pagos. No usamos cookies de publicidad ni de
-                    seguimiento. Más info en la{" "}
+                    procesar los pagos, y el píxel de Meta para medir nuestros
+                    anuncios. Más info en la{" "}
                     <Link
                         href="/cookies"
                         className="font-semibold text-zinc-950 underline dark:text-zinc-50"

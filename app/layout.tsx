@@ -3,6 +3,7 @@ import { Manrope, Inter } from "next/font/google"
 import "./globals.css"
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/site"
 import CookieBanner from "@/components/site/CookieBanner"
+import MetaPixel from "@/components/site/MetaPixel"
 import PostAuthRedirect from "@/components/auth/PostAuthRedirect"
 import PasswordRecoveryGate from "@/components/auth/PasswordRecoveryGate"
 import PresenceTracker from "@/components/presence/PresenceTracker"
@@ -95,6 +96,7 @@ export default function RootLayout({
                 <PresenceTracker />
                 <PwaSetup />
                 <CookieBanner />
+                <MetaPixel />
             </body>
         </html>
     )

@@ -29,10 +29,26 @@ export default function CookiesPage() {
                     <strong>De pago:</strong> Stripe puede usar cookies durante
                     el proceso de pago para prevención de fraude.
                 </li>
+                <li>
+                    <strong>Publicidad y medición (Meta):</strong> utilizamos el
+                    píxel de Meta Platforms Ireland Ltd. (Facebook e Instagram)
+                    para medir la eficacia de nuestros anuncios y mostrar
+                    publicidad relevante. Puede instalar cookies de terceros de
+                    Meta.
+                </li>
             </ul>
             <p>
-                Actualmente no utilizamos cookies publicitarias ni de
-                seguimiento de terceros con fines de marketing.
+                Puedes desactivar la publicidad personalizada desde la
+                configuración de tu cuenta de Facebook/Instagram y gestionar las
+                cookies desde tu navegador. Consulta también la{" "}
+                <a
+                    href="https://www.facebook.com/privacy/policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    política de privacidad de Meta
+                </a>
+                .
             </p>
 
             <h2>3. Gestión de cookies</h2>

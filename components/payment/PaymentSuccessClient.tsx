@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import { createClient } from "@/lib/supabase/client"
 import { BRAND_ACCENT } from "@/lib/theme"
 import { logFunnelEvent } from "@/lib/funnel"
+import { precioActualCent } from "@/lib/precio"
 
 export default function PaymentSuccessClient() {
     const [premium, setPremium] = useState(false)
@@ -35,6 +36,16 @@ export default function PaymentSuccessClient() {
                     setPremium(true)
                     setChecking(false)
                     void logFunnelEvent("purchase", {})
+                    // Conversión para el Píxel de Meta (medición de anuncios).
+                    try {
+                        const w = window as unknown as { fbq?: (...a: unknown[]) => void }
+                        w.fbq?.("track", "Purchase", {
+                            value: precioActualCent() / 100,
+                            currency: "EUR",
+                        })
+                    } catch {
+                        /* ignore */
+                    }
                     return
                 }
             }
