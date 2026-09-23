@@ -41,6 +41,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { path: "/empleo-publico", priority: 0.8, freq: "monthly" as const },
         { path: "/prevencion-riesgos-laborales", priority: 0.8, freq: "monthly" as const },
         { path: "/hacienda-publica", priority: 0.8, freq: "monthly" as const },
+        { path: "/igualdad", priority: 0.8, freq: "monthly" as const },
+        { path: "/union-europea", priority: 0.8, freq: "monthly" as const },
+        { path: "/administracion-electronica", priority: 0.8, freq: "monthly" as const },
+        { path: "/euskera", priority: 0.8, freq: "monthly" as const },
         ...NORMATIVAS.map((n) => ({
             path: `/temario/${n.slug}`,
             priority: 0.7,

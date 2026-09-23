@@ -376,4 +376,14 @@ export function getNormativa(slug: string): Normativa | undefined {
 export const TEMARIO_EXISTENTE: { titulo: string; ley: string; href: string }[] = [
     { titulo: "La Constitución Española", ley: "Constitución de 1978 y organización del Estado", href: "/constitucion" },
     { titulo: "Ley 39/2015", ley: "Procedimiento Administrativo Común", href: "/ley-39-2015" },
+    { titulo: "Ley 40/2015", ley: "Régimen Jurídico del Sector Público", href: "/ley-40-2015" },
+    { titulo: "Estatuto de Autonomía", ley: "Estatuto de Gernika e instituciones vascas", href: "/estatuto-de-autonomia" },
+    { titulo: "Empleo público", ley: "Ley 11/2022 de Empleo Público Vasco y EBEP", href: "/empleo-publico" },
+    { titulo: "Protección de datos", ley: "RGPD, LOPDGDD y transparencia", href: "/proteccion-datos" },
+    { titulo: "Administración electrónica", ley: "Sede, firma, registro y expediente electrónico", href: "/administracion-electronica" },
+    { titulo: "Prevención de Riesgos Laborales", ley: "Ley 31/1995 y primeros auxilios", href: "/prevencion-riesgos-laborales" },
+    { titulo: "Hacienda pública y presupuestos", ley: "Principios presupuestarios y fases del gasto", href: "/hacienda-publica" },
+    { titulo: "Igualdad", ley: "DL 1/2023 de igualdad de mujeres y hombres", href: "/igualdad" },
+    { titulo: "Euskera y perfiles lingüísticos", ley: "Decreto 19/2024 y perfiles PL1-PL4", href: "/euskera" },
+    { titulo: "La Unión Europea", ley: "Instituciones y Derecho de la UE", href: "/union-europea" },
 ]
