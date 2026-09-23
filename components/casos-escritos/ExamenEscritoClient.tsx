@@ -10,6 +10,20 @@ import { corrigeCaso, type CasoEscrito, type CasoResultado } from "@/lib/casos-e
 
 const ACCENT = "#10B981"
 
+// Layout a nivel de módulo (NO dentro del componente): si se define dentro,
+// cada cambio de estado lo remonta y las cajas de texto pierden el foco al teclear.
+function PageShell({ dark, children }: { dark: boolean; children: React.ReactNode }) {
+    const bg = dark ? "#0B0C10" : "#FFFFFF"
+    const textMain = dark ? "#FFFFFF" : "#09090B"
+    return (
+        <div style={{ width: "100%", minHeight: "100vh", backgroundColor: bg, color: textMain, fontFamily: "var(--font-manrope), system-ui, sans-serif" }}>
+            <LightNavbar />
+            <div style={{ maxWidth: "760px", margin: "0 auto", padding: "40px 20px 80px" }}>{children}</div>
+            <SiteFooter />
+        </div>
+    )
+}
+
 export default function ExamenEscritoClient({ caso }: { caso: CasoEscrito }) {
     const { dark } = useTheme()
     const searchParams = useSearchParams()
@@ -19,7 +33,6 @@ export default function ExamenEscritoClient({ caso }: { caso: CasoEscrito }) {
     const [resultado, setResultado] = React.useState<CasoResultado | null>(null)
     const resultRef = React.useRef<HTMLDivElement>(null)
 
-    const bg = dark ? "#0B0C10" : "#FFFFFF"
     const surface = dark ? "rgba(25,26,35,0.7)" : "#FFFFFF"
     const border = dark ? "rgba(255,255,255,0.08)" : "#E4E4E7"
     const textMain = dark ? "#FFFFFF" : "#09090B"
@@ -37,18 +50,10 @@ export default function ExamenEscritoClient({ caso }: { caso: CasoEscrito }) {
         window.scrollTo({ top: 0, behavior: "smooth" })
     }
 
-    const Shell = ({ children }: { children: React.ReactNode }) => (
-        <div style={{ width: "100%", minHeight: "100vh", backgroundColor: bg, color: textMain, fontFamily: "var(--font-manrope), system-ui, sans-serif" }}>
-            <LightNavbar />
-            <div style={{ maxWidth: "760px", margin: "0 auto", padding: "40px 20px 80px" }}>{children}</div>
-            <SiteFooter />
-        </div>
-    )
-
     // Bloqueado para todos salvo acceso beta (?beta=1).
     if (!beta) {
         return (
-            <Shell>
+            <PageShell dark={dark}>
                 <div style={{ textAlign: "center", padding: "60px 20px" }}>
                     <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "12px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px", color: ACCENT, marginBottom: "14px" }}>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M7 10V8a5 5 0 0 1 10 0v2M5 10h14v10H5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -62,14 +67,14 @@ export default function ExamenEscritoClient({ caso }: { caso: CasoEscrito }) {
                         Volver a mis exámenes
                     </Link>
                 </div>
-            </Shell>
+            </PageShell>
         )
     }
 
     const notaColor = resultado ? (resultado.nota10 >= 5 ? ACCENT : "#EF4444") : textMain
 
     return (
-        <Shell>
+        <PageShell dark={dark}>
             {/* Cabecera */}
             <div style={{ marginBottom: "24px" }}>
                 <div style={{ fontSize: "11px", fontWeight: 800, color: ACCENT, letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" }}>
@@ -172,6 +177,6 @@ export default function ExamenEscritoClient({ caso }: { caso: CasoEscrito }) {
                     </button>
                 </div>
             )}
-        </Shell>
+        </PageShell>
     )
 }
