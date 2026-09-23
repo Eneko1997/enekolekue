@@ -4189,6 +4189,31 @@ export default function PerfilOPE({
                                             />
                                         ))}
                                     </div>
+
+                                    {/* Exámenes escritos (beta, bloqueado para todos) */}
+                                    <div style={{ marginBottom: "12px" }}>
+                                        <h3 style={{ fontSize: "16px", fontWeight: 800, color: t.textMain, margin: "0 0 6px", letterSpacing: "-0.3px" }}>
+                                            Exámenes Escritos
+                                        </h3>
+                                        <p style={{ fontSize: "13px", color: t.textMuted, margin: 0 }}>
+                                            Escribes tu respuesta a un supuesto y te la corregimos al momento: nota, qué has acertado y qué te ha faltado.
+                                        </p>
+                                    </div>
+                                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px", marginBottom: "28px" }}>
+                                        <div style={{ borderRadius: "14px", border: `1px dashed ${t.borderStrong}`, background: t.navSurface, padding: "16px" }}>
+                                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", marginBottom: "8px" }}>
+                                                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px", color: t.textMuted }}>
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
+                                                        <path d="M7 10V8a5 5 0 0 1 10 0v2M5 10h14v10H5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                    Bloqueado
+                                                </span>
+                                                <span style={{ fontSize: "11px", fontWeight: 700, color: accentColor, textTransform: "uppercase", letterSpacing: "0.5px" }}>Beta</span>
+                                            </div>
+                                            <div style={{ fontSize: "14px", fontWeight: 800, color: t.textMain }}>Ayuntamiento de Ondarroa — Administrativo (2018)</div>
+                                            <div style={{ fontSize: "12px", color: t.textMuted, marginTop: "2px" }}>Casos prácticos escritos con corrección automática. Muy pronto.</div>
+                                        </div>
+                                    </div>
                                     <div style={{ marginBottom: "12px" }}>
                                         <h3
                                             style={{
