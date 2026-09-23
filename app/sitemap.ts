@@ -35,6 +35,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { path: "/temario", priority: 0.8, freq: "monthly" as const },
         { path: "/ley-39-2015", priority: 0.8, freq: "monthly" as const },
         { path: "/constitucion", priority: 0.8, freq: "monthly" as const },
+        { path: "/ley-40-2015", priority: 0.8, freq: "monthly" as const },
+        { path: "/proteccion-datos", priority: 0.8, freq: "monthly" as const },
+        { path: "/estatuto-de-autonomia", priority: 0.8, freq: "monthly" as const },
+        { path: "/empleo-publico", priority: 0.8, freq: "monthly" as const },
+        { path: "/prevencion-riesgos-laborales", priority: 0.8, freq: "monthly" as const },
+        { path: "/hacienda-publica", priority: 0.8, freq: "monthly" as const },
         ...NORMATIVAS.map((n) => ({
             path: `/temario/${n.slug}`,
             priority: 0.7,
