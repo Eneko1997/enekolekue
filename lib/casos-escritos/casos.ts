@@ -28,8 +28,9 @@ const ONDARROA_2018: CasoEscrito = {
                     modelo: "Sí. Ante el Ayuntamiento (la Administración responsable).",
                     comentario: "Ante un daño causado por el funcionamiento de un servicio público, se reclama a la Administración titular. Aquí es el Ayuntamiento de Ondarroa, responsable de balizar y dar seguridad a la zona de aparcamiento. Es la responsabilidad patrimonial del art. 32 de la Ley 40/2015.",
                     conceptos: [
-                        // El "sí" suelto no puntúa: hay que identificar ANTE QUIÉN se reclama.
-                        { label: "Identifica que se reclama ante el Ayuntamiento / la Administración responsable", puntos: 5, patrones: ["ante el ayuntamiento", "ayuntamiento", "administracion", "udala", "udal", "consistorio", "municipio", "ente local", "entidad local"] },
+                        // El "sí" acierta la 1ª parte pero vale poquísimo; el grueso es identificar a QUIÉN.
+                        { label: "Reconoce que sí tiene derecho a reclamar", puntos: 1, patrones: ["si", "tiene derecho", "puede reclamar", "cabe reclamar", "derecho a reclamar", "bai"] },
+                        { label: "Identifica ante quién: el Ayuntamiento / la Administración", puntos: 4, patrones: ["ante el ayuntamiento", "ayuntamiento", "administracion", "udala", "udal", "consistorio", "municipio", "ente local", "entidad local"] },
                     ],
                 },
                 {
@@ -52,8 +53,9 @@ const ONDARROA_2018: CasoEscrito = {
                     modelo: "No. La Administración no puede excusarse; está obligada a resolver.",
                     comentario: "No. La Administración está obligada a resolver expresamente (art. 21 de la Ley 39/2015): no puede eludir su responsabilidad guardando silencio o dejando de contestar.",
                     conceptos: [
-                        // El "no" suelto no puntúa: hay que justificar (obligación de resolver).
-                        { label: "No puede excusarse: está obligada a resolver", puntos: 5, patrones: ["obligacion de resolver", "obligada a resolver", "obligado a resolver", "debe resolver", "debe responder", "tiene que responder", "no puede excusar", "no puede eximir", "no puede negarse", "esta obligada"] },
+                        // El "no" acierta la respuesta pero vale poquísimo; el grueso es justificarlo.
+                        { label: "Responde que No puede excusarse", puntos: 1, patrones: ["no puede excusar", "no puede", "no cabe", "no", "ez"] },
+                        { label: "Lo justifica: está obligada a resolver", puntos: 4, patrones: ["obligacion de resolver", "obligada a resolver", "obligado a resolver", "debe resolver", "debe responder", "tiene que responder", "no puede eximir", "esta obligada"] },
                     ],
                 },
                 {
@@ -80,10 +82,10 @@ const ONDARROA_2018: CasoEscrito = {
                     modelo: "NO está bien: faltan el medio o lugar a efectos de notificaciones (domicilio, teléfono…), la firma del solicitante y el órgano al que se dirige.",
                     comentario: "La solicitud está incompleta. El art. 66 de la Ley 39/2015 exige, entre otros datos, el medio o lugar a efectos de notificaciones (domicilio, teléfono, email), la firma del solicitante y el órgano al que se dirige. Aquí faltan esos tres.",
                     conceptos: [
-                        { label: "Detecta que está incompleta (faltan datos)", puntos: 2, patrones: ["faltan", "falta", "incompleta", "incorrecta", "no es correcta", "no esta completa"] },
+                        { label: "Detecta que la solicitud está mal / incompleta", puntos: 1, patrones: ["mal", "incompleta", "incorrecta", "no esta bien", "no es correcta", "faltan", "falta", "gaizki"] },
                         { label: "Falta el medio/lugar de notificaciones (domicilio, teléfono)", puntos: 2, patrones: ["medio de notificacion", "lugar de notificacion", "efectos de notificacion", "notificaciones", "domicilio", "telefono", "direccion", "helbide"] },
                         { label: "Falta la firma del solicitante", puntos: 2, patrones: ["firma", "firmar", "sinadura", "rubrica"] },
-                        { label: "Falta el órgano al que se dirige", puntos: 2, patrones: ["a quien se dirige", "organo", "destinatario", "dirigido a", "organo al que", "nori zuzentzen"] },
+                        { label: "Falta el órgano al que se dirige", puntos: 3, patrones: ["a quien se dirige", "organo", "destinatario", "dirigido a", "organo al que", "nori zuzentzen"] },
                     ],
                 },
                 {
