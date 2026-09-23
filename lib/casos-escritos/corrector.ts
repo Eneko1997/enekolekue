@@ -23,6 +23,13 @@ export type PreguntaCaso = {
     ley?: string
     // Explicación redactada ("el porqué") que se muestra en la corrección.
     comentario?: string
+    // Opciones para el "modo test" (una marcada con ok:true).
+    opciones?: { t: string; ok?: boolean }[]
+}
+
+// Puntos máximos de una pregunta (suma de sus conceptos).
+export function maxPuntos(preg: PreguntaCaso): number {
+    return preg.conceptos.reduce((s, c) => s + c.puntos, 0)
 }
 
 export type Ejercicio = {
