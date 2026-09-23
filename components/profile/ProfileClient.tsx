@@ -435,6 +435,17 @@ const DROPS: Drop[] = [
         ],
     },
 ]
+// Desbloqueo de "Exámenes Escritos" (beta). Va APARTE de DROPS para que al
+// desbloquearse no entre en la lista de exámenes oficiales (no es un ExamCard).
+const DROP_ESCRITOS: Drop = {
+    id: "drop-escritos-ondarroa",
+    titulo: "Exámenes Escritos",
+    fecha: "2026-09-30",
+    fechaLabel: "miércoles 30 de septiembre",
+    exams: [
+        { id: "escrito_ondarroa_admin_2018", titulo: "Ondarroa · Administrativo 2018 — modo examen o test", preguntas: 7, escala: "administrativos", entidad: "escritos", badge: "NUEVO" },
+    ],
+}
 function diasHastaDrop(fechaIso: string): number {
     const hoy = new Date(); hoy.setHours(0, 0, 0, 0)
     const f = new Date(fechaIso + "T00:00:00")
@@ -4079,20 +4090,23 @@ export default function PerfilOPE({
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0 }}
                                 >
-                                    {DROPS.filter((d) => !dropDesbloqueado(d)).length > 0 && (
+                                    {(DROPS.some((d) => !dropDesbloqueado(d)) || !dropDesbloqueado(DROP_ESCRITOS)) && (
                                         <div style={{ marginBottom: "28px" }}>
                                             <div style={{ marginBottom: "12px" }}>
                                                 <h3 style={{ fontSize: "16px", fontWeight: 800, color: t.textMain, margin: "0 0 6px", letterSpacing: "-0.3px" }}>
-                                                    Próximos exámenes oficiales
+                                                    Próximos exámenes
                                                 </h3>
                                                 <p style={{ fontSize: "13px", color: t.textMuted, margin: 0 }}>
-                                                    Cada semana incorporamos nuevos exámenes oficiales a tu cuenta. Esto es lo que llega.
+                                                    Cada semana incorporamos contenido nuevo a tu cuenta. Esto es lo que llega.
                                                 </p>
                                             </div>
                                             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" }}>
                                                 {DROPS.filter((d) => !dropDesbloqueado(d)).map((d) => (
                                                     <DropLockedCard key={d.id} d={d} t={t} accentColor={accentColor} />
                                                 ))}
+                                                {!dropDesbloqueado(DROP_ESCRITOS) && (
+                                                    <DropLockedCard key={DROP_ESCRITOS.id} d={DROP_ESCRITOS} t={t} accentColor={accentColor} />
+                                                )}
                                             </div>
                                         </div>
                                     )}
