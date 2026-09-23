@@ -17,7 +17,7 @@ import SiteFooter from "@/components/site/SiteFooter"
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SOCIAL } from "@/lib/site"
 
 export const metadata: Metadata = {
-    title: { absolute: "Gainditu — Oposiciones de Euskadi: tests, convocatorias y temario" },
+    title: { absolute: "Gainditu | Oposiciones en Euskadi: Exámenes oficiales, tests y convocatorias" },
     description: SITE_DESCRIPTION,
     alternates: { canonical: "/" },
 }
