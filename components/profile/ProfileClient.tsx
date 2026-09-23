@@ -439,11 +439,11 @@ const DROPS: Drop[] = [
 // desbloquearse no entre en la lista de exámenes oficiales (no es un ExamCard).
 const DROP_ESCRITOS: Drop = {
     id: "drop-escritos-ondarroa",
-    titulo: "Exámenes Escritos",
+    titulo: "Pack Exámenes Escritos",
     fecha: "2026-09-30",
     fechaLabel: "miércoles 30 de septiembre",
     exams: [
-        { id: "escrito_ondarroa_admin_2018", titulo: "Ondarroa · Administrativo 2018 — modo examen o test", preguntas: 7, escala: "administrativos", entidad: "escritos", badge: "NUEVO" },
+        { id: "escrito_ondarroa_admin_2018", titulo: "Ayuntamiento de Ondarroa · Administrativo 2018", preguntas: 0, escala: "administrativos", entidad: "escritos", badge: "NUEVO" },
     ],
 }
 function diasHastaDrop(fechaIso: string): number {
@@ -499,7 +499,7 @@ function DropLockedCard({ d, t, accentColor }: { d: Drop; t: any; accentColor: s
             <ul style={{ listStyle: "none", padding: 0, margin: "10px 0 0" }}>
                 {d.exams.map((e) => (
                     <li key={e.id} style={{ fontSize: "12.5px", color: t.textMuted, padding: "2px 0" }}>
-                        {e.titulo} · {e.preguntas} preg.
+                        {e.titulo}{e.preguntas > 0 ? ` · ${e.preguntas} preg.` : ""}
                     </li>
                 ))}
             </ul>
