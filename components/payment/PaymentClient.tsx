@@ -15,6 +15,16 @@ const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_live_51T
 const CHECKOUT_FN = process.env.NEXT_PUBLIC_CHECKOUT_FN_NAME || "create-embedded-checkout"
 const ACCENT = "#10B981"
 
+// Píxel de Meta: dispara un evento estándar si el píxel está cargado.
+function fbTrack(event: string, params?: Record<string, unknown>) {
+    try {
+        const w = window as unknown as { fbq?: (...a: unknown[]) => void }
+        w.fbq?.("track", event, params)
+    } catch {
+        /* ignore */
+    }
+}
+
 // Oferta única: pago único, acceso completo hasta el examen (mínimo 12 meses).
 // El precio (mostrado aquí y cobrado por Stripe) sale de lib/precio.ts, replicado en la edge
 // function create-embedded-checkout: sube +5€ el día 1 de cada mes hasta el tope, automático.
@@ -79,6 +89,16 @@ export default function PaymentClient() {
     React.useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
+
+    // Meta Pixel: ver la página de pago = interés (ViewContent). Una sola vez.
+    React.useEffect(() => {
+        fbTrack("ViewContent", {
+            content_name: "Premium Gainditu",
+            value: precioActualCent() / 100,
+            currency: "EUR",
+        })
+    }, [])
+    const icFiredRef = React.useRef(false)
 
     // Comprueba la sesión (una sola vez).
     React.useEffect(() => {
@@ -155,6 +175,14 @@ export default function PaymentClient() {
                 if (embeddedContainerRef.current) {
                     checkout.mount(embeddedContainerRef.current)
                     setEmbeddedReady(true)
+                    // Meta Pixel: el checkout está listo = intención de pago (una vez).
+                    if (!icFiredRef.current) {
+                        icFiredRef.current = true
+                        fbTrack("InitiateCheckout", {
+                            value: precioActualCent() / 100,
+                            currency: "EUR",
+                        })
+                    }
                 }
             } catch (err: any) {
                 if (myReq === reqIdRef.current) {
