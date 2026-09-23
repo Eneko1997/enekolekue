@@ -139,6 +139,8 @@ export default function ExamenEscritoClient({ caso }: { caso: CasoEscrito }) {
                             </div>
                             {ej.preguntas.map((pr) => {
                                 const miResp = (respuestas[`e${ei}p${pr.n}`] || "").trim()
+                                const veredicto = pr.vacia ? "Sin responder." : pr.puntos === pr.max ? "Correcto." : pr.puntos === 0 ? "No es correcto." : "Incompleto."
+                                const veredictoColor = pr.puntos === pr.max ? ACCENT : pr.puntos === 0 ? "#EF4444" : "#F59E0B"
                                 return (
                                 <div key={pr.n} style={{ border: `1px solid ${border}`, borderRadius: "12px", background: surface, padding: "14px 16px", marginBottom: "10px" }}>
                                     <div style={{ display: "flex", justifyContent: "space-between", gap: "10px", alignItems: "baseline", marginBottom: "8px" }}>
@@ -149,43 +151,14 @@ export default function ExamenEscritoClient({ caso }: { caso: CasoEscrito }) {
                                         <span style={{ fontWeight: 700, color: textMain }}>Tu respuesta: </span>
                                         {miResp ? <span style={{ fontStyle: "italic" }}>«{miResp}»</span> : <span style={{ fontStyle: "italic", opacity: 0.7 }}>(sin responder)</span>}
                                     </div>
-                                    <div style={{ fontSize: "11px", fontWeight: 800, color: textMuted, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "5px" }}>
-                                        Qué se valora en este apartado
-                                    </div>
-                                    {pr.aciertos.map((a, i) => (
-                                        <div key={"a" + i} style={{ fontSize: "12.5px", color: textMain, display: "flex", gap: "6px", padding: "1px 0" }}>
-                                            <span style={{ color: ACCENT, fontWeight: 800 }}>✓</span> {a.label} <span style={{ color: textMuted }}>(+{a.puntos})</span>
-                                        </div>
-                                    ))}
-                                    {pr.fallos.map((f, i) => (
-                                        <div key={"f" + i} style={{ fontSize: "12.5px", color: textMuted, display: "flex", gap: "6px", padding: "1px 0" }}>
-                                            <span style={{ color: "#EF4444", fontWeight: 800 }}>✗</span> Te faltó: {f.label}
-                                        </div>
-                                    ))}
-                                    {pr.comentario && (
-                                        <div style={{ fontSize: "12.5px", color: textMuted, lineHeight: 1.55, marginTop: "10px", paddingLeft: "10px", borderLeft: `2px solid ${border}` }}>
-                                            <span style={{ fontWeight: 800, color: textMain }}>Por qué. </span>{pr.comentario}
-                                        </div>
-                                    )}
-                                    <div style={{ marginTop: "8px", padding: "8px 10px", borderRadius: "8px", background: `${ACCENT}12`, border: `1px solid ${ACCENT}30` }}>
-                                        <span style={{ fontSize: "11px", fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: "0.5px" }}>Respuesta modelo</span>
-                                        <div style={{ fontSize: "12.5px", color: textMain, lineHeight: 1.5, marginTop: "3px" }}>{pr.modelo}</div>
-                                        {pr.ley && <div style={{ fontSize: "11px", color: textMuted, marginTop: "4px" }}>Base: {pr.ley}</div>}
+                                    <div style={{ fontSize: "12.5px", color: textMuted, lineHeight: 1.55 }}>
+                                        <span style={{ fontWeight: 800, color: veredictoColor }}>{veredicto} </span>{pr.comentario}
                                     </div>
                                 </div>
                                 )
                             })}
                         </div>
                     ))}
-
-                    {caso.leyesClave && caso.leyesClave.length > 0 && (
-                        <div style={{ border: `1px dashed ${border}`, borderRadius: "12px", padding: "12px 16px", marginBottom: "18px" }}>
-                            <div style={{ fontSize: "11px", fontWeight: 800, color: textMuted, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "6px" }}>Normativa clave del caso</div>
-                            {caso.leyesClave.map((l, i) => (
-                                <div key={i} style={{ fontSize: "12.5px", color: textMuted, padding: "1px 0" }}>· {l}</div>
-                            ))}
-                        </div>
-                    )}
 
                     <button onClick={reiniciar} style={{ width: "100%", padding: "13px", borderRadius: "12px", background: "transparent", color: textMain, fontSize: "14px", fontWeight: 700, border: `1px solid ${border}`, cursor: "pointer" }}>
                         Intentar de nuevo
