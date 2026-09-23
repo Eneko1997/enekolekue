@@ -137,11 +137,20 @@ export default function ExamenEscritoClient({ caso }: { caso: CasoEscrito }) {
                                 <span style={{ fontSize: "14px", fontWeight: 800 }}>{ej.titulo}</span>
                                 <span style={{ fontSize: "13px", fontWeight: 700, color: ACCENT }}>{ej.puntos} / {ej.max}</span>
                             </div>
-                            {ej.preguntas.map((pr) => (
+                            {ej.preguntas.map((pr) => {
+                                const miResp = (respuestas[`e${ei}p${pr.n}`] || "").trim()
+                                return (
                                 <div key={pr.n} style={{ border: `1px solid ${border}`, borderRadius: "12px", background: surface, padding: "14px 16px", marginBottom: "10px" }}>
                                     <div style={{ display: "flex", justifyContent: "space-between", gap: "10px", alignItems: "baseline", marginBottom: "8px" }}>
                                         <span style={{ fontSize: "13.5px", fontWeight: 700 }}>{pr.n}. {pr.enunciado}</span>
                                         <span style={{ fontSize: "13px", fontWeight: 800, color: pr.puntos === pr.max ? ACCENT : pr.puntos === 0 ? "#EF4444" : textMuted, whiteSpace: "nowrap" }}>{pr.puntos} / {pr.max}</span>
+                                    </div>
+                                    <div style={{ fontSize: "12.5px", color: textMuted, marginBottom: "10px", lineHeight: 1.5 }}>
+                                        <span style={{ fontWeight: 700, color: textMain }}>Tu respuesta: </span>
+                                        {miResp ? <span style={{ fontStyle: "italic" }}>«{miResp}»</span> : <span style={{ fontStyle: "italic", opacity: 0.7 }}>(sin responder)</span>}
+                                    </div>
+                                    <div style={{ fontSize: "11px", fontWeight: 800, color: textMuted, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "5px" }}>
+                                        Qué se valora en este apartado
                                     </div>
                                     {pr.aciertos.map((a, i) => (
                                         <div key={"a" + i} style={{ fontSize: "12.5px", color: textMain, display: "flex", gap: "6px", padding: "1px 0" }}>
@@ -159,7 +168,8 @@ export default function ExamenEscritoClient({ caso }: { caso: CasoEscrito }) {
                                         {pr.ley && <div style={{ fontSize: "11px", color: textMuted, marginTop: "4px" }}>Base: {pr.ley}</div>}
                                     </div>
                                 </div>
-                            ))}
+                                )
+                            })}
                         </div>
                     ))}
 
