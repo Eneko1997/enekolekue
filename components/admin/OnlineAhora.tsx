@@ -23,9 +23,30 @@ function tiempoConectado(sinceIso: string): string {
     return rm ? `${h} h ${rm} min conectado` : `${h} h conectado`
 }
 
+// Máximo tiempo conectado para seguir mostrando una sesión (evita pestañas fantasma
+// abiertas durante horas/días que no son actividad real).
+const MAX_HORAS = 6
+
+// Páginas de norma (temario/SEO): ruta → nombre corto de la materia.
+const NORMA_LABELS: Record<string, string> = {
+    "/constitucion": "Constitución",
+    "/ley-39-2015": "Ley 39/2015",
+    "/ley-40-2015": "Ley 40/2015",
+    "/proteccion-datos": "Protección de datos",
+    "/estatuto-de-autonomia": "Estatuto de Autonomía",
+    "/empleo-publico": "Empleo público",
+    "/prevencion-riesgos-laborales": "Prevención de riesgos",
+    "/hacienda-publica": "Hacienda pública",
+    "/igualdad": "Igualdad",
+    "/union-europea": "Unión Europea",
+    "/administracion-electronica": "Admin. electrónica",
+    "/euskera": "Euskera",
+}
+
 // Traduce la ruta a un nombre de pantalla legible
 function pantalla(path: string): string {
     if (path === "/") return "Inicio"
+    if (NORMA_LABELS[path]) return `Temario · ${NORMA_LABELS[path]}`
     if (path.startsWith("/convocatorias/")) return "Ficha de convocatoria"
     if (path === "/convocatorias") return "Convocatorias"
     if (path.startsWith("/oposiciones")) return "Oposiciones"
@@ -33,6 +54,8 @@ function pantalla(path: string): string {
     if (path.startsWith("/simulacro")) return "Simulacro"
     if (path.startsWith("/mi-plan")) return "Mi plan"
     if (path.startsWith("/herramientas")) return "Herramientas"
+    if (path.startsWith("/temario")) return "Temario"
+    if (path.startsWith("/guias")) return "Guías"
     if (path.startsWith("/actualidad")) return "Actualidad"
     if (path.startsWith("/perfil") || path.startsWith("/profile") || path.startsWith("/cuenta")) return "Perfil"
     if (path.startsWith("/payment") || path.startsWith("/pago")) return "Pago"
@@ -65,6 +88,10 @@ export default function OnlineAhora() {
         return () => { parado = true; clearInterval(idPoll); clearInterval(idTick) }
     }, [])
 
+    // Oculta sesiones fantasma (pestañas abiertas más de MAX_HORAS): no son actividad real.
+    const limite = MAX_HORAS * 60 * 60 * 1000
+    const visibles = filas.filter((f) => Date.now() - new Date(f.since).getTime() <= limite)
+
     return (
         <section className="mt-8 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
             <div className="flex items-center gap-2">
@@ -73,14 +100,14 @@ export default function OnlineAhora() {
                     <span className="relative inline-flex h-2.5 w-2.5 rounded-full" style={{ backgroundColor: ACCENT }} />
                 </span>
                 <h2 className="text-xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50">Ahora mismo</h2>
-                <span className="ml-1 rounded-full px-2.5 py-0.5 text-[12px] font-bold" style={{ color: ACCENT, backgroundColor: `${ACCENT}1A` }}>{filas.length} online</span>
+                <span className="ml-1 rounded-full px-2.5 py-0.5 text-[12px] font-bold" style={{ color: ACCENT, backgroundColor: `${ACCENT}1A` }}>{visibles.length} online</span>
             </div>
 
-            {filas.length === 0 ? (
+            {visibles.length === 0 ? (
                 <p className="mt-4 text-[14px] text-zinc-500">No hay nadie conectado en este momento.</p>
             ) : (
                 <ul className="mt-4 divide-y divide-zinc-100 dark:divide-zinc-800">
-                    {filas.map((f, i) => (
+                    {visibles.map((f, i) => (
                         <li key={i} className="flex items-center justify-between gap-3 py-2.5">
                             <div className="min-w-0">
                                 <div className="truncate text-[14px] font-medium text-zinc-800 dark:text-zinc-200">
