@@ -4208,10 +4208,10 @@ export default function PerfilOPE({
                                                     </svg>
                                                     Bloqueado
                                                 </span>
-                                                <span style={{ fontSize: "11px", fontWeight: 700, color: accentColor, textTransform: "uppercase", letterSpacing: "0.5px" }}>Beta</span>
+                                                <span style={{ fontSize: "11px", fontWeight: 700, color: accentColor, textTransform: "uppercase", letterSpacing: "0.5px" }}>Miércoles 30 sept</span>
                                             </div>
                                             <div style={{ fontSize: "14px", fontWeight: 800, color: t.textMain }}>Ayuntamiento de Ondarroa — Administrativo (2018)</div>
-                                            <div style={{ fontSize: "12px", color: t.textMuted, marginTop: "2px" }}>Casos prácticos escritos con corrección automática. Muy pronto.</div>
+                                            <div style={{ fontSize: "12px", color: t.textMuted, marginTop: "2px" }}>Se desbloquea el miércoles 30 de septiembre. Podrás hacerlo en modo examen (escrito, con corrección) o en modo test.</div>
                                         </div>
                                     </div>
                                     <div style={{ marginBottom: "12px" }}>
