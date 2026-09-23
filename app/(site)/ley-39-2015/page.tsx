@@ -134,6 +134,7 @@ export default function Ley39Page() {
                 label: "Texto consolidado (BOE)",
                 href: "https://www.boe.es/buscar/act.php?id=BOE-A-2015-10565",
             }}
+            muestra={{ testId: "adm30", total: 370 }}
             jsonLd={JSON_LD}
         />
     )

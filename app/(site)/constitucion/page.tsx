@@ -129,6 +129,7 @@ export default function ConstitucionPage() {
                 label: "Texto consolidado (BOE)",
                 href: "https://www.boe.es/buscar/act.php?id=BOE-A-1978-31229",
             }}
+            muestra={{ testId: "c01", total: 430 }}
             jsonLd={JSON_LD}
         />
     )

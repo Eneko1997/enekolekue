@@ -5,6 +5,7 @@ import FaqLeccion, { type Faq } from "@/components/lecciones/FaqLeccion"
 import LeccionCTA from "@/components/lecciones/LeccionCTA"
 import TestsLead from "@/components/site/TestsLead"
 import TemaTests, { type TemaTest } from "@/components/tests/TemaTests"
+import PreguntasMuestra from "@/components/tests/PreguntasMuestra"
 import { type PuntoNorma, type SeccionEstructura, type Enlace } from "@/lib/data/temario/normativas"
 
 const ACCENT = "#10B981"
@@ -13,6 +14,7 @@ const SECCIONES = [
     { id: "oposiciones", label: "¿En qué oposiciones?" },
     { id: "estructura", label: "Estructura de la norma" },
     { id: "puntos", label: "Lo que más se pregunta" },
+    { id: "muestra", label: "Preguntas de ejemplo" },
     { id: "tests", label: "Tests por tema" },
     { id: "faq", label: "Preguntas frecuentes" },
 ]
@@ -33,6 +35,8 @@ export interface TemaTestsShellProps {
     faqs: Faq[]
     relacionadas: Enlace[]
     fuenteOficial?: Enlace
+    /** Preguntas de ejemplo gratis (SEO): saca 5 del pool `testId` (total = nº preguntas de la norma). */
+    muestra?: { testId: string; total: number; href?: string }
     /** JSON-LD específico de la página (LearningResource, Breadcrumb, FAQ…). */
     jsonLd: object[]
 }
@@ -151,6 +155,15 @@ export default function TemaTestsShell(p: TemaTestsShellProps) {
                     </nav>
                 </aside>
             </div>
+
+            {p.muestra && (
+                <PreguntasMuestra
+                    testId={p.muestra.testId}
+                    total={p.muestra.total}
+                    tituloNorma={p.title}
+                    href={p.muestra.href}
+                />
+            )}
 
             <section id="tests" className="scroll-mt-20 px-5 py-8">
                 <div className="mx-auto max-w-4xl">
