@@ -11,6 +11,8 @@ import { precioActualCent } from "@/lib/precio"
 export default function PaymentSuccessClient() {
     const [premium, setPremium] = useState(false)
     const [checking, setChecking] = useState(true)
+    // Invitado: pagó sin cuenta; se le ha creado y enviado un email de acceso.
+    const [guestMsg, setGuestMsg] = useState(false)
     // Destino tras pagar: si venías de un simulacro bloqueado, vuelves ahí.
     const [next, setNext] = useState<string | null>(null)
 
@@ -64,9 +66,27 @@ export default function PaymentSuccessClient() {
                     window.location.search
                 ).get("session_id")
                 if (sessionId) {
-                    await supabase.functions.invoke("confirm-checkout", {
-                        body: { session_id: sessionId },
-                    })
+                    const { data } = await supabase.functions.invoke(
+                        "confirm-checkout",
+                        { body: { session_id: sessionId } }
+                    )
+                    // Invitado: la cuenta se ha creado con el pago.
+                    if (data?.guest && data?.premium) {
+                        void logFunnelEvent("purchase", {})
+                        try {
+                            const w = window as unknown as { fbq?: (...a: unknown[]) => void }
+                            w.fbq?.("track", "Purchase", { value: precioActualCent() / 100, currency: "EUR" })
+                        } catch { /* ignore */ }
+                        if (data?.access_url) {
+                            // Entra automáticamente en su cuenta nueva (premium).
+                            window.location.href = String(data.access_url)
+                            return
+                        }
+                        // Sin enlace directo: le hemos enviado un email para entrar.
+                        setGuestMsg(true)
+                        setChecking(false)
+                        return
+                    }
                 }
             } catch (_e) {
                 // si falla, el webhook y el polling siguen como respaldo
@@ -116,7 +136,9 @@ export default function PaymentSuccessClient() {
                     ¡Pago completado!
                 </h1>
                 <p className="mb-6 text-sm leading-relaxed text-white/60">
-                    {checking
+                    {guestMsg
+                        ? "Hemos creado tu cuenta con tu email y ya tienes acceso completo. Te hemos enviado un correo para entrar (revisa tu bandeja de entrada o el spam)."
+                        : checking
                         ? "Estamos activando tu acceso Premium… esto puede tardar unos segundos."
                         : premium
                           ? next
@@ -125,11 +147,11 @@ export default function PaymentSuccessClient() {
                           : "Tu pago se ha registrado. Si el acceso Premium no aparece en unos minutos, escríbenos a info@gaindituoposiciones.com."}
                 </p>
                 <Link
-                    href={premium && next ? next : "/"}
+                    href={guestMsg ? "/login" : premium && next ? next : "/"}
                     className="inline-block rounded-[10px] px-6 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
                     style={{ backgroundColor: BRAND_ACCENT }}
                 >
-                    {premium && next ? "Ir a mi simulacro →" : "Ir a mi panel →"}
+                    {guestMsg ? "Iniciar sesión →" : premium && next ? "Ir a mi simulacro →" : "Ir a mi panel →"}
                 </Link>
                 {premium && !next && (
                     <Link

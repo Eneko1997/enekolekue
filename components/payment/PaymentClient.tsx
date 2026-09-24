@@ -196,9 +196,11 @@ export default function PaymentClient() {
         [ensureStripeScript, teardown]
     )
 
-    // Solo se crea el checkout cuando: sesión comprobada + usuario logueado.
+    // El checkout se crea en cuanto se comprueba la sesión — logueado o invitado.
+    // Sin cuenta también se puede pagar: Stripe recoge el email y la cuenta se
+    // crea automáticamente al confirmar el pago (sin barrera antes de pagar).
     React.useEffect(() => {
-        if (!authChecked || !user) return
+        if (!authChecked) return
         initCheckout()
         return () => teardown()
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -324,31 +326,16 @@ export default function PaymentClient() {
                     style={{ order: isMobile ? -1 : undefined }}
                 >
                     <div style={{ background: surface, border: `1px solid ${border}`, borderRadius: "20px", overflow: "hidden" }}>
-                        {/* Sin sesión → obligamos a identificarse antes de pagar */}
-                        {authChecked && !user ? (
-                            <div style={{ padding: "28px 24px", display: "flex", flexDirection: "column", gap: "14px", textAlign: "center" }}>
-                                <div style={{ fontSize: "15px", fontWeight: 800, color: textMain }}>
-                                    Inicia sesión para continuar
-                                </div>
-                                <p style={{ fontSize: "13px", color: textMuted, margin: 0, lineHeight: 1.6 }}>
-                                    El acceso se vincula a tu cuenta. Entra o crea una cuenta gratis
-                                    y volverás aquí para completar el pago.
-                                </p>
-                                <Link
-                                    href={`/signup?redirect=${encodeURIComponent(authRedirect)}`}
-                                    style={{ marginTop: "4px", padding: "13px", borderRadius: "12px", background: dark ? "#FFFFFF" : "#09090B", color: dark ? "#09090B" : "#FFFFFF", fontSize: "15px", fontWeight: 700, textDecoration: "none" }}
-                                >
-                                    Crear cuenta gratis
-                                </Link>
-                                <Link
-                                    href={`/login?redirect=${encodeURIComponent(authRedirect)}`}
-                                    style={{ fontSize: "13px", fontWeight: 600, color: ACCENT, textDecoration: "none" }}
-                                >
-                                    Ya tengo cuenta · Iniciar sesión →
-                                </Link>
-                            </div>
-                        ) : (
-                            <>
+                        {/* Sin barrera: se puede pagar como invitado; la cuenta se crea al pagar. */}
+                        <>
+                                {authChecked && !user && (
+                                    <div style={{ padding: "12px 24px", borderBottom: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+                                        <span style={{ fontSize: "12px", color: textMuted }}>Tu cuenta se crea al pagar</span>
+                                        <Link href={`/login?redirect=${encodeURIComponent(authRedirect)}`} style={{ fontSize: "12px", fontWeight: 700, color: ACCENT, textDecoration: "none", whiteSpace: "nowrap" }}>
+                                            ¿Ya tienes cuenta? Entrar →
+                                        </Link>
+                                    </div>
+                                )}
                                 <div style={{ padding: "16px 24px", borderBottom: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                     <span style={{ fontSize: "12px", color: textMuted }}>Pago seguro vía Stripe · SSL</span>
                                     <span style={{ fontSize: "13px", fontWeight: 800, color: textMain }}>
@@ -383,11 +370,10 @@ export default function PaymentClient() {
                                     )}
 
                                     <p style={{ fontSize: "11px", color: textMuted, textAlign: "center", margin: 0, lineHeight: 1.6 }}>
-                                        El acceso se activa inmediatamente tras el pago.
+                                        {user ? "El acceso se activa inmediatamente tras el pago." : "Al pagar se crea tu cuenta con tu email y el acceso se activa al momento."}
                                     </p>
                                 </div>
-                            </>
-                        )}
+                        </>
                     </div>
                 </motion.div>
             </div>
