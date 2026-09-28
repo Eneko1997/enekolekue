@@ -89,7 +89,7 @@ const ONDARROA_2018: CasoEscrito = {
                         { t: "Responsabilidad contable" },
                     ],
                     conceptos: [
-                        { label: "Responsabilidad patrimonial", puntos: 5, patrones: ["responsabilidad patrimonial", "ondare erantzukizun", "patrimonial de la administracion"] },
+                        { label: "Responsabilidad patrimonial", puntos: 5, patrones: ["patrimonial", "responsabilidad patrimonial", "ondare erantzukizun", "ondare-erantzukizun"] },
                     ],
                 },
             ],

@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 
 // Registra el service worker y ofrece instalar la PWA.
 // - Android/escritorio: usa el evento nativo beforeinstallprompt -> botón "Instalar".
@@ -12,6 +13,7 @@ type BIPEvent = Event & { prompt: () => Promise<void>; userChoice: Promise<{ out
 const DISMISS_KEY = "gainditu_pwa_prompt_off"
 
 export default function PwaSetup() {
+    const pathname = usePathname()
     const [deferred, setDeferred] = useState<BIPEvent | null>(null)
     const [iosHint, setIosHint] = useState(false)
     const [visible, setVisible] = useState(false)
@@ -76,7 +78,9 @@ export default function PwaSetup() {
         cerrar()
     }
 
-    if (!visible) return null
+    // En la pantalla de pago no mostramos el banner de instalar (el service worker
+    // sí se registra arriba, sin nada visible). Nada que distraiga durante el pago.
+    if (!visible || pathname === "/payment") return null
 
     // Icono real de "Compartir" de iOS (cuadrado con flecha hacia arriba).
     const IconoCompartir = () => (

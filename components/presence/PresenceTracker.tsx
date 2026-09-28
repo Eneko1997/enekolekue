@@ -68,7 +68,7 @@ export default function PresenceTracker() {
         ;(async () => {
             try {
                 const { data } = await supabase.auth.getUser()
-                nameRef.current = data.user?.email || "Invitado"
+                if (data.user?.email) nameRef.current = data.user.email
                 if (esAdminEmail(data.user?.email)) {
                     noTrackRef.current = true
                     try { localStorage.setItem("gainditu_notrack", "1") } catch { /* noop */ }
@@ -78,7 +78,22 @@ export default function PresenceTracker() {
             latir()
             timer = setInterval(latir, 20000)
         })()
-        return () => { parado = true; if (timer) clearInterval(timer) }
+
+        // La sesión puede hidratarse DESPUÉS del primer render (o el usuario
+        // logearse en la misma pestaña). Actualizamos el nombre en cuanto exista
+        // sesión, para no dejar a un registrado etiquetado como "Invitado".
+        const { data: authSub } = supabase.auth.onAuthStateChange((_e, session) => {
+            const email = session?.user?.email
+            if (!email) return
+            nameRef.current = email
+            if (esAdminEmail(email)) {
+                noTrackRef.current = true
+                try { localStorage.setItem("gainditu_notrack", "1") } catch { /* noop */ }
+            }
+            latir()
+        })
+
+        return () => { parado = true; if (timer) clearInterval(timer); authSub.subscription.unsubscribe() }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

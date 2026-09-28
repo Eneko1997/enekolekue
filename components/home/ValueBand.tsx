@@ -60,7 +60,7 @@ export default function ValueBand() {
 
                 <div className="mt-12 flex flex-col items-start gap-2">
                     <Link
-                        href="/simulacro-administrativo-gobierno-vasco"
+                        href="/test?id=free_sim_adm&funnel=1&nuevo=1"
                         className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-[15px] font-bold text-white shadow-lg transition-transform hover:scale-[1.03]"
                         style={{ backgroundColor: ACCENT, boxShadow: "0 10px 30px -5px rgba(16,185,129,0.5)" }}
                     >

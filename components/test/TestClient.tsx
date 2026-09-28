@@ -203,8 +203,10 @@ function esOpcionAgregada(texto: string): boolean {
     const t = String(texto || "").toLowerCase()
     return (
         /\banteriores\b/.test(t) ||
-        /\btod[oa]s\b[^.]*\bson\s+(correct|incorrect)/.test(t) ||
-        /\btod[oa]s\s+l[oa]s\s+(respuestas|opciones|afirmaciones)\b/.test(t) ||
+        /\btod[oa]s\b[^.]*\bson\s+(correct|incorrect|v[aá]lid)/.test(t) ||
+        /\btod[oa]s\s+l[oa]s\s+(respuestas|opciones|afirmaciones|enunciados)\b/.test(t) ||
+        // "las dos/tres/cuatro (respuestas/afirmaciones) son correctas", "ambas son correctas"
+        /\b(ambas|las\s+(dos|tres|cuatro))\b[^.]{0,40}\bson\s+(correct|incorrect|v[aá]lid)/.test(t) ||
         /\bningun[ao]\b[^.]*\b(otras?|respuestas?|opciones|correct)/.test(t)
     )
 }
@@ -216,7 +218,8 @@ function refiereLetras(texto: string): boolean {
     const t = String(texto || "").toLowerCase()
     return (
         /\b[a-d]\)\s*y\s*[a-d]\)/.test(t) || // "a) y c)"
-        /\b[a-d]\s+y\s+[a-d]\s+(son|resultan|ser[íi]an)\b/.test(t) || // "a y b son correctas/incorrectas"
+        // "a y b son…", "a) y b) son…", "a y la b son…", "a y b correctas"
+        /\b[a-d]\s*\)?\s+y\s+(?:la\s+|las\s+)?[a-d]\s*\)?\s+(son|resultan|ser[íi]an|correct|incorrect)\b/.test(t) ||
         /\brespuestas?\s+[a-d]\b/.test(t) || // "respuesta a", "respuestas a) y c)"
         /\b(letras?|opci[oó]n(?:es)?)\s+[a-d]\b/.test(t) // "letra a", "opción c"
     )
@@ -261,6 +264,7 @@ function getUrlParam(name: string): string | null {
 const TITULOS: Record<string, string> = {
     // Repaso espaciado de fallos (cola personal; premium). Lo sirve get_test_preguntas.
     repaso_hoy: "Repaso de hoy — tus fallos",
+    ex_admin_ifbs_2016: "Práctico Administrativo · IFBS Álava (OEP 2016)",
     // ── BLOQUE COMÚN (temas 1-14, compartidos en las 4 escalas) ──────────────
     c00: "Simulacro Parte General — Temas 1 al 14",
     free_sim_adm: "Simulacro Administrativo — Gobierno Vasco",
@@ -472,6 +476,7 @@ interface Pregunta {
     correcta: number
     explicacion: string
     tema?: string | null
+    supuesto?: string | null
 }
 type Modo = "examen" | "repaso"
 type Fase =
@@ -2383,6 +2388,27 @@ function PantallaPregunta({
                 </div>
             </div>
 
+            {pregunta.supuesto ? (
+                <div
+                    style={{
+                        border: `1px solid ${c.border}`,
+                        borderRadius: "14px",
+                        background: c.surface,
+                        padding: "14px 16px",
+                        marginBottom: "12px",
+                        maxHeight: "220px",
+                        overflowY: "auto",
+                    }}
+                >
+                    <div style={{ fontSize: "11px", fontWeight: 800, color: accent, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "6px" }}>
+                        Supuesto
+                    </div>
+                    <p style={{ fontSize: "13px", color: c.muted, lineHeight: 1.6, margin: 0, fontFamily: READ_FONT }}>
+                        {pregunta.supuesto}
+                    </p>
+                </div>
+            ) : null}
+
             <div
                 style={{
                     background: c.surface,
@@ -4210,6 +4236,7 @@ export default function TestScreen(props: {
                     correcta: mezclada.correcta,
                     explicacion: r.explicacion,
                     tema: r.tema ?? null,
+                    supuesto: r.supuesto ?? null,
                 }
             })
             // Ya viene barajado del servidor (RPC get_test_preguntas).
@@ -4220,15 +4247,12 @@ export default function TestScreen(props: {
                 setMicroMateria(tema ? MICRO_LABELS[tema] ?? null : null)
             }
             if (funnel) {
-                // Embudo: se arranca directo el simulacro (estilo examen, con
-                // penalización), sin pantalla de inicio ni gating premium.
-                setModo("examen")
+                // Embudo: mostramos el selector de modo (Repaso / Examen), los DOS
+                // libres (sin premium ni muro de registro). Antes arrancaba directo
+                // en examen; ahora el usuario elige. El arranque real y el registro
+                // del evento se hacen en handleStart.
                 setModoPantalla("examen")
-                setPenalizacion(0.33)
-                setNumPreguntas(0)
-                tiempoRef.current = Date.now()
-                setFase("examen")
-                void logFunnelEvent("test_started", { test_id: testId })
+                setFase("inicio")
             } else if (testId === "microtest_dia") {
                 // Test rápido del día: arranca directo, sin pantalla de config ni
                 // gating. 6 preguntas, estilo examen, sin penalización (calentamiento).
@@ -4256,6 +4280,27 @@ export default function TestScreen(props: {
     }, [funnel])
 
     function handleStart(m: Modo) {
+        // Embudo (simulacro gratis): los dos modos son LIBRES, sin premium ni muro.
+        // Examen arranca directo con penalización (sin pantalla de config) para no
+        // meter un clic de más; Repaso va a la pantalla de una-a-una con feedback.
+        if (funnel) {
+            creditoContado.current = false
+            setModo(m)
+            setModoPantalla(m)
+            setIdx(0)
+            setRespuestas(Array(preguntas.length).fill(null))
+            tiempoRef.current = Date.now()
+            if (m === "examen") {
+                setPenalizacion(0.33)
+                setNumPreguntas(0)
+                setFase("examen")
+            } else {
+                setPenalizacion(0)
+                setFase("test")
+            }
+            void logFunnelEvent("test_started", { test_id: testId, modo: m })
+            return
+        }
         // Los simulacros son solo para usuarios premium
         if (esSimulacro && !isPremium) {
             setShowPremium(true)
@@ -4695,7 +4740,7 @@ export default function TestScreen(props: {
                         accent={accentColor}
                         modo={modoPantalla}
                         setModo={setModoPantalla}
-                        isPremium={isPremium}
+                        isPremium={isPremium || funnel}
                         mostrarCredito={!isPremium && !!sessionUser?.id && !esSimulacro && !funnel}
                         restantesGratis={Math.max(0, LIMITE_GRATIS - gratisUsadas)}
                     />

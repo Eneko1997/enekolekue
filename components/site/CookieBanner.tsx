@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
 // Aviso de cookies poco intrusivo (abajo a la izquierda). Cookies técnicas
@@ -10,6 +11,7 @@ import { useEffect, useState } from "react"
 const KEY = "gainditu-cookie-consent"
 
 export default function CookieBanner() {
+    const pathname = usePathname()
     const [show, setShow] = useState(false)
 
     useEffect(() => {
@@ -29,7 +31,8 @@ export default function CookieBanner() {
         setShow(false)
     }
 
-    if (!show) return null
+    // En la pantalla de pago no mostramos nada que distraiga.
+    if (!show || pathname === "/payment") return null
 
     return (
         <div className="fixed inset-x-4 bottom-4 z-50 sm:inset-x-auto sm:left-6 sm:max-w-sm">

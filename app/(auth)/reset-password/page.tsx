@@ -22,8 +22,15 @@ export default function ResetPasswordPage() {
         setLoading(false)
         if (error) return setError(translateAuthError(error.message))
         setDone(true)
+        // Permite volver a un destino concreto (?next=), p.ej. /mi-plan tras una
+        // compra de invitado. Solo rutas internas para no redirigir fuera.
+        let next = "/"
+        try {
+            const q = new URLSearchParams(window.location.search).get("next")
+            if (q && q.startsWith("/") && !q.startsWith("//")) next = q
+        } catch {}
         setTimeout(() => {
-            router.push("/")
+            router.push(next)
             router.refresh()
         }, 1500)
     }

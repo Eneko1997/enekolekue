@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import LeccionHero from "@/components/lecciones/LeccionHero"
+import PremiumBand from "@/components/site/PremiumBand"
 import { NORMATIVAS, TEMARIO_EXISTENTE } from "@/lib/data/temario/normativas"
 import { SITE_URL } from "@/lib/site"
 
@@ -105,6 +106,8 @@ export default function TemarioIndexPage() {
                     </div>
                 </div>
             </section>
+
+            <PremiumBand />
 
             <script
                 type="application/ld+json"

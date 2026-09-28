@@ -21,7 +21,10 @@ export default function PasswordRecoveryGate() {
         if (typeof window === "undefined") return
 
         const irAReset = () => {
-            if (window.location.pathname !== "/reset-password") {
+            const p = window.location.pathname
+            // /recuperar ya gestiona el código + la nueva contraseña en la misma
+            // pantalla; no lo secuestramos hacia /reset-password.
+            if (p !== "/reset-password" && p !== "/recuperar") {
                 router.replace("/reset-password")
             }
         }

@@ -62,7 +62,7 @@ export default function SimulacroNudge({
         <div
             ref={ref}
             aria-hidden={!show}
-            className={`fixed bottom-5 right-5 z-40 w-[calc(100vw-2.5rem)] max-w-[320px] transition-all duration-500 ${
+            className={`fixed bottom-24 right-5 z-40 w-[calc(100vw-2.5rem)] max-w-[320px] transition-all duration-500 ${
                 show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
             }`}
         >

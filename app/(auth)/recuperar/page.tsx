@@ -8,6 +8,9 @@ export const metadata: Metadata = {
     robots: { index: false, follow: true },
 }
 
+// Dinámica: evita que el CDN sirva una copia estática cacheada del formulario.
+export const dynamic = "force-dynamic"
+
 export default function RecuperarPage() {
     return (
         <Suspense fallback={null}>

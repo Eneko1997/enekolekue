@@ -359,3 +359,46 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 html.dark .hero-emerald {
   opacity: 0.45;
 }
+
+/* Borde verde animado tipo "luz que se mueve" (solo el contorno). */
+@property --gainditu-ang {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.moving-border {
+  position: relative;
+  border-radius: 16px;
+}
+.moving-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--gainditu-ang),
+    rgba(16, 185, 129, 0) 0deg,
+    rgba(16, 185, 129, 0) 205deg,
+    #10b981 285deg,
+    #6ee7b7 330deg,
+    rgba(16, 185, 129, 0) 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: gainditu-border-rotate 4s linear infinite;
+  pointer-events: none;
+}
+@keyframes gainditu-border-rotate {
+  to {
+    --gainditu-ang: 360deg;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .moving-border::before {
+    animation: none;
+    background: rgba(16, 185, 129, 0.5);
+  }
+}

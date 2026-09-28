@@ -8,6 +8,7 @@ import PostAuthRedirect from "@/components/auth/PostAuthRedirect"
 import PasswordRecoveryGate from "@/components/auth/PasswordRecoveryGate"
 import PresenceTracker from "@/components/presence/PresenceTracker"
 import PwaSetup from "@/components/pwa/PwaSetup"
+import Chatbot from "@/components/chat/Chatbot"
 
 const manrope = Manrope({
     variable: "--font-manrope",
@@ -95,6 +96,7 @@ export default function RootLayout({
                 <PasswordRecoveryGate />
                 <PresenceTracker />
                 <PwaSetup />
+                <Chatbot />
                 <CookieBanner />
                 <MetaPixel />
             </body>

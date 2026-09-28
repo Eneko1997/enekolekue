@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import OnlineAhora from "@/components/admin/OnlineAhora"
+import ChatConversaciones from "@/components/admin/ChatConversaciones"
 
 const ACCENT = "#10B981"
 
@@ -256,6 +257,9 @@ export default function CaptacionDashboard() {
 
             {/* Quién está online y en qué pantalla (tiempo real) */}
             <OnlineAhora />
+
+            {/* Conversaciones del chatbot */}
+            <ChatConversaciones />
 
             {/* Clientes premium (ventas reales) */}
             {premium && (

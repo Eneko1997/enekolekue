@@ -24,15 +24,15 @@ const VENTAJAS = [
 const FASES = [
     {
         t: "Prepara el terreno",
-        d: "Descubre a qué oposición presentarte, sigue tu convocatoria y ordena el temario oficial. Empiezas sabiendo a dónde vas.",
+        d: "Elige tu oposición, sigue tu convocatoria y ordena el temario oficial.",
     },
     {
         t: "Entrena con los tests",
-        d: "Practica el temario tema a tema, con corrección al momento y tu progreso siempre a la vista.",
+        d: "Practica tema a tema, con corrección al momento y tu progreso a la vista.",
     },
     {
         t: "Da el salto al examen",
-        d: "Exámenes oficiales y Casos Prácticos Gainditu, con simulacros y un seguimiento personalizado hasta tu fecha.",
+        d: "Exámenes oficiales, casos prácticos y simulacros, con seguimiento hasta tu fecha.",
     },
 ]
 
@@ -148,7 +148,7 @@ export default function PremiumSection() {
                         <SectionHeading
                             kicker="El Método Gainditu"
                             title="El método que te lleva a la plaza"
-                            subtitle="No es contenido suelto: es un camino en tres fases, con todo lo que necesitas hasta el día del examen."
+                            subtitle="El premium en tres fases, con todo hasta el día del examen."
                         />
                         <div className="mt-6 space-y-4">
                             {FASES.map((f, i) => (
@@ -163,14 +163,14 @@ export default function PremiumSection() {
                                         <div className="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">
                                             {f.t}
                                         </div>
-                                        <p className="mt-0.5 text-[13.5px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+                                        <p className="mt-0.5 hidden text-[13.5px] leading-relaxed text-zinc-600 dark:text-zinc-400 sm:block">
                                             {f.d}
                                         </p>
                                     </div>
                                 </div>
                             ))}
                         </div>
-                        <p className="mt-4 text-[13px] text-zinc-500 dark:text-zinc-400">
+                        <p className="mt-4 hidden text-[13px] text-zinc-500 dark:text-zinc-400 sm:block">
                             <span className="font-semibold text-zinc-700 dark:text-zinc-200">Y de regalo:</span> tus impugnaciones respondidas una a una y contenido nuevo cada semana.
                         </p>
                     </Reveal>

@@ -8,7 +8,6 @@ import { useIsMobile } from "@/lib/use-is-mobile"
 import { CheckIcon } from "@/components/icons"
 import LightNavbar from "@/components/site/LightNavbar"
 import { useTheme } from "@/lib/use-theme"
-import SiteFooter from "@/components/site/SiteFooter"
 import { precioActualCent, precioSiguienteCent, fechaSiguienteSubida, euros, fechaLegible, PRECIO_TOPE_CENT } from "@/lib/precio"
 
 const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_live_51TjFCiJMIRLdIAQNCE42HQtsnlfvPkFsBNqovT0ayide74xAphiDiJOY2SlI8NrR6A6uL1yWK2nvjCMu7na7dENq00dizBLEaF"
@@ -72,6 +71,7 @@ export default function PaymentClient() {
     const [isCreatingCheckout, setIsCreatingCheckout] = React.useState(false)
     const [embeddedReady, setEmbeddedReady] = React.useState(false)
     const [checkoutError, setCheckoutError] = React.useState("")
+    const [verCond, setVerCond] = React.useState(false) // condiciones de la garantía (plegable)
     const embeddedContainerRef = React.useRef<HTMLDivElement | null>(null)
     const checkoutInstanceRef = React.useRef<any>(null)
     const stripeScriptLoadedRef = React.useRef(false)
@@ -218,6 +218,8 @@ export default function PaymentClient() {
                 boxSizing: "border-box",
             }}
         >
+            {/* Navbar completa: aunque estemos en campaña de pago, dejamos que un usuario
+                nuevo pueda explorar el resto (futuro cliente aunque hoy no compre). */}
             <LightNavbar />
 
             <div
@@ -244,12 +246,9 @@ export default function PaymentClient() {
                                 El Método Gainditu · OPE Gobierno Vasco 2026
                             </div>
                         )}
-                        <h1 style={{ fontSize: isMobile ? "22px" : "30px", fontWeight: 800, letterSpacing: "-0.6px", lineHeight: 1.2, margin: "0 0 6px", color: textMain }}>
-                            El método que te lleva a la <span style={{ color: ACCENT }}>plaza.</span>
+                        <h1 style={{ fontSize: isMobile ? "27px" : "37px", fontWeight: 800, letterSpacing: "-0.8px", lineHeight: 1.12, margin: 0, color: textMain }}>
+                            Todo lo que necesitas para preparar tu oposición al <span style={{ color: ACCENT }}>Gobierno Vasco</span>
                         </h1>
-                        <p style={{ fontSize: "13px", color: textMuted, margin: 0, lineHeight: 1.6 }}>
-                            Tres fases: prepara el terreno, entrena con los tests y da el salto al examen, con seguimiento hasta tu fecha. Un único pago.
-                        </p>
                     </div>
 
                     {/* Value stack: lo que entra */}
@@ -285,100 +284,119 @@ export default function PaymentClient() {
                         </div>
                     </div>
 
-                    {/* Garantía audaz: apruebas o sigues gratis */}
-                    <div style={{ background: `${ACCENT}10`, border: `1px solid ${ACCENT}35`, borderRadius: "12px", padding: "12px 14px", display: "flex", gap: "10px", alignItems: "flex-start" }}>
-                        <span style={{ marginTop: "1px" }}><CheckIcon color={ACCENT} /></span>
-                        <div>
-                            <div style={{ fontSize: "13px", fontWeight: 800, color: textMain }}>Apruebas o sigues gratis</div>
-                            <div style={{ fontSize: "12px", color: textMuted, lineHeight: 1.55 }}>
-                                Te presentas y no apruebas: sigues gratis hasta la próxima convocatoria. Y 7 días de
-                                devolución si no es para ti.
-                                <span style={{ display: "block", marginTop: "4px", fontSize: "11px", opacity: 0.8 }}>
-                                    *Requiere acreditar inscripción y no apto oficial, y uso efectivo (10 tests y 30
-                                    días). Una prórroga por persona y convocatoria.
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Urgencia honesta: precio escalonado por más contenido */}
                     <div style={{ fontSize: "11px", color: textMuted, lineHeight: 1.6 }}>
                         {precio.nextStr && precio.nextDate ? (
                             <>
-                                <strong style={{ color: textMain }}>Precio de lanzamiento €{precio.str}</strong>. Sube a
-                                €{precio.nextStr} el {precio.nextDate}.{" "}
+                                <strong style={{ color: textMain }}>Sube a €{precio.nextStr} el {precio.nextDate}.</strong>{" "}
+                                Sin suscripción, hasta tu examen.
                             </>
                         ) : (
                             <>
-                                <strong style={{ color: textMain }}>€{precio.str}, pago único.</strong>{" "}
+                                <strong style={{ color: textMain }}>Pago único, sin suscripción.</strong> Acceso hasta tu examen.
                             </>
                         )}
-                        Sin suscripción, acceso hasta tu examen (mín. 12 meses).
                     </div>
                 </motion.div>
 
-                {/* DERECHA — Gate de login o Checkout. En móvil va ARRIBA (order -1) para
-                    que al entrar se vea el pago y no haya que bajar hasta el footer. */}
+                {/* DERECHA — Prueba social + garantía + checkout. En móvil va DEBAJO del
+                    método (sin order): primero el método y luego el pago, para no resultar
+                    agresivo entrando directo al cobro. */}
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35, delay: 0.08 }}
-                    style={{ order: isMobile ? -1 : undefined }}
+                    style={{ display: "flex", flexDirection: "column", gap: "12px" }}
                 >
+                    {/* Garantía en su propia caja, justo encima del pago */}
+                    <div style={{ background: `${ACCENT}0F`, border: `1px solid ${ACCENT}40`, borderRadius: "14px", padding: "12px 14px", display: "flex", gap: "9px", alignItems: "flex-start" }}>
+                        <span style={{ marginTop: "1px" }}><CheckIcon color={ACCENT} /></span>
+                        <div>
+                            <div style={{ fontSize: "14px", fontWeight: 800, color: textMain }}>Apruebas o sigues gratis</div>
+                            <div style={{ fontSize: "12.5px", color: textMuted, lineHeight: 1.5, marginTop: "2px" }}>
+                                Si te presentas y no apruebas, ampliamos tu acceso hasta la siguiente convocatoria.
+                            </div>
+                            <button onClick={() => setVerCond((v) => !v)} style={{ marginTop: "6px", background: "none", border: "none", padding: 0, cursor: "pointer", fontSize: "11px", fontWeight: 700, color: ACCENT }}>
+                                {verCond ? "Ocultar condiciones" : "Ver condiciones de la garantía"}
+                            </button>
+                            {verCond && (
+                                <div style={{ marginTop: "6px", fontSize: "11px", color: textMuted, lineHeight: 1.55 }}>
+                                    Requiere acreditar inscripción y no apto oficial, y uso efectivo (10 tests y 30 días). Una prórroga por persona y convocatoria. Además, 7 días de devolución si no es para ti.
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Caja de pago */}
                     <div style={{ background: surface, border: `1px solid ${border}`, borderRadius: "20px", overflow: "hidden" }}>
+                        {/* Línea sobria de pago seguro (sin ruido). */}
+                        <div style={{ padding: "12px 20px", borderBottom: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", fontSize: "12px", color: textMuted }}>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M7 10V8a5 5 0 0 1 10 0v2M5 10h14v10H5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                            Pago seguro vía Stripe · SSL
+                        </div>
+
                         {/* Sin barrera: se puede pagar como invitado; la cuenta se crea al pagar. */}
-                        <>
-                                {authChecked && !user && (
-                                    <div style={{ padding: "12px 24px", borderBottom: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
-                                        <span style={{ fontSize: "12px", color: textMuted }}>Tu cuenta se crea al pagar</span>
-                                        <Link href={`/login?redirect=${encodeURIComponent(authRedirect)}`} style={{ fontSize: "12px", fontWeight: 700, color: ACCENT, textDecoration: "none", whiteSpace: "nowrap" }}>
-                                            ¿Ya tienes cuenta? Entrar →
-                                        </Link>
-                                    </div>
-                                )}
-                                <div style={{ padding: "16px 24px", borderBottom: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                    <span style={{ fontSize: "12px", color: textMuted }}>Pago seguro vía Stripe · SSL</span>
-                                    <span style={{ fontSize: "13px", fontWeight: 800, color: textMain }}>
-                                        €{precio.str}
-                                        <span style={{ fontSize: "11px", fontWeight: 600, color: textMuted }}> pago único</span>
-                                    </span>
-                                </div>
+                        {authChecked && !user && (
+                            <div style={{ padding: "10px 20px", borderBottom: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+                                <span style={{ fontSize: "12px", color: textMuted }}>Tu cuenta se crea al pagar</span>
+                                <Link href={`/login?redirect=${encodeURIComponent(authRedirect)}`} style={{ fontSize: "12px", fontWeight: 700, color: ACCENT, textDecoration: "none", whiteSpace: "nowrap" }}>
+                                    ¿Ya tienes cuenta? Entrar →
+                                </Link>
+                            </div>
+                        )}
 
-                                <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
-                                    <div style={{ borderRadius: "10px", overflow: "hidden", minHeight: "480px", background: "#fff", position: "relative" }}>
-                                        <div ref={embeddedContainerRef} style={{ width: "100%", minHeight: "480px" }} />
-                                        <AnimatePresence>
-                                            {(!embeddedReady || isCreatingCheckout) && !checkoutError && (
-                                                <motion.div
-                                                    initial={{ opacity: 1 }}
-                                                    exit={{ opacity: 0 }}
-                                                    style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "#fff", color: "#71717A", fontSize: "13px" }}
-                                                >
-                                                    Preparando el pago…
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    </div>
-
-                                    {checkoutError && (
-                                        <div style={{ fontSize: "12px", color: "#B91C1C", background: "rgba(248,113,113,0.12)", border: "1px solid rgba(248,113,113,0.3)", padding: "10px 12px", borderRadius: "8px" }}>
-                                            {checkoutError}{" "}
-                                            <button onClick={() => initCheckout()} style={{ color: ACCENT, background: "none", border: "none", cursor: "pointer", fontWeight: 700 }}>
-                                                Reintentar
-                                            </button>
-                                        </div>
+                        <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                            <div style={{ borderRadius: "10px", overflow: "hidden", minHeight: "480px", background: "#fff", position: "relative" }}>
+                                <div ref={embeddedContainerRef} style={{ width: "100%", minHeight: "480px" }} />
+                                <AnimatePresence>
+                                    {(!embeddedReady || isCreatingCheckout) && !checkoutError && (
+                                        <motion.div
+                                            initial={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", gap: "12px", alignItems: "center", justifyContent: "center", background: "#fff", color: "#71717A", fontSize: "13px" }}
+                                        >
+                                            <motion.div
+                                                animate={{ rotate: 360 }}
+                                                transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                                                style={{ width: "24px", height: "24px", borderRadius: "50%", border: "2.5px solid #E4E4E7", borderTopColor: ACCENT }}
+                                            />
+                                            Preparando el pago seguro…
+                                        </motion.div>
                                     )}
+                                </AnimatePresence>
+                            </div>
 
-                                    <p style={{ fontSize: "11px", color: textMuted, textAlign: "center", margin: 0, lineHeight: 1.6 }}>
-                                        {user ? "El acceso se activa inmediatamente tras el pago." : "Al pagar se crea tu cuenta con tu email y el acceso se activa al momento."}
-                                    </p>
+                            {checkoutError && (
+                                <div style={{ fontSize: "12px", color: "#B91C1C", background: "rgba(248,113,113,0.12)", border: "1px solid rgba(248,113,113,0.3)", padding: "10px 12px", borderRadius: "8px" }}>
+                                    {checkoutError}{" "}
+                                    <button onClick={() => initCheckout()} style={{ color: ACCENT, background: "none", border: "none", cursor: "pointer", fontWeight: 700 }}>
+                                        Reintentar
+                                    </button>
                                 </div>
-                        </>
+                            )}
+
+                            <p style={{ fontSize: "11px", color: textMuted, textAlign: "center", margin: 0, lineHeight: 1.6 }}>
+                                {user ? "El acceso se activa inmediatamente tras el pago." : "Al pagar se crea tu cuenta con tu email y el acceso se activa al momento."}
+                            </p>
+                        </div>
                     </div>
                 </motion.div>
             </div>
 
-            <SiteFooter />
+            {/* Pie mínimo: solo logo, legales y contacto. Nada que se lleve al usuario. */}
+            <footer style={{ borderTop: `1px solid ${border}`, padding: "20px 18px", marginTop: "12px" }}>
+                <div style={{ maxWidth: "900px", margin: "0 auto", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
+                    <span style={{ fontSize: "13px", fontWeight: 800, color: textMain }}>
+                        g<span style={{ color: ACCENT }}>.</span> Gainditu
+                    </span>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", fontSize: "12px" }}>
+                        <Link href="/aviso-legal" style={{ color: textMuted, textDecoration: "none" }}>Aviso legal</Link>
+                        <Link href="/privacidad" style={{ color: textMuted, textDecoration: "none" }}>Privacidad</Link>
+                        <Link href="/cookies" style={{ color: textMuted, textDecoration: "none" }}>Cookies</Link>
+                        <a href="mailto:info@gaindituoposiciones.com" style={{ color: textMuted, textDecoration: "none" }}>info@gaindituoposiciones.com</a>
+                    </div>
+                </div>
+            </footer>
         </div>
     )
 }

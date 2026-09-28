@@ -4,7 +4,6 @@ import LightNavbar from "@/components/site/LightNavbar"
 import HeroSplit from "@/components/home/HeroSplit"
 import Reveal from "@/components/home/Reveal"
 import PremiumSection from "@/components/home/PremiumSection"
-import MicrotestDiaCard from "@/components/home/MicrotestDiaCard"
 import TestsPopulares from "@/components/home/TestsPopulares"
 import SectionHeading from "@/components/home/SectionHeading"
 import SuscripcionConvocatorias from "@/components/convocatorias/SuscripcionConvocatorias"
@@ -88,7 +87,7 @@ export default function HomePage() {
                                 ))}
                             </ul>
                             <Link
-                                href="/simulacro-administrativo-gobierno-vasco"
+                                href="/test?id=free_sim_adm&funnel=1&nuevo=1"
                                 className="mt-8 inline-flex items-center gap-2 rounded-full px-7 py-4 text-[15px] font-bold text-white shadow-lg transition-transform hover:scale-[1.03]"
                                 style={{ backgroundColor: ACCENT, boxShadow: "0 10px 25px -5px rgba(16,185,129,0.4)" }}
                             >
@@ -138,56 +137,20 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* ───────────── MICRO-TEST DEL DÍA (hábito diario, gratis) ───────────── */}
-            <section className="px-5 pb-4">
-                <div className="mx-auto max-w-3xl">
-                    <Reveal>
-                        <MicrotestDiaCard />
-                    </Reveal>
-                </div>
-            </section>
-
-            {/* ───────────── ORIENTACIÓN (embudo para indecisos) ───────────── */}
-            <section className="border-y border-emerald-100/70 bg-gradient-to-b from-emerald-50/70 to-transparent px-5 py-12 dark:border-emerald-900/30 dark:from-emerald-950/25 sm:py-16">
-                <div className="mx-auto max-w-5xl">
-                    <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
-                        {/* Preview de las preguntas */}
-                        <Reveal className="order-2 lg:order-1">
-                            <div className="mx-auto w-full max-w-sm rounded-3xl border border-zinc-200 bg-white p-6 shadow-xl shadow-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900">
-                                {[
-                                    { n: "1", t: "¿Qué titulación tienes?" },
-                                    { n: "2", t: "¿Qué nivel de euskera?" },
-                                    { n: "3", t: "¿Qué área te interesa?" },
-                                    { n: "4", t: "¿Cuánto tiempo tienes?" },
-                                ].map((q) => (
-                                    <div key={q.n} className="flex items-center gap-3 border-b border-zinc-100 py-3 last:border-0 dark:border-zinc-800">
-                                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white" style={{ backgroundColor: ACCENT }}>
-                                            {q.n}
-                                        </span>
-                                        <span className="text-[14px] font-medium text-zinc-700 dark:text-zinc-200">{q.t}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </Reveal>
-
-                        {/* Copy + CTA */}
-                        <Reveal className="order-1 lg:order-2">
-                            <SectionHeading
-                                kicker="¿Indeciso?"
-                                title="¿No sabes qué oposición elegir?"
-                                subtitle="Responde 4 preguntas y te decimos cuál encaja contigo. Gratis."
-                            />
-                            <Link
-                                href="/herramientas/que-oposicion-elegir"
-                                className="mt-8 inline-flex items-center gap-2 rounded-full px-7 py-4 text-[15px] font-bold text-white shadow-lg transition-transform hover:scale-[1.03]"
-                                style={{ backgroundColor: ACCENT, boxShadow: "0 10px 25px -5px rgba(16,185,129,0.4)" }}
-                            >
-                                Descúbrelo gratis →
-                            </Link>
-                        </Reveal>
+            {/* ───────────── ORIENTACIÓN (enlace pequeño, ya no una sección) ───────────── */}
+            <div className="px-5 pb-2 pt-2">
+                <div className="moving-border mx-auto max-w-xl">
+                    <div className="rounded-2xl px-5 py-3 text-center text-[13.5px] text-zinc-600 dark:text-zinc-300">
+                        ¿No sabes qué oposición elegir?{" "}
+                        <Link
+                            href="/herramientas/que-oposicion-elegir"
+                            className="font-semibold text-emerald-600 underline-offset-2 hover:underline dark:text-emerald-400"
+                        >
+                            Responde 4 preguntas y descúbrelo →
+                        </Link>
                     </div>
                 </div>
-            </section>
+            </div>
 
             {/* ───────────── TESTS MÁS POPULARES (prueba social · conteo real) ───────────── */}
             <TestsPopulares />
@@ -268,8 +231,8 @@ export default function HomePage() {
             </section>
 
             {/* ───────────── OPINIONES (carrusel manual con flechas) ───────────── */}
-            <section className="border-y border-zinc-100 bg-zinc-50/60 py-12 dark:border-zinc-800/70 dark:bg-zinc-900/40 sm:py-16">
-                <div className="mx-auto max-w-5xl px-5">
+            <section className="border-y border-zinc-100 bg-zinc-50/60 px-5 py-12 dark:border-zinc-800/70 dark:bg-zinc-900/40 sm:py-16">
+                <div className="mx-auto max-w-5xl">
                     <Reveal>
                         <Testimonios items={TESTIMONIOS} />
                     </Reveal>

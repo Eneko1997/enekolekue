@@ -161,7 +161,7 @@ export default function HeroSplit() {
                     >
                         <div className="flex flex-col items-start gap-3">
                             <Link
-                                href="/simulacro-administrativo-gobierno-vasco"
+                                href="/test?id=free_sim_adm&funnel=1&nuevo=1"
                                 aria-label="Hacer un simulacro gratis del Gobierno Vasco, sin registro"
                                 className="group inline-flex items-center gap-3 rounded-full bg-zinc-950 py-2 pl-2 pr-6 text-[15px] font-semibold text-white shadow-lg shadow-zinc-900/15 transition-transform hover:scale-[1.03]"
                             >
